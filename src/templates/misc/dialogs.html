@@ -1,0 +1,108 @@
+<template id="d-confirm-template">
+    <div c-confirm-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-default">{{message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-message-template">
+    <div c-message-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">{{message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-error-template">
+    <div c-error-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">{{message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<template id="d-warning-template">
+    <div c-warning-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">{{message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-custom-template">
+    <div c-custom-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" v-html="content">
+
+                </div>
+                <div class="modal-footer">
+                    <template v-for="(cb,key) in cCallbacks">
+                        <action-dialog :c-conf="cb" ></action-dialog>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

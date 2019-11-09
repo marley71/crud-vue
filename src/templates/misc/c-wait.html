@@ -1,0 +1,18 @@
+<template id="c-wait-template">
+    <div c-wait class="overlay hide">
+        <span c-msg style="position:absolute;width:100%;top:50%;text-align:center;color:white">
+            {{msg}}
+        </span>
+    </div>
+</template>
+<style>
+    .overlay {
+        background-color: rgba(1, 1, 1, 0.3);
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index:10000;
+    }
+</style>

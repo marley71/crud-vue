@@ -1,0 +1,31 @@
+<template id="c-tpl-record-template">
+    <div>
+        <label>{{cKey}}</label>
+        <div>
+            <component
+                    :is="cType"
+                    :c-conf="cRender"
+                    :c-key="cKey">
+
+            </component>
+        </div>
+    </div>
+</template>
+
+<template id="c-tpl-record2-template">
+    <div class="row">
+        <div class="col col-sm-6">{{cKey}}</div>
+        <div class="col col-sm-6">
+            <component
+                    :is="cType"
+                    :c-conf="cRender"
+                    :c-key="cKey">
+
+            </component>
+        </div>
+    </div>
+</template>
+
+<template id="c-tpl-list-template">
+    <component :is="cType" :c-conf="cRender" v-bind:c-key="cKey"></component>
+</template>

@@ -1,0 +1,12 @@
+<script type="text/x-template" id="r-checkbox-template">
+    <div>
+        <div class="form-check form-check-inline" v-for="key in domainValuesOrder">
+            <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
+                   v-model="value"
+                   v-bind:c-marker="cMarker" v-on:change="change" >
+            <label class="form-check-label" >{{domainValues[key]}}</label>&nbsp;&nbsp;
+        </div>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
+    </div>
+</script>
+<!--:checked="inArray(key)  ? 'checked' : ''"-->

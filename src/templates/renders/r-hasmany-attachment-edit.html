@@ -1,0 +1,96 @@
+<script type="text/x-template" id="r-hasmany-attachment-edit-template">
+    <div class="card" crud-render_element >
+        <div class="card-body">
+            <input type="hidden" name="attachments_exists" value="1">
+            <div class="panel panel-info">
+                <div class="panel-heading" crud-upload_title crud-label="modelMetadata.singular">
+                    <br/>
+                    <span><small crud-foto-msg></small></span>
+                </div>
+                     <ul class="sort_class list-inline" crud-render_list >
+                        <li v-for="(data,index) in renders" class="list-inline-item" crud-upload_item>
+                            <div class="card">
+                                <div class="card-header">
+                                    <span>{{ itemTitle(index) }}</span>
+                                    <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button" crud-button_delete crud-pk="" title="Cancella Foto"><i class="fa fa-times-circle"></i></button>
+
+                                </div>
+                                <div v-for="(item,key) in data">
+                                    <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="key"></component>
+                                </div>
+                                <div class="text-center">
+                                    <a target="_blank" v-bind:href="'/downloadfile/'+data.id">
+                                        <i v-bind:class="data.preview + ' fa-3x'" ></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <div crud-render_limit crud-lang="general-max_limit_reached"></div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div>
+                        <button v-on:click="add" crud-button_add crud-pk="" type="button" class="btn btn-outline-primary btn-sm">
+                            <span>{{$LANG.app.add}}</span> <span >{{$LANG.model.attachment}}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="d-attachment-ulpload" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">{{$LANG.app.add}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="loader_foto"></div>
+                                <div class="alert alert-danger" v-show="error">
+                                    {{errorMessage}}
+                                </div>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            <div >
+                                                <span crud-label="app.accepted-extensions"></span>:</div>
+                                            <div crud-label="app.extensions-foto"></div>
+                                            <div >Max <span crud-label="app.upload-max-filesize" ></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <input c-attachment-file class="btn btn-default" type="file" >
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div >
+                                                <i v-bind:class="preview" ></i>
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div crud-view_container>
+                                    <template v-for="(item,key) in uploadRenders">
+                                        <span v-show="item.type!='r-hidden'">{{ key }}</span>
+                                        <component v-bind:is="item.type" v-bind:c-data="item" v-bind:c-key="null" v-bind:c-marker="key"></component>
+                                    </template>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button  type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+                            <button v-on:click="addItem" v-bind:disabled="!complete" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+</script>

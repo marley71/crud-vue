@@ -1,0 +1,18 @@
+<script type="text/x-template" id="v-hasmany-view-template">
+    <div>
+        <div>&nbsp;</div>
+        <div v-if="loading">
+            loading
+        </div>
+        <div v-else>
+            <div  v-for="(item, key) in this.renders">
+                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>
+            </div>
+        </div>
+        <div v-show="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>

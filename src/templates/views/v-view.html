@@ -1,0 +1,14 @@
+<script type="text/x-template" id="v-view-template">
+    <div>
+        <div>View View</div>
+        <c-loading v-if="loading"></c-loading>
+        <div v-else v-for="(item, key) in renders">
+            <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+        </div>
+        <div v-show="actionsName.length">
+            <template v-for="(action,name) in actions">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>

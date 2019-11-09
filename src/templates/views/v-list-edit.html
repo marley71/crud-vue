@@ -1,0 +1,64 @@
+<script type="text/x-template" id="v-list-edit-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading"></c-loading>
+        <div v-else>
+            <div class="float-none">
+                <div class="float-left" v-show="globalActionsName.length">
+                    <template v-for="name in globalActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <paginator v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped" >
+                    <thead>
+                    <tr>
+                        <th v-show="recordActionsName.length">
+                            <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                            <span>Actions</span>
+                        </th>
+                        <th v-for="key in keys">
+                            <span v-show="!conf.orderFields[key]">@{{key}}</span>
+                            <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr v-for="(row,index) in renders">
+                        <td v-show="recordActionsName.length">
+
+                            <div class="btn-group" role="group">
+                                <div class="input-group-text">
+                                    <input c-row-check v-show="needSelection"  type="checkbox">
+                                </div>
+
+                                <template v-for="(action,name) in recordActions[index]">
+                                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                                </template>
+                            </div>
+
+                        </td>
+                        <td v-for="(render, key) in row">
+                            <component v-bind:is="render.type" v-bind:c-conf="render" v-bind:c-key="key"></component>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="float-none">
+                <div class="float-left" v-show="globalActionsName.length">
+                    <template v-for="name in globalActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <paginator v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

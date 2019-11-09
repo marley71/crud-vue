@@ -1,0 +1,12 @@
+<template id="r-b2m-select2-template">
+    <div>
+        <select c-select2 class="form-control m-select2" name="" multiple="true"
+                v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
+
+        </select>
+        <div c-selected-items>
+            <!-- hidden input for selected items -->
+        </div>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</template>

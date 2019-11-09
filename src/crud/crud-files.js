@@ -1,0 +1,111 @@
+
+var crudJsFiles = [
+    'public/vue-res/crud/OOP.js',
+    'public/vue-res/confs/Crud.js',
+
+    'public/vue-res/crud/Actions.js',
+    'public/vue-res/crud/Protocols.js',
+    'public/vue-res/crud/Routes.js',
+    'public/vue-res/crud/Utility.js',
+    'public/vue-res/crud/Server.js',
+    'public/vue-res/crud/App.js',
+
+    'public/vue-res/misc/c-component.js',
+    'public/vue-res/misc/c-loading.js',
+    'public/vue-res/misc/cr-templates.js',
+    'public/vue-res/actions/actions.js',
+    'public/vue-res/misc/paginator.js',
+    'public/vue-res/misc/dialogs.js',
+    'public/vue-res/misc/c-wait.js',
+
+
+    'public/vue-res/renders/r-base.js',
+    'public/vue-res/renders/r-input.js',
+    'public/vue-res/renders/r-input-helped.js',
+    'public/vue-res/renders/r-hidden.js',
+    'public/vue-res/renders/r-text.js',
+    'public/vue-res/renders/r-textarea.js',
+    'public/vue-res/renders/r-select.js',
+    'public/vue-res/renders/r-radio.js',
+    'public/vue-res/renders/r-checkbox.js',
+    'public/vue-res/renders/r-autocomplete.js',
+    'public/vue-res/renders/r-belongsto.js',
+    'public/vue-res/renders/r-date-select.js',
+    'public/vue-res/renders/r-date-picker.js',
+    'public/vue-res/renders/r-texthtml.js',
+
+    'public/vue-res/renders/r-hasmany.js',
+    'public/vue-res/renders/r-hasmany-view.js',
+
+    'public/vue-res/renders/r-hasmany-image.js',
+    'public/vue-res/renders/r-hasmany-image-edit.js',
+    'public/vue-res/renders/r-hasmany-attachment.js',
+    'public/vue-res/renders/r-hasmany-attachment-edit.js',
+    'public/vue-res/renders/r-upload-image.js',
+    'public/vue-res/renders/r-swap.js',
+    'public/vue-res/renders/r-hasmany-through.js',
+    'public/vue-res/renders/r-b2-select2.js',
+    'public/vue-res/renders/r-b2m-select2.js',
+    'public/vue-res/renders/r-upload.js',
+
+
+    'public/vue-res/views/v-base.js',
+    'public/vue-res/views/v-record.js',
+    'public/vue-res/views/v-collection.js',
+    'public/vue-res/views/v-list.js',
+    'public/vue-res/views/v-list-edit.js',
+    'public/vue-res/views/v-edit.js',
+    'public/vue-res/views/v-view.js',
+    'public/vue-res/views/v-insert.js',
+    'public/vue-res/views/v-search.js',
+    'public/vue-res/views/v-hasmany.js',
+    'public/vue-res/views/v-hasmany-view.js',
+
+    'public/vue-res/crud-vue.js'
+
+];
+
+var crudHtmlFiles = [
+    'public/vue-res/templates/misc/actions.html',
+    'public/vue-res/templates/misc/cr-templates.html',
+    'public/vue-res/templates/misc/paginator.html',
+    'public/vue-res/templates/misc/dialogs.html',
+    'public/vue-res/templates/misc/c-wait.html',
+
+    'public/vue-res/templates/renders/r-input.html',
+    'public/vue-res/templates/renders/r-input-helped.html',
+    'public/vue-res/templates/renders/r-hidden.html',
+    'public/vue-res/templates/renders/r-text.html',
+    'public/vue-res/templates/renders/r-textarea.html',
+    'public/vue-res/templates/renders/r-select.html',
+    'public/vue-res/templates/renders/r-radio.html',
+    'public/vue-res/templates/renders/r-checkbox.html',
+    'public/vue-res/templates/renders/r-autocomplete.html',
+    'public/vue-res/templates/renders/r-belongsto.html',
+    'public/vue-res/templates/renders/r-date-select.html',
+    'public/vue-res/templates/renders/r-date-picker.html',
+    'public/vue-res/templates/renders/r-texthtml.html',
+
+    'public/vue-res/templates/renders/r-hasmany.html',
+    'public/vue-res/templates/renders/r-hasmany-view.html',
+
+    'public/vue-res/templates/renders/r-hasmany-image.html',
+    'public/vue-res/templates/renders/r-hasmany-image-edit.html',
+    'public/vue-res/templates/renders/r-hasmany-attachment.html',
+    'public/vue-res/templates/renders/r-hasmany-attachment-edit.html',
+    'public/vue-res/templates/renders/r-upload-image.html',
+    'public/vue-res/templates/renders/r-swap.html',
+    'public/vue-res/templates/renders/r-hasmany-through.html',
+    'public/vue-res/templates/renders/r-b2-select2.html',
+    'public/vue-res/templates/renders/r-b2m-select2.html',
+    'public/vue-res/templates/renders/r-upload.html',
+
+    'public/vue-res/templates/views/v-list.html',
+    'public/vue-res/templates/views/v-list-edit.html',
+    'public/vue-res/templates/views/v-edit.html',
+    'public/vue-res/templates/views/v-view.html',
+    'public/vue-res/templates/views/v-insert.html',
+    'public/vue-res/templates/views/v-search.html',
+    'public/vue-res/templates/views/v-hasmany.html',
+    'public/vue-res/templates/views/v-hasmany-view.html',
+];

@@ -1,0 +1,17 @@
+<script type="text/x-template" id="v-insert-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading"></c-loading>
+        <form v-else  enctype="multipart/form-data">
+            <div  v-for="(item, key) in renders">
+                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="key"></component>
+            </div>
+        </form>
+        <div class="p-3" v-show="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>

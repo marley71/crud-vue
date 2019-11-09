@@ -1,0 +1,9 @@
+<script type="text/x-template" id="r-hasmany-image-template">
+    <div crud-render_element>
+        <ul class="list-unstyled" crud-render_list >
+            <li v-for="item in value">
+                <img class="img-circle img-list" v-bind:src="item.urls"  />
+            </li>
+        </ul>
+    </div>
+</script>
