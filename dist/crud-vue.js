@@ -4572,7 +4572,7 @@ Vue.component('r-swap', {
             var r = Route.factory('set');
             //var viewConf = self._viewConfig[viewKey];
             r.values = {
-                modelName: that.conf.modelName,
+                modelName: that.conf.metadata.modelName,
                 field : that.conf.key?that.conf.key:that.cKey,
                 value : that.value
             };
