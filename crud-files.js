@@ -1,0 +1,111 @@
+
+var crudJsFiles = [
+    'src/crud/OOP.js',
+    'src/confs/Crud.js',
+
+    'src/crud/Actions.js',
+    'src/crud/Protocols.js',
+    'src/crud/Routes.js',
+    'src/crud/Utility.js',
+    'src/crud/Server.js',
+    'src/crud/App.js',
+
+    'src/misc/c-component.js',
+    'src/misc/c-loading.js',
+    'src/misc/cr-templates.js',
+    'src/actions/actions.js',
+    'src/misc/paginator.js',
+    'src/misc/dialogs.js',
+    'src/misc/c-wait.js',
+
+
+    'src/renders/r-base.js',
+    'src/renders/r-input.js',
+    'src/renders/r-input-helped.js',
+    'src/renders/r-hidden.js',
+    'src/renders/r-text.js',
+    'src/renders/r-textarea.js',
+    'src/renders/r-select.js',
+    'src/renders/r-radio.js',
+    'src/renders/r-checkbox.js',
+    'src/renders/r-autocomplete.js',
+    'src/renders/r-belongsto.js',
+    'src/renders/r-date-select.js',
+    'src/renders/r-date-picker.js',
+    'src/renders/r-texthtml.js',
+
+    'src/renders/r-hasmany.js',
+    'src/renders/r-hasmany-view.js',
+
+    'src/renders/r-hasmany-image.js',
+    'src/renders/r-hasmany-image-edit.js',
+    'src/renders/r-hasmany-attachment.js',
+    'src/renders/r-hasmany-attachment-edit.js',
+    'src/renders/r-upload-image.js',
+    'src/renders/r-swap.js',
+    'src/renders/r-hasmany-through.js',
+    'src/renders/r-b2-select2.js',
+    'src/renders/r-b2m-select2.js',
+    'src/renders/r-upload.js',
+
+
+    'src/views/v-base.js',
+    'src/views/v-record.js',
+    'src/views/v-collection.js',
+    'src/views/v-list.js',
+    'src/views/v-list-edit.js',
+    'src/views/v-edit.js',
+    'src/views/v-view.js',
+    'src/views/v-insert.js',
+    'src/views/v-search.js',
+    'src/views/v-hasmany.js',
+    'src/views/v-hasmany-view.js',
+
+    'src/crud-vue.js'
+
+];
+
+var crudHtmlFiles = [
+    'src/templates/misc/actions.html',
+    'src/templates/misc/cr-templates.html',
+    'src/templates/misc/paginator.html',
+    'src/templates/misc/dialogs.html',
+    'src/templates/misc/c-wait.html',
+
+    'src/templates/renders/r-input.html',
+    'src/templates/renders/r-input-helped.html',
+    'src/templates/renders/r-hidden.html',
+    'src/templates/renders/r-text.html',
+    'src/templates/renders/r-textarea.html',
+    'src/templates/renders/r-select.html',
+    'src/templates/renders/r-radio.html',
+    'src/templates/renders/r-checkbox.html',
+    'src/templates/renders/r-autocomplete.html',
+    'src/templates/renders/r-belongsto.html',
+    'src/templates/renders/r-date-select.html',
+    'src/templates/renders/r-date-picker.html',
+    'src/templates/renders/r-texthtml.html',
+
+    'src/templates/renders/r-hasmany.html',
+    'src/templates/renders/r-hasmany-view.html',
+
+    'src/templates/renders/r-hasmany-image.html',
+    'src/templates/renders/r-hasmany-image-edit.html',
+    'src/templates/renders/r-hasmany-attachment.html',
+    'src/templates/renders/r-hasmany-attachment-edit.html',
+    'src/templates/renders/r-upload-image.html',
+    'src/templates/renders/r-swap.html',
+    'src/templates/renders/r-hasmany-through.html',
+    'src/templates/renders/r-b2-select2.html',
+    'src/templates/renders/r-b2m-select2.html',
+    'src/templates/renders/r-upload.html',
+
+    'src/templates/views/v-list.html',
+    'src/templates/views/v-list-edit.html',
+    'src/templates/views/v-edit.html',
+    'src/templates/views/v-view.html',
+    'src/templates/views/v-insert.html',
+    'src/templates/views/v-search.html',
+    'src/templates/views/v-hasmany.html',
+    'src/templates/views/v-hasmany-view.html',
+];
