@@ -19,10 +19,10 @@ eval(fs.readFileSync('crud-files.js')+'');
         gulp.src(crudJsFiles)
             .pipe(concat('crud-vue.js'))
             .pipe(gulp.dest('./dist/'));
-        gulp.src(crudHtmlFiles)
+        return gulp.src(crudHtmlFiles)
             .pipe(concat('crud-vue.html'))
             .pipe(gulp.dest('./dist/'));
-        return true;
+        ;
     });
 //} else {
     gulp.task('production', function() {
@@ -31,10 +31,10 @@ eval(fs.readFileSync('crud-files.js')+'');
             .pipe(minify({}))
             .pipe(rename({suffix: '.min'}))
             //.pipe(uglify())
-            .pipe(gulp.dest('./build/'));
+            .pipe(gulp.dest('./dist/'));
         gulp.src(crudHtmlFiles)
             .pipe(concat('crud-vue.html'))
-            .pipe(gulp.dest('./build/'));
+            .pipe(gulp.dest('./dist/'));
     });
 //}
 
@@ -55,10 +55,13 @@ gulp.task('watch',function () {
     ], function(done){
         // This function will be called each time a globbed file is changed
         // but is debounced with a 200ms delay (default) and queues subsequent calls
-        console.log('ricompilazione...' + new Date().toDateString());
-        gulp.src(jsfiles)
-            .pipe(concat('crud.js'))
-            .pipe(gulp.dest('./build/'));
+        console.log('ricompilazione...' + new Date().toDateString() + " " + new Date().toTimeString());
+        gulp.src(crudJsFiles)
+            .pipe(concat('crud-vue.js'))
+            .pipe(gulp.dest('./dist/'));
+        gulp.src(crudHtmlFiles)
+            .pipe(concat('crud-vue.html'))
+            .pipe(gulp.dest('./dist/'));
         // Make sure to signal async completion with the callback
         // or by returning a stream, promise, observable or child process
         done();

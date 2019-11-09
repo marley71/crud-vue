@@ -1,0 +1,983 @@
+<script type="text/x-template" id="action-template">
+    <button type="button" v-show="visible" v-bind:title="title" v-bind:class="css" v-on:click="execute">
+        <i v-show="icon" v-bind:class="icon"></i>
+        <span v-html="text"></span>
+    </button>
+</script>
+<template id="c-tpl-record-template">
+    <div>
+        <label>{{cKey}}</label>
+        <div>
+            <component
+                    :is="cType"
+                    :c-conf="cRender"
+                    :c-key="cKey">
+
+            </component>
+        </div>
+    </div>
+</template>
+
+<template id="c-tpl-record2-template">
+    <div class="row">
+        <div class="col col-sm-6">{{cKey}}</div>
+        <div class="col col-sm-6">
+            <component
+                    :is="cType"
+                    :c-conf="cRender"
+                    :c-key="cKey">
+
+            </component>
+        </div>
+    </div>
+</template>
+
+<template id="c-tpl-list-template">
+    <component :is="cType" :c-conf="cRender" v-bind:c-key="cKey"></component>
+</template>
+<script type="text/x-template" id="paginator-template">
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                <li class="page-item"> <!-- disabled -->
+                    <a class="page-link" href="javascript:void(0)" tabindex="-1" v-on:click="firstPage()" >&laquo;</a>
+                </li>
+                <li v-show="(current_page - 2) > 0 " class="page-item">
+                    <a v-on:click="setPage(current_page - 2)" class="page-link" href="javascript:void(0)" >
+                        {{ current_page - 2 }}
+                    </a>
+                </li>
+                <li v-show="(current_page - 1) > 0 " class="page-item">
+                    <a v-on:click="setPage(current_page - 1)" class="page-link" href="javascript:void(0)">
+                        {{  current_page - 1 }}
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link">
+                        pag. {{ current_page }} / {{ last_page }} <small>({{ from + '-' + to + " di " + total }} elementi)</small>
+                    </a></li>
+                <li v-show="(current_page + 1) <=  last_page " class="page-item">
+                    <a  v-on:click="setPage(current_page + 1)" class="page-link" href="javascript:void(0)">
+                        {{ current_page + 1 }}
+                    </a>
+                </li>
+                <li v-show="(current_page + 2) <=  last_page "  class="page-item">
+                    <a  v-on:click="setPage(current_page + 2)" class="page-link" href="javascript:void(0)">
+                        {{ current_page + 2 }}
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" v-on:click="lastPage()">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</script>
+<template id="d-confirm-template">
+    <div c-confirm-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-default">{{message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-message-template">
+    <div c-message-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">{{message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-error-template">
+    <div c-error-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">{{message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<template id="d-warning-template">
+    <div c-warning-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">{{message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-custom-template">
+    <div c-custom-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" v-html="content">
+
+                </div>
+                <div class="modal-footer">
+                    <template v-for="(cb,key) in cCallbacks">
+                        <action-dialog :c-conf="cb" ></action-dialog>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="c-wait-template">
+    <div c-wait class="overlay hide">
+        <span c-msg style="position:absolute;width:100%;top:50%;text-align:center;color:white">
+            {{msg}}
+        </span>
+    </div>
+</template>
+<style>
+    .overlay {
+        background-color: rgba(1, 1, 1, 0.3);
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index:10000;
+    }
+</style>
+<script type="text/x-template" id="r-input-template">
+    <div>
+        <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</script>
+<script type="text/x-template" id="r-input-helped-template">
+    <div>
+        <div crud-render_element>
+            <input v-bind:readonly="!conf.customValue"
+                   class="form-control" type="text" name="getFieldName()" v-model="value"
+                   v-bind:c-marker="cMarker" v-on:change="change" >
+            <div>
+                <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                    <button v-for="(label,dVal) in conf.metadata.domainValues" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{label}}</button>
+                </div>
+            </div>
+        </div>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</script>
+<script type="text/x-template" id="r-hidden-template">
+    <div>
+        <input v-model="value" v-bind:name="getFieldName()" type="hidden" v-bind:c-marker="cMarker">
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
+    </div>
+</script>
+<script type="text/x-template" id="r-text-template">
+    <div v-html="value"></div>
+</script>
+<script type="text/x-template" id="r-textarea-template">
+    <div>
+        <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
+                  v-bind:c-marker="cMarker" v-on:change="change"></textarea>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
+    </div>
+
+</script>
+<script type="text/x-template" id="r-select-template">
+    <div>
+        <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
+                v-on:change="change">
+            <option v-for="key in (conf.metadata.domainValuesOrder?conf.metadata.domainValuesOrder:Object.keys(conf.metadata.domainValues))" :value="key"
+                    >{{conf.metadata.domainValues[key]}}</option>
+        </select>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
+    </div>
+</script>
+<script type="text/x-template" id="r-radio-template">
+    <div>
+        <div class="form-check-inline"  v-for="key in domainValuesOrder">
+            <label class="form-check-label">
+                <input class="form-control-input" v-bind:name="getFieldName()" type="radio"  :value="key"
+                       v-model="value"
+                       v-bind:c-marker="cMarker" v-on:change="change">&nbsp;&nbsp;{{domainValues[key]}}
+            </label>
+        </div>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
+    </div>
+</script>
+<script type="text/x-template" id="r-checkbox-template">
+    <div>
+        <div class="form-check form-check-inline" v-for="key in domainValuesOrder">
+            <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
+                   v-model="value"
+                   v-bind:c-marker="cMarker" v-on:change="change" >
+            <label class="form-check-label" >{{domainValues[key]}}</label>&nbsp;&nbsp;
+        </div>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
+    </div>
+</script>
+<!--:checked="inArray(key)  ? 'checked' : ''"-->
+<template id="r-autocomplete-template">
+    <div class="md-form">
+        <input type="search" c-autocomplete class="form-control mdb-autocomplete">
+        <button class="mdb-autocomplete-clear">
+            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="https://www.w3.org/2000/svg">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                <path d="M0 0h24v24H0z" fill="none" />
+            </svg>
+        </button>
+        <label for="form-autocomplete" class="active">What is your favorite US state?</label>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</template>
+<template id="r-belongsto-template">
+    <div>
+        <span v-for="field in conf.fields">{{value[field]}}&nbsp;</span>
+    </div>
+</template>
+<template id="r-date-select-template">
+    <div class="input-group">
+        <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+        <r-select ref="day" v-bind:c-conf="cDay" c-marker="day"></r-select>
+        <r-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></r-select>
+        <r-select ref="year" v-bind:c-conf="cYear" c-marker="year"></r-select>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</template>
+<script type="text/x-template" id="r-date-picker-template">
+    <div class="input-group">
+        <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+        <input c-picker >
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</script>
+<script type="text/x-template" id="r-texthtml-template">
+    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>
+</script>
+<template id="r-hasmany-template">
+    <div class="card"  >
+        <div class="card-body">
+            <input type="hidden" :name="cConf.metadata.modelName + '_exists'" value="1">
+            <div class="card">
+                <div class="card-header" crud-hasmany_title>
+                    {{cConf.metadata.modelName}}
+                </div>
+                <div class="">
+                    <p crud-hasmany_title_msg></p>
+                    <ul class="list-inline"  >
+                        <!--  -- contenitore hasmany -- -->
+                        <li v-for="(item,index) in value"  class="list-inline-item" >
+                            <div class="card">
+                                <div class="card-header">
+                                    <small class="pull-left" crud-field="label" crud-trim="12" crud-attrs="{title:label}"></small>
+                                    <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button"  title="Cancella elemento"><i class="fa fa-times-circle"></i></button>
+
+                                </div>
+                                <v-hasmany v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany>
+
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="panel-footer">
+                    <div >
+                        <div crud-render_limit class="hide">
+                            <!-- Limite massimo raggiunto -->
+                            {{$LANG.app.limite_raggiunto}}
+                        </div>
+                        <button v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
+                            <span >{{$LANG.app.add}}</span>&nbsp;
+                            <span crud-label="modelMetadata.singular"></span>&nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/x-template" id="r-hasmany-view-template">
+    <div crud-render_element>
+        <div class="list-unstyled" crud-render_list >
+            <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
+            <ul class="list-unstyled" v-for="item in value">
+                <li>
+                    <v-hasmany-view v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany-view>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="r-hasmany-view-template1">
+    <div crud-render_element>
+        <div class="list-unstyled" crud-render_list >
+            <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
+            <ul class="list-unstyled" v-for="item in value">
+                <li>
+                    elemento1
+                    <span crud-field="label" ></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</script>
+<script type="text/x-template" id="r-hasmany-image-template">
+    <div crud-render_element>
+        <ul class="list-unstyled" crud-render_list >
+            <li v-for="item in value">
+                <img class="img-circle img-list" v-bind:src="item.urls"  />
+            </li>
+        </ul>
+    </div>
+</script>
+<script type="text/x-template" id="r-hasmany-image-edit-template">
+    <div class="card" crud-render_element >
+        <div class="card-body">
+            <input type="hidden" name="fotos_exists" value="1">
+            <div class="panel panel-info">
+                <div class="panel-heading" crud-upload_title crud-label="modelMetadata.singular">
+                    <br/>
+                    <span><small crud-foto-msg></small></span>
+                </div>
+                     <ul class="sort_class list-inline" crud-render_list >
+                        <li v-for="(data,index) in renders" class="list-inline-item" crud-upload_item>
+                            <div class="card">
+                                <div class="card-header">
+                                    <span>titolo</span>
+                                    <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button" title="Cancella Foto"><i class="fa fa-times-circle"></i></button>
+
+                                </div>
+                                <div v-for="(item,key) in data">
+                                    <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="key"></component>
+                                </div>
+                                <div class="text-center">
+                                    <img v-bind:src="'/imagecache/small/'+data.preview">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <div crud-render_limit crud-lang="general-max_limit_reached"></div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div>
+                        <button v-on:click="add" crud-button_add crud-pk="" type="button" class="btn btn-outline-primary btn-sm">
+                            <span>{{$LANG.app.add}}</span> <span >@{{$LANG.model.foto}}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="d-image-ulpload" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">{{$LANG.app.add}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="loader_foto"></div>
+                                <div class="alert alert-danger" v-show="error">
+                                    {{errorMessage}}
+                                </div>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            <div >
+                                                <span crud-label="app.accepted-extensions"></span>:</div>
+                                            <div crud-label="app.extensions-foto"></div>
+                                            <div >Max <span crud-label="app.upload-max-filesize" ></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <input c-image-file class="btn btn-default" type="file" >
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div >
+                                                <img v-bind:src="preview" ></img>
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div crud-view_container>
+                                    <template v-for="(item,key) in uploadRenders">
+                                        <span v-show="item.type!='r-hidden'">{{ key }}</span>
+                                        <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="null" v-bind:c-marker="key"></component>
+                                    </template>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button  type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+                            <button v-on:click="addItem" v-bind:disabled="!complete" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+</script>
+<script type="text/x-template" id="r-hasmany-attachment-template">
+    <div crud-render_element>
+        <ul class="list-inline" crud-render_list >
+            <li class="list-inline-item" v-for="(item,index) in value">
+                <a target="_blank" v-bind:href="'/downloadfile/'+item.id" v-bind:title="item.full_filename">
+                    <i v-bind:class="mimeTypeIcon(index) + ' fa-2x' " />
+                </a>
+            </li>
+        </ul>
+    </div>
+</script>
+<script type="text/x-template" id="r-hasmany-attachment-edit-template">
+    <div class="card" crud-render_element >
+        <div class="card-body">
+            <input type="hidden" name="attachments_exists" value="1">
+            <div class="panel panel-info">
+                <div class="panel-heading" crud-upload_title crud-label="modelMetadata.singular">
+                    <br/>
+                    <span><small crud-foto-msg></small></span>
+                </div>
+                     <ul class="sort_class list-inline" crud-render_list >
+                        <li v-for="(data,index) in renders" class="list-inline-item" crud-upload_item>
+                            <div class="card">
+                                <div class="card-header">
+                                    <span>{{ itemTitle(index) }}</span>
+                                    <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button" crud-button_delete crud-pk="" title="Cancella Foto"><i class="fa fa-times-circle"></i></button>
+
+                                </div>
+                                <div v-for="(item,key) in data">
+                                    <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="key"></component>
+                                </div>
+                                <div class="text-center">
+                                    <a target="_blank" v-bind:href="'/downloadfile/'+data.id">
+                                        <i v-bind:class="data.preview + ' fa-3x'" ></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <div crud-render_limit crud-lang="general-max_limit_reached"></div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div>
+                        <button v-on:click="add" crud-button_add crud-pk="" type="button" class="btn btn-outline-primary btn-sm">
+                            <span>{{$LANG.app.add}}</span> <span >{{$LANG.model.attachment}}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="d-attachment-ulpload" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">{{$LANG.app.add}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="loader_foto"></div>
+                                <div class="alert alert-danger" v-show="error">
+                                    {{errorMessage}}
+                                </div>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            <div >
+                                                <span crud-label="app.accepted-extensions"></span>:</div>
+                                            <div crud-label="app.extensions-foto"></div>
+                                            <div >Max <span crud-label="app.upload-max-filesize" ></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <input c-attachment-file class="btn btn-default" type="file" >
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div >
+                                                <i v-bind:class="preview" ></i>
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div crud-view_container>
+                                    <template v-for="(item,key) in uploadRenders">
+                                        <span v-show="item.type!='r-hidden'">{{ key }}</span>
+                                        <component v-bind:is="item.type" v-bind:c-data="item" v-bind:c-key="null" v-bind:c-marker="key"></component>
+                                    </template>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button  type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+                            <button v-on:click="addItem" v-bind:disabled="!complete" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+</script>
+<template id="r-upload-image-template">
+    <div class="" crud-render_element >
+        <div class="col col-sm-12">
+            <input type="hidden" name="fotos_exists" value="1">
+            <div class="panel panel-info">
+                <div class="panel-heading" crud-upload_title crud-label="modelMetadata.singular">
+                    <br/>
+                    <span><small crud-foto-msg></small></span>
+                </div>
+                     <ul class="list-group sort_class list-inline" crud-render_list >
+                        <li v-for="(data,index) in value" class="list-unstyled" crud-upload_item>
+                            <div class="col col-sm-12 thumbnail">
+                                <div v-for="(item,key) in data">
+                                    <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="key"></component>
+                                </div>
+                                <div class="clearfix">
+                                    <small class="pull-left" crud-field="label" crud-trim="12" crud-attrs="{title:label}"></small>
+                                    <button v-on:click="deleteItem(index)" class="btn-danger btn-xs pull-right" type="button" crud-button_delete crud-pk="" title="Cancella Foto"><i class="fa fa-times-circle"></i></button>
+
+                                </div>
+                                <div>
+                                    <img v-bind:src="'/imagecache/small/'+data.preview">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <div crud-render_limit crud-lang="general-max_limit_reached"></div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div>
+                        <button v-on:click="add" crud-button_add crud-pk="" type="button" class="btn btn-primary">
+                            <span>{{$LANG.app.add}}</span> <span >@{{$LANG.model.foto}}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="d-image-ulpload" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">{{$LANG.app.add}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="loader_foto"></div>
+                                <div class="alert alert-danger" v-show="error">
+                                    {{errorMessage}}
+                                </div>
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            <div >
+                                                <span crud-label="app.accepted-extensions"></span>:</div>
+                                            <div crud-label="app.extensions-foto"></div>
+                                            <div >Max <span crud-label="app.upload-max-filesize" ></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <input c-image-file class="btn btn-default" type="file" >
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div >
+                                                <img v-bind:src="preview" ></img>
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div crud-view_container>
+                                    <template v-for="(item,key) in uploadRenders">
+                                        <span v-show="item.type!='r-hidden'">{{ key }}</span>
+                                        <component v-bind:is="item.type" v-bind:c-data="item" v-bind:c-key="null" v-bind:c-marker="key"></component>
+
+                                    </template>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button  type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+                            <button v-on:click="addItem" v-bind:disabled="!complete" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+</template>
+<script type="text/x-template" id="r-swap-template">
+    <button type="button" class="btn btn-outline-secondary btn-sm" v-bind:title="title" v-on:click="swap">
+        <span v-show="swapType=='text'">{{ slot }}</span>
+        <i  v-show="swapType=='icon'" v-bind:class="slot"></i>
+    </button>
+</script>
+<template id="r-hasmany-through-template">
+    <div class="card"  >
+        <div class="card-body">
+            <div class="panel panel-warning">
+                <div class="panel-heading" crud-hasmany_title>
+                </div>
+                <div class="panel-body">
+                    <p crud-hasmany_title_msg></p>
+                    <ul class="list-group list-group-horizontal"  >
+                        <!--  -- contenitore hasmany -- -->
+                        <li v-for="item in value"  class="list-group-item" >
+                            <v-hasmany v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany>
+                            <hr />
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="panel-footer">
+                    <div >
+                        <div crud-render_limit class="hide">
+                            <!-- Limite massimo raggiunto -->
+                            {{$LANG.app.limite_raggiunto}}
+                        </div>
+                        <button v-on:click="addItem" type="button" class="btn btn-primary btn-sm">
+                            <span >{{$LANG.app.add}}</span>&nbsp;
+                            <span crud-label="modelMetadata.singular"></span>&nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="r-b2-select2-template">
+    <div>
+        <select c-select2 class="form-control m-select2"
+                v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
+        </select>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</template>
+<template id="r-b2m-select2-template">
+    <div>
+        <select c-select2 class="form-control m-select2" name="" multiple="true"
+                v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
+
+        </select>
+        <div c-selected-items>
+            <!-- hidden input for selected items -->
+        </div>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</template>
+<template id="r-upload-template">
+    <div>
+        <div v-show="extensions">
+            <span crud-label="app.accepted-extensions">Estensioni accettate</span>:
+        </div>
+        <div v-show="extensions">{{extensions}}</div>
+        <div v-show="maxFileSize">
+            Max <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
+        </div>
+        <div class="btn-group">
+            <input :name="getFieldName()" c-file class="btn btn-outline-default" type="file" v-on:change="validate()">
+        </div>
+    </div>
+</template>
+<script type="text/x-template" id="v-list-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading"></c-loading>
+        <div v-else>
+            <div class="float-none">
+                <div class="float-left" v-show="globalActionsName.length">
+                    <template v-for="name in globalActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped" >
+                    <thead>
+                    <tr>
+                        <th v-show="recordActionsName.length">
+                            <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                            <span>Actions</span>
+                        </th>
+                        <th v-for="key in keys">
+                            <span v-show="!conf.orderFields[key]">{{key}}</span>
+                            <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr v-for="(row,index) in renders">
+                        <td v-show="recordActionsName.length">
+
+                            <div class="btn-group" role="group">
+                                <div class="input-group-text">
+                                    <input c-row-check v-show="needSelection"  type="checkbox">
+                                </div>
+
+                                <template v-for="(action,name) in recordActions[index]">
+                                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                                </template>
+                            </div>
+
+                        </td>
+                        <td v-for="(render, key) in row">
+                            <component :is="render.template" :c-type="render.type" :c-render="render" :c-key="key"></component>
+<!--                            <component v-bind:is="render.type" v-bind:c-conf="render" v-bind:c-key="key"></component>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="float-none">
+                <div class="float-left" v-show="globalActionsName.length">
+                    <template v-for="name in globalActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="v-list-edit-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading"></c-loading>
+        <div v-else>
+            <div class="float-none">
+                <div class="float-left" v-show="globalActionsName.length">
+                    <template v-for="name in globalActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <paginator v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped" >
+                    <thead>
+                    <tr>
+                        <th v-show="recordActionsName.length">
+                            <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                            <span>Actions</span>
+                        </th>
+                        <th v-for="key in keys">
+                            <span v-show="!conf.orderFields[key]">@{{key}}</span>
+                            <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr v-for="(row,index) in renders">
+                        <td v-show="recordActionsName.length">
+
+                            <div class="btn-group" role="group">
+                                <div class="input-group-text">
+                                    <input c-row-check v-show="needSelection"  type="checkbox">
+                                </div>
+
+                                <template v-for="(action,name) in recordActions[index]">
+                                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                                </template>
+                            </div>
+
+                        </td>
+                        <td v-for="(render, key) in row">
+                            <component v-bind:is="render.type" v-bind:c-conf="render" v-bind:c-key="key"></component>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="float-none">
+                <div class="float-left" v-show="globalActionsName.length">
+                    <template v-for="name in globalActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <paginator v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="v-edit-template">
+    <div class="container-fluid">
+        <h4 card-title v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading"></c-loading>
+        <form v-else>
+            <div  v-for="(item, key) in renders">
+                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="key"></component>
+            </div>
+        </form>
+        <div class="p-3" v-show="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>
+<script type="text/x-template" id="v-view-template">
+    <div>
+        <div>View View</div>
+        <c-loading v-if="loading"></c-loading>
+        <div v-else v-for="(item, key) in renders">
+            <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+        </div>
+        <div v-show="actionsName.length">
+            <template v-for="(action,name) in actions">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>
+<script type="text/x-template" id="v-insert-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading"></c-loading>
+        <form v-else  enctype="multipart/form-data">
+            <div  v-for="(item, key) in renders">
+                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="key"></component>
+            </div>
+        </form>
+        <div class="p-3" v-show="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>
+<script type="text/x-template" id="v-search-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading"></c-loading>
+        <form v-else>
+            <div  v-for="(item, key) in renders">
+                <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+            </div>
+        </form>
+        <div class="p-3" v-show="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>
+<template id="v-hasmany-template">
+    <div>
+        <div>&nbsp;</div>
+        <div v-if="loading">
+            loading
+        </div>
+        <div v-else>
+            <div  v-for="(item, key) in renders">
+                <!--<component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
+                <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/x-template" id="v-hasmany-view-template">
+    <div>
+        <div>&nbsp;</div>
+        <div v-if="loading">
+            loading
+        </div>
+        <div v-else>
+            <div  v-for="(item, key) in this.renders">
+                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>
+            </div>
+        </div>
+        <div v-show="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>

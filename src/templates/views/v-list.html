@@ -22,7 +22,7 @@
                             <span>Actions</span>
                         </th>
                         <th v-for="key in keys">
-                            <span v-show="!conf.orderFields[key]">@{{key}}</span>
+                            <span v-show="!conf.orderFields[key]">{{key}}</span>
                             <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
                         </th>
                     </tr>

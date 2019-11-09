@@ -13,7 +13,10 @@ Vue.component('v-list', {
         that.route = that._getRoute(that.routeConf.values);
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
-            that.keys = that.conf.fields?that.conf.fields:Object.keys(that.data.value[0]);
+            if (that.conf.fields && that.conf.fields.length > 0)
+                that.keys = that.conf.fields;
+            else
+                that.keys =Object.keys(that.data.value[0]);
             that.draw();
             that.loading = false;
         });

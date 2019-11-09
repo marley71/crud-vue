@@ -75,6 +75,8 @@ Crud.components.views.vBase = Vue.component('v-base', {
         getConf : function (modelName,type) {
             var conf = null;
             var defaltConf = this.$Crud.conf[type];
+
+
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String)
                     conf = window[this.cConf]?window[this.cConf]:(this.$Crud.conf[this.cConf]?this.$Crud.conf[this.cConf]:null);
