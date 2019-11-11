@@ -2502,6 +2502,10 @@ function App() {
     var _cW = null;
     App.waitStart = function (msg,container) {
         var that = this;
+        if (_cW) {
+            _cW.msg = msg;
+            return;
+        }
         _cW = new Crud.components.cWait();
         var id= 'd' + (new Date().getTime());
         jQuery('body').append('<div id="'+id+'"></div>');
