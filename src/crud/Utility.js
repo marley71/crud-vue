@@ -75,6 +75,24 @@ jQuery.fn.serializeAssoc = function() {
 var Utility = {
     _scripts : [],
 
+
+    getFailMessage : function (e) {
+        try {
+            if (jQuery.isProduction)
+                return e.status + " " + e.statusText;
+            var msg =  e.status + " " + e.statusText + "<br>";
+            if ( e.responseJSON) {
+                msg += e.responseJSON.error.message + "<br>";
+                msg += "line :" + e.responseJSON.error.line + "<br>";
+                msg += e.responseJSON.error.file ;
+            }
+            return msg;
+        } catch(em) {
+            return ""+em;
+        }
+    },
+
+
     hasAttr : function(jQe,attributeName) {
         var attr = jQe.attr(attributeName);
         if (typeof attr !== typeof undefined && attr !== false)
