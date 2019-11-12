@@ -6,7 +6,7 @@ Crud.components.dBase = Vue.component('d-base',{
         console.log('message',this.cMessage,this.message)
         that.jQe(that.selector).modal('show');
         that.jQe(that.selector).on('hidden.bs.modal', function (e) {
-            jQuery(that.selector).remove();
+            that.jQe(that.selector).remove();
             that.$destroy();
         })
     },

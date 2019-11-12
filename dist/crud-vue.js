@@ -3077,7 +3077,7 @@ Crud.components.dBase = Vue.component('d-base',{
         console.log('message',this.cMessage,this.message)
         that.jQe(that.selector).modal('show');
         that.jQe(that.selector).on('hidden.bs.modal', function (e) {
-            jQuery(that.selector).remove();
+            that.jQe(that.selector).remove();
             that.$destroy();
         })
     },
@@ -5722,11 +5722,27 @@ Vue.component('v-edit', {
 Vue.component('v-view', {
     extends : Crud.components.views.vRecord,
     props : ['c-conf','c-model','c-pk'],
+    mounted : function() {
+
+    },
     data :  function () {
         var that = this;
-        that.conf = that.getConf(that.cModel,'view');
+        var d = this.defaultData();
+        d.conf = that.getConf(that.cModel,'view');
+        var dView = {
+            loading : true,
+            renders : {},
+            actionsClass : [],
+            actions : {},
+            data : {},
+            route : null,
+            viewTitle : d.conf.viewTitle,
+            defaultRenderType : 'r-input',
+        }
+
+
         var routeName = 'insert';
-        if (that.conf.rounteName != null) {
+        if (d.conf.rounteName != null) {
             routeName = that.conf.rounteName;
         }
         that.route = Route.factory('view',{
@@ -5744,6 +5760,7 @@ Vue.component('v-view', {
             that.loading = false;
             console.log(that);
         });
+
         return {
             loading : true,
             renders : {},

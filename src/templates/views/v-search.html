@@ -1,6 +1,6 @@
 <script type="text/x-template" id="v-search-template">
-    <div >
-        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+    <div v-if="(renders && Object.keys(renders).length > 0)">
+        <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <form v-else>
             <div  v-for="(item, key) in renders">

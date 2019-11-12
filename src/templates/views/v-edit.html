@@ -1,6 +1,6 @@
 <script type="text/x-template" id="v-edit-template">
     <div class="container-fluid">
-        <h4 card-title v-show="viewTitle">{{viewTitle}}</h4>
+        <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <form v-else>
             <div  v-for="(item, key) in renders">

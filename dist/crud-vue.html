@@ -887,7 +887,7 @@
 
 <script type="text/x-template" id="v-edit-template">
     <div class="container-fluid">
-        <h4 card-title v-show="viewTitle">{{viewTitle}}</h4>
+        <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <form v-else>
             <div  v-for="(item, key) in renders">
@@ -907,7 +907,10 @@
         <div>View View</div>
         <c-loading v-if="loading"></c-loading>
         <div v-else v-for="(item, key) in renders">
-            <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+            <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+            <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+
+<!--            <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>-->
         </div>
         <div v-show="actionsName.length">
             <template v-for="(action,name) in actions">
@@ -934,8 +937,8 @@
     </div>
 </script>
 <script type="text/x-template" id="v-search-template">
-    <div >
-        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+    <div v-if="(renders && Object.keys(renders).length > 0)">
+        <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <form v-else>
             <div  v-for="(item, key) in renders">
