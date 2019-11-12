@@ -43,11 +43,13 @@ var ProtocolRecord = Protocol.extend({
         this.resultParams = json.resultParams?json.resultParams:{};
         this.validationRules = json.validationRules?json.validationRules:{};
         this.backParams = json.backParams;
-        for (var field in json.metadata) {
-            if (json.metadata[field].options)
-                this.metadata[field].domainValues = json.metadata[field].options;
-            if (json.metadata[field].options_order)
-                this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
+        var fieldsMetadata = json.metadata?(json.metadata.fields || {}):{};
+        for (var field in fieldsMetadata) {
+            this.metadata[field] = {};
+            if (fieldsMetadata[field].options)
+                this.metadata[field].domainValues = fieldsMetadata[field].options;
+            if (fieldsMetadata[field].options_order)
+                this.metadata[field].domainValuesOrder = fieldsMetadata[field].options_order;
             //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
             //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
         }

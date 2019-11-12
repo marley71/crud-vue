@@ -2,6 +2,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
     extends : Crud.components.views.vBase,
     props : ['c-conf','c-model'],
     methods : {
+
         createRenders : function() {
             var that = this;
             var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
@@ -16,6 +17,10 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 if (!c.template)
                     c.template = that.conf.renderTemplate;
                 renders[key] = c;
+
+                var metadata = renders[key].metadata || {};
+                renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
+
             }
 
             console.log('v-record.renders',renders);
@@ -87,6 +92,9 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 data = Utility.getFormData(that.jQe('form'));
             }
             return data;
+        },
+        getFieldName : function (key) {
+            return key;
         }
     },
     data : function() {

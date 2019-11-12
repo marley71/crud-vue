@@ -36,6 +36,7 @@ Vue.component('r-upload',{
         },
         validate : function () {
             var that = this;
+            //TODO eseguire validazione
             console.log('validate');
             that.change();
             that.onSuccess();

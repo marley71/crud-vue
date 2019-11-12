@@ -38,13 +38,13 @@ Crud.components.renders.rBase = Vue.component('r-base', {
             var that = this;
             //console.log('GET FIELD NAME',this.cKey);
             if (that.conf.operator) {
-                return 's_' + this.cKey + '[]';
+                return this.cKey + '[]';
             }
             return this.cKey;
         },
         getOperatorName : function () {
             var that = this;
-            return 's_' + this.cKey + "_operator";
+            return this.cKey + "_operator";
         },
         defaultData : function () {
             var _c = this.cConf || {};

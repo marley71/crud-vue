@@ -47,7 +47,34 @@ Vue.component('v-search', {
                 oldP[k] = params[k];
             }
             this.cRouteConf.params = oldP;
-        }  
+        },
+        getFieldName : function (key) {
+            return 's_' + key;
+        },
+        createRenders : function() {
+            var that = this;
+            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+            var renders = {};
+            for (var k in keys) {
+                var key = keys[k];
+                var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
+                if (!c.type)
+                    c.type = that.defaultRenderType;
+                if (that.data.value && that.data.value[key])
+                    c.value = that.data.value[key];
+                if (!c.template)
+                    c.template = that.conf.renderTemplate;
+                renders[key] = c;
+                if (!c.operator) {
+                    c.operator = '=';
+                }
+                var metadata = renders[key].metadata || {};
+                renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
+            }
+
+            console.log('v-record.renders',renders);
+            that.renders = renders;
+        },
     },
     template : '#v-search-template'
 });

@@ -1014,11 +1014,13 @@ var ProtocolRecord = Protocol.extend({
         this.resultParams = json.resultParams?json.resultParams:{};
         this.validationRules = json.validationRules?json.validationRules:{};
         this.backParams = json.backParams;
-        for (var field in json.metadata) {
-            if (json.metadata[field].options)
-                this.metadata[field].domainValues = json.metadata[field].options;
-            if (json.metadata[field].options_order)
-                this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
+        var fieldsMetadata = json.metadata?(json.metadata.fields || {}):{};
+        for (var field in fieldsMetadata) {
+            this.metadata[field] = {};
+            if (fieldsMetadata[field].options)
+                this.metadata[field].domainValues = fieldsMetadata[field].options;
+            if (fieldsMetadata[field].options_order)
+                this.metadata[field].domainValuesOrder = fieldsMetadata[field].options_order;
             //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
             //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
         }
@@ -3259,13 +3261,13 @@ Crud.components.renders.rBase = Vue.component('r-base', {
             var that = this;
             //console.log('GET FIELD NAME',this.cKey);
             if (that.conf.operator) {
-                return 's_' + this.cKey + '[]';
+                return this.cKey + '[]';
             }
             return this.cKey;
         },
         getOperatorName : function () {
             var that = this;
-            return 's_' + this.cKey + "_operator";
+            return this.cKey + "_operator";
         },
         defaultData : function () {
             var _c = this.cConf || {};
@@ -4897,6 +4899,7 @@ Vue.component('r-upload',{
         },
         validate : function () {
             var that = this;
+            //TODO eseguire validazione
             console.log('validate');
             that.change();
             that.onSuccess();
@@ -5067,6 +5070,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
     extends : Crud.components.views.vBase,
     props : ['c-conf','c-model'],
     methods : {
+
         createRenders : function() {
             var that = this;
             var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
@@ -5081,6 +5085,10 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 if (!c.template)
                     c.template = that.conf.renderTemplate;
                 renders[key] = c;
+
+                var metadata = renders[key].metadata || {};
+                renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
+
             }
 
             console.log('v-record.renders',renders);
@@ -5152,6 +5160,9 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 data = Utility.getFormData(that.jQe('form'));
             }
             return data;
+        },
+        getFieldName : function (key) {
+            return key;
         }
     },
     data : function() {
@@ -5839,7 +5850,34 @@ Vue.component('v-search', {
                 oldP[k] = params[k];
             }
             this.cRouteConf.params = oldP;
-        }  
+        },
+        getFieldName : function (key) {
+            return 's_' + key;
+        },
+        createRenders : function() {
+            var that = this;
+            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+            var renders = {};
+            for (var k in keys) {
+                var key = keys[k];
+                var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
+                if (!c.type)
+                    c.type = that.defaultRenderType;
+                if (that.data.value && that.data.value[key])
+                    c.value = that.data.value[key];
+                if (!c.template)
+                    c.template = that.conf.renderTemplate;
+                renders[key] = c;
+                if (!c.operator) {
+                    c.operator = '=';
+                }
+                var metadata = renders[key].metadata || {};
+                renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
+            }
+
+            console.log('v-record.renders',renders);
+            that.renders = renders;
+        },
     },
     template : '#v-search-template'
 });
