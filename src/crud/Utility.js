@@ -102,6 +102,27 @@ var Utility = {
 
     getFormData : function (form) {
         var self = this;
+
+        var _serializeAssoc = function (form) {
+            var ss = form.serializeArray();
+            var data = {};
+            for (var i in ss) {
+                var key = ss[i].name;
+                var value = ss[i].value;
+                if (key.indexOf('[') >= 0) {
+                    if (!data[key])
+                        data[key] = [];
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            return data;
+        }
+
+
+
+
         //var form = self.jQe('form[name="data_form"]');
         if (form && form.length === 0) {
             self.app.log.error('form not found!');
@@ -110,7 +131,7 @@ var Utility = {
         if (typeof tinyMCE !== 'undefined') {
             tinyMCE.triggerSave();
         }
-        var formData =  form.serializeAssoc();
+        var formData =  _serializeAssoc(form);//form.serializeAssoc();
         var postData = {}
         // trasformo tutti gli [d] in [] questa modifica e' fatta per gestire i radio button negli hasmany
         // altrimenti venivano raggruppati come un unica entita'

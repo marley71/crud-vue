@@ -108,7 +108,11 @@ Crud.components.views.vBase = Vue.component('v-base', {
             if (that.conf.routeName == null)
                 return null;
             if (!that.route) {
-                var route =  new Route(Crud.routes[that.conf.routeName]);
+                if (Crud.routes[that.conf.routeName]) {
+                    route =  new Route(Crud.routes[that.conf.routeName]);
+                } else {
+                    route = Route.factory(that.conf.routeName);
+                }
                 route.values = values;
             }
             // if (!that.route)

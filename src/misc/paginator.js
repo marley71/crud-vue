@@ -41,9 +41,9 @@ Vue.component('paginator',{
             // router.go();
             // return ;
 
-            var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
-            params['page'] = (parseInt(params['page'])?parseInt(params['page']):1) + 1;
-            that.cRouteConf.params = params;
+            // var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
+            // params['page'] = (parseInt(params['page'])?parseInt(params['page']):1) + 1;
+            // that.cRouteConf.params = params;
         },
         setPage : function(page) {
             var that = this;

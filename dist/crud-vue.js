@@ -1509,6 +1509,27 @@ var Utility = {
 
     getFormData : function (form) {
         var self = this;
+
+        var _serializeAssoc = function (form) {
+            var ss = form.serializeArray();
+            var data = {};
+            for (var i in ss) {
+                var key = ss[i].name;
+                var value = ss[i].value;
+                if (key.indexOf('[') >= 0) {
+                    if (!data[key])
+                        data[key] = [];
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            return data;
+        }
+
+
+
+
         //var form = self.jQe('form[name="data_form"]');
         if (form && form.length === 0) {
             self.app.log.error('form not found!');
@@ -1517,7 +1538,7 @@ var Utility = {
         if (typeof tinyMCE !== 'undefined') {
             tinyMCE.triggerSave();
         }
-        var formData =  form.serializeAssoc();
+        var formData =  _serializeAssoc(form);//form.serializeAssoc();
         var postData = {}
         // trasformo tutti gli [d] in [] questa modifica e' fatta per gestire i radio button negli hasmany
         // altrimenti venivano raggruppati come un unica entita'
@@ -3027,9 +3048,9 @@ Vue.component('paginator',{
             // router.go();
             // return ;
 
-            var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
-            params['page'] = (parseInt(params['page'])?parseInt(params['page']):1) + 1;
-            that.cRouteConf.params = params;
+            // var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
+            // params['page'] = (parseInt(params['page'])?parseInt(params['page']):1) + 1;
+            // that.cRouteConf.params = params;
         },
         setPage : function(page) {
             var that = this;
@@ -5027,7 +5048,11 @@ Crud.components.views.vBase = Vue.component('v-base', {
             if (that.conf.routeName == null)
                 return null;
             if (!that.route) {
-                var route =  new Route(Crud.routes[that.conf.routeName]);
+                if (Crud.routes[that.conf.routeName]) {
+                    route =  new Route(Crud.routes[that.conf.routeName]);
+                } else {
+                    route = Route.factory(that.conf.routeName);
+                }
                 route.values = values;
             }
             // if (!that.route)
@@ -5124,11 +5149,8 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var that = this;
             var data = {};
             if (that.jQe('form').length) {
-                FORM = that.jQe('form');
-                console.log('view form data found',that.jQe('form'))
                 data = Utility.getFormData(that.jQe('form'));
             }
-            console.log('formdata',data);
             return data;
         }
     },

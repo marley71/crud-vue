@@ -84,11 +84,8 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var that = this;
             var data = {};
             if (that.jQe('form').length) {
-                FORM = that.jQe('form');
-                console.log('view form data found',that.jQe('form'))
                 data = Utility.getFormData(that.jQe('form'));
             }
-            console.log('formdata',data);
             return data;
         }
     },
