@@ -89,6 +89,9 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
 
             jQuery.ajax({
                 url: realUrl,
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
                 type: 'POST',
                 data: data,
                 processData: false,

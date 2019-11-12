@@ -101,6 +101,9 @@ Vue.component('r-hasmany-attachment-edit',{
             data.append('type','attachments');
 
             jQuery.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
                 url: realUrl,
                 type: 'POST',
                 data: data,
