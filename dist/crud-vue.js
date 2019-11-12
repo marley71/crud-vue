@@ -1228,16 +1228,16 @@ var RouteSearchConstraint = RouteSearch.extend({
 });
 
 
-var RouteInsert = Route.extend({
-    method      : "get",
-    url         :'/api/json/{modelName}/create',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteInsert = Route.extend({
+//     method      : "get",
+//     url         :'/api/json/{modelName}/create',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
-var RouteInsertConstraint = RouteInsert.extend({
-    url         :'/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-});
+// var RouteInsertConstraint = RouteInsert.extend({
+//     url         :'/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
+// });
 
 
 var RouteInsertHasmany = Route.extend({
@@ -5026,9 +5026,13 @@ Crud.components.views.vBase = Vue.component('v-base', {
                 return null;
             if (that.conf.routeName == null)
                 return null;
-            if (!that.route)
-                route = Route.factory(that.conf.routeName);
-            route.values = values;
+            if (!that.route) {
+                var route =  new Route(Crud.routes[that.conf.routeName]);
+                route.values = values;
+            }
+            // if (!that.route)
+            //     route = Route.factory(that.conf.routeName);
+            // route.values = values;
             return route;
         },
     },
