@@ -9,17 +9,20 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var renders = {};
             for (var k in keys) {
                 var key = keys[k];
-                var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
-                if (!c.type)
-                    c.type = that.defaultRenderType;
+                renders[key] = that._defaultRenderConfig(key);
                 if (that.data.value && that.data.value[key])
-                    c.value = that.data.value[key];
-                if (!c.template)
-                    c.template = that.conf.renderTemplate;
-                renders[key] = c;
-
-                var metadata = renders[key].metadata || {};
-                renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
+                    renders[key].value = that.data.value[key];
+                // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
+                // if (!c.type)
+                //     c.type = that.defaultRenderType;
+                // if (that.data.value && that.data.value[key])
+                //     c.value = that.data.value[key];
+                // if (!c.template)
+                //     c.template = that.conf.renderTemplate;
+                // renders[key] = c;
+                //
+                // var metadata = renders[key].metadata || {};
+                // renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
 
             }
 

@@ -120,6 +120,30 @@ Crud.components.views.vBase = Vue.component('v-base', {
             // route.values = values;
             return route;
         },
+        /**
+         * ritorna la configurazione minimale di un render rispettando le priorita' tra le configurazioni
+         * @param key
+         * @returns {{type: *}}
+         * @private
+         */
+        _defaultRenderConfig : function(key) {
+            var that = this;
+            var c = {
+                type:that.defaultRenderType
+            };
+            if (that.conf.fieldsConfig[key]) {
+                // in caso di stringa lo considero come il type del render
+                if (typeof that.conf.fieldsConfig[key] === 'string' || that.conf.fieldsConfig[key] instanceof String) {
+                    c.type = that.conf.fieldsConfig[key];
+                } else {
+                    c = Utility.merge(c,that.conf.fieldsConfig[key]);
+                }
+            }
+            if (!c.template)
+                c.template = that.conf.renderTemplate;
+            c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
+            return c;
+        }
     },
     template : '<div>view base</div>'
 });

@@ -25,13 +25,18 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 recordActions.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
-                    var c = conf.fieldsConfig[key]?Utility.cloneObj(conf.fieldsConfig[key]):{type:'r-text'};
+                    var dconf = that._defaultRenderConfig(key);
+                    dconf.modelData = data.value[i];
                     if (data.value[i][key])
-                        c.value = data.value[i][key];
-                    c.modelData = data.value[i];
-                    if (!c.template)
-                        c.template = that.conf.renderTemplate;
-                    renders[i][key] = c;
+                        dconf.value = data.value[i][key];
+                    renders[i][key] = dconf;
+                    // var c = conf.fieldsConfig[key]?Utility.cloneObj(conf.fieldsConfig[key]):{type:'r-text'};
+                    // if (data.value[i][key])
+                    //     c.value = data.value[i][key];
+                    // c.modelData = data.value[i];
+                    // if (!c.template)
+                    //     c.template = that.conf.renderTemplate;
+
                 }
                 that.createRecordActions(i);
             }

@@ -16,7 +16,7 @@ Vue.component('v-view', {
             data : {},
             route : null,
             viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'r-input',
+            defaultRenderType : 'r-text',
         }
 
 
@@ -37,7 +37,6 @@ Vue.component('v-view', {
             that.createActionsClass();
             that.createRenders();
             that.loading = false;
-            console.log(that);
         });
 
         return {

@@ -5072,6 +5072,30 @@ Crud.components.views.vBase = Vue.component('v-base', {
             // route.values = values;
             return route;
         },
+        /**
+         * ritorna la configurazione minimale di un render rispettando le priorita' tra le configurazioni
+         * @param key
+         * @returns {{type: *}}
+         * @private
+         */
+        _defaultRenderConfig : function(key) {
+            var that = this;
+            var c = {
+                type:that.defaultRenderType
+            };
+            if (that.conf.fieldsConfig[key]) {
+                // in caso di stringa lo considero come il type del render
+                if (typeof that.conf.fieldsConfig[key] === 'string' || that.conf.fieldsConfig[key] instanceof String) {
+                    c.type = that.conf.fieldsConfig[key];
+                } else {
+                    c = Utility.merge(c,that.conf.fieldsConfig[key]);
+                }
+            }
+            if (!c.template)
+                c.template = that.conf.renderTemplate;
+            c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
+            return c;
+        }
     },
     template : '<div>view base</div>'
 });
@@ -5086,17 +5110,20 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var renders = {};
             for (var k in keys) {
                 var key = keys[k];
-                var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
-                if (!c.type)
-                    c.type = that.defaultRenderType;
+                renders[key] = that._defaultRenderConfig(key);
                 if (that.data.value && that.data.value[key])
-                    c.value = that.data.value[key];
-                if (!c.template)
-                    c.template = that.conf.renderTemplate;
-                renders[key] = c;
-
-                var metadata = renders[key].metadata || {};
-                renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
+                    renders[key].value = that.data.value[key];
+                // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
+                // if (!c.type)
+                //     c.type = that.defaultRenderType;
+                // if (that.data.value && that.data.value[key])
+                //     c.value = that.data.value[key];
+                // if (!c.template)
+                //     c.template = that.conf.renderTemplate;
+                // renders[key] = c;
+                //
+                // var metadata = renders[key].metadata || {};
+                // renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
 
             }
 
@@ -5206,13 +5233,18 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 recordActions.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
-                    var c = conf.fieldsConfig[key]?Utility.cloneObj(conf.fieldsConfig[key]):{type:'r-text'};
+                    var dconf = that._defaultRenderConfig(key);
+                    dconf.modelData = data.value[i];
                     if (data.value[i][key])
-                        c.value = data.value[i][key];
-                    c.modelData = data.value[i];
-                    if (!c.template)
-                        c.template = that.conf.renderTemplate;
-                    renders[i][key] = c;
+                        dconf.value = data.value[i][key];
+                    renders[i][key] = dconf;
+                    // var c = conf.fieldsConfig[key]?Utility.cloneObj(conf.fieldsConfig[key]):{type:'r-text'};
+                    // if (data.value[i][key])
+                    //     c.value = data.value[i][key];
+                    // c.modelData = data.value[i];
+                    // if (!c.template)
+                    //     c.template = that.conf.renderTemplate;
+
                 }
                 that.createRecordActions(i);
             }
@@ -5296,6 +5328,7 @@ Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
+            defaultRenderType : 'r-text'
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
@@ -5755,7 +5788,7 @@ Vue.component('v-view', {
             data : {},
             route : null,
             viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'r-input',
+            defaultRenderType : 'r-text',
         }
 
 
@@ -5776,7 +5809,6 @@ Vue.component('v-view', {
             that.createActionsClass();
             that.createRenders();
             that.loading = false;
-            console.log(that);
         });
 
         return {
@@ -5895,22 +5927,27 @@ Vue.component('v-search', {
             var renders = {};
             for (var k in keys) {
                 var key = keys[k];
-                var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
-                if (!c.type)
-                    c.type = that.defaultRenderType;
+                renders[key] = that._defaultRenderConfig(key);
                 if (that.data.value && that.data.value[key])
-                    c.value = that.data.value[key];
-                if (!c.template)
-                    c.template = that.conf.renderTemplate;
-                renders[key] = c;
-                if (!c.operator) {
-                    c.operator = '=';
+                    renders[key].value = that.data.value[key];
+                if (!renders[key].operator) {
+                    renders[key].operator = '=';
                 }
-                var metadata = renders[key].metadata || {};
-                renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
+
+                // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
+                // if (!c.type)
+                //     c.type = that.defaultRenderType;
+                // if (that.data.value && that.data.value[key])
+                //     c.value = that.data.value[key];
+                // if (!c.template)
+                //     c.template = that.conf.renderTemplate;
+                // renders[key] = c;
+                //
+                // var metadata = renders[key].metadata || {};
+                // renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
             }
 
-            console.log('v-record.renders',renders);
+            console.log('v-search.renders',renders);
             that.renders = renders;
         },
     },
