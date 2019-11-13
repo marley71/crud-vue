@@ -10,7 +10,7 @@
                     </template>
                 </div>
                 <div class="float-right">
-                    <paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                    <c-paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
             <div class="table-responsive">
@@ -32,7 +32,7 @@
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group" role="group">
-                                <div class="input-group-text">
+                                <div class="input-group-text bg-transparent">
                                     <input c-row-check v-show="needSelection"  type="checkbox">
                                 </div>
 
@@ -57,7 +57,7 @@
                     </template>
                 </div>
                 <div class="float-right">
-                    <paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                    <c-paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
         </div>

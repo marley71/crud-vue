@@ -39,6 +39,18 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             that.recordActionsName = recordActionsName;
             //that.recordActions = recordActions;
         },
+        getKeys : function () {
+            var that = this;
+            var keys = [];
+            if (that.conf.fields && that.conf.fields.length > 0)
+                keys = that.conf.fields;
+            if (that.cFields) {
+                keys = that.cFields.split(',');
+            }
+            if (keys.length == 0)
+                keys =Object.keys(that.data.value[0]);
+            return keys;
+        }
     },
     data : function () {
         return this.defaultData();

@@ -2790,7 +2790,7 @@ Vue.component('c-loading',{
 Crud.components.cTplBase = Vue.component('c-tpl-base',{
     props : ['c-render','c-type','c-key'],
     data : function () {
-        console.log('DAta',this.cKey,this.cType,this.cRender)
+        //console.log('DAta',this.cKey,this.cType,this.cRender)
         return {
 
         };
@@ -3007,18 +3007,21 @@ Vue.component('action-dialog', {
 //     },
 //     template: '#action-record'
 // });
-Vue.component('paginator',{
+Vue.component('c-paginator',{
     props : ['c-route-conf','c-route','c-pagination'],
-    template : '#paginator-template',
+    template : '#c-paginator-template',
     data : function () {
         var that = this;
-        var pagination = that.cPagination || {};
+        PAGINATOR = this;
+        console.log('paginator',that.cPagination, that.$parent.pagination )
+        var pagination = that.cPagination || that.$parent.data.pagination || {};
         var d = {
             current_page : 0,
             from : 0,
             to : 0,
             last_page : 0,
             per_page : 0,
+            total : 0,
             pagination_steps : {}
         }
         return Utility.merge(d,pagination);
@@ -3279,7 +3282,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
                 resourcesLoaded : true,
                 conf : _c,
             }
-            console.log('r-base::defaultData',d);
+            //console.log('r-base::defaultData',d);
             return d;
         },
         beforeLoadResources : function () {
@@ -3850,7 +3853,7 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
             var realUrl = Server.getUrl(route.getUrl());
             var data = new FormData();
             data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
-            data.append('modelName','test');
+            data.append('modelName',that.conf.metadata.modelName);
             data.append('type','fotos');
 
             jQuery.ajax({
@@ -4948,7 +4951,7 @@ Vue.component('r-upload',{
     }
 })
 Crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cConf'],
+    props : ['cConf','cFields'],
     extends : Crud.components.cComponent,
     data : function () {
         return this.defaultData();
@@ -5217,6 +5220,18 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             that.recordActionsName = recordActionsName;
             //that.recordActions = recordActions;
         },
+        getKeys : function () {
+            var that = this;
+            var keys = [];
+            if (that.conf.fields && that.conf.fields.length > 0)
+                keys = that.conf.fields;
+            if (that.cFields) {
+                keys = that.cFields.split(',');
+            }
+            if (keys.length == 0)
+                keys =Object.keys(that.data.value[0]);
+            return keys;
+        }
     },
     data : function () {
         return this.defaultData();
@@ -5238,10 +5253,7 @@ Vue.component('v-list', {
         that.route = that._getRoute(that.routeConf.values);
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
-            if (that.conf.fields && that.conf.fields.length > 0)
-                that.keys = that.conf.fields;
-            else
-                that.keys =Object.keys(that.data.value[0]);
+            that.keys = that.getKeys();
             that.draw();
             that.loading = false;
         });
@@ -5365,7 +5377,7 @@ Vue.component('v-list', {
             that.recordActions = [];
         },
         createRecordActions : function(row) {
-            console.log('row',row);
+            //console.log('row',row);
             var that = this;
             var recordActionsName = that.recordActionsName;
             var recordActions = that.recordActions;
@@ -5405,9 +5417,9 @@ Vue.component('v-list', {
             var conf = that.getActionConfig('action-order','global');
             conf.title = 'Order by ' + key;
             conf.text = key;
-            conf.orderField = that.conf.orderFields[key];
+            conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             if (that.data.order_field)
-                conf.orderDirection = (that.data.metadata.order_field == conf.orderField)?that.data.metadata.order_direction:null;
+                conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
             return conf;
         },
         reload : function () {

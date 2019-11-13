@@ -84,7 +84,7 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
             var realUrl = Server.getUrl(route.getUrl());
             var data = new FormData();
             data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
-            data.append('modelName','test');
+            data.append('modelName',that.conf.metadata.modelName);
             data.append('type','fotos');
 
             jQuery.ajax({

@@ -13,10 +13,7 @@ Vue.component('v-list', {
         that.route = that._getRoute(that.routeConf.values);
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
-            if (that.conf.fields && that.conf.fields.length > 0)
-                that.keys = that.conf.fields;
-            else
-                that.keys =Object.keys(that.data.value[0]);
+            that.keys = that.getKeys();
             that.draw();
             that.loading = false;
         });
@@ -140,7 +137,7 @@ Vue.component('v-list', {
             that.recordActions = [];
         },
         createRecordActions : function(row) {
-            console.log('row',row);
+            //console.log('row',row);
             var that = this;
             var recordActionsName = that.recordActionsName;
             var recordActions = that.recordActions;
@@ -180,9 +177,9 @@ Vue.component('v-list', {
             var conf = that.getActionConfig('action-order','global');
             conf.title = 'Order by ' + key;
             conf.text = key;
-            conf.orderField = that.conf.orderFields[key];
+            conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             if (that.data.order_field)
-                conf.orderDirection = (that.data.metadata.order_field == conf.orderField)?that.data.metadata.order_direction:null;
+                conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
             return conf;
         },
         reload : function () {

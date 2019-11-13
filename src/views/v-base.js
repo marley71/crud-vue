@@ -1,5 +1,5 @@
 Crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cConf'],
+    props : ['cConf','cFields'],
     extends : Crud.components.cComponent,
     data : function () {
         return this.defaultData();

@@ -56,7 +56,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
                 resourcesLoaded : true,
                 conf : _c,
             }
-            console.log('r-base::defaultData',d);
+            //console.log('r-base::defaultData',d);
             return d;
         },
         beforeLoadResources : function () {

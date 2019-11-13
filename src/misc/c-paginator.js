@@ -1,15 +1,18 @@
-Vue.component('paginator',{
+Vue.component('c-paginator',{
     props : ['c-route-conf','c-route','c-pagination'],
-    template : '#paginator-template',
+    template : '#c-paginator-template',
     data : function () {
         var that = this;
-        var pagination = that.cPagination || {};
+        PAGINATOR = this;
+        console.log('paginator',that.cPagination, that.$parent.pagination )
+        var pagination = that.cPagination || that.$parent.data.pagination || {};
         var d = {
             current_page : 0,
             from : 0,
             to : 0,
             last_page : 0,
             per_page : 0,
+            total : 0,
             pagination_steps : {}
         }
         return Utility.merge(d,pagination);

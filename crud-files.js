@@ -14,7 +14,7 @@ var crudJsFiles = [
     'src/misc/c-loading.js',
     'src/misc/cr-templates.js',
     'src/actions/actions.js',
-    'src/misc/paginator.js',
+    'src/misc/c-paginator.js',
     'src/misc/dialogs.js',
     'src/misc/c-wait.js',
 
@@ -68,7 +68,7 @@ var crudJsFiles = [
 var crudHtmlFiles = [
     'src/templates/misc/actions.html',
     'src/templates/misc/cr-templates.html',
-    'src/templates/misc/paginator.html',
+    'src/templates/misc/c-paginator.html',
     'src/templates/misc/dialogs.html',
     'src/templates/misc/c-wait.html',
 
