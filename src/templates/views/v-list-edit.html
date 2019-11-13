@@ -43,7 +43,8 @@
 
                         </td>
                         <td v-for="(render, key) in row">
-                            <component v-bind:is="render.type" v-bind:c-conf="render" v-bind:c-key="key"></component>
+                            <component v-if="!editMode[index]" :is="render.type"            :c-conf="render"            :c-key="key"></component>
+                            <component v-if="editMode[index]" :is="rendersEdit[key].type"  :c-conf="rendersEdit[key]"  :c-key="key"></component>
                         </td>
                     </tr>
                     </tbody>

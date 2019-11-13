@@ -42,6 +42,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
 
             if (this.conf.customActions[name]) {
                 var aConf = {}
+                console.log('CUSTOM ACTION',name)
                 if (!this.$options.components[name]) {
                     Vue.component(name, {
                         extends : actionBase

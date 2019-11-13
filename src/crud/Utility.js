@@ -76,6 +76,10 @@ var Utility = {
     _scripts : [],
 
 
+    isString : function(s) {
+        return (typeof s === 'string' || s instanceof String);
+    },
+
     getFailMessage : function (e) {
         try {
             if (jQuery.isProduction)
@@ -327,9 +331,11 @@ var Utility = {
 	getURLParameterRegexp : function(reg) {
 		return decodeURIComponent((new RegExp('[?|&]' + reg + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 	},
-	getAllUrlParams : function () {
+	getAllUrlParams : function (url) {
 		var params = {};
-		var tmp = location.search.split("?");
+		var tmp = url?url.split('?'):location.search.split("?");
+
+
 		if (tmp.length != 2)
 			return params
 		var sparams = tmp[1].split("&");

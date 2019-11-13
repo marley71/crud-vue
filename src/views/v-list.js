@@ -103,7 +103,7 @@ Vue.component('v-list', {
                 that.pagination = data.pagination;
             }
             that.data = data;
-            console.log('MAX PAGE',this.maxPage,data.pagination)
+
         },
 
         createActions : function () {
@@ -151,6 +151,7 @@ Vue.component('v-list', {
                 //a.id = data.value[i].id;
                 aConf.modelData = Utility.cloneObj(data.value[row]);
                 aConf.modelName = that.cModel;
+                aConf._index = row;
                 recordActions[row][aName] = aConf;
             }
         },

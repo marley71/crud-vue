@@ -1485,6 +1485,10 @@ var Utility = {
     _scripts : [],
 
 
+    isString : function(s) {
+        return (typeof s === 'string' || s instanceof String);
+    },
+
     getFailMessage : function (e) {
         try {
             if (jQuery.isProduction)
@@ -1736,9 +1740,11 @@ var Utility = {
 	getURLParameterRegexp : function(reg) {
 		return decodeURIComponent((new RegExp('[?|&]' + reg + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 	},
-	getAllUrlParams : function () {
+	getAllUrlParams : function (url) {
 		var params = {};
-		var tmp = location.search.split("?");
+		var tmp = url?url.split('?'):location.search.split("?");
+
+
 		if (tmp.length != 2)
 			return params
 		var sparams = tmp[1].split("&");
@@ -4994,6 +5000,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
 
             if (this.conf.customActions[name]) {
                 var aConf = {}
+                console.log('CUSTOM ACTION',name)
                 if (!this.$options.components[name]) {
                     Vue.component(name, {
                         extends : actionBase
@@ -5375,7 +5382,7 @@ Vue.component('v-list', {
                 that.pagination = data.pagination;
             }
             that.data = data;
-            console.log('MAX PAGE',this.maxPage,data.pagination)
+
         },
 
         createActions : function () {
@@ -5423,6 +5430,7 @@ Vue.component('v-list', {
                 //a.id = data.value[i].id;
                 aConf.modelData = Utility.cloneObj(data.value[row]);
                 aConf.modelName = that.cModel;
+                aConf._index = row;
                 recordActions[row][aName] = aConf;
             }
         },
@@ -5505,9 +5513,21 @@ Vue.component('v-list-edit', {
     // beforeCreate : function() {
     //     this.template = '#v-view-template';
     // },
-    data :  function () {
-        VLIST = this;
+    mounted : function() {
         var that = this;
+        VLIST = this;
+        console.log('MOUNTED CALLED');
+        that.route = that._getRoute(that.routeConf.values);
+        this.fetchData(that.route,function (json) {
+            that.fillData(that.route,json);
+            that.keys = that.getKeys();
+            that.draw();
+            that.loading = false;
+        });
+    },
+    data :  function () {
+        var that = this;
+        console.log('DATA CALLED');
         //console.log('CRUDCONF',that.$Crud);
         var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
         routeConf.values = {
@@ -5515,35 +5535,47 @@ Vue.component('v-list-edit', {
         }
 
         if (this.$route && this.$route.query)
-           routeConf.params = that.$route.query;
+            routeConf.params = that.$route.query;
 
-        var route = Route.factory('list',routeConf);
-        that.route = route;
+        // var route = that._getRoute(routeConf.values);
+        var conf = that.getConf(that.cModel,'list');
+        //var aName = that.$options.components.actionEdit;
+
+        conf.customActions['action-edit'] = {
+            execute : function () {
+                var thatA = this;
+                console.log('thisAc',thatA)
+                //alert('aaa' + thatA.cIndex);
+                that.editMode[thatA.cIndex] = true;
+                console.log('editMode',that.editMode);
+            }
+        };
+        console.log('v-list-edit conf',conf)
+        //var route = Route.factory('list',routeConf);
+        //that.route = route;
         //that.conf = ModelTest.list;
 
-        this.loading = true;
-        this.fetchData(route,function (json) {
-            that.fillData(route,json);
-            that.keys = that.conf.fields?that.conf.fields:Object.keys(that.data.value[0]);
-            that.draw();
-            that.loading = false;
-        });
+        //this.loading = true;
+
         var d = {
             loading : true,
             renders : {},
+            rendersEdit : {},
             keys : [],
             recordActionsName : [],
             recordActions: [],
             globalActions : {},
             globalActionsName : [],
             routeConf : routeConf,
-            route : route,
+            route : null,
             data : [],
             maxPage : 0,
-            conf : that.getConf(that.cModel,'list'),
+            conf : conf,
             needSelection : true,
             pagination : {},
             viewTitle : '',
+            defaultRenderType : 'r-text',
+            editMode : [],
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
@@ -5557,56 +5589,49 @@ Vue.component('v-list-edit', {
 
         draw : function() {
             var that = this;
+            that.editMode = new Array(that.data.value.length).fill(false);
             that.createActions();
             that.createRenders();
+            var rowRenders = that.renders[0];
+            for (var k in rowRenders) {
+                that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
+                that.rendersEdit[k].type = 'r-input';
+            }
             that.createGlobalActions();
             console.log('renders',that.renders,'recordActions',that.recordActions);
             console.log('globalActions',that.globalActions);
+            console.log('editMode',that.editMode)
         },
 
         fillData : function(route, json) {
-            var protocol = Protocol.factory(route.protocol);
-            protocol.jsonToData(json);
-            var prop = Object.getOwnPropertyNames(protocol);
-            //console.log(prop);
+            var that = this;
             var data = {};
+            if (!route) {
+                console.log('dati manuali',that.conf.data);
+                if (that.conf.data) {
+                    data = that.conf.data;
+                    that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
+                }
+            } else {
 
-            for (var i in prop) {
-                //console.log(k,k,prop[k]);
-                data[prop[i]] = protocol[prop[i]];
+                var protocol = Protocol.factory(route.protocol);
+                protocol.jsonToData(json);
+                var prop = Object.getOwnPropertyNames(protocol);
+                //console.log(prop);
+                var data = {};
+
+                for (var i in prop) {
+                    //console.log(k,k,prop[k]);
+                    data[prop[i]] = protocol[prop[i]];
+                }
+                var data = data;
+                //this.maxPage = data.pagination.last_page;
+                that.pagination = data.pagination;
             }
-            this.data = data;
-            this.maxPage = data.pagination.last_page;
-            this.pagination = data.pagination;
-            console.log('MAX PAGE',this.maxPage,data.pagination)
+            that.data = data;
+
         },
-        // createRenders : function () {
-        //     var that = this;
-        //     //console.log('Vlist-create renders',that.data);
-        //     var renders = [];
-        //     var recordActions = that.recordActions;
-        //     var recordActionsName = that.recordActionsName;
-        //     var data = that.data;
-        //     var conf = that.conf;
-        //     var keys = that.keys;
-        //
-        //     for (var i in data.value) {
-        //         renders.push({});
-        //         recordActions.push({});
-        //         for (var k in that.keys) {
-        //             var key = keys[k];
-        //             var c = conf.fieldsConfig[key]?Utility.cloneObj(conf.fieldsConfig[key]):{type:'r-text'};
-        //             if (data.value[i][key])
-        //                 c.value = data.value[i][key];
-        //             c.modelData = data.value[i];
-        //             renders[i][key] = c;
-        //         }
-        //         that.createRecordActions(i);
-        //     }
-        //     that.renders = renders;
-        //     that.recordActionsName = recordActionsName;
-        //     //that.recordActions = recordActions;
-        // },
+
         createActions : function () {
             var that = this;
             var globalActionsName = [];
@@ -5639,7 +5664,7 @@ Vue.component('v-list-edit', {
             that.recordActions = [];
         },
         createRecordActions : function(row) {
-            console.log('row',row);
+            //console.log('row',row);
             var that = this;
             var recordActionsName = that.recordActionsName;
             var recordActions = that.recordActions;
@@ -5652,6 +5677,8 @@ Vue.component('v-list-edit', {
                 //a.id = data.value[i].id;
                 aConf.modelData = Utility.cloneObj(data.value[row]);
                 aConf.modelName = that.cModel;
+                aConf.cIndex = row;
+                console.log('ACTION RECORD INDEX',aConf.cIndex)
                 recordActions[row][aName] = aConf;
             }
         },
@@ -5675,11 +5702,13 @@ Vue.component('v-list-edit', {
         },
         getOrderConf : function (key) {
             var that = this;
+            console.log('GETORDERCONF CALLED');
             var conf = that.getActionConfig('action-order','global');
             conf.title = 'Order by ' + key;
             conf.text = key;
-            conf.orderField = that.conf.orderFields[key];
-            conf.orderDirection = (that.data.metadata.order_field == conf.orderField)?that.data.metadata.order_direction:null;
+            conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
+            if (that.data.order_field)
+                conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
             return conf;
         },
         reload : function () {
@@ -5772,14 +5801,31 @@ Vue.component('v-edit', {
 
 Vue.component('v-view', {
     extends : Crud.components.views.vRecord,
-    props : ['c-conf','c-model','c-pk'],
-    mounted : function() {
+    props : ['c-model','c-pk'],
 
+    mounted : function() {
+        var that = this;
+        var route = that._getRoute({
+            modelName: this.cModel,
+            pk: this.cPk
+        });
+        that.route = route;
+
+        this.fetchData(that.route,function (json) {
+            that.fillData(that.route,json);
+            that.createActions();
+            that.createActionsClass();
+            that.createRenders();
+            console.log('BBBBBBB');
+            that.loading = false;
+        });
     },
     data :  function () {
         var that = this;
         var d = this.defaultData();
         d.conf = that.getConf(that.cModel,'view');
+
+
         var dView = {
             loading : true,
             renders : {},
@@ -5790,37 +5836,7 @@ Vue.component('v-view', {
             viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-text',
         }
-
-
-        var routeName = 'insert';
-        if (d.conf.rounteName != null) {
-            routeName = that.conf.rounteName;
-        }
-        that.route = Route.factory('view',{
-            values : {
-                modelName: this.cModel,
-                pk: this.cPk
-            }
-        })
-
-        this.fetchData(that.route,function (json) {
-            that.fillData(that.route,json);
-            that.createActions();
-            that.createActionsClass();
-            that.createRenders();
-            that.loading = false;
-        });
-
-        return {
-            loading : true,
-            renders : {},
-            actionsClass : [],
-            actions : {},
-            data : {},
-            conf : that.conf,
-            //route : route,
-            defaultRenderType : 'r-text',
-        }
+        return Utility.merge(d,dView);
 
     },
 
