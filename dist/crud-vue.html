@@ -1,9 +1,9 @@
 <script type="text/x-template" id="action-template">
-    <button type="button" v-show="visible" v-bind:title="title" v-bind:class="css" v-on:click="execute">
+    <button type="button" v-show="_visible" v-bind:title="title" v-bind:class="css" v-on:click="_execute" v-bind:disabled="_disabled">
         <i v-show="icon" v-bind:class="icon"></i>
         <span v-html="text"></span>
     </button>
-</script>
+</script>ß
 <template id="c-tpl-record-template">
     <div>
         <label>{{cKey}}</label>
@@ -861,7 +861,7 @@
                                 </div>
 
                                 <template v-for="(action,name) in recordActions[index]">
-                                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                                    <component  v-bind:is="name" :c-ref="'r-'+index+'-'+name"  v-bind:c-conf="action"></component>
                                 </template>
                             </div>
 

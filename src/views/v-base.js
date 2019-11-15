@@ -42,15 +42,12 @@ Crud.components.views.vBase = Vue.component('v-base', {
 
             if (this.conf.customActions[name]) {
                 var aConf = {}
-                console.log('CUSTOM ACTION',name)
                 if (!this.$options.components[name]) {
                     Vue.component(name, {
                         extends : actionBase
                     });
                 } else {
-
                     aConf = this.$Crud.recordActions[name]?this.$Crud.recordActions[name]:(this.$Crud.globalActions[name]?this.$Crud.globalActions[name]:{})
-
                 }
                 return Utility.merge(aConf,this.conf.customActions[name]);
             }

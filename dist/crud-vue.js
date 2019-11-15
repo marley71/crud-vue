@@ -100,7 +100,6 @@ Crud = {
             type : 'record',
             title : 'edit',
             css: 'btn btn-outline-secondary btn-sm ',
-            text : '',
             icon : 'fa fa-edit',
             execute : function () {
                 var url = this.$Crud.application.useRouter?'#':'';
@@ -113,7 +112,6 @@ Crud = {
             title : 'view',
             css: 'btn btn-outline-secondary btn-sm ',
             icon : 'fa fa-list',
-            text : '',
             execute : function () {
                 var url = this.$Crud.application.useRouter?'#':'';
                 url += "/view/" + this.modelName + "/" + this.modelData.id;
@@ -125,7 +123,6 @@ Crud = {
             title : 'delete record',
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
-            text : '',
             execute : function () {
                 var that = this;
                 that.crudApp.confirmDialog(that.$LANG.app['conferma-delete'] ,{
@@ -151,8 +148,6 @@ Crud = {
     globalActions : {
         'action-insert' : {
             type : 'global',
-            visible : true,
-            enabled : true,
             title : 'New',
             css: 'btn btn-outline-primary btn-sm btn-group',
             icon : 'fa fa-plus',
@@ -2862,7 +2857,34 @@ Vue.component('c-tpl-list', {
     template : '#c-tpl-list-template'
 });
 const actionBase = Vue.component('action-base', {
-    props : ['c-conf','c-key'],
+    props : ['c-conf','c-key','c-ref'],
+    mounted : function () {
+        // var id = parseInt(Math.random() * 10000);
+        // jQuery(this.$el).attr('ref','a'+id);
+        console.log('action moubnted',this.$ref);
+        this.view.vueRefs[this.cRef] = this;
+    },
+    computed :  {
+        _disabled : function () {
+            var that = this;
+            console.log('enabled',that.enabled)
+            if (!that.enabled)
+                return true;
+            if (jQuery.isFunction(that.enabled)) {
+                return !that.enabled.apply(that);
+            }
+            return !that.enabled;
+        },
+        _visible : function () {
+            var that = this;
+            if (!that.visible)
+                return false;
+            if (jQuery.isFunction(that.visible)) {
+                return that.visible.apply(that);
+            }
+            return that.visible;
+        }
+    },
     methods : {
         defaultData : function () {
             var that = this;
@@ -2870,26 +2892,85 @@ const actionBase = Vue.component('action-base', {
                 type : 'global',
                 visible : true,
                 enabled : true,
-                title : '???',
+                title : '',
                 css: 'btn btn-outline-secondary',
                 icon : 'fa fa-help',
-                text : '???',
+                text : '',
                 view : that.$parent,
-                execute : function () {
-                    alert('definire execute')
-                }
+                // execute : function () {
+                //     alert('definire execute')
+                // }
             };
             for (var c in this.cConf) {
-                if (c == 'execute') {
-                    var f = this.cConf[c];
-                    adata[c] = function () {
-                        f.apply(that);
-                    }
-                } else
+                // if (c ===  'execute') {
+                //     var f = this.cConf[c];
+                //     adata[c] = function () {
+                //         f.apply(that);
+                //     }
+                // } else
+                //if (jQuery.inArray(c,['execute','beforeExecute','afterExecute','enabled','visible']) < 0)
                     adata[c] = this.cConf[c];
             }
             return adata;
+        },
+        _beforeExecute : function (callback) {
+            var that =this;
+            if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
+                callback();
+                return ;
+            }
+            // controllo se la funzione before execute ha una callback per controlli asincroni.
+            if (that.cConf.length > 0) {
+                that.cConf.apply(that,[callback]);
+                return ;
+            }
+            return that.cConf.beforeExecute.apply(that);
+        },
+        _execute : function () {
+            var that = this;
+            if (!that.execute || !jQuery.isFunction(that.execute)) {
+                alert('definire execute');
+                return ;
+            }
+            that._beforeExecute(function () {
+                that.execute.apply(that);
+                that._afterExecute();
+            })
+        },
+        _afterExecute : function () {
+            var that =this;
+            if (!that.afterExecute || !jQuery.isFunction(that.afterExecute)) {
+                return ;
+            }
+            that.afterExecute.apply(that);
+        },
+
+        setEnabled : function (enabled) {
+            this.enabled = enabled;
+        },
+
+        setVisible : function (visible) {
+            this.visible = visible;
         }
+        // _disabled : function () {
+        //     var that = this;
+        //     console.log('enabled',that.cConf.enable)
+        //     if (!that.cConf.enabled)
+        //         return true;
+        //     if (jQuery.isFunction(that.cConf.enabled)) {
+        //         return !that.cConf.enabled.apply(that);
+        //     }
+        //     return !that.cConf.enabled;
+        // },
+        // _visible : function () {
+        //     var that = this;
+        //     if (!that.visible)
+        //         return false;
+        //     if (jQuery.isFunction(that.visible)) {
+        //         return that.visible.apply(that);
+        //     }
+        //     return that.visible;
+        // }
     },
     data :  function () {
         return this.defaultData();
@@ -2942,6 +3023,15 @@ Vue.component('action-order', {
         //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);
     }
 })
+
+Vue.component('action-edit-mode',{
+    extends : actionBase
+})
+
+Vue.component('action-view-mode',{
+    extends : actionBase
+})
+
 
 Vue.component('action-dialog', {
     extends : actionBase,
@@ -5036,15 +5126,12 @@ Crud.components.views.vBase = Vue.component('v-base', {
 
             if (this.conf.customActions[name]) {
                 var aConf = {}
-                console.log('CUSTOM ACTION',name)
                 if (!this.$options.components[name]) {
                     Vue.component(name, {
                         extends : actionBase
                     });
                 } else {
-
                     aConf = this.$Crud.recordActions[name]?this.$Crud.recordActions[name]:(this.$Crud.globalActions[name]?this.$Crud.globalActions[name]:{})
-
                 }
                 return Utility.merge(aConf,this.conf.customActions[name]);
             }
@@ -5569,7 +5656,7 @@ Vue.component('v-list-edit', {
         if (this.$route && this.$route.query)
             routeConf.params = that.$route.query;
 
-        var conf = that.getConf(that.cModel,'list');
+        var conf = that.getConf(that.cModel,Utility.camelCase('list-edit'));
         conf.customActions['action-edit'] = {
             execute : function () {
                 var thatA = this;
@@ -5597,6 +5684,7 @@ Vue.component('v-list-edit', {
             viewTitle : '',
             defaultRenderType : 'r-text',
             editMode : [],
+            vueRefs:{},
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
@@ -5708,6 +5796,10 @@ Vue.component('v-list-edit', {
                 aConf.modelData = Utility.cloneObj(data.value[row]);
                 aConf.modelName = that.cModel;
                 aConf.cIndex = row;
+                if (['action-view-mode','action-save-row'].indexOf(aName) >= 0) {
+                    aConf.visible = false;
+                    //console.log('nazoscond')
+                }
                 console.log('ACTION RECORD INDEX',aConf.cIndex)
                 recordActions[row][aName] = aConf;
             }
@@ -5767,6 +5859,37 @@ Vue.component('v-list-edit', {
             });
             console.log('select3ed',sel);
             return sel;
+        },
+        setEditMode : function (index) {
+            var that = this;
+            VLISTEDIT = this;
+            that.hideRA(index,'action-delete');
+            that.hideRA(index,'action-edit-mode');
+            that.hideRA(index,'action-view');
+
+
+            that.showRA(index,'action-viev-mode');
+            that.showRA(index,'action-save-row');
+            //that.recordActions[index]['action-delete'].setVisible(false);
+            that.$set(that.editMode,index, true);
+        },
+        setViewMode : function (index) {
+            var that = this;
+            that.$set(that.editMode,index, false);
+            that.showRA(index,'action-delete');
+            that.showRA(index,'action-edit-mode');
+            that.showRA(index,'action-view');
+
+            that.hideRA(index,'action-viev-mode');
+            that.hideRA(index,'action-save-row');
+        },
+        hideRA : function (index,name) {
+            var n = 'r-'+index+'-'+name;
+            this.vueRefs[n]? this.vueRefs[n].visible = false:null;
+        },
+        showRA : function (index,name) {
+            var n = 'r-'+index+'-'+name;
+            this.vueRefs[n]? this.vueRefs[n].visible = true:null;
         }
     },
     watch : {

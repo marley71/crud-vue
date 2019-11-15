@@ -31,7 +31,6 @@ Crud = {
             type : 'record',
             title : 'edit',
             css: 'btn btn-outline-secondary btn-sm ',
-            text : '',
             icon : 'fa fa-edit',
             execute : function () {
                 var url = this.$Crud.application.useRouter?'#':'';
@@ -44,7 +43,6 @@ Crud = {
             title : 'view',
             css: 'btn btn-outline-secondary btn-sm ',
             icon : 'fa fa-list',
-            text : '',
             execute : function () {
                 var url = this.$Crud.application.useRouter?'#':'';
                 url += "/view/" + this.modelName + "/" + this.modelData.id;
@@ -56,7 +54,6 @@ Crud = {
             title : 'delete record',
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
-            text : '',
             execute : function () {
                 var that = this;
                 that.crudApp.confirmDialog(that.$LANG.app['conferma-delete'] ,{
@@ -82,8 +79,6 @@ Crud = {
     globalActions : {
         'action-insert' : {
             type : 'global',
-            visible : true,
-            enabled : true,
             title : 'New',
             css: 'btn btn-outline-primary btn-sm btn-group',
             icon : 'fa fa-plus',

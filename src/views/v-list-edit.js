@@ -28,7 +28,7 @@ Vue.component('v-list-edit', {
         if (this.$route && this.$route.query)
             routeConf.params = that.$route.query;
 
-        var conf = that.getConf(that.cModel,'list');
+        var conf = that.getConf(that.cModel,Utility.camelCase('list-edit'));
         conf.customActions['action-edit'] = {
             execute : function () {
                 var thatA = this;
@@ -56,6 +56,7 @@ Vue.component('v-list-edit', {
             viewTitle : '',
             defaultRenderType : 'r-text',
             editMode : [],
+            vueRefs:{},
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
@@ -167,6 +168,10 @@ Vue.component('v-list-edit', {
                 aConf.modelData = Utility.cloneObj(data.value[row]);
                 aConf.modelName = that.cModel;
                 aConf.cIndex = row;
+                if (['action-view-mode','action-save-row'].indexOf(aName) >= 0) {
+                    aConf.visible = false;
+                    //console.log('nazoscond')
+                }
                 console.log('ACTION RECORD INDEX',aConf.cIndex)
                 recordActions[row][aName] = aConf;
             }
@@ -226,6 +231,37 @@ Vue.component('v-list-edit', {
             });
             console.log('select3ed',sel);
             return sel;
+        },
+        setEditMode : function (index) {
+            var that = this;
+            VLISTEDIT = this;
+            that.hideRA(index,'action-delete');
+            that.hideRA(index,'action-edit-mode');
+            that.hideRA(index,'action-view');
+
+
+            that.showRA(index,'action-viev-mode');
+            that.showRA(index,'action-save-row');
+            //that.recordActions[index]['action-delete'].setVisible(false);
+            that.$set(that.editMode,index, true);
+        },
+        setViewMode : function (index) {
+            var that = this;
+            that.$set(that.editMode,index, false);
+            that.showRA(index,'action-delete');
+            that.showRA(index,'action-edit-mode');
+            that.showRA(index,'action-view');
+
+            that.hideRA(index,'action-viev-mode');
+            that.hideRA(index,'action-save-row');
+        },
+        hideRA : function (index,name) {
+            var n = 'r-'+index+'-'+name;
+            this.vueRefs[n]? this.vueRefs[n].visible = false:null;
+        },
+        showRA : function (index,name) {
+            var n = 'r-'+index+'-'+name;
+            this.vueRefs[n]? this.vueRefs[n].visible = true:null;
         }
     },
     watch : {

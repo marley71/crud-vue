@@ -37,7 +37,7 @@
                                 </div>
 
                                 <template v-for="(action,name) in recordActions[index]">
-                                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                                    <component  v-bind:is="name" :c-ref="'r-'+index+'-'+name"  v-bind:c-conf="action"></component>
                                 </template>
                             </div>
 
