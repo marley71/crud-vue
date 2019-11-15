@@ -4,7 +4,7 @@ const actionBase = Vue.component('action-base', {
         // var id = parseInt(Math.random() * 10000);
         // jQuery(this.$el).attr('ref','a'+id);
         console.log('action moubnted',this.$ref);
-        this.view.vueRefs[this.cRef] = this;
+        this.view?this.view.vueRefs[this.cRef] = this:null;
     },
     computed :  {
         _disabled : function () {

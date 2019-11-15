@@ -8,6 +8,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
+                vueRefs:{},
             }
         },
         createRenders : function () {

@@ -1019,7 +1019,16 @@ var ProtocolRecord = Protocol.extend({
             //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
             //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
         }
-
+        var relationsMetadata = json.metadata?(json.metadata.relations || {}):{};
+        for (var field in relationsMetadata) {
+            this.metadata[field] = relationsMetadata[field];
+            if (relationsMetadata[field].options)
+                this.metadata[field].domainValues = relationsMetadata[field].options;
+            if (relationsMetadata[field].options_order)
+                this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
+            //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
+            //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
+        }
     }
 });
 
@@ -2862,7 +2871,7 @@ const actionBase = Vue.component('action-base', {
         // var id = parseInt(Math.random() * 10000);
         // jQuery(this.$el).attr('ref','a'+id);
         console.log('action moubnted',this.$ref);
-        this.view.vueRefs[this.cRef] = this;
+        this.view?this.view.vueRefs[this.cRef] = this:null;
     },
     computed :  {
         _disabled : function () {
@@ -4068,7 +4077,7 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
                     value : values[field]
                 }
             }
-            renders.preview = status=='new'?values['filename']:values['full_filename'];
+            renders.preview = values.url; //status=='new'?values['filename']:values['full_filename'];
             that.renders.push(renders);
         }
 
@@ -5104,6 +5113,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             return {
                 viewTitle : '',
                 conf : _c,
+                vueRefs:{},
             }
         },
 
@@ -5317,6 +5327,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 renders : {},
                 actionsName : [],
                 actions : {},
+                vueRefs:{},
             }
         },
         getFormData : function () {
@@ -5346,6 +5357,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
+                vueRefs:{},
             }
         },
         createRenders : function () {
@@ -5684,7 +5696,7 @@ Vue.component('v-list-edit', {
             viewTitle : '',
             defaultRenderType : 'r-text',
             editMode : [],
-            vueRefs:{},
+
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;

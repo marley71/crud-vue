@@ -167,7 +167,7 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
                     value : values[field]
                 }
             }
-            renders.preview = status=='new'?values['filename']:values['full_filename'];
+            renders.preview = values.url; //status=='new'?values['filename']:values['full_filename'];
             that.renders.push(renders);
         }
 

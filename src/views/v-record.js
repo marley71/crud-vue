@@ -86,6 +86,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 renders : {},
                 actionsName : [],
                 actions : {},
+                vueRefs:{},
             }
         },
         getFormData : function () {

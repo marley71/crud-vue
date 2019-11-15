@@ -56,7 +56,7 @@ Vue.component('v-list-edit', {
             viewTitle : '',
             defaultRenderType : 'r-text',
             editMode : [],
-            vueRefs:{},
+
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;

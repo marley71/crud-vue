@@ -53,7 +53,16 @@ var ProtocolRecord = Protocol.extend({
             //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
             //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
         }
-
+        var relationsMetadata = json.metadata?(json.metadata.relations || {}):{};
+        for (var field in relationsMetadata) {
+            this.metadata[field] = relationsMetadata[field];
+            if (relationsMetadata[field].options)
+                this.metadata[field].domainValues = relationsMetadata[field].options;
+            if (relationsMetadata[field].options_order)
+                this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
+            //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
+            //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
+        }
     }
 });
 
