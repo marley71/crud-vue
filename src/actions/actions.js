@@ -1,11 +1,7 @@
 const actionBase = Vue.component('action-base', {
-    props : ['c-conf','c-key','c-ref'],
-    mounted : function () {
-        // var id = parseInt(Math.random() * 10000);
-        // jQuery(this.$el).attr('ref','a'+id);
-        console.log('action moubnted',this.$ref);
-        this.view?this.view.vueRefs[this.cRef] = this:null;
-    },
+    props : ['c-conf','c-key'],
+    extends : Crud.components.cComponent,
+
     computed :  {
         _disabled : function () {
             var that = this;
@@ -168,11 +164,15 @@ Vue.component('action-order', {
 
 Vue.component('action-edit-mode',{
     extends : actionBase
-})
+});
 
 Vue.component('action-view-mode',{
     extends : actionBase
-})
+});
+
+Vue.component('action-save-row',{
+    extends : actionBase
+});
 
 
 Vue.component('action-dialog', {

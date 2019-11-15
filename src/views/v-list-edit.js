@@ -234,13 +234,12 @@ Vue.component('v-list-edit', {
         },
         setEditMode : function (index) {
             var that = this;
-            VLISTEDIT = this;
             that.hideRA(index,'action-delete');
             that.hideRA(index,'action-edit-mode');
             that.hideRA(index,'action-view');
 
 
-            that.showRA(index,'action-viev-mode');
+            that.showRA(index,'action-view-mode');
             that.showRA(index,'action-save-row');
             //that.recordActions[index]['action-delete'].setVisible(false);
             that.$set(that.editMode,index, true);
@@ -252,16 +251,19 @@ Vue.component('v-list-edit', {
             that.showRA(index,'action-edit-mode');
             that.showRA(index,'action-view');
 
-            that.hideRA(index,'action-viev-mode');
+            that.hideRA(index,'action-view-mode');
             that.hideRA(index,'action-save-row');
         },
         hideRA : function (index,name) {
             var n = 'r-'+index+'-'+name;
-            this.vueRefs[n]? this.vueRefs[n].visible = false:null;
+            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var n = 'r-'+index+'-'+name;
-            this.vueRefs[n]? this.vueRefs[n].visible = true:null;
+            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(true):null;
+        },
+        getRef : function (index,key) {
+            Crud.cRefs = 'r-' + index + '-' + key;
         }
     },
     watch : {

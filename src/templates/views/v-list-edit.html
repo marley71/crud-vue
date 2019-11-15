@@ -44,7 +44,7 @@
                         </td>
                         <td v-for="(render, key) in row">
                             <component v-if="!editMode[index]" :is="render.type"            :c-conf="render"            :c-key="key"></component>
-                            <component v-if="editMode[index]" :is="rendersEdit[index][key].type"  :c-conf="rendersEdit[index][key]"  :c-key="key"></component>
+                            <component v-if="editMode[index]" :is="rendersEdit[index][key].type"  :c-conf="rendersEdit[index][key]"  :c-key="key" :c-ref="getRef(index,key)"></component>
                         </td>
                     </tr>
                     </tbody>

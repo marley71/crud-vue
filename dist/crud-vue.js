@@ -2820,6 +2820,13 @@ function App() {
 
 Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
+    props : ['c-ref'],
+    mounted : function() {
+        if (this.cRef) {
+            //console.log('cref ',this.cRef)
+            Crud.cRefs[this.cRef] = this;
+        }
+    },
     methods : {
         jQe : function (selector) {
             var that = this;
@@ -2866,13 +2873,9 @@ Vue.component('c-tpl-list', {
     template : '#c-tpl-list-template'
 });
 const actionBase = Vue.component('action-base', {
-    props : ['c-conf','c-key','c-ref'],
-    mounted : function () {
-        // var id = parseInt(Math.random() * 10000);
-        // jQuery(this.$el).attr('ref','a'+id);
-        console.log('action moubnted',this.$ref);
-        this.view?this.view.vueRefs[this.cRef] = this:null;
-    },
+    props : ['c-conf','c-key'],
+    extends : Crud.components.cComponent,
+
     computed :  {
         _disabled : function () {
             var that = this;
@@ -3035,11 +3038,15 @@ Vue.component('action-order', {
 
 Vue.component('action-edit-mode',{
     extends : actionBase
-})
+});
 
 Vue.component('action-view-mode',{
     extends : actionBase
-})
+});
+
+Vue.component('action-save-row',{
+    extends : actionBase
+});
 
 
 Vue.component('action-dialog', {
@@ -5874,13 +5881,12 @@ Vue.component('v-list-edit', {
         },
         setEditMode : function (index) {
             var that = this;
-            VLISTEDIT = this;
             that.hideRA(index,'action-delete');
             that.hideRA(index,'action-edit-mode');
             that.hideRA(index,'action-view');
 
 
-            that.showRA(index,'action-viev-mode');
+            that.showRA(index,'action-view-mode');
             that.showRA(index,'action-save-row');
             //that.recordActions[index]['action-delete'].setVisible(false);
             that.$set(that.editMode,index, true);
@@ -5892,16 +5898,19 @@ Vue.component('v-list-edit', {
             that.showRA(index,'action-edit-mode');
             that.showRA(index,'action-view');
 
-            that.hideRA(index,'action-viev-mode');
+            that.hideRA(index,'action-view-mode');
             that.hideRA(index,'action-save-row');
         },
         hideRA : function (index,name) {
             var n = 'r-'+index+'-'+name;
-            this.vueRefs[n]? this.vueRefs[n].visible = false:null;
+            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var n = 'r-'+index+'-'+name;
-            this.vueRefs[n]? this.vueRefs[n].visible = true:null;
+            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(true):null;
+        },
+        getRef : function (index,key) {
+            Crud.cRefs = 'r-' + index + '-' + key;
         }
     },
     watch : {
@@ -6240,9 +6249,6 @@ const CrudVue = Vue.extend({
             that.$mount('#app');
             console.log('mounted');
         })
-
-    },
-    data : function () {
 
     },
     methods : {

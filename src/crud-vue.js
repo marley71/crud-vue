@@ -17,9 +17,6 @@ const CrudVue = Vue.extend({
         })
 
     },
-    data : function () {
-
-    },
     methods : {
         onChangeViewConf : function (view) {
             
