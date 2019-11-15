@@ -22,7 +22,7 @@
                             <span>Actions</span>
                         </th>
                         <th v-for="key in keys">
-                            <span v-show="!conf.orderFields[key]">@{{key}}</span>
+                            <span v-show="!conf.orderFields[key]">{{key}}</span>
                             <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
                         </th>
                     </tr>
@@ -44,7 +44,7 @@
                         </td>
                         <td v-for="(render, key) in row">
                             <component v-if="!editMode[index]" :is="render.type"            :c-conf="render"            :c-key="key"></component>
-                            <component v-if="editMode[index]" :is="rendersEdit[key].type"  :c-conf="rendersEdit[key]"  :c-key="key"></component>
+                            <component v-if="editMode[index]" :is="rendersEdit[index][key].type"  :c-conf="rendersEdit[index][key]"  :c-key="key"></component>
                         </td>
                     </tr>
                     </tbody>

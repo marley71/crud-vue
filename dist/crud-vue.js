@@ -2035,20 +2035,56 @@ Server.getUrl = function (url) {
 
 Server.post = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
-    jQuery.post(realUrl, params, function (json) {
+    jQuery.ajax({
+        url: realUrl,
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'POST',
+        data: params,
+        //processData: false,
+        //contentType: false                    // Using FormData, no need to process data.
+    }).done(function(json) {
         callback(json);
-    }).fail(function (e) {
-        callback({error: 1, msg: Utility.getFailMessage(e)})
-    })
+    }).fail(function (data, error, msg) {
+        console.log('Errore ajax',data,error,msg);
+        callback({error:1,msg:msg});
+    });
+
+
+
+    // jQuery.post(realUrl, params, function (json) {
+    //     callback(json);
+    // }).fail(function (e) {
+    //     callback({error: 1, msg: Utility.getFailMessage(e)})
+    // })
 };
 
 Server.get = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
-    jQuery.get(realUrl, params, function (json) {
+    jQuery.ajax({
+        url: realUrl,
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'GET',
+        data: params,
+        //processData: false,
+        //contentType: false                    // Using FormData, no need to process data.
+    }).done(function(json) {
         callback(json);
-    }).fail(function (e) {
-        callback({error: 1, msg: Utility.getFailMessage(e)})
-    })
+    }).fail(function (data, error, msg) {
+        console.log('Errore ajax',data,error,msg);
+        callback({error:1,msg:msg});
+    });
+
+
+
+    // jQuery.get(realUrl, params, function (json) {
+    //     callback(json);
+    // }).fail(function (e) {
+    //     callback({error: 1, msg: Utility.getFailMessage(e)})
+    // })
 };
 
 Server.route = function(route,callback) {
@@ -5510,13 +5546,10 @@ Vue.component('v-list-edit', {
     extends : Crud.components.views.vCollection,
     conf : {},
     props : ['c-conf','c-model'],
-    // beforeCreate : function() {
-    //     this.template = '#v-view-template';
-    // },
+
     mounted : function() {
         var that = this;
         VLIST = this;
-        console.log('MOUNTED CALLED');
         that.route = that._getRoute(that.routeConf.values);
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
@@ -5527,8 +5560,7 @@ Vue.component('v-list-edit', {
     },
     data :  function () {
         var that = this;
-        console.log('DATA CALLED');
-        //console.log('CRUDCONF',that.$Crud);
+
         var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
@@ -5537,25 +5569,14 @@ Vue.component('v-list-edit', {
         if (this.$route && this.$route.query)
             routeConf.params = that.$route.query;
 
-        // var route = that._getRoute(routeConf.values);
         var conf = that.getConf(that.cModel,'list');
-        //var aName = that.$options.components.actionEdit;
-
         conf.customActions['action-edit'] = {
             execute : function () {
                 var thatA = this;
-                console.log('thisAc',thatA)
-                //alert('aaa' + thatA.cIndex);
-                that.editMode[thatA.cIndex] = true;
-                console.log('editMode',that.editMode);
+                that.$set(that.editMode,thatA.cIndex, true);
             }
         };
         console.log('v-list-edit conf',conf)
-        //var route = Route.factory('list',routeConf);
-        //that.route = route;
-        //that.conf = ModelTest.list;
-
-        //this.loading = true;
 
         var d = {
             loading : true,
@@ -5592,11 +5613,20 @@ Vue.component('v-list-edit', {
             that.editMode = new Array(that.data.value.length).fill(false);
             that.createActions();
             that.createRenders();
-            var rowRenders = that.renders[0];
-            for (var k in rowRenders) {
-                that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
-                that.rendersEdit[k].type = 'r-input';
+            var rendersEdit = [];
+            for (var row in that.renders) {
+                rendersEdit.push({});
+                for (var key in that.renders[row]) {
+                    rendersEdit[row][key] = Utility.cloneObj(that.renders[row][key])
+                    rendersEdit[row][key].type = 'r-input';
+                }
             }
+            // var rowRenders = that.renders[0];
+            // for (var k in rowRenders) {
+            //     that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
+            //     that.rendersEdit[k].type = 'r-input';
+            // }
+            that.rendersEdit = rendersEdit;
             that.createGlobalActions();
             console.log('renders',that.renders,'recordActions',that.recordActions);
             console.log('globalActions',that.globalActions);
