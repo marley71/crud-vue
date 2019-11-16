@@ -2822,8 +2822,8 @@ Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
     props : ['c-ref'],
     mounted : function() {
+        console.log('cref ',this.cRef)
         if (this.cRef) {
-            //console.log('cref ',this.cRef)
             Crud.cRefs[this.cRef] = this;
         }
     },
@@ -2841,18 +2841,7 @@ Vue.component('c-loading',{
     template : '<span>Carico ...</span>'
 })
 Crud.components.cTplBase = Vue.component('c-tpl-base',{
-    props : ['c-render','c-type','c-key'],
-    data : function () {
-        //console.log('DAta',this.cKey,this.cType,this.cRender)
-        return {
-
-        };
-        // return {
-        //     render : this.cRender,
-        //     type : this.cType,
-        //     key : this.cKey,
-        // }
-    },
+    props : ['c-render','c-type','c-key','c-ref'],
     template : '<span>template base</span>'
 });
 
@@ -3374,7 +3363,7 @@ Crud.components.cWait = Vue.component('c-wait',{
 })
 Crud.components.renders.rBase = Vue.component('r-base', {
     extends : Crud.components.cComponent,
-    props : ['c-conf','c-key','c-marker'],
+    props : ['c-conf','c-key','c-marker','c-ref'],
 
     mounted : function() {
         var that = this;
@@ -3390,8 +3379,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
                 _conf.methods[k].apply(that,this.arguments);
             }
         }
-
-
 
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
@@ -5902,15 +5889,15 @@ Vue.component('v-list-edit', {
             that.hideRA(index,'action-save-row');
         },
         hideRA : function (index,name) {
-            var n = 'r-'+index+'-'+name;
+            var n = 'ra-'+index+'-'+name;
             this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
-            var n = 'r-'+index+'-'+name;
+            var n = 'ra-'+index+'-'+name;
             this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(true):null;
         },
-        getRef : function (index,key) {
-            Crud.cRefs = 'r-' + index + '-' + key;
+        getRef : function (prefix,index,key) {
+            var s =  prefix + '-' + index + '-' + key;
         }
     },
     watch : {

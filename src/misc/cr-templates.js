@@ -1,16 +1,5 @@
 Crud.components.cTplBase = Vue.component('c-tpl-base',{
-    props : ['c-render','c-type','c-key'],
-    data : function () {
-        //console.log('DAta',this.cKey,this.cType,this.cRender)
-        return {
-
-        };
-        // return {
-        //     render : this.cRender,
-        //     type : this.cType,
-        //     key : this.cKey,
-        // }
-    },
+    props : ['c-render','c-type','c-key','c-ref'],
     template : '<span>template base</span>'
 });
 

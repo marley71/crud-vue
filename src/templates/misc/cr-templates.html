@@ -5,8 +5,8 @@
             <component
                     :is="cType"
                     :c-conf="cRender"
-                    :c-key="cKey">
-
+                    :c-key="cKey"
+                    :c-ref="cRef">
             </component>
         </div>
     </div>
@@ -19,13 +19,18 @@
             <component
                     :is="cType"
                     :c-conf="cRender"
-                    :c-key="cKey">
-
+                    :c-key="cKey",
+                    :c-ref="cRef">
             </component>
         </div>
     </div>
 </template>
 
 <template id="c-tpl-list-template">
-    <component :is="cType" :c-conf="cRender" v-bind:c-key="cKey"></component>
+    <component
+            :is="cType"
+            :c-conf="cRender"
+            :c-key="cKey"
+            :c-ref="cRef">
+    </component>
 </template>

@@ -1,8 +1,8 @@
 Crud.components.cComponent = Vue.component('c-component',{
     props : ['c-ref'],
     mounted : function() {
+        console.log('cref ',this.cRef)
         if (this.cRef) {
-            //console.log('cref ',this.cRef)
             Crud.cRefs[this.cRef] = this;
         }
     },

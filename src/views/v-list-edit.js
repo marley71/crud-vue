@@ -255,15 +255,15 @@ Vue.component('v-list-edit', {
             that.hideRA(index,'action-save-row');
         },
         hideRA : function (index,name) {
-            var n = 'r-'+index+'-'+name;
+            var n = 'ra-'+index+'-'+name;
             this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
-            var n = 'r-'+index+'-'+name;
+            var n = 'ra-'+index+'-'+name;
             this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(true):null;
         },
-        getRef : function (index,key) {
-            Crud.cRefs = 'r-' + index + '-' + key;
+        getRef : function (prefix,index,key) {
+            var s =  prefix + '-' + index + '-' + key;
         }
     },
     watch : {

@@ -1,6 +1,6 @@
 Crud.components.renders.rBase = Vue.component('r-base', {
     extends : Crud.components.cComponent,
-    props : ['c-conf','c-key','c-marker'],
+    props : ['c-conf','c-key','c-marker','c-ref'],
 
     mounted : function() {
         var that = this;
@@ -16,8 +16,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
                 _conf.methods[k].apply(that,this.arguments);
             }
         }
-
-
 
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
