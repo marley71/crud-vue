@@ -5,7 +5,6 @@ const actionBase = Vue.component('action-base', {
     computed :  {
         _disabled : function () {
             var that = this;
-            console.log('enabled',that.enabled)
             if (!that.enabled)
                 return true;
             if (jQuery.isFunction(that.enabled)) {
@@ -90,25 +89,6 @@ const actionBase = Vue.component('action-base', {
         setVisible : function (visible) {
             this.visible = visible;
         }
-        // _disabled : function () {
-        //     var that = this;
-        //     console.log('enabled',that.cConf.enable)
-        //     if (!that.cConf.enabled)
-        //         return true;
-        //     if (jQuery.isFunction(that.cConf.enabled)) {
-        //         return !that.cConf.enabled.apply(that);
-        //     }
-        //     return !that.cConf.enabled;
-        // },
-        // _visible : function () {
-        //     var that = this;
-        //     if (!that.visible)
-        //         return false;
-        //     if (jQuery.isFunction(that.visible)) {
-        //         return that.visible.apply(that);
-        //     }
-        //     return that.visible;
-        // }
     },
     data :  function () {
         return this.defaultData();
@@ -184,100 +164,3 @@ Vue.component('action-dialog', {
 
     }
 })
-// Vue.component('action-edit', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     console.log('execute before',f);
-//                     f.apply(that);
-//                     //this.cData[c].apply(this,[])
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
-//
-// Vue.component('action-view', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     f.apply(that);
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
-//
-//
-// Vue.component('action-save', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     f.apply(that);
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
-//
-// Vue.component('action-insert', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     f.apply(that);
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
-
-// Vue.component('action-back', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     f.apply(that);
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });

@@ -5,7 +5,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
         return this.defaultData();
     },
     mounted : function() {
-        var that =this;
+        var that = this;
         var methods = that.conf?that.conf.methods:{};
         for (var k in methods) {
             console.log('v-base implements methods',k);
@@ -40,9 +40,10 @@ Crud.components.views.vBase = Vue.component('v-base', {
             })
         },
         getActionConfig : function(name,type) {
-
+            console.log('v-base.getActionConfig',name,type,this.conf);
             if (this.conf.customActions[name]) {
                 var aConf = {}
+                console.log('CUSTOM',name);
                 if (!this.$options.components[name]) {
                     Vue.component(name, {
                         extends : actionBase

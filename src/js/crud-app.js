@@ -1,4 +1,4 @@
-const CrudVue = Vue.extend({
+const CrudApp = Vue.extend({
     created : function() {
         var that = this;
         that.crudApp.pluginsPath = this.pluginsPath?this.plugisPath:'/';

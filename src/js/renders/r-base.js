@@ -10,9 +10,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         }
         var that =this;
         for (var k in _conf.methods) {
-            console.log('r-base implements methods',k);
+            //console.log('r-base implements methods',k);
             that[k] = function () {
-                console.log('call methods ', k );
+                //console.log('call methods ', k );
                 _conf.methods[k].apply(that,this.arguments);
             }
         }
@@ -96,67 +96,3 @@ Crud.components.renders.rBase = Vue.component('r-base', {
     // },
     template: '<div>render base</div>'
 });
-
-
-// Vue.component('r-input', {
-//     extends : rBase,
-//     template: '<input v-model="value" v-bind:name="cKey">'
-// });
-//
-// Vue.component('r-textarea', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         //console.log('c-input',this.cData,this.cKey)
-//         return {
-//             value: this.cData.value
-//         }
-//     },
-//     template: '<textarea v-model="value" v-bind:name="cKey"></textarea>'
-// });
-//
-// Vue.component('r-text',{
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         //console.log('c-text',this.cData)
-//         return {
-//             value: this.cData.value
-//         }
-//     },
-//     template: '<div v-html="value"></div>'
-// });
-//
-// Vue.component('r-select',{
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         //console.log('c-select',this.cData);
-//         var dV = this.cData.metadata.domainValues;
-//         var dVO = this.cData.metadata.domainValuesOrder?this.cData.metadata.domainValuesOrder:Object.keys(dV);
-//         return {
-//             name : this.cData.name,
-//             value: this.cData.value,
-//             domainValues : dV,
-//             domainValuesOrder : dVO
-//         }
-//     },
-//     template: '<select v-bind:name="cKey" v-model="value">\n' +
-//         '    <option v-for="key in domainValuesOrder" :value="key" :selected="value == key ? \'selected\' : \'\'">{{domainValues[key]}}</option>\n' +
-//         '</select>',
-//     // function () {
-//     //     return '<div v-html="fieldValue"></div>'
-//     // }
-// });
-
-// Vue.component('r-checkbox',{
-//     props : ['data'],
-//     data :  function () {
-//         return {
-//             fieldValue: this.data
-//         }
-//     },
-//     template: '<select name="label_id" id="label_id" v-model="fieldValue">\n' +
-//         '    <option v-for="(name, id) in " :value="id" :selected="label_selected == id ? \'selected\' : \'\'">@{{name}}</option>\n' +
-//         '</select>',
-//     // function () {
-//     //     return '<div v-html="fieldValue"></div>'
-//     // }
-// });

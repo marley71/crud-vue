@@ -2822,7 +2822,7 @@ Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
     props : ['c-ref'],
     mounted : function() {
-        console.log('cref ',this.cRef)
+        //console.log('cref ',this.cRef)
         if (this.cRef) {
             Crud.cRefs[this.cRef] = this;
         }
@@ -2868,7 +2868,6 @@ const actionBase = Vue.component('action-base', {
     computed :  {
         _disabled : function () {
             var that = this;
-            console.log('enabled',that.enabled)
             if (!that.enabled)
                 return true;
             if (jQuery.isFunction(that.enabled)) {
@@ -2953,25 +2952,6 @@ const actionBase = Vue.component('action-base', {
         setVisible : function (visible) {
             this.visible = visible;
         }
-        // _disabled : function () {
-        //     var that = this;
-        //     console.log('enabled',that.cConf.enable)
-        //     if (!that.cConf.enabled)
-        //         return true;
-        //     if (jQuery.isFunction(that.cConf.enabled)) {
-        //         return !that.cConf.enabled.apply(that);
-        //     }
-        //     return !that.cConf.enabled;
-        // },
-        // _visible : function () {
-        //     var that = this;
-        //     if (!that.visible)
-        //         return false;
-        //     if (jQuery.isFunction(that.visible)) {
-        //         return that.visible.apply(that);
-        //     }
-        //     return that.visible;
-        // }
     },
     data :  function () {
         return this.defaultData();
@@ -3047,103 +3027,6 @@ Vue.component('action-dialog', {
 
     }
 })
-// Vue.component('action-edit', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     console.log('execute before',f);
-//                     f.apply(that);
-//                     //this.cData[c].apply(this,[])
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
-//
-// Vue.component('action-view', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     f.apply(that);
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
-//
-//
-// Vue.component('action-save', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     f.apply(that);
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
-//
-// Vue.component('action-insert', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     f.apply(that);
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
-
-// Vue.component('action-back', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         var that = this;
-//         var adata = {};
-//         for (var c in this.cData) {
-//             if (c == 'execute') {
-//                 var f = this.cData[c];
-//                 adata[c] = function () {
-//                     f.apply(that);
-//                 }
-//             } else
-//                 adata[c] = this.cData[c];
-//         }
-//         return adata;
-//     },
-//     template: '#action-record'
-// });
 Vue.component('c-paginator',{
     props : ['c-route-conf','c-route','c-pagination'],
     template : '#c-paginator-template',
@@ -3373,9 +3256,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         }
         var that =this;
         for (var k in _conf.methods) {
-            console.log('r-base implements methods',k);
+            //console.log('r-base implements methods',k);
             that[k] = function () {
-                console.log('call methods ', k );
+                //console.log('call methods ', k );
                 _conf.methods[k].apply(that,this.arguments);
             }
         }
@@ -3460,69 +3343,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
     template: '<div>render base</div>'
 });
 
-
-// Vue.component('r-input', {
-//     extends : rBase,
-//     template: '<input v-model="value" v-bind:name="cKey">'
-// });
-//
-// Vue.component('r-textarea', {
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         //console.log('c-input',this.cData,this.cKey)
-//         return {
-//             value: this.cData.value
-//         }
-//     },
-//     template: '<textarea v-model="value" v-bind:name="cKey"></textarea>'
-// });
-//
-// Vue.component('r-text',{
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         //console.log('c-text',this.cData)
-//         return {
-//             value: this.cData.value
-//         }
-//     },
-//     template: '<div v-html="value"></div>'
-// });
-//
-// Vue.component('r-select',{
-//     props : ['c-data','c-key'],
-//     data :  function () {
-//         //console.log('c-select',this.cData);
-//         var dV = this.cData.metadata.domainValues;
-//         var dVO = this.cData.metadata.domainValuesOrder?this.cData.metadata.domainValuesOrder:Object.keys(dV);
-//         return {
-//             name : this.cData.name,
-//             value: this.cData.value,
-//             domainValues : dV,
-//             domainValuesOrder : dVO
-//         }
-//     },
-//     template: '<select v-bind:name="cKey" v-model="value">\n' +
-//         '    <option v-for="key in domainValuesOrder" :value="key" :selected="value == key ? \'selected\' : \'\'">{{domainValues[key]}}</option>\n' +
-//         '</select>',
-//     // function () {
-//     //     return '<div v-html="fieldValue"></div>'
-//     // }
-// });
-
-// Vue.component('r-checkbox',{
-//     props : ['data'],
-//     data :  function () {
-//         return {
-//             fieldValue: this.data
-//         }
-//     },
-//     template: '<select name="label_id" id="label_id" v-model="fieldValue">\n' +
-//         '    <option v-for="(name, id) in " :value="id" :selected="label_selected == id ? \'selected\' : \'\'">@{{name}}</option>\n' +
-//         '</select>',
-//     // function () {
-//     //     return '<div v-html="fieldValue"></div>'
-//     // }
-// });
 Vue.component('r-input', {
     extends : Crud.components.renders.rBase,
     template: '#r-input-template',
@@ -5103,7 +4923,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
         return this.defaultData();
     },
     mounted : function() {
-        var that =this;
+        var that = this;
         var methods = that.conf?that.conf.methods:{};
         for (var k in methods) {
             console.log('v-base implements methods',k);
@@ -5138,9 +4958,10 @@ Crud.components.views.vBase = Vue.component('v-base', {
             })
         },
         getActionConfig : function(name,type) {
-
+            console.log('v-base.getActionConfig',name,type,this.conf);
             if (this.conf.customActions[name]) {
                 var aConf = {}
+                console.log('CUSTOM',name);
                 if (!this.$options.components[name]) {
                     Vue.component(name, {
                         extends : actionBase
@@ -6229,7 +6050,7 @@ Vue.component('v-hasmany-view', {
     template : '#v-hasmany-template'
 });
 
-const CrudVue = Vue.extend({
+const CrudApp = Vue.extend({
     created : function() {
         var that = this;
         that.crudApp.pluginsPath = this.pluginsPath?this.plugisPath:'/';
