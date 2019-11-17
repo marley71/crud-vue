@@ -17,6 +17,17 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
         var myd =  {
             //name : this.cConf.name,
             //value: values,
+            uploadConf : {
+                metadata : {
+                    maxFileSize : '2M',
+                    extensions: ['jpg','png']
+                },
+                methods : {
+                    onSuccess : function () {
+                        that.uploadImage();
+                    }
+                }
+            },
             uploadRoute : route.getUrl(),
             error : false,
             errorMessage : '',
@@ -71,6 +82,12 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
         },
         uploadImage : function () {
             var that = this;
+            if (!that.$refs.refUpload) {
+                throw 'riferimento a file upload non valido';
+            }
+            console.log('ref',that.$refs.refUpload.getValue());
+
+
             var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
             var route = Route.factory('uploadfile',routeConf);
             //route.params.file = document.getElementById("image-file").files[0]; // jQuery(that.$el).find('input[name="file"]').val();
@@ -83,9 +100,10 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
 
             var realUrl = Server.getUrl(route.getUrl());
             var data = new FormData();
-            data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
-            data.append('modelName',that.conf.metadata.modelName);
-            data.append('type','fotos');
+            //data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
+            data.append('file',that.$refs.refUpload.getValue())
+           // data.append('modelName',that.conf.metadata.modelName);
+            data.append('uploadType','foto');
 
             jQuery.ajax({
                 url: realUrl,
@@ -117,7 +135,7 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
                     return;
                 }
                 that.complete = true;
-                that.preview = Server.getUrl('/imagecache/small/' + data.result.filename);
+                that.preview = data.result.url; //Server.getUrl('/imagecache/small/' + data.result.filename);
                 that.lastUpload = Utility.cloneObj(data.result);
                 for (var k in data.result) {
                     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
@@ -175,17 +193,10 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
     template: '#r-hasmany-image-edit-template',
     mounted : function () {
         var that = this;
-        // jQuery(that.$el).find('[c-image-file]').autoUpload(function () {
-        //     //console.log('autoupload',jQuery(that.$el).find('form[name="formupload"]').length);
+        // jQuery(that.$el).find('[c-image-file]').change(function () {
         //     that.uploadImage();
         //     //jQuery(that.$el).find('form[name="formupload"]').submit();
         // });
-
-        jQuery(that.$el).find('[c-image-file]').change(function () {
-            //console.log('autoupload',jQuery(that.$el).find('form[name="formupload"]').length);
-            that.uploadImage();
-            //jQuery(that.$el).find('form[name="formupload"]').submit();
-        });
 
 
         for (var i in that.conf.value) {

@@ -15,7 +15,6 @@ Vue.component('v-edit', {
             that.createActions();
             that.createActionsClass();
             that.createRenders();
-            console.log('BBBBBBB');
             that.loading = false;
         });
     },

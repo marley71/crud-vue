@@ -3,7 +3,7 @@
         <i v-show="icon" v-bind:class="icon"></i>
         <span v-html="text"></span>
     </button>
-</script>ß
+</script>
 <template id="c-tpl-record-template">
     <div>
         <label>{{cKey}}</label>
@@ -25,7 +25,7 @@
             <component
                     :is="cType"
                     :c-conf="cRender"
-                    :c-key="cKey",
+                    :c-key="cKey"
                     :c-ref="cRef">
             </component>
         </div>
@@ -448,17 +448,18 @@
                                 <table class="table">
                                     <tr>
                                         <td>
-                                            <div >
-                                                <span crud-label="app.accepted-extensions"></span>:</div>
-                                            <div crud-label="app.extensions-foto"></div>
-                                            <div >Max <span crud-label="app.upload-max-filesize" ></span>
-                                            </div>
+                                            <r-upload :c-conf="uploadConf" c-key="file" ref="refUpload"></r-upload>
+                                            <!--<div >-->
+                                                <!--<span crud-label="app.accepted-extensions"></span>:</div>-->
+                                            <!--<div crud-label="app.extensions-foto"></div>-->
+                                            <!--<div >Max <span crud-label="app.upload-max-filesize" ></span>-->
+                                            <!--</div>-->
                                         </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <input c-image-file class="btn btn-default" type="file" >
-                                            </div>
-                                        </td>
+                                        <!--<td>-->
+                                            <!--<div class="btn-group">-->
+                                                <!--<input c-image-file class="btn btn-default" type="file" >-->
+                                            <!--</div>-->
+                                        <!--</td>-->
                                         <td>
                                             <div >
                                                 <img v-bind:src="preview" ></img>
@@ -752,7 +753,7 @@
         <div v-show="extensions">
             <span crud-label="app.accepted-extensions">Estensioni accettate</span>:
         </div>
-        <div v-show="extensions">{{extensions}}</div>
+        <div v-show="extensions">{{extensions.join(',')}}</div>
         <div v-show="maxFileSize">
             Max <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
         </div>

@@ -23,7 +23,7 @@ Vue.component('r-upload',{
             console.log('filedesc',jQuery(that.$el).find('[c-file]').prop('files'));
             var fileDesc = jQuery(that.$el).find('[c-file]').prop('files');
             if (fileDesc.length) {
-                return fileDesc[0].name;
+                return fileDesc[0];
             }
 
             return null;

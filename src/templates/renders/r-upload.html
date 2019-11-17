@@ -3,7 +3,7 @@
         <div v-show="extensions">
             <span crud-label="app.accepted-extensions">Estensioni accettate</span>:
         </div>
-        <div v-show="extensions">{{extensions}}</div>
+        <div v-show="extensions">{{extensions.join(',')}}</div>
         <div v-show="maxFileSize">
             Max <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
         </div>
