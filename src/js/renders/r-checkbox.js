@@ -6,11 +6,10 @@ Vue.component('r-checkbox',{
 
         var dV = d.conf.metadata.domainValues;
         var dVO = d.conf.metadata.domainValuesOrder?d.conf.metadata.domainValuesOrder:Object.keys(dV);
-        return {
-            value: Array.isArray(d.conf.value)?Array.isArray(d.conf.value):[d.conf.value],
-            domainValues : dV,
-            domainValuesOrder : dVO
-        }
+        d.value = Array.isArray(d.conf.value)?Array.isArray(d.conf.value):[d.conf.value];
+        d.domainValues = dV;
+        d.domainValuesOrder = dVO;
+        return d;
     },
     methods : {
         // inArray : function (v) {

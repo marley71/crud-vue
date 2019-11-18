@@ -12,7 +12,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         for (var k in _conf.methods) {
             //console.log('r-base implements methods',k);
             that[k] = function () {
-                //console.log('call methods ', k );
                 _conf.methods[k].apply(that,this.arguments);
             }
         }

@@ -3261,7 +3261,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         for (var k in _conf.methods) {
             //console.log('r-base implements methods',k);
             that[k] = function () {
-                //console.log('call methods ', k );
                 _conf.methods[k].apply(that,this.arguments);
             }
         }
@@ -3420,11 +3419,10 @@ Vue.component('r-checkbox',{
 
         var dV = d.conf.metadata.domainValues;
         var dVO = d.conf.metadata.domainValuesOrder?d.conf.metadata.domainValuesOrder:Object.keys(dV);
-        return {
-            value: Array.isArray(d.conf.value)?Array.isArray(d.conf.value):[d.conf.value],
-            domainValues : dV,
-            domainValuesOrder : dVO
-        }
+        d.value = Array.isArray(d.conf.value)?Array.isArray(d.conf.value):[d.conf.value];
+        d.domainValues = dV;
+        d.domainValuesOrder = dVO;
+        return d;
     },
     methods : {
         // inArray : function (v) {
