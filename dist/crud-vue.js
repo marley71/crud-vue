@@ -3646,6 +3646,7 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
     template: '#r-hasmany-template',
     data : function () {
         var d = this.defaultData();
+        console.log('rhasmanyyyyyyy',d);
         return d;
     },
     methods : {
@@ -4865,12 +4866,6 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
 
             return null;
         },
-        onSuccess : function () {
-
-        },
-        onError : function () {
-
-        },
         _validate : function() {
             return true;
         },
@@ -4880,11 +4875,11 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
             console.log('validate');
             that.change();
             if (that._validate()) {
-                that.$emit('on-success', that);
-                that.onSuccess();
+                that.value =
+                that.$emit('success', that);
             }
             else
-                that.onError();
+                that.$emit('error',that);
             /*var extPos = fileupload.lastIndexOf('.');
             var ext = "";
             if (extPos >= 0) {
@@ -4943,7 +4938,9 @@ Vue.component('r-upload-ajax',{
 
     methods : {
 
+        onError : function() {
 
+        },
         validate : function () {
             var that = this;
             //TODO eseguire validazione
@@ -5000,7 +4997,7 @@ Vue.component('r-upload-ajax',{
                         var tmp = JSON.parse(data.msg);
                         msg = "";
                         for(k in tmp) {
-                            msg += '<div>'+tmp[k]+'</div>';
+                            msg += tmp[k]+'\n';
                         }
                     } catch(e) {
                         msg = data.msg;
@@ -5010,7 +5007,7 @@ Vue.component('r-upload-ajax',{
                     jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
                     return;
                 }
-                that.onSuccess();
+                that.$emit('success',that);
                 that.complete = true;
                 var pconf = {
                     value : data.result.url,
@@ -6148,7 +6145,11 @@ Vue.component('v-hasmany', {
         fillData : function () {
             this.data = this.conf.data;
         },
-        renderKey : function (key) {
+        // renderKey : function (key) {
+        //     var that = this;
+        //     return that.cModel + "-" + key + '[]';
+        // },
+        getFieldName : function (key) {
             var that = this;
             return that.cModel + "-" + key + '[]';
         }

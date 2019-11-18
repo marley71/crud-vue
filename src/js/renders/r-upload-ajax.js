@@ -18,7 +18,9 @@ Vue.component('r-upload-ajax',{
 
     methods : {
 
+        onError : function() {
 
+        },
         validate : function () {
             var that = this;
             //TODO eseguire validazione
@@ -75,7 +77,7 @@ Vue.component('r-upload-ajax',{
                         var tmp = JSON.parse(data.msg);
                         msg = "";
                         for(k in tmp) {
-                            msg += '<div>'+tmp[k]+'</div>';
+                            msg += tmp[k]+'\n';
                         }
                     } catch(e) {
                         msg = data.msg;
@@ -85,7 +87,7 @@ Vue.component('r-upload-ajax',{
                     jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
                     return;
                 }
-                that.onSuccess();
+                that.$emit('success',that);
                 that.complete = true;
                 var pconf = {
                     value : data.result.url,

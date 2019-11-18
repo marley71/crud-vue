@@ -329,7 +329,7 @@
                                 <div class="card-header">
                                     <small class="pull-left" crud-field="label" crud-trim="12" crud-attrs="{title:label}"></small>
                                     <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button"  title="Cancella elemento"><i class="fa fa-times-circle"></i></button>
-
+                                    {{cConf.metadata.modelName}}
                                 </div>
                                 <v-hasmany v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany>
 
@@ -753,22 +753,25 @@
         <div v-show="extensions">
             <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
             <span v-show="extensions">{{extensions.join(',')}}</span>
-        </div>
+        </div> 
         <div v-show="maxFileSize">
             Dimensione massima: <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
         </div>
         <div class="btn btn-gradient-info btn-sm">
-            <input :name="getFieldName()" c-file class="btn btn-outline-default" type="file" v-on:change="validate()">
+            <input :name="getFieldName()" c-file class="btn btn-outline-default" type="file" v-on:change="validate()" v-bind:c-marker="cMarker">
         </div>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
 <template id="r-upload-ajax-template">
     <div class="row">
-        <div class="col-6">
+        <div class="col-8">
             <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
-            <r-upload ref="refUpload" :c-conf="uploadConf" v-on:on-success="validate"></r-upload>
+            <div >
+                <r-upload ref="refUpload" :c-conf="uploadConf" v-on:success="validate" v-on:error="onError"></r-upload>
+            </div>
         </div>
-        <div class="col-6" >
+        <div class="col-4" >
             <r-preview :c-conf="previewConf"></r-preview>
         </div>
     </div>
@@ -991,7 +994,7 @@
         <div v-else>
             <div  v-for="(item, key) in renders">
                 <!--<component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
-                <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>
+                <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
             </div>
         </div>
     </div>

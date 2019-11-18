@@ -23,7 +23,11 @@ Vue.component('v-hasmany', {
         fillData : function () {
             this.data = this.conf.data;
         },
-        renderKey : function (key) {
+        // renderKey : function (key) {
+        //     var that = this;
+        //     return that.cModel + "-" + key + '[]';
+        // },
+        getFieldName : function (key) {
             var that = this;
             return that.cModel + "-" + key + '[]';
         }

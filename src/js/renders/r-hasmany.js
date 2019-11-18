@@ -3,6 +3,7 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
     template: '#r-hasmany-template',
     data : function () {
         var d = this.defaultData();
+        console.log('rhasmanyyyyyyy',d);
         return d;
     },
     methods : {

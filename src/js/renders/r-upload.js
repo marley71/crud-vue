@@ -26,12 +26,6 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
 
             return null;
         },
-        onSuccess : function () {
-
-        },
-        onError : function () {
-
-        },
         _validate : function() {
             return true;
         },
@@ -41,11 +35,11 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
             console.log('validate');
             that.change();
             if (that._validate()) {
-                that.$emit('on-success', that);
-                that.onSuccess();
+                that.value =
+                that.$emit('success', that);
             }
             else
-                that.onError();
+                that.$emit('error',that);
             /*var extPos = fileupload.lastIndexOf('.');
             var ext = "";
             if (extPos >= 0) {
