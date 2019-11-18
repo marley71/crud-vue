@@ -2921,10 +2921,12 @@ const actionBase = Vue.component('action-base', {
             }
             // controllo se la funzione before execute ha una callback per controlli asincroni.
             if (that.cConf.length > 0) {
-                that.cConf.apply(that,[callback]);
-                return ;
+                that.cConf.beforeExecute.apply(that,[callback]);;
             }
-            return that.cConf.beforeExecute.apply(that);
+            if (that.cConf.beforeExecute.apply(that) ) {
+                callback();
+            }
+
         },
         _execute : function () {
             var that = this;
@@ -2933,6 +2935,7 @@ const actionBase = Vue.component('action-base', {
                 return ;
             }
             that._beforeExecute(function () {
+                console.log('call execute')
                 that.execute.apply(that);
                 that._afterExecute();
             })
