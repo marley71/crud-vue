@@ -1,0 +1,11 @@
+<template id="r-upload-ajax-template">
+    <div class="row">
+        <div class="col-6">
+            <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
+            <r-upload ref="refUpload" :c-conf="uploadConf" v-on:on-success="validate"></r-upload>
+        </div>
+        <div class="col-6" >
+            <r-preview :c-conf="previewConf"></r-preview>
+        </div>
+    </div>
+</template>

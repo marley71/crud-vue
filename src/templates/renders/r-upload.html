@@ -1,13 +1,13 @@
 <template id="r-upload-template">
     <div>
         <div v-show="extensions">
-            <span crud-label="app.accepted-extensions">Estensioni accettate</span>:
+            <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
+            <span v-show="extensions">{{extensions.join(',')}}</span>
         </div>
-        <div v-show="extensions">{{extensions.join(',')}}</div>
         <div v-show="maxFileSize">
-            Max <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
+            Dimensione massima: <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
         </div>
-        <div class="btn-group">
+        <div class="btn btn-gradient-info btn-sm">
             <input :name="getFieldName()" c-file class="btn btn-outline-default" type="file" v-on:change="validate()">
         </div>
     </div>

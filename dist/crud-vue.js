@@ -2822,7 +2822,7 @@ Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
     props : ['c-ref'],
     mounted : function() {
-        //console.log('cref ',this.cRef)
+        console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
             Crud.cRefs[this.cRef] = this;
         }
@@ -4839,7 +4839,7 @@ Vue.component('r-b2m-select2', {
     }
 
 });
-Vue.component('r-upload',{
+Crud.components.renders.rUpload = Vue.component('r-upload',{
     extends : Crud.components.renders.rBase,
     template : '#r-upload-template',
     data : function () {
@@ -4848,15 +4848,13 @@ Vue.component('r-upload',{
         console.log('r-upload data',d);
         d.extensions = d.conf.metadata.extensions?d.conf.metadata.extensions:'';
         d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
+        d.error = false;
+        d.errorMessage = '';
         return d;
     },
     mounted : function () {
         var that = this;
         console.log('r-upload ',that);
-
-        // jQuery(that.$el).find('[c-file]').change(function () {
-        //     that.validate();
-        // });
     },
     methods : {
         getValue : function () {
@@ -4875,12 +4873,20 @@ Vue.component('r-upload',{
         onError : function () {
 
         },
+        _validate : function() {
+            return true;
+        },
         validate : function () {
             var that = this;
             //TODO eseguire validazione
             console.log('validate');
             that.change();
-            that.onSuccess();
+            if (that._validate()) {
+                that.$emit('on-success', that);
+                that.onSuccess();
+            }
+            else
+                that.onError();
             /*var extPos = fileupload.lastIndexOf('.');
             var ext = "";
             if (extPos >= 0) {
@@ -4916,6 +4922,160 @@ Vue.component('r-upload',{
                     control.val("");
                     return false;
             }*/
+        }
+    }
+})
+Vue.component('r-upload-ajax',{
+    extends : Crud.components.renders.rUpload,
+    template : '#r-upload-ajax-template',
+    data : function () {
+        var d = this.defaultData();
+        d.conf = this.cConf;
+        console.log('r-upload data',d);
+        d.extensions = d.conf.metadata.extensions?d.conf.metadata.extensions:'';
+        d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
+        d.uploadConf = d.conf;
+        d.previewConf = {
+            metadata : {}
+        };
+        d.error = false;
+        d.errorMessage = '';
+        return d;
+    },
+
+    methods : {
+
+
+        validate : function () {
+            var that = this;
+            //TODO eseguire validazione
+            console.log('validate');
+            that.change();
+            if (that._validate()) {
+                that.sendAjax();
+            } else
+                that.onError();
+        },
+        sendAjax : function () {
+            var that = this;
+            if (!that.$refs.refUpload) {
+                throw 'riferimento a file upload non valido';
+            }
+            var fDesc = that.$refs.refUpload.getValue();
+            if (!fDesc)
+                throw 'descrittore file upload non valido';
+
+            console.log('fDesc',fDesc);
+
+            var fileName = fDesc.filename;
+            var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
+
+            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+            var route = Route.factory('uploadfile',routeConf);
+
+            that.error = false;
+            that.complete = false;
+
+            var realUrl = Server.getUrl(route.getUrl());
+            var data = new FormData();
+            //data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
+            data.append('file',fDesc)
+            for (var k in that.conf.metadata.ajaxFields)
+                data.append(k,that.conf.metadata.ajaxFields)
+
+            jQuery.ajax({
+                url: realUrl,
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'POST',
+                data: data,
+                processData: false,
+                contentType: false                    // Using FormData, no need to process data.
+            }).done(function(data){
+                that.error = data.error;
+                that.lastUpload = null;
+                console.log("Success: Files sent!",data);
+                if (data.error) {
+                    var msg = null;
+                    try {
+                        var tmp = JSON.parse(data.msg);
+                        msg = "";
+                        for(k in tmp) {
+                            msg += '<div>'+tmp[k]+'</div>';
+                        }
+                    } catch(e) {
+                        msg = data.msg;
+                    }
+                    that.errorMessage = msg;
+                    //self._showError(dialog,msg);
+                    jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
+                    return;
+                }
+                that.onSuccess();
+                that.complete = true;
+                var pconf = {
+                    value : data.result.url,
+                    metadata :  {
+                        mimetype : data.result.mimetype
+                    }
+                };
+                that.previewConf = pconf;
+                that.lastUpload = Utility.cloneObj(data.result);
+                for (var k in data.result) {
+                    console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
+                    jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
+                }
+
+            }).fail(function(data, error, msg){
+                console.log("An error occurred, the files couldn't be sent!");
+                that.lastUpload = false;
+                that.error = true;
+                that.errorMessage = "Upload error " + data + " " + error + " " + msg;
+            });
+        },
+    }
+})
+Vue.component('r-preview',{
+    extends : Crud.components.renders.rBase,
+    template : '#r-preview-template',
+    mounted : function() {
+        this._draw();
+    },
+    data : function () {
+        var that = this;
+        var d = {
+            conf : that.cConf?that.cConf:{},
+            icon : false,
+            url : false,
+            iconClass : '',
+        };
+        return d;
+    },
+    methods : {
+        _draw : function () {
+            var that = this;
+            console.log('r-preview.draw',that.conf);
+            switch (that.conf.metadata.mimetype ) {
+                case 'image/jpeg':
+                case 'image/png':
+                    that.url = that.conf.value;
+                    break;
+                case 'application/pdf':
+                    that.icon=true;
+                    that.iconClass = 'fa fa-pdf'
+                    break;
+            }
+        }
+    },
+    watch : {
+        cConf : {
+            handler (val) {
+                this.conf = this.cConf;
+                console.log('watch ocnf',this.cConf)
+                this._draw()
+            },
+            deep:true,
         }
     }
 })

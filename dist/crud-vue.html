@@ -470,7 +470,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <div crud-view_container>
+                                <div>
                                     <template v-for="(item,key) in uploadRenders">
                                         <span v-show="item.type!='r-hidden'">{{ key }}</span>
                                         <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="null" v-bind:c-marker="key"></component>
@@ -751,17 +751,34 @@
 <template id="r-upload-template">
     <div>
         <div v-show="extensions">
-            <span crud-label="app.accepted-extensions">Estensioni accettate</span>:
+            <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
+            <span v-show="extensions">{{extensions.join(',')}}</span>
         </div>
-        <div v-show="extensions">{{extensions.join(',')}}</div>
         <div v-show="maxFileSize">
-            Max <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
+            Dimensione massima: <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
         </div>
-        <div class="btn-group">
+        <div class="btn btn-gradient-info btn-sm">
             <input :name="getFieldName()" c-file class="btn btn-outline-default" type="file" v-on:change="validate()">
         </div>
     </div>
 </template>
+<template id="r-upload-ajax-template">
+    <div class="row">
+        <div class="col-6">
+            <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
+            <r-upload ref="refUpload" :c-conf="uploadConf" v-on:on-success="validate"></r-upload>
+        </div>
+        <div class="col-6" >
+            <r-preview :c-conf="previewConf"></r-preview>
+        </div>
+    </div>
+</template>
+<script type="text/x-template" id="r-preview-template">
+    <div>
+        <img v-show="url" :src="url">
+        <i v-show="icon" :class="iconClass"></i>
+    </div>
+</script>
 <script type="text/x-template" id="v-list-template">
     <div>
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
@@ -862,7 +879,7 @@
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group" role="group">
-                                <div class="input-group-text">
+                                <div class="input-group-text bg-transparent">
                                     <input c-row-check v-show="needSelection"  type="checkbox">
                                 </div>
 

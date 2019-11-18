@@ -47,7 +47,8 @@ var crudJsFiles = [
     'src/js/renders/r-b2-select2.js',
     'src/js/renders/r-b2m-select2.js',
     'src/js/renders/r-upload.js',
-
+    'src/js/renders/r-upload-ajax.js',
+    'src/js/renders/r-preview.js',
 
     'src/js/views/v-base.js',
     'src/js/views/v-record.js',
@@ -99,6 +100,8 @@ var crudHtmlFiles = [
     'src/templates/renders/r-b2-select2.html',
     'src/templates/renders/r-b2m-select2.html',
     'src/templates/renders/r-upload.html',
+    'src/templates/renders/r-upload-ajax.html',
+    'src/templates/renders/r-preview.html',
 
     'src/templates/views/v-list.html',
     'src/templates/views/v-list-edit.html',
@@ -108,4 +111,5 @@ var crudHtmlFiles = [
     'src/templates/views/v-search.html',
     'src/templates/views/v-hasmany.html',
     'src/templates/views/v-hasmany-view.html',
+
 ];

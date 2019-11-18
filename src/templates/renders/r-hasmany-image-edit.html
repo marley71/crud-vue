@@ -78,7 +78,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <div crud-view_container>
+                                <div>
                                     <template v-for="(item,key) in uploadRenders">
                                         <span v-show="item.type!='r-hidden'">{{ key }}</span>
                                         <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="null" v-bind:c-marker="key"></component>

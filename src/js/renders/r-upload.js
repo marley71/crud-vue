@@ -1,4 +1,4 @@
-Vue.component('r-upload',{
+Crud.components.renders.rUpload = Vue.component('r-upload',{
     extends : Crud.components.renders.rBase,
     template : '#r-upload-template',
     data : function () {
@@ -7,15 +7,13 @@ Vue.component('r-upload',{
         console.log('r-upload data',d);
         d.extensions = d.conf.metadata.extensions?d.conf.metadata.extensions:'';
         d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
+        d.error = false;
+        d.errorMessage = '';
         return d;
     },
     mounted : function () {
         var that = this;
         console.log('r-upload ',that);
-
-        // jQuery(that.$el).find('[c-file]').change(function () {
-        //     that.validate();
-        // });
     },
     methods : {
         getValue : function () {
@@ -34,12 +32,20 @@ Vue.component('r-upload',{
         onError : function () {
 
         },
+        _validate : function() {
+            return true;
+        },
         validate : function () {
             var that = this;
             //TODO eseguire validazione
             console.log('validate');
             that.change();
-            that.onSuccess();
+            if (that._validate()) {
+                that.$emit('on-success', that);
+                that.onSuccess();
+            }
+            else
+                that.onError();
             /*var extPos = fileupload.lastIndexOf('.');
             var ext = "";
             if (extPos >= 0) {
