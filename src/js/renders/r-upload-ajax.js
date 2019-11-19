@@ -98,10 +98,13 @@ Vue.component('r-upload-ajax',{
                 };
                 that.previewConf = pconf;
                 that.lastUpload = Utility.cloneObj(data.result);
-                for (var k in data.result) {
-                    console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
-                    jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
-                }
+                jQuery(that.$el).find('input[name="' + that.cKey +'"]');
+                jQuery('<input name="' + that.cKey + '" type="hidden" value="' + data.result.resourceId + '">').appendTo(jQuery(that.$el));
+                RAJAX = that;
+                // for (var k in data.result) {
+                //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
+                //     jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
+                // }
 
             }).fail(function(data, error, msg){
                 console.log("An error occurred, the files couldn't be sent!");
