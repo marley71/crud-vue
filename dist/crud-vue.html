@@ -264,8 +264,8 @@
     </div>
 </script>
 <script type="text/x-template" id="r-checkbox-template">
-    <div>
-        <div class="form-check form-check-inline" v-for="key in domainValuesOrder">
+    <div class="form-check">
+        <div class="form-check-inline" v-for="key in domainValuesOrder">
             <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
                    v-model="value"
                    v-bind:c-marker="cMarker" v-on:change="change" >
@@ -753,7 +753,7 @@
         <div v-show="extensions">
             <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
             <span v-show="extensions">{{extensions.join(',')}}</span>
-        </div> 
+        </div>
         <div v-show="maxFileSize">
             Dimensione massima: <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
         </div>
@@ -767,7 +767,7 @@
     <div class="row">
         <div class="col-8">
             <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
-            <div >
+            <div>
                 <r-upload ref="refUpload" :c-conf="uploadConf" v-on:success="validate" v-on:error="onError"></r-upload>
             </div>
         </div>
@@ -918,7 +918,7 @@
     <div class="container-fluid">
         <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
-        <form v-else>
+        <form v-else enctype="multipart/form-data">
             <div  v-for="(item, key) in renders">
                 <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
                 <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>

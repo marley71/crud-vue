@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-8">
             <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
-            <div >
+            <div>
                 <r-upload ref="refUpload" :c-conf="uploadConf" v-on:success="validate" v-on:error="onError"></r-upload>
             </div>
         </div>

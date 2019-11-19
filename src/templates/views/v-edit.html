@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
-        <form v-else>
+        <form v-else enctype="multipart/form-data">
             <div  v-for="(item, key) in renders">
                 <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
                 <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>

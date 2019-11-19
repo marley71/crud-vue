@@ -22,12 +22,19 @@ Vue.component('r-preview',{
                 case 'image/jpeg':
                 case 'image/png':
                     that.url = that.conf.value;
+                    that.icon = false;
+                    that.iconClass = '';
                     break;
                 case 'application/pdf':
                     that.icon=true;
                     that.iconClass = 'fa fa-pdf'
                     break;
+                default :
+                    that.icon=true;
+                    that.iconClass = 'fa fa-file'
+                    break;
             }
+            that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
         }
     },
     watch : {

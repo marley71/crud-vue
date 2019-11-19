@@ -1,6 +1,6 @@
 <script type="text/x-template" id="r-checkbox-template">
-    <div>
-        <div class="form-check form-check-inline" v-for="key in domainValuesOrder">
+    <div class="form-check">
+        <div class="form-check-inline" v-for="key in domainValuesOrder">
             <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
                    v-model="value"
                    v-bind:c-marker="cMarker" v-on:change="change" >

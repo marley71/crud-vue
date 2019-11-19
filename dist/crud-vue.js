@@ -4972,11 +4972,12 @@ Vue.component('r-upload-ajax',{
             that.complete = false;
 
             var realUrl = Server.getUrl(route.getUrl());
-            var data = new FormData();
+            var fdata = new FormData();
             //data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
-            data.append('file',fDesc)
+            fdata.append('file',fDesc)
+            console.log('ajaxFields',that.conf.metadata.ajaxFields)
             for (var k in that.conf.metadata.ajaxFields)
-                data.append(k,that.conf.metadata.ajaxFields)
+                fdata.append(k,that.conf.metadata.ajaxFields[k])
 
             jQuery.ajax({
                 url: realUrl,
@@ -4984,7 +4985,7 @@ Vue.component('r-upload-ajax',{
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 },
                 type: 'POST',
-                data: data,
+                data: fdata,
                 processData: false,
                 contentType: false                    // Using FormData, no need to process data.
             }).done(function(data){
@@ -5055,12 +5056,19 @@ Vue.component('r-preview',{
                 case 'image/jpeg':
                 case 'image/png':
                     that.url = that.conf.value;
+                    that.icon = false;
+                    that.iconClass = '';
                     break;
                 case 'application/pdf':
                     that.icon=true;
                     that.iconClass = 'fa fa-pdf'
                     break;
+                default :
+                    that.icon=true;
+                    that.iconClass = 'fa fa-file'
+                    break;
             }
+            that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
         }
     },
     watch : {
