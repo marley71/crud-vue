@@ -35,6 +35,8 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                     }
                 }
             }
+            //console.log('hmConf',hmConf)
+            //hmConf.metadata.modelName = that.cKey;
             return hmConf;
 
         },

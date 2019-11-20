@@ -1,13 +1,15 @@
 <template id="v-hasmany-template">
     <div>
         <div>&nbsp;</div>
-        <div v-if="loading">
-            loading
-        </div>
+        <c-loading v-if="loading"></c-loading>
         <div v-else>
             <div  v-for="(item, key) in renders">
                 <!--<component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
-                <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <!--<component :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>-->
+
+                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+
             </div>
         </div>
     </div>

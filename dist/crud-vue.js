@@ -3678,6 +3678,8 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                     }
                 }
             }
+            //console.log('hmConf',hmConf)
+            //hmConf.metadata.modelName = that.cKey;
             return hmConf;
 
         },
@@ -5019,7 +5021,7 @@ Vue.component('r-upload-ajax',{
                 that.previewConf = pconf;
                 that.lastUpload = Utility.cloneObj(data.result);
                 jQuery(that.$el).find('input[name="' + that.cKey +'"]');
-                jQuery('<input name="' + that.cKey + '" type="hidden" value="' + data.result.resourceId + '">').appendTo(jQuery(that.$el));
+                jQuery('<input name="' + that.cKey + '" type="hidden" value="' + data.result.resource_id + '">').appendTo(jQuery(that.$el));
                 RAJAX = that;
                 // for (var k in data.result) {
                 //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
