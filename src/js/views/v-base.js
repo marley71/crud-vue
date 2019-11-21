@@ -40,10 +40,10 @@ Crud.components.views.vBase = Vue.component('v-base', {
             })
         },
         getActionConfig : function(name,type) {
-            console.log('v-base.getActionConfig',name,type,this.conf);
+            //console.log('v-base.getActionConfig',name,type,this.conf);
             if (this.conf.customActions[name]) {
                 var aConf = {}
-                console.log('CUSTOM',name);
+                //console.log('CUSTOM',name);
                 if (!this.$options.components[name]) {
                     Vue.component(name, {
                         extends : actionBase

@@ -2822,7 +2822,7 @@ Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
     props : ['c-ref'],
     mounted : function() {
-        console.log(this.$options.name + ' cref ',this.cRef)
+        //console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
             Crud.cRefs[this.cRef] = this;
         }
@@ -4931,7 +4931,12 @@ Vue.component('r-upload-ajax',{
         d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
         d.uploadConf = d.conf;
         d.previewConf = {
-            metadata : {}
+            value : d.conf.value,
+            metadata :  {
+                mimetype : 'image/jpeg'
+            }
+
+            //metadata : {}
         };
         d.error = false;
         d.errorMessage = '';
@@ -5129,10 +5134,10 @@ Crud.components.views.vBase = Vue.component('v-base', {
             })
         },
         getActionConfig : function(name,type) {
-            console.log('v-base.getActionConfig',name,type,this.conf);
+            //console.log('v-base.getActionConfig',name,type,this.conf);
             if (this.conf.customActions[name]) {
                 var aConf = {}
-                console.log('CUSTOM',name);
+                //console.log('CUSTOM',name);
                 if (!this.$options.components[name]) {
                     Vue.component(name, {
                         extends : actionBase

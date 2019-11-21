@@ -9,7 +9,12 @@ Vue.component('r-upload-ajax',{
         d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
         d.uploadConf = d.conf;
         d.previewConf = {
-            metadata : {}
+            value : d.conf.value,
+            metadata :  {
+                mimetype : 'image/jpeg'
+            }
+
+            //metadata : {}
         };
         d.error = false;
         d.errorMessage = '';
