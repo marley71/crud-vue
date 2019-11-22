@@ -3,6 +3,14 @@ Crud.components.views.vRecord = Vue.component('v-record', {
     props : ['c-conf','c-model'],
     methods : {
 
+        setFieldValue : function(key,value) {
+            var that = this;
+            if (!that.renders[key]) {
+                throw 'accesso a render con chiave inesistente ' + key;
+            }
+            Crud.cRefs[that.renders[key].cRef].setValue(value);
+        },
+
         createRenders : function() {
             var that = this;
             var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
@@ -10,6 +18,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
+                renders[key].cRef = 'r-'+ key;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
                 // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};

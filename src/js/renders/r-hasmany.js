@@ -2,12 +2,19 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
     extends : Crud.components.renders.rBase,
     template: '#r-hasmany-template',
     data : function () {
+        var that = this;
         var d = this.defaultData();
-        console.log('rhasmanyyyyyyy',d);
+        d.confViews = [];
+        for (var i in that.value) {
+            var _conf = that._getHasmanyConf(i,that.value);
+            d.confViews.push(_conf);
+        }
+        console.log('CONF VIEWS',d.confViews)
         return d;
     },
     methods : {
-        getHasmanyConf : function (value) {
+
+        _getHasmanyConf : function (index,value) {
             var that = this;
             var hmConf = that.cConf.hasmanyConf || {};
 
@@ -21,34 +28,64 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                     }
                 },
             },hmConf);
+            hmConf.cRef = 'hm-' + index;
+
             if (value && Object.keys(value).length > 0) {
                 hmConf.data.value = value;
                 if (!hmConf.fields || !hmConf.fields.length) {
                     hmConf.fields = Object.keys(value);
                 }
-            } else {
-                // ci sono record gia' presenti prendo da li i fields.
-                if (this.value && this.value.length > 0) {
-                    if (!hmConf.fields || !hmConf.fields.length) {
-                        hmConf.fields = Object.keys(this.value[0]);
-                        hmConf.data.value = Utility.cloneObj(this.value[0]);
-                    }
-                }
             }
+            if (!hmConf.data.value.status )
+                hmConf.data.value.status = 'new';
+            console.log('HMS',hmConf)
+            return hmConf;
+
+
+            if (that.confViews.length > index) {
+                that.confViews[index] = hmConf;
+                that.confViews[index].data.value.status = 'updated';
+            } else {
+                if (!hmConf.data.value.status) {
+                    console.log('PRRRRRRRRRRRRRRRR');
+                    hmConf.data.value.status = 'new';
+                }
+                that.confViews.push(hmConf);
+                if (that.confViews.length < (index + 1))
+                    throw "confView.length" + that.confViews.length + " minore di index " + index;
+            }
+            // else {
+            //     // ci sono record gia' presenti prendo da li i fields.
+            //     if (this.value && this.value.length > 0) {
+            //         if (!hmConf.fields || !hmConf.fields.length) {
+            //             hmConf.fields = Object.keys(this.value[0]);
+            //             hmConf.data.value = Utility.cloneObj(this.value[0]);
+            //         }
+            //     }
+            // }
             //console.log('hmConf',hmConf)
             //hmConf.metadata.modelName = that.cKey;
-            return hmConf;
+            console.log('HMS',that.confViews[index])
+            return that.confViews[index];
 
         },
         addItem : function () {
             var that = this;
             //var conf = that.getHasmanyConf(null);
-            that.value.push({});
-
+            that.value.push();
         },
         deleteItem : function (index) {
-            console.log('index',index);
-            this.value.splice(index,1);
+            console.log('index',index,this.value[index],this.confViews[index]);
+            if (this.value[index].status == 'new') {
+                this.value.splice(index, 1);
+                this.confViews.splice(index,1);
+            }
+            else {
+                console.log('update status deleted ', index)
+                this.$set(this.value[index], 'status', 'deleted');
+                this.$set(this.confViews[index], 'status' , 'deleted');
+                this.$Crud.cRefs['hm-'+index].setFieldValue('status','deleted');
+            }
         }
     }
 });

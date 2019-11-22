@@ -33,6 +33,7 @@ Vue.component('v-edit', {
             route : null,
             viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
+            crefs : {},
         }
         return Utility.merge(d,dEdit);
 

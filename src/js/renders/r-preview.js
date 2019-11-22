@@ -6,22 +6,25 @@ Vue.component('r-preview',{
     },
     data : function () {
         var that = this;
-        var d = {
-            conf : that.cConf?that.cConf:{},
-            icon : false,
-            url : false,
-            iconClass : '',
-        };
+        var d = that.defaultData();
+        d.icon = false;
+        d.iconClass = '';
         return d;
     },
     methods : {
         _draw : function () {
             var that = this;
             console.log('r-preview.draw',that.conf);
-            switch (that.conf.metadata.mimetype ) {
+            var mimetype = that.conf.mimetype || null;
+            if (!mimetype && that.value) {
+                mimetype = that._mimeType();
+                console.log('nonPresente',mimetype);
+            }
+            console.log('mimetype',mimetype);
+            switch (mimetype) {
                 case 'image/jpeg':
+                case 'image/jpg':
                 case 'image/png':
-                    that.url = that.conf.value;
                     that.icon = false;
                     that.iconClass = '';
                     break;
@@ -35,6 +38,23 @@ Vue.component('r-preview',{
                     break;
             }
             that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
+        },
+        _mimeType : function () {
+            var that = this;
+            console.log('value',that.value);
+            if (that.value.lastIndexOf('.') < 0)
+                return null;
+
+            var ext = this.value.toLowerCase().substr(this.value.lastIndexOf('.'));
+            console.log('ext',ext);
+            switch (ext) {
+                case 'jpg':
+                case  'png':
+                    return 'image/jpg';
+                default:
+                    return null;
+            }
+
         }
     },
     watch : {

@@ -2820,11 +2820,16 @@ function App() {
 
 Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
-    props : ['c-ref'],
+    props : ['c-ref','c-conf'],
     mounted : function() {
-        //console.log(this.$options.name + ' cref ',this.cRef)
+        console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
-            Crud.cRefs[this.cRef] = this;
+            this.$Crud.cRefs[this.cRef] = this;
+        } else  {
+            var _conf = this.conf || {};
+            if ( _conf.cRef) {
+                this.$Crud.cRefs[_conf.cRef] = this;
+            }
         }
     },
     methods : {
@@ -3253,6 +3258,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
 
     mounted : function() {
         var that = this;
+        if (that.cKey == 'status') {
+            console.log('STATUSSSSS',that.value)
+        }
         var _conf = that.cConf || {};
         if (!_conf.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
@@ -3264,7 +3272,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
                 _conf.methods[k].apply(that,this.arguments);
             }
         }
-
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             that.resourcesLoaded = false;
@@ -3284,9 +3291,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
             var that = this;
             //console.log('GET FIELD NAME',this.cKey);
             if (that.conf.operator) {
-                return this.cKey + '[]';
+                return that.cKey + '[]';
             }
-            return this.cKey;
+            return that.cKey;
         },
         getOperatorName : function () {
             var that = this;
@@ -3314,6 +3321,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         getValue : function() {
             return this.value;
         },
+        setValue : function(value) {
+            this.value = value;
+        },
         //events
         change : function () {
             var that = this;
@@ -3323,7 +3333,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
             }
         },
         updateConf : function (conf) {
-            console.log('update conf old',this.conf,'new',conf);
             this.conf = conf;
         },
 
@@ -3645,12 +3654,19 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
     extends : Crud.components.renders.rBase,
     template: '#r-hasmany-template',
     data : function () {
+        var that = this;
         var d = this.defaultData();
-        console.log('rhasmanyyyyyyy',d);
+        d.confViews = [];
+        for (var i in that.value) {
+            var _conf = that._getHasmanyConf(i,that.value);
+            d.confViews.push(_conf);
+        }
+        console.log('CONF VIEWS',d.confViews)
         return d;
     },
     methods : {
-        getHasmanyConf : function (value) {
+
+        _getHasmanyConf : function (index,value) {
             var that = this;
             var hmConf = that.cConf.hasmanyConf || {};
 
@@ -3664,34 +3680,64 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                     }
                 },
             },hmConf);
+            hmConf.cRef = 'hm-' + index;
+
             if (value && Object.keys(value).length > 0) {
                 hmConf.data.value = value;
                 if (!hmConf.fields || !hmConf.fields.length) {
                     hmConf.fields = Object.keys(value);
                 }
-            } else {
-                // ci sono record gia' presenti prendo da li i fields.
-                if (this.value && this.value.length > 0) {
-                    if (!hmConf.fields || !hmConf.fields.length) {
-                        hmConf.fields = Object.keys(this.value[0]);
-                        hmConf.data.value = Utility.cloneObj(this.value[0]);
-                    }
-                }
             }
+            if (!hmConf.data.value.status )
+                hmConf.data.value.status = 'new';
+            console.log('HMS',hmConf)
+            return hmConf;
+
+
+            if (that.confViews.length > index) {
+                that.confViews[index] = hmConf;
+                that.confViews[index].data.value.status = 'updated';
+            } else {
+                if (!hmConf.data.value.status) {
+                    console.log('PRRRRRRRRRRRRRRRR');
+                    hmConf.data.value.status = 'new';
+                }
+                that.confViews.push(hmConf);
+                if (that.confViews.length < (index + 1))
+                    throw "confView.length" + that.confViews.length + " minore di index " + index;
+            }
+            // else {
+            //     // ci sono record gia' presenti prendo da li i fields.
+            //     if (this.value && this.value.length > 0) {
+            //         if (!hmConf.fields || !hmConf.fields.length) {
+            //             hmConf.fields = Object.keys(this.value[0]);
+            //             hmConf.data.value = Utility.cloneObj(this.value[0]);
+            //         }
+            //     }
+            // }
             //console.log('hmConf',hmConf)
             //hmConf.metadata.modelName = that.cKey;
-            return hmConf;
+            console.log('HMS',that.confViews[index])
+            return that.confViews[index];
 
         },
         addItem : function () {
             var that = this;
             //var conf = that.getHasmanyConf(null);
-            that.value.push({});
-
+            that.value.push();
         },
         deleteItem : function (index) {
-            console.log('index',index);
-            this.value.splice(index,1);
+            console.log('index',index,this.value[index],this.confViews[index]);
+            if (this.value[index].status == 'new') {
+                this.value.splice(index, 1);
+                this.confViews.splice(index,1);
+            }
+            else {
+                console.log('update status deleted ', index)
+                this.$set(this.value[index], 'status', 'deleted');
+                this.$set(this.confViews[index], 'status' , 'deleted');
+                this.$Crud.cRefs['hm-'+index].setFieldValue('status','deleted');
+            }
         }
     }
 });
@@ -3709,831 +3755,6 @@ Vue.component('r-hasmany-view', {
         return d;
     }
 });
-Vue.component('r-hasmany-image',{
-    extends : Crud.components.renders.rBase,
-    // data :  function () {
-    //     //console.log('r-hasmany-image',this.cData);
-    //     //var dV = this.cData.metadata.domainValues;
-    //     //var dVO = this.cData.metadata.domainValuesOrder?this.cData.metadata.domainValuesOrder:Object.keys(dV);
-    //     return {
-    //         //name : this.cData.name,
-    //         value: this.cConf.value,
-    //         //domainValues : dV,
-    //         //domainValuesOrder : dVO
-    //     }
-    // },
-    template: '#r-hasmany-image-template',
-});
-
-
-Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit',{
-    extends : Crud.components.renders.rBase,
-
-    data :  function () {
-        var that = this;
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
-        var route = Route.factory('uploadfile',routeConf);
-        var types = {
-            ext : 'r-hidden',
-            filename : 'r-hidden',
-            original_name : 'r-hidden',
-            random : 'r-hidden',
-            nome : 'r-input',
-            descrizione : 'r-textarea'
-        };
-        var d = this.defaultData();
-        var myd =  {
-            //name : this.cConf.name,
-            //value: values,
-            uploadConf : {
-                metadata : {
-                    maxFileSize : '2M',
-                    extensions: ['jpg','png']
-                },
-                methods : {
-                    onSuccess : function () {
-                        that.uploadImage();
-                    }
-                }
-            },
-            uploadRoute : route.getUrl(),
-            error : false,
-            errorMessage : '',
-            complete:false,
-            modelName : 'foto',
-            renders : [],
-            uploadRenders : {},
-            preview : null,
-            lastUpload : null,
-            types : types,
-            uploadFields : ['ext','random','id','status','original_name','filename','mimetype','modelName','type'],
-            fields : ['nome','descrizione'],
-            fieldsConfig : {
-                nome : { type : 'r-input'},
-                descrizione : {type : 'r-textarea'},
-            },
-            mainformFields : ['nome','descrizione','original_name','filename','ext','random','id','status','mimetype'],
-        }
-        return Utility.merge(d,myd);
-    },
-    methods : {
-        add : function () {
-            console.log('add')
-            jQuery('#d-image-ulpload').modal('show');
-            return ;
-
-            var d = new uploadDialog().$mount('#dialog-mount');
-            jQuery('#d-image-ulpload').
-            jQuery('#d-image-ulpload').modal('show');
-        },
-        addItem : function () {
-            var that = this;
-            jQuery.each(jQuery(that.$el).find('[c-marker]'),function () {
-                that.lastUpload[jQuery(this).attr('c-marker')] = jQuery(this).val();
-            })
-            that.createItem(that.lastUpload,'new');
-            //that.lastUpload['nome'] = jQuery(that.$el).find('form[name="formupload"]').find('input[name="nome"]').val();
-            //that.lastUpload['descrizione'] = jQuery(that.$el).find('form[name="formupload"]').find('textarea[name="descrizione"]').val();
-            // var newItem = {};
-            // for (var k in that.renders) {
-            //     newItem[that.cKey + '-' + k + '[]'] = {
-            //         value : that.lastUpload[k],
-            //         type : that.types[k]?that.types[k]:'r-input'
-            //     }
-            // }
-            // that.value.push(newItem);
-            // console.log('VALUE',that.value);
-            // console.log(that);
-        },
-        deleteItem : function (index) {
-            this.renders.splice(index,1);
-        },
-        uploadImage : function () {
-            var that = this;
-            if (!that.$refs.refUpload) {
-                throw 'riferimento a file upload non valido';
-            }
-            console.log('ref',that.$refs.refUpload.getValue());
-
-
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
-            var route = Route.factory('uploadfile',routeConf);
-            //route.params.file = document.getElementById("image-file").files[0]; // jQuery(that.$el).find('input[name="file"]').val();
-            //route.params.file = jQuery(that.$el).find('input[name="file"]').prop('files')[0];
-            //route.params.modelName = 'test';
-            //route.params.type = 'fotos';
-
-            that.error = false;
-            that.complete = false;
-
-            var realUrl = Server.getUrl(route.getUrl());
-            var data = new FormData();
-            //data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
-            data.append('file',that.$refs.refUpload.getValue())
-           // data.append('modelName',that.conf.metadata.modelName);
-            data.append('uploadType','foto');
-
-            jQuery.ajax({
-                url: realUrl,
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                },
-                type: 'POST',
-                data: data,
-                processData: false,
-                contentType: false                    // Using FormData, no need to process data.
-            }).done(function(data){
-                that.error = data.error;
-                that.lastUpload = null;
-                console.log("Success: Files sent!",data);
-                if (data.error) {
-                    var msg = null;
-                    try {
-                        var tmp = JSON.parse(data.msg);
-                        msg = "";
-                        for(k in tmp) {
-                            msg += '<div>'+tmp[k]+'</div>';
-                        }
-                    } catch(e) {
-                        msg = data.msg;
-                    }
-                    that.errorMessage = msg;
-                    //self._showError(dialog,msg);
-                    jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
-                    return;
-                }
-                that.complete = true;
-                that.preview = data.result.url; //Server.getUrl('/imagecache/small/' + data.result.filename);
-                that.lastUpload = Utility.cloneObj(data.result);
-                for (var k in data.result) {
-                    console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
-                    jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
-                }
-
-            }).fail(function(data, error, msg){
-                console.log("An error occurred, the files couldn't be sent!");
-                that.error = true;
-                that.errorMessage = "Upload error " + data + " " + error + " " + msg;
-            });
-
-            // Server.route(route, function (json) {
-            //     that.error = json.error;
-            //     that.errorMessage = json.msg;
-            //
-            // })
-        },
-        createItem : function (values,status) {
-            var that = this;
-            values.status=status;
-            values.type = that.conf.metadata.relationName;
-            values['random_id'] = values.id?values.id:new Date().getTime();
-            //values['langs'] = self.langs;
-            values['label'] = 'filename'//values[self.labelField]?values[self.labelField]:"";
-            console.log('create Form item ' + status,values);
-            var renders = {};
-            for (var i in that.uploadFields) {
-                var field = that.uploadFields[i];
-                if ( that.mainformFields.indexOf(field) < 0)
-                    continue;
-                renders[that.cKey + "-" + field + "[]"] = {
-                    type : 'r-hidden',
-                    value : values[field]
-                }
-
-            }
-            for (var i in that.fields) {
-                var field = that.fields[i];
-                if (that.mainformFields.indexOf(field) < 0)
-                    continue;
-                var type = 'r-hidden';
-                if (that.fieldsConfig[field])
-                    type = that.fieldsConfig[field].type || 'r-hidden';
-                renders[that.cKey + "-" + field + "[]"] = {
-                    type : type,
-                    value : values[field]
-                }
-            }
-            renders.preview = values.url; //status=='new'?values['filename']:values['full_filename'];
-            that.renders.push(renders);
-        }
-
-    },
-    template: '#r-hasmany-image-edit-template',
-    mounted : function () {
-        var that = this;
-        // jQuery(that.$el).find('[c-image-file]').change(function () {
-        //     that.uploadImage();
-        //     //jQuery(that.$el).find('form[name="formupload"]').submit();
-        // });
-
-
-        for (var i in that.conf.value) {
-            that.createItem(that.conf.value[i], 'updated');
-        }
-
-        var uploadRenders = {};
-        for (var i in that.uploadFields) {
-            var field = that.uploadFields[i];
-            uploadRenders[field] = {
-                type : 'r-hidden',
-                value : ''
-            }
-
-        }
-        for (var i in that.fields) {
-            var field = that.fields[i];
-            var type = 'r-hidden';
-            if (that.fieldsConfig[field])
-                type = that.fieldsConfig[field].type || 'r-hidden';
-            uploadRenders[field] = {
-                type : type,
-                value : ''
-            }
-        }
-
-        that.uploadRenders = uploadRenders;
-
-    },
-});
-
-const uploadDialog = Vue.extend({
-    props : [
-
-    ],
-    template : '#d-image-upload-template'
-})
-
-
-Vue.component('r-hasmany-attachment',{
-    extends : Crud.components.renders.rBase,
-    data :  function () {
-        //console.log('r-hasmany-image',this.cData);
-        //var dV = this.cData.metadata.domainValues;
-        //var dVO = this.cData.metadata.domainValuesOrder?this.cData.metadata.domainValuesOrder:Object.keys(dV);
-        return {
-            //name : this.cData.name,
-            value: this.cConf.value,
-            //domainValues : dV,
-            //domainValuesOrder : dVO
-        }
-    },
-    methods : {
-        mimeTypeIcon : function (index) {
-            var that = this;
-            var icon = that.$Crud.icons.mimetypes['default'];
-            if (that.value && that.value[index]) {
-                if (that.$Crud.icons.mimetypes[that.value[index].ext])
-                    icon = that.$Crud.icons.mimetypes[that.value[index].ext];
-            }
-            return icon;
-        }
-    },
-    template: '#r-hasmany-attachment-template',
-});
-
-
-Vue.component('r-hasmany-attachment-edit',{
-    extends : Crud.components.renders.rBase,
-
-    data :  function () {
-        var that = this;
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
-        var route = Route.factory('uploadfile',routeConf);
-        var types = {
-            ext : 'r-hidden',
-            filename : 'r-hidden',
-            original_name : 'r-hidden',
-            random : 'r-hidden',
-            nome : 'r-input',
-            descrizione : 'r-textarea'
-        };
-        var d = this.defaultData();
-        var myd =  {
-            //name : this.cConf.name,
-            //value: values,
-            uploadRoute : route.getUrl(),
-            error : false,
-            errorMessage : '',
-            complete:false,
-            modelName : 'foto',
-            renders : [],
-            uploadRenders : {},
-            preview : null,
-            lastUpload : null,
-            types : types,
-            uploadFields : ['ext','random','id','status','original_name','filename','mimetype','modelName','type'],
-            fields : ['nome','descrizione'],
-            fieldsConfig : {
-                nome : { type : 'r-input'},
-                descrizione : {type : 'r-textarea'},
-            },
-            mainformFields : ['nome','descrizione','original_name','filename','ext','random','id','status','mimetype'],
-
-            iconType : 'default'
-
-        }
-        return Utility.merge(d,myd);
-    },
-    methods : {
-        itemTitle : function(index) {
-            var that = this;
-            var title = "";
-            var r = that.renders[index];
-            console.log('renders',r);
-            if (r){
-                title = r.nome?r.nome: (r.full_filename?r.full_filename:'');
-            }
-            return (title.length > 12?title.substr(0,12)+'...':title);
-        },
-        add : function () {
-            console.log('add')
-            jQuery('#d-attachment-ulpload').modal('show');
-            return ;
-
-            var d = new uploadDialog().$mount('#dialog-mount');
-            jQuery('#d-image-ulpload').
-            jQuery('#d-image-ulpload').modal('show');
-        },
-        addItem : function () {
-            var that = this;
-            jQuery.each(jQuery(that.$el).find('[c-marker]'),function () {
-                that.lastUpload[jQuery(this).attr('c-marker')] = jQuery(this).val();
-            })
-            that.createItem(that.lastUpload,'new');
-            //that.lastUpload['nome'] = jQuery(that.$el).find('form[name="formupload"]').find('input[name="nome"]').val();
-            //that.lastUpload['descrizione'] = jQuery(that.$el).find('form[name="formupload"]').find('textarea[name="descrizione"]').val();
-            // var newItem = {};
-            // for (var k in that.renders) {
-            //     newItem[that.cKey + '-' + k + '[]'] = {
-            //         value : that.lastUpload[k],
-            //         type : that.types[k]?that.types[k]:'r-input'
-            //     }
-            // }
-            // that.value.push(newItem);
-            // console.log('VALUE',that.value);
-            // console.log(that);
-        },
-        deleteItem : function (index) {
-            this.renders.splice(index,1);
-        },
-        uploadImage : function () {
-            var that = this;
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
-            var route = Route.factory('uploadfile',routeConf);
-            //route.params.file = document.getElementById("image-file").files[0]; // jQuery(that.$el).find('input[name="file"]').val();
-            //route.params.file = jQuery(that.$el).find('input[name="file"]').prop('files')[0];
-            //route.params.modelName = 'test';
-            //route.params.type = 'fotos';
-
-            that.error = false;
-            that.complete = false;
-
-            var realUrl = Server.getUrl(route.getUrl());
-            var data = new FormData();
-            data.append('file',jQuery(that.$el).find('[c-attachment-file]').prop('files')[0]);
-            data.append('modelName','test');
-            data.append('type','attachments');
-
-            jQuery.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                },
-                url: realUrl,
-                type: 'POST',
-                data: data,
-                processData: false,
-                contentType: false                    // Using FormData, no need to process data.
-            }).done(function(data){
-                that.error = data.error;
-                that.lastUpload = null;
-                console.log("Success: Files sent!",data);
-                if (data.error) {
-                    var msg = null;
-                    try {
-                        var tmp = JSON.parse(data.msg);
-                        msg = "";
-                        for(k in tmp) {
-                            msg += '<div>'+tmp[k]+'</div>';
-                        }
-                    } catch(e) {
-                        msg = data.msg;
-                    }
-                    that.errorMessage = msg;
-                    //self._showError(dialog,msg);
-                    jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
-                    return;
-                }
-                that.complete = true;
-                that.preview = that.$Crud.icons.mimetypes[data.result.ext]?that.$Crud.icons.mimetypes[data.result.ext]:that.$Crud.icons.mimetypes[that.iconType] //Server.getUrl('/imagecache/small/' + data.result.filename);
-                that.lastUpload = Utility.cloneObj(data.result);
-                for (var k in data.result) {
-                    console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
-                    jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
-                }
-
-            }).fail(function(data, error, msg){
-                console.log("An error occurred, the files couldn't be sent!");
-                that.error = true;
-                that.errorMessage = "Upload error " + data + " " + error + " " + msg;
-            });
-
-            // Server.route(route, function (json) {
-            //     that.error = json.error;
-            //     that.errorMessage = json.msg;
-            //
-            // })
-        },
-        createItem : function (values,status) {
-            var that = this;
-            values.status=status;
-            values.type = that.conf.metadata.relationName;
-            values['random_id'] = values.id?values.id:new Date().getTime();
-            //values['langs'] = self.langs;
-            values['label'] = 'filename'//values[self.labelField]?values[self.labelField]:"";
-            console.log('create Form item ' + status,values);
-            var renders = {};
-            for (var i in that.uploadFields) {
-                var field = that.uploadFields[i];
-                if ( that.mainformFields.indexOf(field) < 0)
-                    continue;
-                renders[that.cKey + "-" + field + "[]"] = {
-                    type : 'r-hidden',
-                    value : values[field]
-                }
-
-            }
-            for (var i in that.fields) {
-                var field = that.fields[i];
-                if (that.mainformFields.indexOf(field) < 0)
-                    continue;
-                var type = 'r-hidden';
-                if (that.fieldsConfig[field])
-                    type = that.fieldsConfig[field].type || 'r-hidden';
-                renders[that.cKey + "-" + field + "[]"] = {
-                    type : type,
-                    value : values[field]
-                }
-            }
-            renders.preview = that.$Crud.icons.mimetypes[values.ext]?that.$Crud.icons.mimetypes[values.ext]:that.$Crud.icons.mimetypes[that.iconType];
-            that.renders.push(renders);
-        }
-
-    },
-    template: '#r-hasmany-attachment-edit-template',
-    mounted : function () {
-        var that = this;
-        // jQuery(that.$el).find('[c-image-file]').autoUpload(function () {
-        //     //console.log('autoupload',jQuery(that.$el).find('form[name="formupload"]').length);
-        //     that.uploadImage();
-        //     //jQuery(that.$el).find('form[name="formupload"]').submit();
-        // });
-
-        jQuery(that.$el).find('[c-attachment-file]').change(function () {
-            //console.log('autoupload',jQuery(that.$el).find('form[name="formupload"]').length);
-            that.uploadImage();
-            //jQuery(that.$el).find('form[name="formupload"]').submit();
-        });
-
-
-        for (var i in that.conf.value) {
-            that.createItem(that.conf.value[i], 'updated');
-        }
-
-        var uploadRenders = {};
-        for (var i in that.uploadFields) {
-            var field = that.uploadFields[i];
-            uploadRenders[field] = {
-                type : 'r-hidden',
-                value : ''
-            }
-
-        }
-        for (var i in that.fields) {
-            var field = that.fields[i];
-            var type = 'r-hidden';
-            if (that.fieldsConfig[field])
-                type = that.fieldsConfig[field].type || 'r-hidden';
-            uploadRenders[field] = {
-                type : type,
-                value : ''
-            }
-        }
-
-        that.uploadRenders = uploadRenders;
-
-    },
-});
-
-
-
-Vue.component('r-upload-image',{
-    extends : Crud.components.renders.rBase, //Crud.components.renders.rHasmanyImageEdit,
-
-    data :  function () {
-        var that = this;
-        console.log('image edit',that);
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.upload);
-        var route = Route.factory('upload',routeConf);
-        var types = {
-            ext : 'r-hidden',
-            filename : 'r-hidden',
-            original_name : 'r-hidden',
-            random : 'r-hidden',
-            nome : 'r-input',
-            descrizione : 'r-textarea'
-        };
-        var renders = {
-            id : {
-                 type : 'r-hidden'
-            },
-            status : {
-                type : 'r-hidden',
-                value : 'new'
-            },
-            nome: {
-                type : 'r-input',
-            },
-            descrizione: {
-                type: 'r-textarea'
-            },
-        };
-        var uploadRenders = {
-            modelName: {
-                type: 'r-hidden',
-                //value: that.cConf.metadata.modelName
-            },
-            type : {
-                type : 'r-hidden',
-                value : that.cKey,
-            },
-            nome: {
-                type : 'r-input',
-            },
-            descrizione: {
-                type: 'r-textarea'
-            },
-        }
-        var values = [];
-        // for (var i in that.cConf.value) {
-        //     var newItem = {};
-        //     for (var k in renders) {
-        //         console.log(i,'key',k,'value',that.cConf.value[i][k])
-        //         newItem[that.cKey + '-' + k + '[]'] = {
-        //             value : that.cConf.value[i][k]?that.cConf.value[i][k]:'',
-        //             type : types[k]?types[k]:'r-input'
-        //         }
-        //     }
-        //     ///imagecache/small/foto_2_1547553970.jpg
-        //     newItem.preview = that.cConf.value[i]['full_filename'];
-        //     values.push(newItem);
-        // }
-        //
-        // console.log('values',values);
-        return {
-            //name : this.cConf.name,
-            value: values,
-            uploadRoute : route.getUrl(),
-            error : false,
-            errorMessage : '',
-            complete:false,
-            modelName : 'foto',
-            renders : renders,
-            uploadRenders : [],
-            preview : null,
-            lastUpload : null,
-            types : types,
-
-            uploadFields : ['ext','random','id','status','original_name','filename','mimetype','modelName','type'],
-            fields : ['nome','descrizione'],
-            fieldsConfig : {
-                nome : { type : 'r-input'},
-                descrizione : {type : 'r-textarea'},
-            },
-            mainformFields : ['nome','descrizione','original_name','filename','ext','random','id','status','mimetype'],
-
-
-
-
-            //domainValues : dV,
-            //domainValuesOrder : dVO
-        }
-    },
-    methods : {
-        add : function () {
-            console.log('add')
-            jQuery('#d-image-ulpload').modal('show');
-            return ;
-
-            var d = new uploadDialog().$mount('#dialog-mount');
-            jQuery('#d-image-ulpload').
-            jQuery('#d-image-ulpload').modal('show');
-        },
-        addItem : function () {
-            var that = this;
-            jQuery.each(jQuery(that.$el).find('[c-marker]'),function () {
-                that.lastUpload[jQuery(this).attr('c-marker')] = jQuery(this).val();
-            })
-            that.createItem(that.lastUpload,'new');
-            //that.lastUpload['nome'] = jQuery(that.$el).find('form[name="formupload"]').find('input[name="nome"]').val();
-            //that.lastUpload['descrizione'] = jQuery(that.$el).find('form[name="formupload"]').find('textarea[name="descrizione"]').val();
-            // var newItem = {};
-            // for (var k in that.renders) {
-            //     newItem[that.cKey + '-' + k + '[]'] = {
-            //         value : that.lastUpload[k],
-            //         type : that.types[k]?that.types[k]:'r-input'
-            //     }
-            // }
-            // that.value.push(newItem);
-            // console.log('VALUE',that.value);
-            // console.log(that);
-        },
-        deleteItem : function (index) {
-            this.value.splice(index,1);
-        },
-        uploadImage : function () {
-            var that = this;
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
-            var route = Route.factory('uploadfile',routeConf);
-            //route.params.file = document.getElementById("image-file").files[0]; // jQuery(that.$el).find('input[name="file"]').val();
-            //route.params.file = jQuery(that.$el).find('input[name="file"]').prop('files')[0];
-            //route.params.modelName = 'test';
-            //route.params.type = 'fotos';
-
-            that.error = false;
-            that.complete = false;
-
-            var realUrl = Server.getUrl(route.getUrl());
-            var data = new FormData();
-            data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
-            data.append('modelName','test');
-            data.append('type','fotos');
-
-            jQuery.ajax({
-                url: realUrl,
-                type: 'POST',
-                data: data,
-                processData: false,
-                contentType: false                    // Using FormData, no need to process data.
-            }).done(function(data){
-                that.error = data.error;
-                that.lastUpload = null;
-                console.log("Success: Files sent!",data);
-                if (data.error) {
-                    var msg = null;
-                    try {
-                        var tmp = JSON.parse(data.msg);
-                        msg = "";
-                        for(k in tmp) {
-                            msg += '<div>'+tmp[k]+'</div>';
-                        }
-                    } catch(e) {
-                        msg = data.msg;
-                    }
-                    that.errorMessage = msg;
-                    //self._showError(dialog,msg);
-                    jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
-                    return;
-                }
-                that.complete = true;
-                that.preview = Server.getUrl('/imagecache/small/' + data.result.filename);
-                that.lastUpload = Utility.cloneObj(data.result);
-
-            }).fail(function(data, error, msg){
-                console.log("An error occurred, the files couldn't be sent!");
-                that.error = true;
-                that.errorMessage = "Upload error " + data + " " + error + " " + msg;
-            });
-
-            // Server.route(route, function (json) {
-            //     that.error = json.error;
-            //     that.errorMessage = json.msg;
-            //
-            // })
-        },
-        createItem : function (values,status) {
-            var that = this;
-            values.status=status;
-            values.type = that.cConf.metadata.relationName;
-            values['random_id'] = values.id?values.id:new Date().getTime();
-            //values['langs'] = self.langs;
-            values['label'] = 'filename'//values[self.labelField]?values[self.labelField]:"";
-            console.log('create Form item ' + status,values);
-            var renders = {};
-            for (var i in that.uploadFields) {
-                var field = that.uploadFields[i];
-                if (_.indexOf(that.mainformFields,field) < 0)
-                    continue;
-                renders[that.cKey + "-" + field + "[]"] = {
-                    type : 'r-hidden',
-                    value : values[field]
-                }
-
-            }
-            for (var i in that.fields) {
-                var field = that.fields[i];
-                if (_.indexOf(that.mainformFields,field) < 0)
-                    continue;
-                var type = 'r-hidden';
-                if (that.fieldsConfig[field])
-                    type = that.fieldsConfig[field].type || 'r-hidden';
-                renders[that.cKey + "-" + field + "[]"] = {
-                    type : type,
-                    value : values[field]
-                }
-            }
-            renders.preview = status=='new'?values['filename']:values['full_filename'];
-            that.value.push(renders);
-        }
-
-    },
-    template: '#r-hasmany-image-edit-template',
-    mounted : function () {
-        var that = this;
-        jQuery(that.$el).find('[c-image-file]').change(function () {
-            //console.log('autoupload',jQuery(that.$el).find('form[name="formupload"]').length);
-            that.uploadImage();
-            //jQuery(that.$el).find('form[name="formupload"]').submit();
-        });
-
-
-        // for (var i in that.cConf.value) {
-        //     that.createItem(that.cConf.value[i], 'updated');
-        // }
-
-        var uploadRenders = {};
-        // for (var i in that.uploadFields) {
-        //     var field = that.uploadFields[i];
-        //     uploadRenders[field] = {
-        //         type : 'r-hidden',
-        //         value : ''
-        //     }
-        //
-        // }
-        // for (var i in that.fields) {
-        //     var field = that.fields[i];
-        //     var type = 'r-hidden';
-        //     if (that.fieldsConfig[field])
-        //         type = that.fieldsConfig[field].type || 'r-hidden';
-        //     uploadRenders[field] = {
-        //         type : type,
-        //         value : ''
-        //     }
-        // }
-        //
-        // that.uploadRenders = uploadRenders;
-
-
-        // jQuery(this.$el).find('form[name="formupload"]').ajaxForm({
-        //     beforeSubmit: function (a, f, o) {
-        //         console.log('before submit',a,f,o);
-        //         o.dataType = 'json';
-        //         that.error = false;
-        //         that.complete = false;
-        //     },
-        //     error: function (data, error, msg) {
-        //         console.log('error',data,error,msg);
-        //         that.error = true;
-        //         that.errorMessage = "Upload error " + data + " " + error + " " + msg;
-        //     },
-        //     success: function (data) {
-        //         //self.app.waitEnd();
-        //         console.log('success',data);
-        //         that.error = data.error;
-        //         that.lastUpload = null;
-        //         if (data.error) {
-        //             var msg = null;
-        //             try {
-        //                 var tmp = JSON.parse(data.msg);
-        //                 msg = "";
-        //                 for(k in tmp) {
-        //                     msg += '<div>'+tmp[k]+'</div>';
-        //                 }
-        //             } catch(e) {
-        //                 msg = data.msg;
-        //             }
-        //             that.errorMessage = msg;
-        //             //self._showError(dialog,msg);
-        //             jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
-        //             return;
-        //         }
-        //         that.complete = true;
-        //         that.preview = Server.getUrl('/imagecache/small/' + data.result.filename);
-        //         that.lastUpload = Utility.cloneObj(data.result);
-        //
-        //         // // aggiorno i campi di contorno di uploadfoto
-        //         // for (var k in data.result) {
-        //         //     jQuery(that.$el).find('form[name="formupload"]').find('input[name="' + k + '"]').attr('value', data.result[k]);
-        //         // }
-        //         //
-        //         // jQuery(that.$el).find('[crud-button="ok"]').removeClass("disabled");
-        //         // //self.afterUpload(data);
-        //     }
-        // });
-    },
-});
-
-
-
 Vue.component('r-swap', {
     extends : Crud.components.renders.rBase,
     template: '#r-swap-template',
@@ -5050,22 +4271,25 @@ Vue.component('r-preview',{
     },
     data : function () {
         var that = this;
-        var d = {
-            conf : that.cConf?that.cConf:{},
-            icon : false,
-            url : false,
-            iconClass : '',
-        };
+        var d = that.defaultData();
+        d.icon = false;
+        d.iconClass = '';
         return d;
     },
     methods : {
         _draw : function () {
             var that = this;
             console.log('r-preview.draw',that.conf);
-            switch (that.conf.metadata.mimetype ) {
+            var mimetype = that.conf.mimetype || null;
+            if (!mimetype && that.value) {
+                mimetype = that._mimeType();
+                console.log('nonPresente',mimetype);
+            }
+            console.log('mimetype',mimetype);
+            switch (mimetype) {
                 case 'image/jpeg':
+                case 'image/jpg':
                 case 'image/png':
-                    that.url = that.conf.value;
                     that.icon = false;
                     that.iconClass = '';
                     break;
@@ -5079,6 +4303,23 @@ Vue.component('r-preview',{
                     break;
             }
             that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
+        },
+        _mimeType : function () {
+            var that = this;
+            console.log('value',that.value);
+            if (that.value.lastIndexOf('.') < 0)
+                return null;
+
+            var ext = this.value.toLowerCase().substr(this.value.lastIndexOf('.'));
+            console.log('ext',ext);
+            switch (ext) {
+                case 'jpg':
+                case  'png':
+                    return 'image/jpg';
+                default:
+                    return null;
+            }
+
         }
     },
     watch : {
@@ -5246,6 +4487,14 @@ Crud.components.views.vRecord = Vue.component('v-record', {
     props : ['c-conf','c-model'],
     methods : {
 
+        setFieldValue : function(key,value) {
+            var that = this;
+            if (!that.renders[key]) {
+                throw 'accesso a render con chiave inesistente ' + key;
+            }
+            Crud.cRefs[that.renders[key].cRef].setValue(value);
+        },
+
         createRenders : function() {
             var that = this;
             var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
@@ -5253,6 +4502,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
+                renders[key].cRef = 'r-'+ key;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
                 // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
@@ -5352,6 +4602,9 @@ Crud.components.views.vRecord = Vue.component('v-record', {
 Crud.components.views.vCollection = Vue.component('v-collection', {
     extends : Crud.components.views.vBase,
     methods : {
+        setFieldValue : function(row,col,value) {
+            var that = this;
+        },
         defaultData : function () {
             return {
                 viewTitle : '',
@@ -5373,22 +4626,16 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             var keys = that.keys;
 
             for (var i in data.value) {
-                renders.push({});
+                renders.push();
                 recordActions.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
+                    dconf.cRef = 'r-'+i+'-'+k;
                     dconf.modelData = data.value[i];
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
                     renders[i][key] = dconf;
-                    // var c = conf.fieldsConfig[key]?Utility.cloneObj(conf.fieldsConfig[key]):{type:'r-text'};
-                    // if (data.value[i][key])
-                    //     c.value = data.value[i][key];
-                    // c.modelData = data.value[i];
-                    // if (!c.template)
-                    //     c.template = that.conf.renderTemplate;
-
                 }
                 that.createRecordActions(i);
             }
@@ -5955,6 +5202,7 @@ Vue.component('v-edit', {
             route : null,
             viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
+            crefs : {},
         }
         return Utility.merge(d,dEdit);
 
@@ -6144,10 +5392,6 @@ Vue.component('v-hasmany', {
     data :  function () {
         var that = this;
         var conf = that.getConf(that.cModel,'edit');
-        //that.createActions();
-
-        //that.loading = true;
-
         return {
             loading : true,
             renders : {},
@@ -6156,6 +5400,7 @@ Vue.component('v-hasmany', {
             data : {},
             conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'r-input',
+            crefs : {},
         }
 
     },

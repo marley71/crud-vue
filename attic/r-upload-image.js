@@ -20,7 +20,7 @@ Vue.component('r-upload-image',{
             },
             status : {
                 type : 'r-hidden',
-                value : 'new'
+                //value : 'new'
             },
             nome: {
                 type : 'r-input',

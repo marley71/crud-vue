@@ -4,10 +4,6 @@ Vue.component('v-hasmany', {
     data :  function () {
         var that = this;
         var conf = that.getConf(that.cModel,'edit');
-        //that.createActions();
-
-        //that.loading = true;
-
         return {
             loading : true,
             renders : {},
@@ -16,6 +12,7 @@ Vue.component('v-hasmany', {
             data : {},
             conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'r-input',
+            crefs : {},
         }
 
     },

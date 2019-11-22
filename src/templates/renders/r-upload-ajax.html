@@ -6,7 +6,7 @@
                 <r-upload ref="refUpload" :c-conf="uploadConf" v-on:success="validate" v-on:error="onError"></r-upload>
             </div>
         </div>
-        <div class="col-4" >
+        <div class="col-4" v-show="!uploadConf.noPreview">
             <r-preview :c-conf="previewConf"></r-preview>
         </div>
     </div>

@@ -4,6 +4,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
 
     mounted : function() {
         var that = this;
+        if (that.cKey == 'status') {
+            console.log('STATUSSSSS',that.value)
+        }
         var _conf = that.cConf || {};
         if (!_conf.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
@@ -15,7 +18,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
                 _conf.methods[k].apply(that,this.arguments);
             }
         }
-
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             that.resourcesLoaded = false;
@@ -35,9 +37,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
             var that = this;
             //console.log('GET FIELD NAME',this.cKey);
             if (that.conf.operator) {
-                return this.cKey + '[]';
+                return that.cKey + '[]';
             }
-            return this.cKey;
+            return that.cKey;
         },
         getOperatorName : function () {
             var that = this;
@@ -65,6 +67,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         getValue : function() {
             return this.value;
         },
+        setValue : function(value) {
+            this.value = value;
+        },
         //events
         change : function () {
             var that = this;
@@ -74,7 +79,6 @@ Crud.components.renders.rBase = Vue.component('r-base', {
             }
         },
         updateConf : function (conf) {
-            console.log('update conf old',this.conf,'new',conf);
             this.conf = conf;
         },
 

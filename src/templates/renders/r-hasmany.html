@@ -9,15 +9,15 @@
                 <div class="">
                     <p crud-hasmany_title_msg></p>
                     <ul class="list-inline"  >
-                        <!--  -- contenitore hasmany -- -->
-                        <li v-for="(item,index) in value"  class="list-inline-item" >
+                        <!--  -- contenitore delle views hasmany -- -->
+                        <li v-for="(item,index) in confViews"  :class="{'list-inline-item':true, 'd-none' : item.data.value.status == 'deleted'}">
                             <div class="card">
                                 <div class="card-header">
                                     <small class="pull-left" crud-field="label" crud-trim="12" crud-attrs="{title:label}"></small>
                                     <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button"  title="Cancella elemento"><i class="fa fa-times-circle"></i></button>
-                                    {{cConf.metadata.modelName}}
+<!--                                    {{cConf.metadata.modelName}}-->
                                 </div>
-                                <v-hasmany v-bind:c-model="cKey" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany>
+                                <v-hasmany v-bind:c-model="cKey" v-bind:c-conf="item"></v-hasmany>
 
                             </div>
                         </li>
