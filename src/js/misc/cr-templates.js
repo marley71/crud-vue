@@ -19,3 +19,7 @@ Vue.component('c-tpl-list', {
     extends : Crud.components.cTplBase,
     template : '#c-tpl-list-template'
 });
+Vue.component('c-tpl-no', {
+    extends : Crud.components.cTplBase,
+    template : '#c-tpl-no-template'
+});

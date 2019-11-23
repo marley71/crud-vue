@@ -1,7 +1,7 @@
 const CrudApp = Vue.extend({
     created : function() {
         var that = this;
-        that.crudApp.pluginsPath = this.pluginsPath?this.plugisPath:'/';
+        that.crudApp.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
         var resources = [];
         resources.push(this.templatesFile);
         for (var k in this.$Crud.components.libs) {

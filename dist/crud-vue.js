@@ -2123,13 +2123,7 @@ function App() {
     var _log = null;
     var _autoparse = false;
 
-    // var _defaultConfs = {
-    //         'list': ConfList,
-    //         'edit': ConfEdit,
-    //         'search': ConfSearch,
-    //         'calendar': ConfCalendar,
-    //         //'csv': CsvConfs
-    // };
+
 
     // opzioni
     App.resources = [];     // vettore di risorse iniziali da caricare
@@ -2138,6 +2132,15 @@ function App() {
     App.show_log = false;
     App.mobile = false;
 
+    App.getRefId = function () {
+        var id = "";
+        for (var i = 0; i < arguments.length; i++) {
+            id += arguments[i];
+            if (i < arguments.length-1)
+                id += '-';
+        }
+        return id;
+    };
 
     App.getResources = function () {
         return _resources;
@@ -2822,17 +2825,13 @@ Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
     props : ['c-ref','c-conf'],
     mounted : function() {
-        console.log(this.$options.name + ' cref ',this.cRef)
+        //console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
             this.$Crud.cRefs[this.cRef] = this;
-            if (this.$parent.cRefs)
-                this.$parent.cRefs[this.cRef] = this;
         } else  {
             var _conf = this.conf || {};
             if ( _conf.cRef) {
                 this.$Crud.cRefs[_conf.cRef] = this;
-                if (this.$parent.cRefs)
-                    this.$parent.cRefs[this.cRef] = this;
             }
         }
     },
@@ -2869,6 +2868,10 @@ Vue.component('c-tpl-record2',{
 Vue.component('c-tpl-list', {
     extends : Crud.components.cTplBase,
     template : '#c-tpl-list-template'
+});
+Vue.component('c-tpl-no', {
+    extends : Crud.components.cTplBase,
+    template : '#c-tpl-no-template'
 });
 const actionBase = Vue.component('action-base', {
     props : ['c-conf','c-key'],
@@ -4365,7 +4368,6 @@ Crud.components.views.vBase = Vue.component('v-base', {
             return {
                 viewTitle : '',
                 conf : _c,
-                cRefs:{},
             }
         },
 
@@ -4512,7 +4514,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = 'r-'+ key;
+                renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
                 // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
@@ -4612,8 +4614,12 @@ Crud.components.views.vRecord = Vue.component('v-record', {
 Crud.components.views.vCollection = Vue.component('v-collection', {
     extends : Crud.components.views.vBase,
     methods : {
-        setFieldValue : function(row,col,value) {
+        setFieldValue : function(row,key,value) {
             var that = this;
+            if (!that.renders[row][key]) {
+                throw 'accesso a render con chiave inesistente '+ row + "," + key;
+            }
+            that.renders[row][key].setValue(value);
         },
         defaultData : function () {
             return {
@@ -4622,7 +4628,6 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
-                cRefs:{},
             }
         },
         createRenders : function () {
@@ -4641,7 +4646,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
-                    dconf.cRef = 'r-'+i+'-'+k;
+                    dconf.cRef = that.crudApp.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
@@ -4649,9 +4654,9 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 }
                 that.createRecordActions(i);
             }
+
             that.renders = renders;
             that.recordActionsName = recordActionsName;
-            //that.recordActions = recordActions;
         },
         getKeys : function () {
             var that = this;
@@ -5212,7 +5217,6 @@ Vue.component('v-edit', {
             route : null,
             viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
-            crefs : {},
         }
         return Utility.merge(d,dEdit);
 
@@ -5410,7 +5414,6 @@ Vue.component('v-hasmany', {
             data : {},
             conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'r-input',
-            crefs : {},
         }
 
     },
@@ -5488,7 +5491,7 @@ Vue.component('v-hasmany-view', {
 const CrudApp = Vue.extend({
     created : function() {
         var that = this;
-        that.crudApp.pluginsPath = this.pluginsPath?this.plugisPath:'/';
+        that.crudApp.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
         var resources = [];
         resources.push(this.templatesFile);
         for (var k in this.$Crud.components.libs) {

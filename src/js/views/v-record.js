@@ -18,7 +18,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = 'r-'+ key;
+                renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
                 // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};

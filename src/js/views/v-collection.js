@@ -1,8 +1,12 @@
 Crud.components.views.vCollection = Vue.component('v-collection', {
     extends : Crud.components.views.vBase,
     methods : {
-        setFieldValue : function(row,col,value) {
+        setFieldValue : function(row,key,value) {
             var that = this;
+            if (!that.renders[row][key]) {
+                throw 'accesso a render con chiave inesistente '+ row + "," + key;
+            }
+            that.renders[row][key].setValue(value);
         },
         defaultData : function () {
             return {
@@ -11,7 +15,6 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
-                cRefs:{},
             }
         },
         createRenders : function () {
@@ -30,7 +33,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
-                    dconf.cRef = 'r-'+i+'-'+k;
+                    dconf.cRef = that.crudApp.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
@@ -38,9 +41,9 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 }
                 that.createRecordActions(i);
             }
+
             that.renders = renders;
             that.recordActionsName = recordActionsName;
-            //that.recordActions = recordActions;
         },
         getKeys : function () {
             var that = this;

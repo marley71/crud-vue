@@ -12,7 +12,6 @@ Vue.component('v-hasmany', {
             data : {},
             conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'r-input',
-            crefs : {},
         }
 
     },

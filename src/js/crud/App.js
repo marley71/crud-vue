@@ -19,13 +19,7 @@ function App() {
     var _log = null;
     var _autoparse = false;
 
-    // var _defaultConfs = {
-    //         'list': ConfList,
-    //         'edit': ConfEdit,
-    //         'search': ConfSearch,
-    //         'calendar': ConfCalendar,
-    //         //'csv': CsvConfs
-    // };
+
 
     // opzioni
     App.resources = [];     // vettore di risorse iniziali da caricare
@@ -34,6 +28,15 @@ function App() {
     App.show_log = false;
     App.mobile = false;
 
+    App.getRefId = function () {
+        var id = "";
+        for (var i = 0; i < arguments.length; i++) {
+            id += arguments[i];
+            if (i < arguments.length-1)
+                id += '-';
+        }
+        return id;
+    };
 
     App.getResources = function () {
         return _resources;
