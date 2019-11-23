@@ -3,13 +3,13 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
     template: '#r-hasmany-template',
     data : function () {
         var that = this;
-        var d = this.defaultData();
+        var d = that.defaultData();
         d.confViews = [];
-        for (var i in that.value) {
-            var _conf = that._getHasmanyConf(i,that.value);
+        for (var i in d.value) {
+            var _conf = that._getHasmanyConf(i,d.value[i]);
             d.confViews.push(_conf);
         }
-        console.log('CONF VIEWS',d.confViews)
+        console.log('CONF VIEWS',d.confViews,d.value)
         return d;
     },
     methods : {
@@ -36,8 +36,13 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                     hmConf.fields = Object.keys(value);
                 }
             }
-            if (!hmConf.data.value.status )
+            if (!value) {
                 hmConf.data.value.status = 'new';
+            } else {
+                hmConf.data.value.status = 'updated';
+            }
+            // if (!hmConf.data.value.status )
+            //     hmConf.data.value.status = 'new';
             console.log('HMS',hmConf)
             return hmConf;
 
@@ -72,7 +77,9 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
         addItem : function () {
             var that = this;
             //var conf = that.getHasmanyConf(null);
-            that.value.push();
+            that.value.push({});
+            that.confViews.push(that._getHasmanyConf(that.value.length-1,null));
+
         },
         deleteItem : function (index) {
             console.log('index',index,this.value[index],this.confViews[index]);

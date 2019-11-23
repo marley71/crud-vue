@@ -1,5 +1,5 @@
 Vue.component('r-upload-ajax',{
-    extends : Crud.components.renders.rUpload,
+    extends : Crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
@@ -13,8 +13,6 @@ Vue.component('r-upload-ajax',{
             metadata :  {
                 mimetype : 'image/jpeg'
             }
-
-            //metadata : {}
         };
         d.error = false;
         d.errorMessage = '';
@@ -22,9 +20,18 @@ Vue.component('r-upload-ajax',{
     },
 
     methods : {
+        getValue : function () {
+            var that = this;
+            console.log('filedesc',jQuery(that.$el).find('[c-file]').prop('files'));
+            var fileDesc = jQuery(that.$el).find('[c-file]').prop('files');
+            if (fileDesc.length) {
+                return fileDesc[0];
+            }
 
-        onError : function() {
-
+            return null;
+        },
+        _validate : function() {
+            return true;
         },
         validate : function () {
             var that = this;
@@ -38,10 +45,10 @@ Vue.component('r-upload-ajax',{
         },
         sendAjax : function () {
             var that = this;
-            if (!that.$refs.refUpload) {
-                throw 'riferimento a file upload non valido';
-            }
-            var fDesc = that.$refs.refUpload.getValue();
+            // if (!that.$refs.refUpload) {
+            //     throw 'riferimento a file upload non valido';
+            // }
+            var fDesc = that.getValue();
             if (!fDesc)
                 throw 'descrittore file upload non valido';
 

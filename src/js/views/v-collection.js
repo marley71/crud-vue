@@ -11,7 +11,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
-                vueRefs:{},
+                cRefs:{},
             }
         },
         createRenders : function () {
@@ -25,7 +25,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             var keys = that.keys;
 
             for (var i in data.value) {
-                renders.push();
+                renders.push({});
                 recordActions.push({});
                 for (var k in that.keys) {
                     var key = keys[k];

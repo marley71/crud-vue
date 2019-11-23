@@ -9,52 +9,47 @@ Vue.component('r-preview',{
         var d = that.defaultData();
         d.icon = false;
         d.iconClass = '';
+        d.ext = null;
+        console.log('PREVIEW DATA',d);
         return d;
     },
     methods : {
         _draw : function () {
             var that = this;
             console.log('r-preview.draw',that.conf);
-            var mimetype = that.conf.mimetype || null;
-            if (!mimetype && that.value) {
-                mimetype = that._mimeType();
-                console.log('nonPresente',mimetype);
-            }
-            console.log('mimetype',mimetype);
-            switch (mimetype) {
-                case 'image/jpeg':
-                case 'image/jpg':
-                case 'image/png':
+            //var mimetype = that.conf.mimetype || null;
+            var previewType = that.conf.previewType || null;
+            var ext = that.conf.ext || that._getExt();
+            // if (!previewType && that.value) {
+            //     previewType = that._previewType();
+            // }
+            // console.log('mimetype',previewType);
+            switch (previewType) {
+                case 'image':
                     that.icon = false;
                     that.iconClass = '';
                     break;
-                case 'application/pdf':
+                case 'default':
                     that.icon=true;
-                    that.iconClass = 'fa fa-pdf'
-                    break;
-                default :
-                    that.icon=true;
-                    that.iconClass = 'fa fa-file'
+                    switch (ext) {
+                        case 'pdf':
+                            that.iconClass = 'fa fa-pdf'
+                            break;
+                        default:
+                            that.icon=true;
+                            that.iconClass = 'fa fa-file'
+                            break;
+                    }
                     break;
             }
             that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
         },
-        _mimeType : function () {
+        _getExt : function () {
             var that = this;
-            console.log('value',that.value);
-            if (that.value.lastIndexOf('.') < 0)
+            //console.log('value',that.value);
+            if (!that.value || that.value.lastIndexOf('.') < 0)
                 return null;
-
-            var ext = this.value.toLowerCase().substr(this.value.lastIndexOf('.'));
-            console.log('ext',ext);
-            switch (ext) {
-                case 'jpg':
-                case  'png':
-                    return 'image/jpg';
-                default:
-                    return null;
-            }
-
+            return this.value.toLowerCase().substr(this.value.lastIndexOf('.'));
         }
     },
     watch : {

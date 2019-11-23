@@ -2825,10 +2825,14 @@ Crud.components.cComponent = Vue.component('c-component',{
         console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
             this.$Crud.cRefs[this.cRef] = this;
+            if (this.$parent.cRefs)
+                this.$parent.cRefs[this.cRef] = this;
         } else  {
             var _conf = this.conf || {};
             if ( _conf.cRef) {
                 this.$Crud.cRefs[_conf.cRef] = this;
+                if (this.$parent.cRefs)
+                    this.$parent.cRefs[this.cRef] = this;
             }
         }
     },
@@ -3655,13 +3659,13 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
     template: '#r-hasmany-template',
     data : function () {
         var that = this;
-        var d = this.defaultData();
+        var d = that.defaultData();
         d.confViews = [];
-        for (var i in that.value) {
-            var _conf = that._getHasmanyConf(i,that.value);
+        for (var i in d.value) {
+            var _conf = that._getHasmanyConf(i,d.value[i]);
             d.confViews.push(_conf);
         }
-        console.log('CONF VIEWS',d.confViews)
+        console.log('CONF VIEWS',d.confViews,d.value)
         return d;
     },
     methods : {
@@ -3688,8 +3692,13 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                     hmConf.fields = Object.keys(value);
                 }
             }
-            if (!hmConf.data.value.status )
+            if (!value) {
                 hmConf.data.value.status = 'new';
+            } else {
+                hmConf.data.value.status = 'updated';
+            }
+            // if (!hmConf.data.value.status )
+            //     hmConf.data.value.status = 'new';
             console.log('HMS',hmConf)
             return hmConf;
 
@@ -3724,7 +3733,9 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
         addItem : function () {
             var that = this;
             //var conf = that.getHasmanyConf(null);
-            that.value.push();
+            that.value.push({});
+            that.confViews.push(that._getHasmanyConf(that.value.length-1,null));
+
         },
         deleteItem : function (index) {
             console.log('index',index,this.value[index],this.confViews[index]);
@@ -4074,10 +4085,7 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
         d.errorMessage = '';
         return d;
     },
-    mounted : function () {
-        var that = this;
-        console.log('r-upload ',that);
-    },
+
     methods : {
         getValue : function () {
             var that = this;
@@ -4142,7 +4150,7 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
     }
 })
 Vue.component('r-upload-ajax',{
-    extends : Crud.components.renders.rUpload,
+    extends : Crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
@@ -4156,8 +4164,6 @@ Vue.component('r-upload-ajax',{
             metadata :  {
                 mimetype : 'image/jpeg'
             }
-
-            //metadata : {}
         };
         d.error = false;
         d.errorMessage = '';
@@ -4165,9 +4171,18 @@ Vue.component('r-upload-ajax',{
     },
 
     methods : {
+        getValue : function () {
+            var that = this;
+            console.log('filedesc',jQuery(that.$el).find('[c-file]').prop('files'));
+            var fileDesc = jQuery(that.$el).find('[c-file]').prop('files');
+            if (fileDesc.length) {
+                return fileDesc[0];
+            }
 
-        onError : function() {
-
+            return null;
+        },
+        _validate : function() {
+            return true;
         },
         validate : function () {
             var that = this;
@@ -4181,10 +4196,10 @@ Vue.component('r-upload-ajax',{
         },
         sendAjax : function () {
             var that = this;
-            if (!that.$refs.refUpload) {
-                throw 'riferimento a file upload non valido';
-            }
-            var fDesc = that.$refs.refUpload.getValue();
+            // if (!that.$refs.refUpload) {
+            //     throw 'riferimento a file upload non valido';
+            // }
+            var fDesc = that.getValue();
             if (!fDesc)
                 throw 'descrittore file upload non valido';
 
@@ -4274,52 +4289,47 @@ Vue.component('r-preview',{
         var d = that.defaultData();
         d.icon = false;
         d.iconClass = '';
+        d.ext = null;
+        console.log('PREVIEW DATA',d);
         return d;
     },
     methods : {
         _draw : function () {
             var that = this;
             console.log('r-preview.draw',that.conf);
-            var mimetype = that.conf.mimetype || null;
-            if (!mimetype && that.value) {
-                mimetype = that._mimeType();
-                console.log('nonPresente',mimetype);
-            }
-            console.log('mimetype',mimetype);
-            switch (mimetype) {
-                case 'image/jpeg':
-                case 'image/jpg':
-                case 'image/png':
+            //var mimetype = that.conf.mimetype || null;
+            var previewType = that.conf.previewType || null;
+            var ext = that.conf.ext || that._getExt();
+            // if (!previewType && that.value) {
+            //     previewType = that._previewType();
+            // }
+            // console.log('mimetype',previewType);
+            switch (previewType) {
+                case 'image':
                     that.icon = false;
                     that.iconClass = '';
                     break;
-                case 'application/pdf':
+                case 'default':
                     that.icon=true;
-                    that.iconClass = 'fa fa-pdf'
-                    break;
-                default :
-                    that.icon=true;
-                    that.iconClass = 'fa fa-file'
+                    switch (ext) {
+                        case 'pdf':
+                            that.iconClass = 'fa fa-pdf'
+                            break;
+                        default:
+                            that.icon=true;
+                            that.iconClass = 'fa fa-file'
+                            break;
+                    }
                     break;
             }
             that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
         },
-        _mimeType : function () {
+        _getExt : function () {
             var that = this;
-            console.log('value',that.value);
-            if (that.value.lastIndexOf('.') < 0)
+            //console.log('value',that.value);
+            if (!that.value || that.value.lastIndexOf('.') < 0)
                 return null;
-
-            var ext = this.value.toLowerCase().substr(this.value.lastIndexOf('.'));
-            console.log('ext',ext);
-            switch (ext) {
-                case 'jpg':
-                case  'png':
-                    return 'image/jpg';
-                default:
-                    return null;
-            }
-
+            return this.value.toLowerCase().substr(this.value.lastIndexOf('.'));
         }
     },
     watch : {
@@ -4355,7 +4365,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             return {
                 viewTitle : '',
                 conf : _c,
-                vueRefs:{},
+                cRefs:{},
             }
         },
 
@@ -4612,7 +4622,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
-                vueRefs:{},
+                cRefs:{},
             }
         },
         createRenders : function () {
@@ -4626,7 +4636,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             var keys = that.keys;
 
             for (var i in data.value) {
-                renders.push();
+                renders.push({});
                 recordActions.push({});
                 for (var k in that.keys) {
                     var key = keys[k];

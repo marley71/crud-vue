@@ -20,7 +20,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             return {
                 viewTitle : '',
                 conf : _c,
-                vueRefs:{},
+                cRefs:{},
             }
         },
 

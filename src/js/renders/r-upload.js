@@ -11,10 +11,7 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
         d.errorMessage = '';
         return d;
     },
-    mounted : function () {
-        var that = this;
-        console.log('r-upload ',that);
-    },
+
     methods : {
         getValue : function () {
             var that = this;
