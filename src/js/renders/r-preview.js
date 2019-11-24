@@ -31,15 +31,9 @@ Vue.component('r-preview',{
                     break;
                 case 'default':
                     that.icon=true;
-                    switch (ext) {
-                        case 'pdf':
-                            that.iconClass = 'fa fa-pdf'
-                            break;
-                        default:
-                            that.icon=true;
-                            that.iconClass = 'fa fa-file'
-                            break;
-                    }
+                    that.iconClass = that.$Crud.icons.mimetypes['default'];
+                    if (that.$Crud.icons.mimetypes[ext])
+                        that.iconClass = that.$Crud.icons.mimetypes[ext];
                     break;
             }
             that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
