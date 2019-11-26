@@ -1,3 +1,20 @@
+Vue.component('v-render', {
+    props : ['c-conf'],
+    // When the bound element is inserted into the DOM...
+    mounted: function () {
+        console.log('v-render',this.$parent)
+    },
+    data : function() {
+        var render = this.$parent.renders[this.cKey];
+        console.log('V-RENDER ',this.cConf);
+        return {
+            type : this.cConf.type,
+            conf : this.conf
+        }
+    },
+    template : '<component :is="type" :c-conf="conf"></component>'
+})
+
 Crud.components.views.vBase = Vue.component('v-base', {
     props : ['cConf','cFields'],
     extends : Crud.components.cComponent,

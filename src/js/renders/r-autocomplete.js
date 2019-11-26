@@ -1,10 +1,7 @@
 Vue.component('r-autocomplete', {
     extends : Crud.components.renders.rBase,
     template: '#r-autocomplete-template',
-    mounted() {
-        var that = this;
 
-    },
     data : function () {
         var d = this.defaultData();
         return d;

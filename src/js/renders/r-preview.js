@@ -2,6 +2,10 @@ Vue.component('r-preview',{
     extends : Crud.components.renders.rBase,
     template : '#r-preview-template',
     mounted : function() {
+        var that = this;
+        // that.$Crud.instance.on('preview',function (url) {
+        //     that.value = url;
+        // })
         this._draw();
     },
     data : function () {
@@ -10,7 +14,6 @@ Vue.component('r-preview',{
         d.icon = false;
         d.iconClass = '';
         d.ext = null;
-        console.log('PREVIEW DATA',d);
         return d;
     },
     methods : {

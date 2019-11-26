@@ -3261,13 +3261,10 @@ Crud.components.cWait = Vue.component('c-wait',{
 })
 Crud.components.renders.rBase = Vue.component('r-base', {
     extends : Crud.components.cComponent,
-    props : ['c-conf','c-key','c-marker','c-ref'],
+    props : ['c-conf','c-marker','c-ref'],
 
     mounted : function() {
         var that = this;
-        if (that.cKey == 'status') {
-            console.log('STATUSSSSS',that.value)
-        }
         var _conf = that.cConf || {};
         if (!_conf.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
@@ -3361,6 +3358,10 @@ Crud.components.renders.rBase = Vue.component('r-base', {
     template: '<div>render base</div>'
 });
 
+Vue.component('r-render', {
+    extends : Crud.components.renders.rBase,
+    template: '#r-render-template',
+});
 Vue.component('r-input', {
     extends : Crud.components.renders.rBase,
     template: '#r-input-template',
@@ -3459,10 +3460,7 @@ Vue.component('r-checkbox',{
 Vue.component('r-autocomplete', {
     extends : Crud.components.renders.rBase,
     template: '#r-autocomplete-template',
-    mounted() {
-        var that = this;
 
-    },
     data : function () {
         var d = this.defaultData();
         return d;
@@ -4285,6 +4283,10 @@ Vue.component('r-preview',{
     extends : Crud.components.renders.rBase,
     template : '#r-preview-template',
     mounted : function() {
+        var that = this;
+        // that.$Crud.instance.on('preview',function (url) {
+        //     that.value = url;
+        // })
         this._draw();
     },
     data : function () {
@@ -4293,7 +4295,6 @@ Vue.component('r-preview',{
         d.icon = false;
         d.iconClass = '';
         d.ext = null;
-        console.log('PREVIEW DATA',d);
         return d;
     },
     methods : {
@@ -4340,6 +4341,23 @@ Vue.component('r-preview',{
         }
     }
 })
+Vue.component('v-render', {
+    props : ['c-conf'],
+    // When the bound element is inserted into the DOM...
+    mounted: function () {
+        console.log('v-render',this.$parent)
+    },
+    data : function() {
+        var render = this.$parent.renders[this.cKey];
+        console.log('V-RENDER ',this.cConf);
+        return {
+            type : this.cConf.type,
+            conf : this.conf
+        }
+    },
+    template : '<component :is="type" :c-conf="conf"></component>'
+})
+
 Crud.components.views.vBase = Vue.component('v-base', {
     props : ['cConf','cFields'],
     extends : Crud.components.cComponent,
@@ -4511,6 +4529,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
+                renders[key].key = key;
                 // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
                 // if (!c.type)
                 //     c.type = that.defaultRenderType;
@@ -5485,6 +5504,7 @@ Vue.component('v-hasmany-view', {
 const CrudApp = Vue.extend({
     created : function() {
         var that = this;
+        that.$Crud.instance = that;
         that.crudApp.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
         var resources = [];
         resources.push(this.templatesFile);

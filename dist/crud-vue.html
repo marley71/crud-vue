@@ -212,6 +212,9 @@
         z-index:10000;
     }
 </style>
+<script type="text/x-template" id="r-render-template">
+    <component :is="type" :c-conf="item" :c-key="key"></component>
+</script>
 <script type="text/x-template" id="r-input-template">
     <div>
         <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">

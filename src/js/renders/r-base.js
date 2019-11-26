@@ -1,12 +1,9 @@
 Crud.components.renders.rBase = Vue.component('r-base', {
     extends : Crud.components.cComponent,
-    props : ['c-conf','c-key','c-marker','c-ref'],
+    props : ['c-conf','c-marker','c-ref'],
 
     mounted : function() {
         var that = this;
-        if (that.cKey == 'status') {
-            console.log('STATUSSSSS',that.value)
-        }
         var _conf = that.cConf || {};
         if (!_conf.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
