@@ -1,7 +1,7 @@
 <template id="r-hasmany-template">
     <div class="card"  >
         <div class="card-body">
-            <input type="hidden" :name="cKey + '_exists'" value="1">
+            <!--<input type="hidden" :name="cKey + '_exists'" value="1">-->
             <div class="card">
                 <!--<div class="card-header" crud-hasmany_title>-->
                     <!--{{cConf.metadata.modelName}}-->
@@ -17,7 +17,7 @@
                                     <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button"  title="Cancella elemento"><i class="fa fa-times-circle"></i></button>
 <!--                                    {{cConf.metadata.modelName}}-->
                                 </div>
-                                <v-hasmany v-bind:c-model="cKey" v-bind:c-conf="item"></v-hasmany>
+                                <v-hasmany v-bind:c-model="name" v-bind:c-conf="item"></v-hasmany>
 
                             </div>
                         </li>

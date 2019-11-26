@@ -88,6 +88,7 @@ Vue.component('v-list-edit', {
             // }
             that.rendersEdit = rendersEdit;
             that.createGlobalActions();
+            console.log('rendersEdit',that.rendersEdit);
             console.log('renders',that.renders,'recordActions',that.recordActions);
             console.log('globalActions',that.globalActions);
             console.log('editMode',that.editMode)

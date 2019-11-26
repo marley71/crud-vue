@@ -19,9 +19,12 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
                 renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
+                renders[key].value = null;
+                renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
-                renders[key].key = key;
+
+                renders[key].name = that.getFieldName(key);
                 // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
                 // if (!c.type)
                 //     c.type = that.defaultRenderType;
@@ -107,9 +110,6 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
-        getFieldName : function (key) {
-            return key;
-        }
     },
     data : function() {
         return this.defaultData();

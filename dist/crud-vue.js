@@ -2823,17 +2823,31 @@ function App() {
 
 Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
-    props : ['c-ref','c-conf'],
+    props : {
+        'c-conf' : {
+            default : function () {
+                return {
+                    value : null,
+                    name : null,
+                }
+            }
+        }
+    },
     mounted : function() {
         //console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
             this.$Crud.cRefs[this.cRef] = this;
-        } else  {
-            var _conf = this.conf || {};
-            if ( _conf.cRef) {
-                this.$Crud.cRefs[_conf.cRef] = this;
-            }
         }
+
+        // else  {
+        //     var _conf = this.conf || {};
+        //     if ( _conf.cRef) {
+        //         this.$Crud.cRefs[_conf.cRef] = this;
+        //     }
+        // }
+    },
+    data : function() {
+        return this.defaultData();
     },
     methods : {
         jQe : function (selector) {
@@ -2842,7 +2856,18 @@ Crud.components.cComponent = Vue.component('c-component',{
                 return jQuery(that.$el).find(selector).addBack(selector);
             }
             return jQuery(that.$el);
-        }
+        },
+        defaultData : function () {
+            var _c = this.cConf || {};
+            var d = {}
+            for (var k in _c) {
+                if (k == 'methods')
+                    continue;
+                d[k] = _c[k];
+            }
+            //console.log('c-component::defaultData',d);
+            return d;
+        },
     }
 });
 Vue.component('c-loading',{
@@ -3261,7 +3286,7 @@ Crud.components.cWait = Vue.component('c-wait',{
 })
 Crud.components.renders.rBase = Vue.component('r-base', {
     extends : Crud.components.cComponent,
-    props : ['c-conf','c-marker','c-ref'],
+    props : ['c-marker'],
 
     mounted : function() {
         var that = this;
@@ -3294,28 +3319,16 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         getFieldName: function () {
             var that = this;
             //console.log('GET FIELD NAME',this.cKey);
-            if (that.conf.operator) {
-                return that.cKey + '[]';
+            if (that.operator) {
+                return that.name + '[]';
             }
-            return that.cKey;
+            return that.name;
         },
         getOperatorName : function () {
             var that = this;
             return this.cKey + "_operator";
         },
-        defaultData : function () {
-            var _c = this.cConf || {};
-            var d = {
-                //fieldName : this.getFieldName(),
-                value: _c.value,
-                operator : _c.operator,
-                //operatorName : this.getOperatorName(),
-                resourcesLoaded : true,
-                conf : _c,
-            }
-            //console.log('r-base::defaultData',d);
-            return d;
-        },
+
         beforeLoadResources : function () {
             console.log('rBase.beforeLoadResources')
         },
@@ -3367,10 +3380,10 @@ Vue.component('r-input', {
     template: '#r-input-template',
     data : function () {
         var d = this.defaultData();
-        d.inputType = 'text';
-        var _conf = this.cConf || {};
-        if (_conf.inputType)
-            d.inputType = _conf.inputType;
+        d.inputType = d.inputType?d.inputType:'text';
+        // var _conf = this.cConf || {};
+        // if (_conf.inputType)
+        //     d.inputType = _conf.inputType;
         return d;
     }
 });
@@ -3776,7 +3789,7 @@ Vue.component('r-swap', {
         var d = this.defaultData();
         d.iconClass = 'fa fa-circle';
         d.title = "swap";
-        d.swapType = d.conf.swapType?d.conf.swapType:'icon';
+        d.swapType = d.swapType?d.swapType:'icon';
         d.domainValues = {
             icon : {
                 0 : 'fa fa-circle text-danger',
@@ -3787,7 +3800,7 @@ Vue.component('r-swap', {
                 1 : 'Si'
             }
         }
-        var dV = (d.conf.metadata && d.conf.metadata.domainValues)? d.conf.metadata.domainValues:d.domainValues[d.swapType];
+        var dV = (d.metadata && d.metadata.domainValues)? d.metadata.domainValues:d.domainValues[d.swapType];
         var keys = Object.keys(dV).map(String);
         if (keys.indexOf(""+d.value) >= 0) {
             d.slot = dV[""+d.value];
@@ -4302,8 +4315,8 @@ Vue.component('r-preview',{
             var that = this;
             console.log('r-preview.draw',that.conf);
             //var mimetype = that.conf.mimetype || null;
-            var previewType = that.conf.previewType || null;
-            var ext = that.conf.ext || that._getExt();
+            var previewType = that.previewType || null;
+            var ext = that.ext || that._getExt();
             // if (!previewType && that.value) {
             //     previewType = that._previewType();
             // }
@@ -4342,10 +4355,10 @@ Vue.component('r-preview',{
     }
 })
 Vue.component('v-render', {
-    props : ['c-conf'],
+    extends : Crud.components.cComponent,
     // When the bound element is inserted into the DOM...
     mounted: function () {
-        console.log('v-render',this.$parent)
+        console.log('v-render',this.conf)
     },
     data : function() {
         var render = this.$parent.renders[this.cKey];
@@ -4502,6 +4515,9 @@ Crud.components.views.vBase = Vue.component('v-base', {
                 c.template = that.conf.renderTemplate;
             c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
             return c;
+        },
+        getFieldName : function (key) {
+            return key;
         }
     },
     template : '<div>view base</div>'
@@ -4527,9 +4543,12 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
                 renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
+                renders[key].value = null;
+                renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
-                renders[key].key = key;
+
+                renders[key].name = that.getFieldName(key);
                 // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
                 // if (!c.type)
                 //     c.type = that.defaultRenderType;
@@ -4615,9 +4634,6 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
-        getFieldName : function (key) {
-            return key;
-        }
     },
     data : function() {
         return this.defaultData();
@@ -4661,9 +4677,13 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                     var dconf = that._defaultRenderConfig(key);
                     dconf.cRef = that.crudApp.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
+                    dconf.value = null;
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
+                    dconf.name = that.getFieldName(key);
+
                     renders[i][key] = dconf;
+
                 }
                 that.createRecordActions(i);
             }
@@ -5005,6 +5025,7 @@ Vue.component('v-list-edit', {
             // }
             that.rendersEdit = rendersEdit;
             that.createGlobalActions();
+            console.log('rendersEdit',that.rendersEdit);
             console.log('renders',that.renders,'recordActions',that.recordActions);
             console.log('globalActions',that.globalActions);
             console.log('editMode',that.editMode)

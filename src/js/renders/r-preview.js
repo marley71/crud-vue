@@ -21,8 +21,8 @@ Vue.component('r-preview',{
             var that = this;
             console.log('r-preview.draw',that.conf);
             //var mimetype = that.conf.mimetype || null;
-            var previewType = that.conf.previewType || null;
-            var ext = that.conf.ext || that._getExt();
+            var previewType = that.previewType || null;
+            var ext = that.ext || that._getExt();
             // if (!previewType && that.value) {
             //     previewType = that._previewType();
             // }

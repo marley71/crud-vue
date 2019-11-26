@@ -1,6 +1,6 @@
 Crud.components.renders.rBase = Vue.component('r-base', {
     extends : Crud.components.cComponent,
-    props : ['c-conf','c-marker','c-ref'],
+    props : ['c-marker'],
 
     mounted : function() {
         var that = this;
@@ -33,28 +33,16 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         getFieldName: function () {
             var that = this;
             //console.log('GET FIELD NAME',this.cKey);
-            if (that.conf.operator) {
-                return that.cKey + '[]';
+            if (that.operator) {
+                return that.name + '[]';
             }
-            return that.cKey;
+            return that.name;
         },
         getOperatorName : function () {
             var that = this;
             return this.cKey + "_operator";
         },
-        defaultData : function () {
-            var _c = this.cConf || {};
-            var d = {
-                //fieldName : this.getFieldName(),
-                value: _c.value,
-                operator : _c.operator,
-                //operatorName : this.getOperatorName(),
-                resourcesLoaded : true,
-                conf : _c,
-            }
-            //console.log('r-base::defaultData',d);
-            return d;
-        },
+
         beforeLoadResources : function () {
             console.log('rBase.beforeLoadResources')
         },

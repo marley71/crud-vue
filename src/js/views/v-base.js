@@ -1,8 +1,8 @@
 Vue.component('v-render', {
-    props : ['c-conf'],
+    extends : Crud.components.cComponent,
     // When the bound element is inserted into the DOM...
     mounted: function () {
-        console.log('v-render',this.$parent)
+        console.log('v-render',this.conf)
     },
     data : function() {
         var render = this.$parent.renders[this.cKey];
@@ -159,6 +159,9 @@ Crud.components.views.vBase = Vue.component('v-base', {
                 c.template = that.conf.renderTemplate;
             c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
             return c;
+        },
+        getFieldName : function (key) {
+            return key;
         }
     },
     template : '<div>view base</div>'

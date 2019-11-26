@@ -7,7 +7,7 @@ Vue.component('r-swap', {
         var d = this.defaultData();
         d.iconClass = 'fa fa-circle';
         d.title = "swap";
-        d.swapType = d.conf.swapType?d.conf.swapType:'icon';
+        d.swapType = d.swapType?d.swapType:'icon';
         d.domainValues = {
             icon : {
                 0 : 'fa fa-circle text-danger',
@@ -18,7 +18,7 @@ Vue.component('r-swap', {
                 1 : 'Si'
             }
         }
-        var dV = (d.conf.metadata && d.conf.metadata.domainValues)? d.conf.metadata.domainValues:d.domainValues[d.swapType];
+        var dV = (d.metadata && d.metadata.domainValues)? d.metadata.domainValues:d.domainValues[d.swapType];
         var keys = Object.keys(dV).map(String);
         if (keys.indexOf(""+d.value) >= 0) {
             d.slot = dV[""+d.value];
