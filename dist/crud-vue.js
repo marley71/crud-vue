@@ -4501,7 +4501,9 @@ Crud.components.views.vBase = Vue.component('v-base', {
         _defaultRenderConfig : function(key) {
             var that = this;
             var c = {
-                type:that.defaultRenderType
+                type:that.defaultRenderType,
+                value : null,
+                operator : null,
             };
             if (that.conf.fieldsConfig[key]) {
                 // in caso di stringa lo considero come il type del render
@@ -4514,6 +4516,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             if (!c.template)
                 c.template = that.conf.renderTemplate;
             c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
+
             return c;
         },
         getFieldName : function (key) {
