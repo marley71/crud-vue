@@ -10,7 +10,7 @@
                     </template>
                 </div>
                 <div class="float-right">
-                    <paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                    <c-paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
             <div class="table-responsive">
@@ -22,7 +22,7 @@
                             <span>Actions</span>
                         </th>
                         <th v-for="key in keys">
-                            <span v-show="!conf.orderFields[key]">@{{key}}</span>
+                            <span v-show="!conf.orderFields[key]">{{key}}</span>
                             <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
                         </th>
                     </tr>
@@ -32,7 +32,7 @@
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group" role="group">
-                                <div class="input-group-text">
+                                <div class="input-group-text bg-transparent">
                                     <input c-row-check v-show="needSelection"  type="checkbox">
                                 </div>
 
@@ -44,6 +44,7 @@
                         </td>
                         <td v-for="(render, key) in row">
                             <component :is="render.template" :c-type="render.type" :c-render="render" :c-key="key"></component>
+
 <!--                            <component v-bind:is="render.type" v-bind:c-conf="render" v-bind:c-key="key"></component>-->
                         </td>
                     </tr>
@@ -57,7 +58,7 @@
                     </template>
                 </div>
                 <div class="float-right">
-                    <paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></paginator>
+                    <c-paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
         </div>

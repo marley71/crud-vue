@@ -1,5 +1,5 @@
 <script type="text/x-template" id="action-template">
-    <button type="button" v-show="visible" v-bind:title="title" v-bind:class="css" v-on:click="execute">
+    <button type="button" v-show="_visible" v-bind:title="title" v-bind:class="css" v-on:click="_execute" v-bind:disabled="_disabled">
         <i v-show="icon" v-bind:class="icon"></i>
         <span v-html="text"></span>
     </button>
