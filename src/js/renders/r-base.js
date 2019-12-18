@@ -40,7 +40,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         },
         getOperatorName : function () {
             var that = this;
-            return this.cKey + "_operator";
+            return that.name + "_operator";
         },
 
         beforeLoadResources : function () {

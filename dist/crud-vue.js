@@ -1200,38 +1200,38 @@ Route.factory = function (type,attrs) {
     return new window[className](_a);
 }
 
-var RouteList = Route.extend({
-    method      : 'get',
-    url         : '/api/json/{modelName}',
-    resultType  : 'list',
-    protocol    : 'list'
-});
+// var RouteList = Route.extend({
+//     method      : 'get',
+//     url         : '/api/json/{modelName}',
+//     resultType  : 'list',
+//     protocol    : 'list'
+// });
 
-var RouteListConstraint = RouteList.extend({
-    url         : '/api/json/{modelName}/{constraintKey}/{constraintValue}',
-});
+// var RouteListConstraint = RouteList.extend({
+//     url         : '/api/json/{modelName}/{constraintKey}/{constraintValue}',
+// });
 
-var RouteEdit = Route.extend({
-    method      : "get",
-    url         :'/api/json/{modelName}/{pk}/edit',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteEdit = Route.extend({
+//     method      : "get",
+//     url         :'/api/json/{modelName}/{pk}/edit',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
-var RouteEditConstraint = RouteEdit.extend({
-    url         :'/api/json/{modelName}/{pk}/edit/{constraintKey}/{constraintValue}',
-});
+// var RouteEditConstraint = RouteEdit.extend({
+//     url         :'/api/json/{modelName}/{pk}/edit/{constraintKey}/{constraintValue}',
+// });
 
-var RouteSearch = Route.extend({
-    method      : "get",
-    url         :'/api/json/{modelName}/search',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteSearch = Route.extend({
+//     method      : "get",
+//     url         :'/api/json/{modelName}/search',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
-var RouteSearchConstraint = RouteSearch.extend({
-    url         :'/api/json/{modelName}/search/{constraintKey}/{constraintValue}',
-});
+// var RouteSearchConstraint = RouteSearch.extend({
+//     url         :'/api/json/{modelName}/search/{constraintKey}/{constraintValue}',
+// });
 
 
 // var RouteInsert = Route.extend({
@@ -1257,41 +1257,41 @@ var RouteInsertHasmanyConstraint = RouteInsertHasmany.extend({
     url         :'/api/json/{modelName}/create_has_many/{constraintKey}/{constraintValue}',
 });
 
-var RouteSave = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/create',
-    resultType  : 'record',
-    protocol    : 'record',
-    extraParams : {_method:'POST'}
-});
+// var RouteSave = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/create',
+//     resultType  : 'record',
+//     protocol    : 'record',
+//     extraParams : {_method:'POST'}
+// });
 
-var RouteSaveConstraint = RouteSave.extend({
-    url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-});
+// var RouteSaveConstraint = RouteSave.extend({
+//     url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
+// });
 
-var RouteUpdate = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/{pk}',
-    resultType  : 'record',
-    protocol    : 'record',
-    extraParams : {_method:'PUT'}
-});
+// var RouteUpdate = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/{pk}',
+//     resultType  : 'record',
+//     protocol    : 'record',
+//     extraParams : {_method:'PUT'}
+// });
+//
+// var RouteUpdateConstraint = RouteUpdate.extend({
+//     url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
+// });
 
-var RouteUpdateConstraint = RouteUpdate.extend({
-    url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
-});
-
-var RouteCreate = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/create',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteCreate = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/create',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
 
-var RouteCreateConstraint = RouteCreate.extend({
-    url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-});
+// var RouteCreateConstraint = RouteCreate.extend({
+//     url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
+// });
 
 var RouteView = Route.extend({
     method      : "get",
@@ -1326,15 +1326,15 @@ RouteSet = Route.extend({
     protocol    : 'record'
 });
 
-RouteAutocomplete = RouteList.extend({
+RouteAutocomplete = Route.extend({
     method      : "get",
     url         : '/api/json/autocomplete/{modelName}',
-    resultType  : 'record',
-    protocol    : 'record'
+    resultType  : 'list',
+    protocol    : 'list'
 
 })
 
-RouteCalendar = RouteList.extend({});
+RouteCalendar = Route.extend({});
 
 
 RouteCaptcha = Route.extend({
@@ -2156,8 +2156,8 @@ function App() {
         }
 
         _log = console; //new Log(this.showLog,this.mobile);
-        if (this.showLog)
-            _log.enable();
+        // if (this.showLog)
+        //     _log.enable();
         if (this.locale)
             _locale = this.locale;
         _autoparse = _o.autoparse;
@@ -2174,39 +2174,39 @@ function App() {
         // jQuery.app = this;
         // Utility.app = this;
 
-        if (_autoparse) {
-            jQuery("body").bind("DOMNodeInserted", function(event) {
-                //EVENT_TARGET=event;
-                //
-                //console.log('body change2',event.currentTarget);
-                if ( !event.target.hasAttribute || ! event.target.hasAttribute('crud-parse') )
-                    return ;
+        // if (_autoparse) {
+        //     jQuery("body").bind("DOMNodeInserted", function(event) {
+        //         //EVENT_TARGET=event;
+        //         //
+        //         //console.log('body change2',event.currentTarget);
+        //         if ( !event.target.hasAttribute || ! event.target.hasAttribute('crud-parse') )
+        //             return ;
+        //
+        //         event.target.removeAttribute('crud-parse');
+        //         self.parse(jQuery(event.target));
+        //         //console.log('PARSE');
+        //     });
+        //     window.onload = function () {
+        //         console.log('body on load');
+        //         jQuery('body').find('[crud-parse]').each(function () {
+        //             jQuery(this).removeAttr('crud-parse');
+        //             self.parse(jQuery(this));
+        //         });
+        //     };
+        // }
 
-                event.target.removeAttribute('crud-parse');
-                self.parse(jQuery(event.target));
-                //console.log('PARSE');
-            });
-            window.onload = function () {
-                console.log('body on load');
-                jQuery('body').find('[crud-parse]').each(function () {
-                    jQuery(this).removeAttr('crud-parse');
-                    self.parse(jQuery(this));
-                });
-            };
-        }
 
 
-
-        EventManager.on("loadResource",function (event) {
-            event.preventDefault();
-            //self.log.info('on loadResource fired',event.params.resource);
-            self.loadResource(event.params.resource,event.callback);
-        })
-        EventManager.on("loadResources",function (event) {
-            event.preventDefault();
-            //self.log.info('on loadResources fired',event.params.resources);
-            self.loadResources(event.params.resources,event.callback);
-        })
+        // EventManager.on("loadResource",function (event) {
+        //     event.preventDefault();
+        //     //self.log.info('on loadResource fired',event.params.resource);
+        //     self.loadResource(event.params.resource,event.callback);
+        // })
+        // EventManager.on("loadResources",function (event) {
+        //     event.preventDefault();
+        //     //self.log.info('on loadResources fired',event.params.resources);
+        //     self.loadResources(event.params.resources,event.callback);
+        // })
         _extraHtml();
         var _cb = callback?callback:function () {};
         App.loadResources(App.resources,_cb);
@@ -3072,7 +3072,7 @@ Vue.component('c-paginator',{
     template : '#c-paginator-template',
     data : function () {
         var that = this;
-        PAGINATOR = this;
+        //PAGINATOR = this;
         console.log('paginator',that.cPagination, that.$parent.pagination )
         var pagination = that.cPagination || that.$parent.data.pagination || {};
         var d = {
@@ -3121,7 +3121,8 @@ Vue.component('c-paginator',{
             var that = this;
             var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
             params['page'] = parseInt(page);
-            that.cRouteConf.params = params;
+            that.$parent.routeConf.params = params;
+            //that.cRouteConf.params = params;
 
         },
         lastPage : function () {
@@ -3326,7 +3327,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         },
         getOperatorName : function () {
             var that = this;
-            return this.cKey + "_operator";
+            return that.name + "_operator";
         },
 
         beforeLoadResources : function () {
@@ -4900,10 +4901,12 @@ Vue.component('v-list', {
         },
         reload : function () {
             var that = this;
-            var route = Route.factory('list',that.routeConf);
+            //that.route = that._getRoute(that.routeConf.values);
+            //var route = Route.factory('list',that.routeConf);
+            that.route = new Route(that.routeConf);
             that.loading = true;
-            that.fetchData(route,function (json) {
-                that.fillData(route,json);
+            that.fetchData(that.route,function (json) {
+                that.fillData(that.route,json);
                 that.draw();
                 that.loading = false;
             });
@@ -5354,23 +5357,13 @@ Vue.component('v-insert', {
 Vue.component('v-search', {
     extends : Crud.components.views.vRecord,
     props : ['c-conf','c-model','c-route-conf','c-target-ref'],
-    data :  function () {
+    mounted : function() {
         var that = this;
+        var route = that._getRoute({
+            modelName: this.cModel,
+        });
+        that.route = route;
 
-        //var targetView = this.parent.$refs[that.cTargetView];
-        //var targetView = null;
-        //console.log('SEARCH',that.cModel,that.cRouteConf,that.cTargetView,targetView);
-        that.conf = that.getConf(that.cModel,'search');
-        var routeName = 'search';
-        if (that.conf.routeName != null) {
-            routeName = that.conf.routeName;
-        }
-        that.route = Route.factory(routeName,{
-            values : {
-                modelName: that.cModel,
-            }
-        })
-        //that.createActions();
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.createActions();
@@ -5378,18 +5371,61 @@ Vue.component('v-search', {
             that.createRenders();
             that.loading = false;
         });
+    },
 
-        return {
+    data :  function () {
+        //var that = this;
+
+        //var targetView = this.parent.$refs[that.cTargetView];
+        //var targetView = null;
+        //console.log('SEARCH',that.cModel,that.cRouteConf,that.cTargetView,targetView);
+        // that.conf = that.getConf(that.cModel,'search');
+        // var routeName = 'search';
+        // if (that.conf.routeName != null) {
+        //     routeName = that.conf.routeName;
+        // }
+        // that.route = Route.factory(routeName,{
+        //     values : {
+        //         modelName: that.cModel,
+        //     }
+        // })
+        // //that.createActions();
+        // this.fetchData(that.route,function (json) {
+        //     that.fillData(that.route,json);
+        //     that.createActions();
+        //     that.createActionsClass();
+        //     that.createRenders();
+        //     that.loading = false;
+        // });
+
+        var that = this;
+        var d = this.defaultData();
+        d.conf = that.getConf(that.cModel,'search');
+
+
+        var dSearch = {
             loading : true,
             renders : {},
             actionsClass : [],
             actions : {},
             data : {},
-            conf : that.conf,
-            //route : route,
+            route : null,
+            viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
             targetRef : that.cTargetRef,
         }
+        return Utility.merge(d,dSearch);
+        // return {
+        //     loading : true,
+        //     renders : {},
+        //     actionsClass : [],
+        //     actions : {},
+        //     data : {},
+        //     conf : that.conf,
+        //     //route : route,
+        //     defaultRenderType : 'r-input',
+        //     targetRef : that.cTargetRef,
+        // }
     },
     methods : {
         doSearch : function (params) {
@@ -5411,28 +5447,39 @@ Vue.component('v-search', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
+                renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
+                renders[key].value = null;
+                //renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
+
+                renders[key].name = that.getFieldName(key);
                 if (!renders[key].operator) {
                     renders[key].operator = '=';
                 }
-
-                // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
-                // if (!c.type)
-                //     c.type = that.defaultRenderType;
-                // if (that.data.value && that.data.value[key])
-                //     c.value = that.data.value[key];
-                // if (!c.template)
-                //     c.template = that.conf.renderTemplate;
-                // renders[key] = c;
-                //
-                // var metadata = renders[key].metadata || {};
-                // renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
             }
 
-            console.log('v-search.renders',renders);
+            console.log('v-searc.renders',renders);
             that.renders = renders;
         },
+
+        // createRenders : function() {
+        //     var that = this;
+        //     var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+        //     var renders = {};
+        //     for (var k in keys) {
+        //         var key = keys[k];
+        //         renders[key] = that._defaultRenderConfig(key);
+        //         if (that.data.value && that.data.value[key])
+        //             renders[key].value = that.data.value[key];
+        //         if (!renders[key].operator) {
+        //             renders[key].operator = '=';
+        //         }
+        //     }
+        //
+        //     console.log('v-search.renders',renders);
+        //     that.renders = renders;
+        // },
     },
     template : '#v-search-template'
 });

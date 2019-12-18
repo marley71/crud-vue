@@ -186,10 +186,12 @@ Vue.component('v-list', {
         },
         reload : function () {
             var that = this;
-            var route = Route.factory('list',that.routeConf);
+            //that.route = that._getRoute(that.routeConf.values);
+            //var route = Route.factory('list',that.routeConf);
+            that.route = new Route(that.routeConf);
             that.loading = true;
-            that.fetchData(route,function (json) {
-                that.fillData(route,json);
+            that.fetchData(that.route,function (json) {
+                that.fillData(that.route,json);
                 that.draw();
                 that.loading = false;
             });

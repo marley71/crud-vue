@@ -3,7 +3,7 @@ Vue.component('c-paginator',{
     template : '#c-paginator-template',
     data : function () {
         var that = this;
-        PAGINATOR = this;
+        //PAGINATOR = this;
         console.log('paginator',that.cPagination, that.$parent.pagination )
         var pagination = that.cPagination || that.$parent.data.pagination || {};
         var d = {
@@ -52,7 +52,8 @@ Vue.component('c-paginator',{
             var that = this;
             var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
             params['page'] = parseInt(page);
-            that.cRouteConf.params = params;
+            that.$parent.routeConf.params = params;
+            //that.cRouteConf.params = params;
 
         },
         lastPage : function () {

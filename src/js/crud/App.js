@@ -52,8 +52,8 @@ function App() {
         }
 
         _log = console; //new Log(this.showLog,this.mobile);
-        if (this.showLog)
-            _log.enable();
+        // if (this.showLog)
+        //     _log.enable();
         if (this.locale)
             _locale = this.locale;
         _autoparse = _o.autoparse;
@@ -70,39 +70,39 @@ function App() {
         // jQuery.app = this;
         // Utility.app = this;
 
-        if (_autoparse) {
-            jQuery("body").bind("DOMNodeInserted", function(event) {
-                //EVENT_TARGET=event;
-                //
-                //console.log('body change2',event.currentTarget);
-                if ( !event.target.hasAttribute || ! event.target.hasAttribute('crud-parse') )
-                    return ;
+        // if (_autoparse) {
+        //     jQuery("body").bind("DOMNodeInserted", function(event) {
+        //         //EVENT_TARGET=event;
+        //         //
+        //         //console.log('body change2',event.currentTarget);
+        //         if ( !event.target.hasAttribute || ! event.target.hasAttribute('crud-parse') )
+        //             return ;
+        //
+        //         event.target.removeAttribute('crud-parse');
+        //         self.parse(jQuery(event.target));
+        //         //console.log('PARSE');
+        //     });
+        //     window.onload = function () {
+        //         console.log('body on load');
+        //         jQuery('body').find('[crud-parse]').each(function () {
+        //             jQuery(this).removeAttr('crud-parse');
+        //             self.parse(jQuery(this));
+        //         });
+        //     };
+        // }
 
-                event.target.removeAttribute('crud-parse');
-                self.parse(jQuery(event.target));
-                //console.log('PARSE');
-            });
-            window.onload = function () {
-                console.log('body on load');
-                jQuery('body').find('[crud-parse]').each(function () {
-                    jQuery(this).removeAttr('crud-parse');
-                    self.parse(jQuery(this));
-                });
-            };
-        }
 
 
-
-        EventManager.on("loadResource",function (event) {
-            event.preventDefault();
-            //self.log.info('on loadResource fired',event.params.resource);
-            self.loadResource(event.params.resource,event.callback);
-        })
-        EventManager.on("loadResources",function (event) {
-            event.preventDefault();
-            //self.log.info('on loadResources fired',event.params.resources);
-            self.loadResources(event.params.resources,event.callback);
-        })
+        // EventManager.on("loadResource",function (event) {
+        //     event.preventDefault();
+        //     //self.log.info('on loadResource fired',event.params.resource);
+        //     self.loadResource(event.params.resource,event.callback);
+        // })
+        // EventManager.on("loadResources",function (event) {
+        //     event.preventDefault();
+        //     //self.log.info('on loadResources fired',event.params.resources);
+        //     self.loadResources(event.params.resources,event.callback);
+        // })
         _extraHtml();
         var _cb = callback?callback:function () {};
         App.loadResources(App.resources,_cb);
