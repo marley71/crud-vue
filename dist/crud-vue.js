@@ -2155,7 +2155,7 @@ function App() {
             self[k] = _o[k];
         }
 
-        _log = new Log(this.showLog,this.mobile);
+        _log = console; //new Log(this.showLog,this.mobile);
         if (this.showLog)
             _log.enable();
         if (this.locale)
