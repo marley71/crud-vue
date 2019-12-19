@@ -2,7 +2,6 @@
 Vue.component('v-list', {
     extends : Crud.components.views.vCollection,
     conf : {},
-    props : ['c-conf','c-model'],
     // beforeCreate : function() {
     //     this.template = '#v-view-template';
     // },
@@ -39,7 +38,6 @@ Vue.component('v-list', {
         //that.conf = ModelTest.list;
 
         //this.loading = true;
-
         var d = {
             loading : true,
             renders : {},
@@ -56,7 +54,7 @@ Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
-            defaultRenderType : 'r-text'
+            defaultRenderType : 'r-text',
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;

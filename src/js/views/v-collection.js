@@ -1,5 +1,6 @@
 Crud.components.views.vCollection = Vue.component('v-collection', {
     extends : Crud.components.views.vBase,
+    props : ['cModel'],
     methods : {
         setFieldValue : function(row,key,value) {
             var that = this;
@@ -15,6 +16,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
+                conf : this.cConf || {},
             }
         },
         createRenders : function () {
@@ -60,10 +62,16 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             if (keys.length == 0)
                 keys =Object.keys(that.data.value[0]);
             return keys;
+        },
+        getRender : function (row,key) {
+            return this.renders[row][key];
         }
     },
     data : function () {
-        return this.defaultData();
+        var d =  this.defaultData();
+        if (this.cModel)
+            d.conf.modelName = this.cModel;
+        return d;
     },
     template : '<div>view collection base</div>'
 });

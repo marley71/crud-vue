@@ -1,14 +1,15 @@
 Crud.components.cComponent = Vue.component('c-component',{
-    props : {
-        'c-conf' : {
-            default : function () {
-                return {
-                    value : null,
-                    name : null,
-                }
-            }
-        }
-    },
+    // props : {
+    //     'c-conf' : {
+    //         default : function () {
+    //             return {
+    //                 value : null,
+    //                 name : null,
+    //             }
+    //         }
+    //     }
+    // },
+    props : ['c-conf'],
     mounted : function() {
         //console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {

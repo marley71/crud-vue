@@ -1,6 +1,6 @@
 Crud.components.views.vRecord = Vue.component('v-record', {
     extends : Crud.components.views.vBase,
-    props : ['c-conf','c-model'],
+    props : ['cModel'],
     methods : {
 
         setFieldValue : function(key,value) {
@@ -100,6 +100,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 actionsName : [],
                 actions : {},
                 vueRefs:{},
+                conf : this.cConf || {}
             }
         },
         getFormData : function () {
@@ -110,9 +111,15 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
+        getRender : function (key) {
+            return this.renders[key];
+        }
     },
     data : function() {
-        return this.defaultData();
+        var d =  this.defaultData();
+        if (this.cModel)
+            d.conf.modelName = this.cModel;
+        return d;
     },
     template : '<div>view record base</div>'
 });

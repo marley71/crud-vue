@@ -24,7 +24,20 @@ var Route = Class.extend({
             }
         }
     },
-
+    /**
+     * riempe i valori parametri della route prendendoli dalle proprietà dell'oggetto
+     * @param obj
+     */
+    fillValues : function(obj) {
+        var self = this;
+        var keys = self.getKeys();
+        console.log('fillValues',keys,obj);
+        for (var k in keys) {
+            var key = keys[k];
+            if (obj[key])
+                self.values[key] = obj[key]
+        }
+    },
     /**
      * setta i valori dei values necessari per le keys che formano l'url della route.
      * @param values

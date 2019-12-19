@@ -1,16 +1,37 @@
 Vue.component('v-render', {
     extends : Crud.components.cComponent,
+    props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
         console.log('v-render',this.conf)
     },
     data : function() {
-        var render = this.$parent.renders[this.cKey];
-        console.log('V-RENDER ',this.cConf);
-        return {
-            type : this.cConf.type,
-            conf : this.conf
+        if (this.ckey) {
+            var ckeys = this.cKey.split(',');
+            var render = null;
+            for (var i in ckeys) {
+                render = this.$parent.renders[ckeys[i]];
+            }
+            //var render = this.$parent.renders[this.cKey];
+            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            return {
+                type : render.type,
+                conf : render
+            }
         }
+
+        if (this.cRender) {
+            return {
+                type : this.cRender.type,
+                conf : this.cRender
+            }
+        }
+        console.warn('configurazione non valida',this.cKey,this.cRender);
+        return {
+            type : 'r-text',
+            conf : {},
+        }
+
     },
     template : '<component :is="type" :c-conf="conf"></component>'
 })
@@ -129,7 +150,9 @@ Crud.components.views.vBase = Vue.component('v-base', {
                 } else {
                     route = Route.factory(that.conf.routeName);
                 }
-                route.values = values;
+                route.fillValues(that.conf);
+                console.log('ROUTEN ',route.values);
+                //route.values = values;
             }
             // if (!that.route)
             //     route = Route.factory(that.conf.routeName);

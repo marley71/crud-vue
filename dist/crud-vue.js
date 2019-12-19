@@ -1126,7 +1126,20 @@ var Route = Class.extend({
             }
         }
     },
-
+    /**
+     * riempe i valori parametri della route prendendoli dalle proprietà dell'oggetto
+     * @param obj
+     */
+    fillValues : function(obj) {
+        var self = this;
+        var keys = self.getKeys();
+        console.log('fillValues',keys,obj);
+        for (var k in keys) {
+            var key = keys[k];
+            if (obj[key])
+                self.values[key] = obj[key]
+        }
+    },
     /**
      * setta i valori dei values necessari per le keys che formano l'url della route.
      * @param values
@@ -2823,16 +2836,17 @@ function App() {
 
 Vue.prototype.crudApp = new App();
 Crud.components.cComponent = Vue.component('c-component',{
-    props : {
-        'c-conf' : {
-            default : function () {
-                return {
-                    value : null,
-                    name : null,
-                }
-            }
-        }
-    },
+    // props : {
+    //     'c-conf' : {
+    //         default : function () {
+    //             return {
+    //                 value : null,
+    //                 name : null,
+    //             }
+    //         }
+    //     }
+    // },
+    props : ['c-conf'],
     mounted : function() {
         //console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
@@ -4357,17 +4371,38 @@ Vue.component('r-preview',{
 })
 Vue.component('v-render', {
     extends : Crud.components.cComponent,
+    props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
         console.log('v-render',this.conf)
     },
     data : function() {
-        var render = this.$parent.renders[this.cKey];
-        console.log('V-RENDER ',this.cConf);
-        return {
-            type : this.cConf.type,
-            conf : this.conf
+        if (this.ckey) {
+            var ckeys = this.cKey.split(',');
+            var render = null;
+            for (var i in ckeys) {
+                render = this.$parent.renders[ckeys[i]];
+            }
+            //var render = this.$parent.renders[this.cKey];
+            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            return {
+                type : render.type,
+                conf : render
+            }
         }
+
+        if (this.cRender) {
+            return {
+                type : this.cRender.type,
+                conf : this.cRender
+            }
+        }
+        console.warn('configurazione non valida',this.cKey,this.cRender);
+        return {
+            type : 'r-text',
+            conf : {},
+        }
+
     },
     template : '<component :is="type" :c-conf="conf"></component>'
 })
@@ -4486,7 +4521,9 @@ Crud.components.views.vBase = Vue.component('v-base', {
                 } else {
                     route = Route.factory(that.conf.routeName);
                 }
-                route.values = values;
+                route.fillValues(that.conf);
+                console.log('ROUTEN ',route.values);
+                //route.values = values;
             }
             // if (!that.route)
             //     route = Route.factory(that.conf.routeName);
@@ -4528,7 +4565,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
 });
 Crud.components.views.vRecord = Vue.component('v-record', {
     extends : Crud.components.views.vBase,
-    props : ['c-conf','c-model'],
+    props : ['cModel'],
     methods : {
 
         setFieldValue : function(key,value) {
@@ -4628,6 +4665,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 actionsName : [],
                 actions : {},
                 vueRefs:{},
+                conf : this.cConf || {}
             }
         },
         getFormData : function () {
@@ -4638,14 +4676,21 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
+        getRender : function (key) {
+            return this.renders[key];
+        }
     },
     data : function() {
-        return this.defaultData();
+        var d =  this.defaultData();
+        if (this.cModel)
+            d.conf.modelName = this.cModel;
+        return d;
     },
     template : '<div>view record base</div>'
 });
 Crud.components.views.vCollection = Vue.component('v-collection', {
     extends : Crud.components.views.vBase,
+    props : ['cModel'],
     methods : {
         setFieldValue : function(row,key,value) {
             var that = this;
@@ -4661,6 +4706,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
+                conf : this.cConf || {},
             }
         },
         createRenders : function () {
@@ -4706,10 +4752,16 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             if (keys.length == 0)
                 keys =Object.keys(that.data.value[0]);
             return keys;
+        },
+        getRender : function (row,key) {
+            return this.renders[row][key];
         }
     },
     data : function () {
-        return this.defaultData();
+        var d =  this.defaultData();
+        if (this.cModel)
+            d.conf.modelName = this.cModel;
+        return d;
     },
     template : '<div>view collection base</div>'
 });
@@ -4717,7 +4769,6 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
 Vue.component('v-list', {
     extends : Crud.components.views.vCollection,
     conf : {},
-    props : ['c-conf','c-model'],
     // beforeCreate : function() {
     //     this.template = '#v-view-template';
     // },
@@ -4754,7 +4805,6 @@ Vue.component('v-list', {
         //that.conf = ModelTest.list;
 
         //this.loading = true;
-
         var d = {
             loading : true,
             renders : {},
@@ -4771,7 +4821,7 @@ Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
-            defaultRenderType : 'r-text'
+            defaultRenderType : 'r-text',
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
