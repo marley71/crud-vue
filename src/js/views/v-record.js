@@ -1,6 +1,6 @@
 Crud.components.views.vRecord = Vue.component('v-record', {
     extends : Crud.components.views.vBase,
-    props : ['cModel'],
+    props : ['cModel','cPk'],
     methods : {
 
         setFieldValue : function(key,value) {
@@ -119,6 +119,8 @@ Crud.components.views.vRecord = Vue.component('v-record', {
         var d =  this.defaultData();
         if (this.cModel)
             d.conf.modelName = this.cModel;
+        if (this.cPk)
+            d.conf.pk = this.cPk;
         return d;
     },
     template : '<div>view record base</div>'

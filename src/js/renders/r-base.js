@@ -25,6 +25,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
             })
         }
 
+        if ( _conf.mounted ) {
+            _conf.mounted.apply(that);
+        }
     },
     data :  function () {
         return this.defaultData();

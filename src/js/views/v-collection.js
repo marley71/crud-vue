@@ -70,7 +70,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
     data : function () {
         var d =  this.defaultData();
         if (this.cModel)
-            d.conf.modelName = this.cModel;
+           d.conf.modelName = this.cModel;
         return d;
     },
     template : '<div>view collection base</div>'

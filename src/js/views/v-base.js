@@ -3,10 +3,10 @@ Vue.component('v-render', {
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
-        console.log('v-render',this.conf)
+        console.log('v-render',this.conf);
     },
     data : function() {
-        if (this.ckey) {
+        if (this.cKey) {
             var ckeys = this.cKey.split(',');
             var render = null;
             for (var i in ckeys) {
@@ -21,6 +21,7 @@ Vue.component('v-render', {
         }
 
         if (this.cRender) {
+            console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
             return {
                 type : this.cRender.type,
                 conf : this.cRender
@@ -39,17 +40,41 @@ Vue.component('v-render', {
 Crud.components.views.vBase = Vue.component('v-base', {
     props : ['cConf','cFields'],
     extends : Crud.components.cComponent,
+    // created : function() {
+    //     var that = this;
+    //     var _conf = that.getConf(that.cConf) || {};
+    //     for (var k in _conf.methods) {
+    //         console.log('v-base implements methods',k);
+    //         that[k] = function () {
+    //             var arguments = this.arguments;
+    //             console.log('arguments');
+    //             _conf.methods[k].apply(that,arguments);
+    //         }
+    //     }
+    // },
     data : function () {
         return this.defaultData();
     },
     mounted : function() {
         var that = this;
-        var methods = that.conf?that.conf.methods:{};
-        for (var k in methods) {
+        //var methods = that.conf?that.conf.methods:{};
+        // for (var k in methods) {
+        //     console.log('v-base implements methods',k);
+        //     that.methods[k] = function () {
+        //         methods.apply(that,this.arguments);
+        //     }
+        // }
+        for (var k in that.conf.methods) {
             console.log('v-base implements methods',k);
-            that.methods[k] = function () {
-                methods.apply(that,this.arguments);
+            that[k] = function () {
+                var arguments = this.arguments;
+                console.log('arguments');
+                that.conf.methods[k].apply(that,arguments);
             }
+        }
+
+        if ( that.conf.mounted ) {
+            that.conf.mounted.apply(that);
         }
     },
     methods : {

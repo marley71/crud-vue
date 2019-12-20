@@ -3326,6 +3326,9 @@ Crud.components.renders.rBase = Vue.component('r-base', {
             })
         }
 
+        if ( _conf.mounted ) {
+            _conf.mounted.apply(that);
+        }
     },
     data :  function () {
         return this.defaultData();
@@ -4374,10 +4377,10 @@ Vue.component('v-render', {
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
-        console.log('v-render',this.conf)
+        console.log('v-render',this.conf);
     },
     data : function() {
-        if (this.ckey) {
+        if (this.cKey) {
             var ckeys = this.cKey.split(',');
             var render = null;
             for (var i in ckeys) {
@@ -4392,6 +4395,7 @@ Vue.component('v-render', {
         }
 
         if (this.cRender) {
+            console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
             return {
                 type : this.cRender.type,
                 conf : this.cRender
@@ -4410,17 +4414,41 @@ Vue.component('v-render', {
 Crud.components.views.vBase = Vue.component('v-base', {
     props : ['cConf','cFields'],
     extends : Crud.components.cComponent,
+    // created : function() {
+    //     var that = this;
+    //     var _conf = that.getConf(that.cConf) || {};
+    //     for (var k in _conf.methods) {
+    //         console.log('v-base implements methods',k);
+    //         that[k] = function () {
+    //             var arguments = this.arguments;
+    //             console.log('arguments');
+    //             _conf.methods[k].apply(that,arguments);
+    //         }
+    //     }
+    // },
     data : function () {
         return this.defaultData();
     },
     mounted : function() {
         var that = this;
-        var methods = that.conf?that.conf.methods:{};
-        for (var k in methods) {
+        //var methods = that.conf?that.conf.methods:{};
+        // for (var k in methods) {
+        //     console.log('v-base implements methods',k);
+        //     that.methods[k] = function () {
+        //         methods.apply(that,this.arguments);
+        //     }
+        // }
+        for (var k in that.conf.methods) {
             console.log('v-base implements methods',k);
-            that.methods[k] = function () {
-                methods.apply(that,this.arguments);
+            that[k] = function () {
+                var arguments = this.arguments;
+                console.log('arguments');
+                that.conf.methods[k].apply(that,arguments);
             }
+        }
+
+        if ( that.conf.mounted ) {
+            that.conf.mounted.apply(that);
         }
     },
     methods : {
@@ -4565,7 +4593,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
 });
 Crud.components.views.vRecord = Vue.component('v-record', {
     extends : Crud.components.views.vBase,
-    props : ['cModel'],
+    props : ['cModel','cPk'],
     methods : {
 
         setFieldValue : function(key,value) {
@@ -4684,6 +4712,8 @@ Crud.components.views.vRecord = Vue.component('v-record', {
         var d =  this.defaultData();
         if (this.cModel)
             d.conf.modelName = this.cModel;
+        if (this.cPk)
+            d.conf.pk = this.cPk;
         return d;
     },
     template : '<div>view record base</div>'
@@ -4760,7 +4790,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
     data : function () {
         var d =  this.defaultData();
         if (this.cModel)
-            d.conf.modelName = this.cModel;
+           d.conf.modelName = this.cModel;
         return d;
     },
     template : '<div>view collection base</div>'
@@ -5274,7 +5304,7 @@ Vue.component('v-list-edit', {
 
 Vue.component('v-edit', {
     extends : Crud.components.views.vRecord,
-    props : ['c-model','c-pk'],
+    //props : ['cModel','cPk'],
 
     mounted : function() {
         var that = this;
@@ -5321,7 +5351,7 @@ Vue.component('v-edit', {
 
 Vue.component('v-view', {
     extends : Crud.components.views.vRecord,
-    props : ['c-model','c-pk'],
+    props : ['cModel','cPk'],
 
     mounted : function() {
         var that = this;
@@ -5637,7 +5667,7 @@ const CrudApp = Vue.extend({
         }
         that.crudApp.loadResources(resources,function () {
             console.log('monto app');
-            that.$mount('#app');
+            that.$mount(that.$el);
             console.log('mounted');
         })
 
