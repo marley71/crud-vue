@@ -9,7 +9,7 @@ Crud.components.cComponent = Vue.component('c-component',{
     //         }
     //     }
     // },
-    props : ['c-conf'],
+    props : ['cConf'],
     mounted : function() {
         //console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {

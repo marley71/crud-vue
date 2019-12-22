@@ -3,7 +3,7 @@ Vue.component('v-render', {
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
-        console.log('v-render',this.conf);
+        console.log('v-render',this.cConf);
     },
     data : function() {
         if (this.cKey) {

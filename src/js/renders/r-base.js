@@ -30,7 +30,12 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         }
     },
     data :  function () {
-        return this.defaultData();
+        var d  = this.defaultData();
+        if (! ('value' in d))
+            d.value = null;
+        if (! ('operator' in d))
+            d.operator = null;
+        return d;
     },
     methods : {
         getFieldName: function () {

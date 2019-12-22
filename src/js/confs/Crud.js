@@ -31,6 +31,7 @@ Crud = {
             type : 'record',
             title : 'edit',
             css: 'btn btn-outline-secondary btn-sm ',
+            text : '',
             icon : 'fa fa-edit',
             execute : function () {
                 var url = this.$Crud.application.useRouter?'#':'';
@@ -43,6 +44,7 @@ Crud = {
             title : 'view',
             css: 'btn btn-outline-secondary btn-sm ',
             icon : 'fa fa-list',
+            text : '',
             execute : function () {
                 var url = this.$Crud.application.useRouter?'#':'';
                 url += "/view/" + this.modelName + "/" + this.modelData.id;
@@ -54,6 +56,7 @@ Crud = {
             title : 'delete record',
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
+            text : '',
             execute : function () {
                 var that = this;
                 that.crudApp.confirmDialog(that.$LANG.app['conferma-delete'] ,{
@@ -77,8 +80,11 @@ Crud = {
         },
     },
     globalActions : {
+
         'action-insert' : {
             type : 'global',
+            visible : true,
+            enabled : true,
             title : 'New',
             css: 'btn btn-outline-primary btn-sm btn-group',
             icon : 'fa fa-plus',
@@ -150,8 +156,10 @@ Crud = {
                         console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
                         throw "errore";
                     }
-                    var form = jQuery(this.view.$el).find('form');
-                    var formData = Utility.getFormData(form);
+                    var formData = this.view.getFormData();
+
+                    //var form = jQuery(this.view.$el).find('form');
+                    //var formData = Utility.getFormData(form);
                     ref.routeConf.params = formData;
                     return ;
                 }
@@ -228,11 +236,11 @@ Crud = {
             routeName : 'edit',
             customActions : {},
             fieldsConfig : {
-                id : {type:'r-hidden'}
+                id : 'r-hidden'
             },
-            actions : [],
             fields : [],
             renderTemplate : 'c-tpl-record',
+            actions : ['action-save','action-back']
         },
         list : {
             routeName : 'list',
@@ -240,6 +248,7 @@ Crud = {
             fieldsConfig : {},
             orderFields: {},
             renderTemplate : 'c-tpl-list',
+            actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
         },
         search : {
             actions : ['action-search'],
@@ -250,6 +259,11 @@ Crud = {
         insert : {
             routeName : 'insert',
             renderTemplate : 'c-tpl-record',
+            actions : ['action-save','action-back'],
+            fieldsConfig : {
+                id : 'r-hidden'
+            },
+            actions : ['action-save','action-back']
         },
         uploadFile : {
             routeName : null,
@@ -267,7 +281,7 @@ Crud = {
     routes : {
         list : {
             method      : 'get',
-            url         : '/api/json/{modelName}',
+            url         : '/foorm/{modelName}',
             resultType  : 'list',
             protocol    : 'list',
             extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
@@ -291,6 +305,19 @@ Crud = {
             extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
+        },
+        insert : {
+            method      : "get",
+            url         :'/api/json/{modelName}/new',
+            resultType  : 'record',
+            protocol    : 'record'
+        },
+        edit : {
+            method      : "get",
+            url         :'/api/json/{modelName}/{pk}/edit',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record'
         }
     },
     components : {
