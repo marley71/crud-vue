@@ -224,12 +224,12 @@
 <script type="text/x-template" id="r-input-helped-template">
     <div>
         <div crud-render_element>
-            <input v-bind:readonly="!conf.customValue"
+            <input v-bind:readonly="!customValue"
                    class="form-control" type="text" name="getFieldName()" v-model="value"
                    v-bind:c-marker="cMarker" v-on:change="change" >
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-for="(label,dVal) in conf.metadata.domainValues" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{label}}</button>
+                    <button v-for="(label,dVal) in metadata.domainValues" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{label}}</button>
                 </div>
             </div>
         </div>
@@ -301,7 +301,7 @@
 </template>
 <template id="r-belongsto-template">
     <div>
-        <span v-for="field in conf.fields">{{value[field]}}&nbsp;</span>
+        <span v-for="field in fields">{{value[field]}}&nbsp;</span>
     </div>
 </template>
 <template id="r-date-select-template">

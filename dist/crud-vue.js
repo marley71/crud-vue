@@ -2906,6 +2906,7 @@ Crud.components.cComponent = Vue.component('c-component',{
                     continue;
                 d[k] = _c[k];
             }
+            d.conf = _c;
             //console.log('c-component::defaultData',d);
             return d;
         },
@@ -3328,7 +3329,7 @@ Crud.components.cWait = Vue.component('c-wait',{
 })
 Crud.components.renders.rBase = Vue.component('r-base', {
     extends : Crud.components.cComponent,
-    props : ['c-marker'],
+    props : ['cMarker'],
 
     mounted : function() {
         var that = this;
@@ -3442,9 +3443,6 @@ Vue.component('r-input-helped', {
     template: '#r-input-helped-template',
     data : function () {
         var d = this.defaultData();
-        d.inputType = 'text';
-        if (this.cConf.inputType)
-            d.inputType = this.cConf.inputType;
         return d;
     },
 
@@ -3494,9 +3492,10 @@ Vue.component('r-radio',{
 Vue.component('r-checkbox',{
     extends : Crud.components.renders.rBase,
     data :  function () {
+        var that = this;
         //console.log('c-select',this.cData);
-        var d = this.defaultData();
-
+        var d = that.defaultData();
+        console.log('checkbox',d);
         var dV = d.conf.metadata.domainValues;
         var dVO = d.conf.metadata.domainValuesOrder?d.conf.metadata.domainValuesOrder:Object.keys(dV);
         d.value = Array.isArray(d.conf.value)?d.conf.value:[d.conf.value];
@@ -3664,7 +3663,7 @@ Vue.component('r-date-select', {
             this.$refs.month.updateConf(that.cMonth);
             this.$refs.year.updateConf(that.cYear);
 
-            console.log(this);
+            console.log(this.getValue());
         }
     }
 });
@@ -3699,6 +3698,7 @@ Vue.component('r-date-picker', {
                 that.value =  moment(ev.date.toISOString()).format('Y-M-D'); //ev.date.toISOString();
                 moment(ev.date.valueOf);
                 console.log('date ' ,ev.date.toISOString());
+                console.log('date2 ',that.getValue())
                 // if (ev.date.valueOf() < startDate.valueOf()){
                 //
                 // }

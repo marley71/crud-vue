@@ -84,7 +84,7 @@ Vue.component('r-date-select', {
             this.$refs.month.updateConf(that.cMonth);
             this.$refs.year.updateConf(that.cYear);
 
-            console.log(this);
+            console.log(this.getValue());
         }
     }
 });

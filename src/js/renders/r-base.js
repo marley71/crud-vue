@@ -1,6 +1,6 @@
 Crud.components.renders.rBase = Vue.component('r-base', {
     extends : Crud.components.cComponent,
-    props : ['c-marker'],
+    props : ['cMarker'],
 
     mounted : function() {
         var that = this;

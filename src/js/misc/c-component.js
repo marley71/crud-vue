@@ -42,6 +42,7 @@ Crud.components.cComponent = Vue.component('c-component',{
                     continue;
                 d[k] = _c[k];
             }
+            d.conf = _c;
             //console.log('c-component::defaultData',d);
             return d;
         },

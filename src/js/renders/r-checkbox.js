@@ -1,9 +1,10 @@
 Vue.component('r-checkbox',{
     extends : Crud.components.renders.rBase,
     data :  function () {
+        var that = this;
         //console.log('c-select',this.cData);
-        var d = this.defaultData();
-
+        var d = that.defaultData();
+        console.log('checkbox',d);
         var dV = d.conf.metadata.domainValues;
         var dVO = d.conf.metadata.domainValuesOrder?d.conf.metadata.domainValuesOrder:Object.keys(dV);
         d.value = Array.isArray(d.conf.value)?d.conf.value:[d.conf.value];

@@ -3,9 +3,6 @@ Vue.component('r-input-helped', {
     template: '#r-input-helped-template',
     data : function () {
         var d = this.defaultData();
-        d.inputType = 'text';
-        if (this.cConf.inputType)
-            d.inputType = this.cConf.inputType;
         return d;
     },
 
