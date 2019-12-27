@@ -71,8 +71,8 @@ Vue.component('v-list', {
             that.createActions();
             that.createRenders();
             that.createGlobalActions();
-            console.log('renders',that.renders,'recordActions',that.recordActions);
-            console.log('globalActions',that.globalActions);
+            //console.log('renders',that.renders,'recordActions',that.recordActions);
+            //console.log('globalActions',that.globalActions);
         },
 
         fillData : function(route, json) {

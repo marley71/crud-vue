@@ -1,5 +1,5 @@
 const actionBase = Vue.component('action-base', {
-    props : ['c-conf','c-key'],
+    props : ['cConf','cKey'],
     extends : Crud.components.cComponent,
 
     computed :  {
@@ -38,6 +38,7 @@ const actionBase = Vue.component('action-base', {
                 //     alert('definire execute')
                 // }
             };
+            console.log('action ',this.cConf);
             for (var c in this.cConf) {
                 // if (c ===  'execute') {
                 //     var f = this.cConf[c];

@@ -104,21 +104,32 @@ Crud = {
             execute : function () {
                 var that = this;
                 console.log('action save',this);
-                if (this.modelData.id) {
-                    var r = Route.factory('update',{
-                        values :  {
-                            modelName : this.modelName,
-                            pk : this.modelData.id
-                        }
-                    })
-                } else {
-                    var r = Route.factory('save',{
-                        values :  {
-                            modelName : this.modelName,
-                        }
-                    })
-                }
+                var rName = 'create';
+                var values = {};
+                if (this.view.route.type == 'update') {
+                    rName = 'update';
 
+                    // var r = Route.factory('update',{
+                        values =  {
+                            modelName : this.modelName,
+                            pk : this.view.cPk
+                        }
+                    // })
+                } else {
+                    rName = 'create'
+                    // var r = Route.factory('save',{
+                        values =  {
+                            modelName : this.modelName,
+                        }
+                    // })
+                }
+                var r = null;
+                if (Crud.routes[rName]) {
+                    r =  new Route(Crud.routes[rName]);
+                } else {
+                    r = Route.factory(rName);
+                }
+                r.values = values;
                 //r.params = this.$Crud.getFormData(jQuery(this.rootElement).find('form'));
                 r.params = Utility.getFormData(this.view.jQe('form'));
                 Server.route(r, function (json) {
@@ -188,7 +199,7 @@ Crud = {
                 console.log('order execute',this.view);
                 var params = Utility.cloneObj(this.view.routeConf.params);
                 params.order_field = this.orderField;
-                params.order_direction = (this.view.data.metadata.order_field == this.orderField)?(this.view.data.metadata.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+                params.order_direction = (this.view.data.metadata.order.order_field == this.orderField)?(this.view.data.metadata.order.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
                 this.view.routeConf.params = params;
             }
         },
@@ -230,7 +241,7 @@ Crud = {
             fieldsConfig : {},
             actions : ['action-back'],
             customActions: {},
-            renderTemplate : 'c-tpl-record',
+            renderTemplate : 'c-tpl-record2',
         },
         edit : {
             routeName : 'edit',
@@ -251,6 +262,7 @@ Crud = {
             actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
         },
         search : {
+            routeName : 'search',
             actions : ['action-search'],
             fieldsConfig : {},
             customActions: {},
@@ -308,18 +320,52 @@ Crud = {
         },
         insert : {
             method      : "get",
-            url         :'/api/json/{modelName}/new',
+            url         :'/foorm/{modelName}/new',
             resultType  : 'record',
-            protocol    : 'record'
+            protocol    : 'record',
+            type : 'create',
+        },
+        update : {
+            method      : "post",
+            url         :'/foorm/{modelName}/{pk}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'update',
+            extraParams : {_method:'PUT'}
+        },
+        create : {
+            method      : "post",
+            url         :'/foorm/{modelName}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'create',
+            extraParams : {_method:'POST'}
         },
         edit : {
             method      : "get",
-            url         :'/api/json/{modelName}/{pk}/edit',
+            url         :'/foorm/{modelName}/{pk}/edit',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'update',
+        },
+        search : {
+            method      : "get",
+            url         :'/foorm/{modelName}/search',
             //url         :'/foorm/{modelName}/{pk}/edit',
             resultType  : 'record',
             protocol    : 'record'
-        }
+        },
+        view : {
+            method      : "get",
+            url         :'/foorm/{modelName}/{pk}/view',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'read',
+        },
     },
+    cRefs : {},
     components : {
         renders : {
 

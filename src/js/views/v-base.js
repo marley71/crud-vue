@@ -1,9 +1,43 @@
+Vue.component('v-action', {
+    extends : Crud.components.cComponent,
+    props : ['cKey','cAction'],
+    data : function () {
+        if (this.cKey) {
+            var ckeys = this.cKey.split(',');
+            var render = null;
+            for (var i in ckeys) {
+                render = this.$parent.renders[ckeys[i]];
+            }
+            //var render = this.$parent.renders[this.cKey];
+            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            return {
+                type : render.type,
+                conf : render
+            }
+        }
+
+        if (this.cRender) {
+            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            return {
+                type : this.cRender.type,
+                conf : this.cRender
+            }
+        }
+        console.warn('configurazione non valida',this.cKey,this.cRender);
+        return {
+            type : 'action-base',
+            conf : {},
+        }
+    },
+    template : '<component :is="type" :c-conf="conf"></component>'
+})
+
 Vue.component('v-render', {
     extends : Crud.components.cComponent,
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
-        console.log('v-render',this.cConf);
+        //console.log('v-render',this.cConf);
     },
     data : function() {
         if (this.cKey) {
@@ -21,7 +55,7 @@ Vue.component('v-render', {
         }
 
         if (this.cRender) {
-            console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
             return {
                 type : this.cRender.type,
                 conf : this.cRender
@@ -64,13 +98,23 @@ Crud.components.views.vBase = Vue.component('v-base', {
         //         methods.apply(that,this.arguments);
         //     }
         // }
-        for (var k in that.conf.methods) {
-            console.log('v-base implements methods',k);
-            that[k] = function () {
-                var arguments = this.arguments;
-                console.log('arguments');
-                that.conf.methods[k].apply(that,arguments);
+        var __call = function (lk) {
+            that[lk] = function () {
+                var localk = new String(lk);
+                //var arguments = this.arguments;
+                console.log(localk,'arguments',arguments);
+                return that.conf.methods[localk].apply(that,arguments);
             }
+        }
+        for (var k in that.conf.methods) {
+            //console.log('v-base implements methods',k);
+            __call(k);
+            // that[k] = function () {
+            //     var localk = new String(k);
+            //     //var arguments = this.arguments;
+            //     console.log(localk,'arguments',arguments);
+            //     return that.conf.methods[k].apply(that,arguments);
+            // }
         }
 
         if ( that.conf.mounted ) {
@@ -205,6 +249,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
                     c = Utility.merge(c,that.conf.fieldsConfig[key]);
                 }
             }
+
             if (!c.template)
                 c.template = that.conf.renderTemplate;
             c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));

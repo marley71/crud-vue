@@ -173,21 +173,32 @@ Crud = {
             execute : function () {
                 var that = this;
                 console.log('action save',this);
-                if (this.modelData.id) {
-                    var r = Route.factory('update',{
-                        values :  {
-                            modelName : this.modelName,
-                            pk : this.modelData.id
-                        }
-                    })
-                } else {
-                    var r = Route.factory('save',{
-                        values :  {
-                            modelName : this.modelName,
-                        }
-                    })
-                }
+                var rName = 'create';
+                var values = {};
+                if (this.view.route.type == 'update') {
+                    rName = 'update';
 
+                    // var r = Route.factory('update',{
+                        values =  {
+                            modelName : this.modelName,
+                            pk : this.view.cPk
+                        }
+                    // })
+                } else {
+                    rName = 'create'
+                    // var r = Route.factory('save',{
+                        values =  {
+                            modelName : this.modelName,
+                        }
+                    // })
+                }
+                var r = null;
+                if (Crud.routes[rName]) {
+                    r =  new Route(Crud.routes[rName]);
+                } else {
+                    r = Route.factory(rName);
+                }
+                r.values = values;
                 //r.params = this.$Crud.getFormData(jQuery(this.rootElement).find('form'));
                 r.params = Utility.getFormData(this.view.jQe('form'));
                 Server.route(r, function (json) {
@@ -257,7 +268,7 @@ Crud = {
                 console.log('order execute',this.view);
                 var params = Utility.cloneObj(this.view.routeConf.params);
                 params.order_field = this.orderField;
-                params.order_direction = (this.view.data.metadata.order_field == this.orderField)?(this.view.data.metadata.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+                params.order_direction = (this.view.data.metadata.order.order_field == this.orderField)?(this.view.data.metadata.order.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
                 this.view.routeConf.params = params;
             }
         },
@@ -299,7 +310,7 @@ Crud = {
             fieldsConfig : {},
             actions : ['action-back'],
             customActions: {},
-            renderTemplate : 'c-tpl-record',
+            renderTemplate : 'c-tpl-record2',
         },
         edit : {
             routeName : 'edit',
@@ -320,6 +331,7 @@ Crud = {
             actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
         },
         search : {
+            routeName : 'search',
             actions : ['action-search'],
             fieldsConfig : {},
             customActions: {},
@@ -377,18 +389,52 @@ Crud = {
         },
         insert : {
             method      : "get",
-            url         :'/api/json/{modelName}/new',
+            url         :'/foorm/{modelName}/new',
             resultType  : 'record',
-            protocol    : 'record'
+            protocol    : 'record',
+            type : 'create',
+        },
+        update : {
+            method      : "post",
+            url         :'/foorm/{modelName}/{pk}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'update',
+            extraParams : {_method:'PUT'}
+        },
+        create : {
+            method      : "post",
+            url         :'/foorm/{modelName}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'create',
+            extraParams : {_method:'POST'}
         },
         edit : {
             method      : "get",
-            url         :'/api/json/{modelName}/{pk}/edit',
+            url         :'/foorm/{modelName}/{pk}/edit',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'update',
+        },
+        search : {
+            method      : "get",
+            url         :'/foorm/{modelName}/search',
             //url         :'/foorm/{modelName}/{pk}/edit',
             resultType  : 'record',
             protocol    : 'record'
-        }
+        },
+        view : {
+            method      : "get",
+            url         :'/foorm/{modelName}/{pk}/view',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'read',
+        },
     },
+    cRefs : {},
     components : {
         renders : {
 
@@ -1066,7 +1112,7 @@ var ProtocolList = Protocol.extend({
     summary : {},
     jsonToData : function (json) {
         this.value = json.result.data;
-        this.metadata = json.metadata;
+        this.metadata = json.metadata || {};
         this.pagination = {
             current_page : json.result.current_page,
             from : json.result.from,
@@ -2900,7 +2946,7 @@ Crud.components.cComponent = Vue.component('c-component',{
         },
         defaultData : function () {
             var _c = this.cConf || {};
-            var d = {}
+            var d = {};
             for (var k in _c) {
                 if (k == 'methods')
                     continue;
@@ -2941,7 +2987,7 @@ Vue.component('c-tpl-no', {
     template : '#c-tpl-no-template'
 });
 const actionBase = Vue.component('action-base', {
-    props : ['c-conf','c-key'],
+    props : ['cConf','cKey'],
     extends : Crud.components.cComponent,
 
     computed :  {
@@ -2980,6 +3026,7 @@ const actionBase = Vue.component('action-base', {
                 //     alert('definire execute')
                 // }
             };
+            console.log('action ',this.cConf);
             for (var c in this.cConf) {
                 // if (c ===  'execute') {
                 //     var f = this.cConf[c];
@@ -4404,12 +4451,46 @@ Vue.component('r-preview',{
         }
     }
 })
+Vue.component('v-action', {
+    extends : Crud.components.cComponent,
+    props : ['cKey','cAction'],
+    data : function () {
+        if (this.cKey) {
+            var ckeys = this.cKey.split(',');
+            var render = null;
+            for (var i in ckeys) {
+                render = this.$parent.renders[ckeys[i]];
+            }
+            //var render = this.$parent.renders[this.cKey];
+            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            return {
+                type : render.type,
+                conf : render
+            }
+        }
+
+        if (this.cRender) {
+            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            return {
+                type : this.cRender.type,
+                conf : this.cRender
+            }
+        }
+        console.warn('configurazione non valida',this.cKey,this.cRender);
+        return {
+            type : 'action-base',
+            conf : {},
+        }
+    },
+    template : '<component :is="type" :c-conf="conf"></component>'
+})
+
 Vue.component('v-render', {
     extends : Crud.components.cComponent,
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
-        console.log('v-render',this.cConf);
+        //console.log('v-render',this.cConf);
     },
     data : function() {
         if (this.cKey) {
@@ -4427,7 +4508,7 @@ Vue.component('v-render', {
         }
 
         if (this.cRender) {
-            console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
             return {
                 type : this.cRender.type,
                 conf : this.cRender
@@ -4470,13 +4551,23 @@ Crud.components.views.vBase = Vue.component('v-base', {
         //         methods.apply(that,this.arguments);
         //     }
         // }
-        for (var k in that.conf.methods) {
-            console.log('v-base implements methods',k);
-            that[k] = function () {
-                var arguments = this.arguments;
-                console.log('arguments');
-                that.conf.methods[k].apply(that,arguments);
+        var __call = function (lk) {
+            that[lk] = function () {
+                var localk = new String(lk);
+                //var arguments = this.arguments;
+                console.log(localk,'arguments',arguments);
+                return that.conf.methods[localk].apply(that,arguments);
             }
+        }
+        for (var k in that.conf.methods) {
+            //console.log('v-base implements methods',k);
+            __call(k);
+            // that[k] = function () {
+            //     var localk = new String(k);
+            //     //var arguments = this.arguments;
+            //     console.log(localk,'arguments',arguments);
+            //     return that.conf.methods[k].apply(that,arguments);
+            // }
         }
 
         if ( that.conf.mounted ) {
@@ -4611,6 +4702,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
                     c = Utility.merge(c,that.conf.fieldsConfig[key]);
                 }
             }
+
             if (!c.template)
                 c.template = that.conf.renderTemplate;
             c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
@@ -4646,7 +4738,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
                 renders[key].value = null;
                 renders[key].operator = null;
-                if (that.data.value && that.data.value[key])
+                if (that.data.value && (key in that.data.value) )
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
@@ -4699,6 +4791,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var that = this;
             var data = {value : {}};
             if (!route) {
+                console.log('dati manuali',that.conf.data);
                 if (that.conf.data) {
                     data = that.conf.data;
                 }
@@ -4737,6 +4830,9 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             return data;
         },
         getRender : function (key) {
+            var rConf = this.renders[key];
+            console.log('getRenderd',key,rConf);
+            return this.$Crud.cRefs[rConf.cRef];
             return this.renders[key];
         }
     },
@@ -4900,8 +4996,8 @@ Vue.component('v-list', {
             that.createActions();
             that.createRenders();
             that.createGlobalActions();
-            console.log('renders',that.renders,'recordActions',that.recordActions);
-            console.log('globalActions',that.globalActions);
+            //console.log('renders',that.renders,'recordActions',that.recordActions);
+            //console.log('globalActions',that.globalActions);
         },
 
         fillData : function(route, json) {

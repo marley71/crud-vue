@@ -36,7 +36,7 @@ Crud.components.cComponent = Vue.component('c-component',{
         },
         defaultData : function () {
             var _c = this.cConf || {};
-            var d = {}
+            var d = {};
             for (var k in _c) {
                 if (k == 'methods')
                     continue;

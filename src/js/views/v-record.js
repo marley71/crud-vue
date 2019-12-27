@@ -21,7 +21,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
                 renders[key].value = null;
                 renders[key].operator = null;
-                if (that.data.value && that.data.value[key])
+                if (that.data.value && (key in that.data.value) )
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
@@ -74,6 +74,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var that = this;
             var data = {value : {}};
             if (!route) {
+                console.log('dati manuali',that.conf.data);
                 if (that.conf.data) {
                     data = that.conf.data;
                 }
@@ -112,6 +113,9 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             return data;
         },
         getRender : function (key) {
+            var rConf = this.renders[key];
+            console.log('getRenderd',key,rConf);
+            return this.$Crud.cRefs[rConf.cRef];
             return this.renders[key];
         }
     },
