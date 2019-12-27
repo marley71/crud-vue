@@ -13,7 +13,7 @@ const CrudApp = Vue.extend({
         }
         that.crudApp.loadResources(resources,function () {
             console.log('monto app');
-            that.$mount(that.$el);
+            that.$mount(that.el);
             console.log('mounted');
         })
 
