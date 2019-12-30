@@ -59,7 +59,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             if (that.cFields) {
                 keys = that.cFields.split(',');
             }
-            if (keys.length == 0)
+            if (keys.length == 0 && that.data.value.length)
                 keys =Object.keys(that.data.value[0]);
             return keys;
         },

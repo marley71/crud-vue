@@ -1,6 +1,6 @@
 Vue.component('v-view', {
     extends : Crud.components.views.vRecord,
-    props : ['cModel','cPk'],
+    //props : ['cModel','cPk'],
 
     mounted : function() {
         var that = this;
@@ -15,7 +15,6 @@ Vue.component('v-view', {
             that.createActions();
             that.createActionsClass();
             that.createRenders();
-            console.log('BBBBBBB');
             that.loading = false;
         });
     },

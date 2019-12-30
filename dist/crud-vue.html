@@ -257,8 +257,8 @@
     <div>
         <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
                 v-on:change="change">
-            <option v-for="key in (conf.metadata.domainValuesOrder?conf.metadata.domainValuesOrder:Object.keys(conf.metadata.domainValues))" :value="key"
-                    >{{conf.metadata.domainValues[key]}}</option>
+            <option v-for="key in domainValuesOrder" :value="key"
+                    >{{domainValues[key]}}</option>
         </select>
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>

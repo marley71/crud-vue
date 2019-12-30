@@ -33,12 +33,11 @@ const actionBase = Vue.component('action-base', {
                 css: 'btn btn-outline-secondary',
                 icon : 'fa fa-help',
                 text : '',
-                view : that.$parent,
+                //view : that.$parent,
                 // execute : function () {
                 //     alert('definire execute')
                 // }
             };
-            console.log('action ',this.cConf);
             for (var c in this.cConf) {
                 // if (c ===  'execute') {
                 //     var f = this.cConf[c];
@@ -49,6 +48,9 @@ const actionBase = Vue.component('action-base', {
                 //if (jQuery.inArray(c,['execute','beforeExecute','afterExecute','enabled','visible']) < 0)
                     adata[c] = this.cConf[c];
             }
+            if (!('view' in adata) )
+                adata.view = that.$parent;
+            console.log('action ',adata);
             return adata;
         },
         _beforeExecute : function (callback) {

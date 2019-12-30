@@ -59,13 +59,14 @@ Crud.components.views.vRecord = Vue.component('v-record', {
         createActionsClass : function () {
             var that = this;
             var actions = {};
-            console.log('confff',that.conf);
+            console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName,'global');
                 aConf.modelData = Utility.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
+                aConf.cRef = that.crudApp.getRefId(that._uid,'a',aName);
                 actions[aName] = aConf;
             }
             that.actionsClass = actions;
@@ -116,7 +117,11 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var rConf = this.renders[key];
             console.log('getRenderd',key,rConf);
             return this.$Crud.cRefs[rConf.cRef];
-            return this.renders[key];
+        },
+        getAction : function (name) {
+            var rConf = this.actionsClass[name];
+            console.log('getAction',name,rConf);
+            return this.$Crud.cRefs[rConf.cRef];
         }
     },
     data : function() {

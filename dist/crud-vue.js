@@ -3021,12 +3021,11 @@ const actionBase = Vue.component('action-base', {
                 css: 'btn btn-outline-secondary',
                 icon : 'fa fa-help',
                 text : '',
-                view : that.$parent,
+                //view : that.$parent,
                 // execute : function () {
                 //     alert('definire execute')
                 // }
             };
-            console.log('action ',this.cConf);
             for (var c in this.cConf) {
                 // if (c ===  'execute') {
                 //     var f = this.cConf[c];
@@ -3037,6 +3036,9 @@ const actionBase = Vue.component('action-base', {
                 //if (jQuery.inArray(c,['execute','beforeExecute','afterExecute','enabled','visible']) < 0)
                     adata[c] = this.cConf[c];
             }
+            if (!('view' in adata) )
+                adata.view = that.$parent;
+            console.log('action ',adata);
             return adata;
         },
         _beforeExecute : function (callback) {
@@ -3516,6 +3518,17 @@ Vue.component('r-textarea', {
 Vue.component('r-select',{
     extends : Crud.components.renders.rBase,
     template: '#r-select-template',
+    data :  function () {
+        var metadata = this.cConf.metadata || {};
+        var dV = metadata.domainValues || {};
+        var dVO = metadata.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
+        return {
+            name : this.cConf.name,
+            value: this.cConf.value,
+            domainValues : dV,
+            domainValuesOrder : dVO
+        }
+    },
 });
 
 
@@ -4453,36 +4466,28 @@ Vue.component('r-preview',{
 })
 Vue.component('v-action', {
     extends : Crud.components.cComponent,
-    props : ['cKey','cAction'],
+    props : ['cName','cAction'],
     data : function () {
-        if (this.cKey) {
-            var ckeys = this.cKey.split(',');
-            var render = null;
-            for (var i in ckeys) {
-                render = this.$parent.renders[ckeys[i]];
-            }
-            //var render = this.$parent.renders[this.cKey];
-            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
-            return {
-                type : render.type,
-                conf : render
-            }
+        var that = this;
+        //console.log('v-action',this.cKey,this.cAction);
+        var aConf =  {
+            name: 'action-base',
+            conf: {},
         }
-
-        if (this.cRender) {
+        if (this.cAction) {
             //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
-            return {
-                type : this.cRender.type,
-                conf : this.cRender
+            aConf =  {
+                name : this.cName,
+                conf : this.cAction
             }
+        } else {
+            console.warn('configurazione azione non valida', this.cName, this.cAction);
         }
-        console.warn('configurazione non valida',this.cKey,this.cRender);
-        return {
-            type : 'action-base',
-            conf : {},
-        }
+        aConf.conf.view = that.$parent;
+        console.log('v-action create',aConf);
+        return aConf;
     },
-    template : '<component :is="type" :c-conf="conf"></component>'
+    template : '<component :is="name" :c-conf="conf"></component>'
 })
 
 Vue.component('v-render', {
@@ -4602,15 +4607,17 @@ Crud.components.views.vBase = Vue.component('v-base', {
             //console.log('v-base.getActionConfig',name,type,this.conf);
             if (this.conf.customActions[name]) {
                 var aConf = {}
-                //console.log('CUSTOM',name);
                 if (!this.$options.components[name]) {
+                    console.log('estendo azioni ',name);
                     Vue.component(name, {
                         extends : actionBase
                     });
                 } else {
                     aConf = this.$Crud.recordActions[name]?this.$Crud.recordActions[name]:(this.$Crud.globalActions[name]?this.$Crud.globalActions[name]:{})
                 }
-                return Utility.merge(aConf,this.conf.customActions[name]);
+                aConf = Utility.merge(aConf,this.conf.customActions[name]);
+                console.log('CUSTOM',name,aConf);
+                return aConf;
             }
             if (type == 'record') {
                 if (this.$Crud.recordActions[name]) {
@@ -4776,13 +4783,14 @@ Crud.components.views.vRecord = Vue.component('v-record', {
         createActionsClass : function () {
             var that = this;
             var actions = {};
-            console.log('confff',that.conf);
+            console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName,'global');
                 aConf.modelData = Utility.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
+                aConf.cRef = that.crudApp.getRefId(that._uid,'a',aName);
                 actions[aName] = aConf;
             }
             that.actionsClass = actions;
@@ -4833,7 +4841,11 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var rConf = this.renders[key];
             console.log('getRenderd',key,rConf);
             return this.$Crud.cRefs[rConf.cRef];
-            return this.renders[key];
+        },
+        getAction : function (name) {
+            var rConf = this.actionsClass[name];
+            console.log('getAction',name,rConf);
+            return this.$Crud.cRefs[rConf.cRef];
         }
     },
     data : function() {
@@ -4907,7 +4919,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             if (that.cFields) {
                 keys = that.cFields.split(',');
             }
-            if (keys.length == 0)
+            if (keys.length == 0 && that.data.value.length)
                 keys =Object.keys(that.data.value[0]);
             return keys;
         },
@@ -5479,7 +5491,7 @@ Vue.component('v-edit', {
 
 Vue.component('v-view', {
     extends : Crud.components.views.vRecord,
-    props : ['cModel','cPk'],
+    //props : ['cModel','cPk'],
 
     mounted : function() {
         var that = this;
@@ -5494,7 +5506,6 @@ Vue.component('v-view', {
             that.createActions();
             that.createActionsClass();
             that.createRenders();
-            console.log('BBBBBBB');
             that.loading = false;
         });
     },

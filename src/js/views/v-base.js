@@ -1,35 +1,27 @@
 Vue.component('v-action', {
     extends : Crud.components.cComponent,
-    props : ['cKey','cAction'],
+    props : ['cName','cAction'],
     data : function () {
-        if (this.cKey) {
-            var ckeys = this.cKey.split(',');
-            var render = null;
-            for (var i in ckeys) {
-                render = this.$parent.renders[ckeys[i]];
-            }
-            //var render = this.$parent.renders[this.cKey];
-            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
-            return {
-                type : render.type,
-                conf : render
-            }
+        var that = this;
+        //console.log('v-action',this.cKey,this.cAction);
+        var aConf =  {
+            name: 'action-base',
+            conf: {},
         }
-
-        if (this.cRender) {
+        if (this.cAction) {
             //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
-            return {
-                type : this.cRender.type,
-                conf : this.cRender
+            aConf =  {
+                name : this.cName,
+                conf : this.cAction
             }
+        } else {
+            console.warn('configurazione azione non valida', this.cName, this.cAction);
         }
-        console.warn('configurazione non valida',this.cKey,this.cRender);
-        return {
-            type : 'action-base',
-            conf : {},
-        }
+        aConf.conf.view = that.$parent;
+        console.log('v-action create',aConf);
+        return aConf;
     },
-    template : '<component :is="type" :c-conf="conf"></component>'
+    template : '<component :is="name" :c-conf="conf"></component>'
 })
 
 Vue.component('v-render', {
@@ -149,15 +141,17 @@ Crud.components.views.vBase = Vue.component('v-base', {
             //console.log('v-base.getActionConfig',name,type,this.conf);
             if (this.conf.customActions[name]) {
                 var aConf = {}
-                //console.log('CUSTOM',name);
                 if (!this.$options.components[name]) {
+                    console.log('estendo azioni ',name);
                     Vue.component(name, {
                         extends : actionBase
                     });
                 } else {
                     aConf = this.$Crud.recordActions[name]?this.$Crud.recordActions[name]:(this.$Crud.globalActions[name]?this.$Crud.globalActions[name]:{})
                 }
-                return Utility.merge(aConf,this.conf.customActions[name]);
+                aConf = Utility.merge(aConf,this.conf.customActions[name]);
+                console.log('CUSTOM',name,aConf);
+                return aConf;
             }
             if (type == 'record') {
                 if (this.$Crud.recordActions[name]) {
