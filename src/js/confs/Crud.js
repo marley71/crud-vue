@@ -59,7 +59,7 @@ Crud = {
             text : '',
             execute : function () {
                 var that = this;
-                that.crudApp.confirmDialog(that.$LANG.app['conferma-delete'] ,{
+                that.$Crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
                     ok : function () {
 
                         var r = Route.factory('delete');
@@ -134,7 +134,7 @@ Crud = {
                 r.params = Utility.getFormData(this.view.jQe('form'));
                 Server.route(r, function (json) {
                     if (json.error) {
-                        that.crudApp.errorDialog(json.msg)
+                        that.$Crud.errorDialog(json.msg)
                         //alert(json.msg);
                         return ;
                     }
@@ -215,17 +215,17 @@ Crud = {
                 var num = checked.length;
                 if (num === 0)
                     return ;
-                app.crudApp.confirmDialog(app.crudApp.translate('app.conferma-multidelete',false,[num]), {
+                that.$Crud.confirmDialog(that.$Crud.translate('app.conferma-multidelete',false,[num]), {
                     ok : function () {
                         var r = Route.factory('multi_delete');
                         r.values = {
                             modelName: that.view.modelName
                         };
-                        that.crudApp.waitStart();
+                        that.$Crud.waitStart();
                         r.params = {'ids': checked};
                         //console.log('MULTIDELETE',checked);
                         Server.route(r,function (json) {
-                            that.crudApp.waitEnd();
+                            that.$Crud.waitEnd();
                             that.view.reload();
                             //that.callback(json);
                         })
@@ -383,5 +383,8 @@ Crud = {
                 tpl : '/vue-app/templates/dashboard-csv-template.html'
             }
         }
+    },
+    interfaces : {
+        //js : 'vue-app/js/'
     }
 }

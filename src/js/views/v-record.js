@@ -18,7 +18,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
+                renders[key].cRef = that.$Crud.getRefId(that._uid,'r',key);
                 renders[key].value = null;
                 renders[key].operator = null;
                 if (that.data.value && (key in that.data.value) )
@@ -66,7 +66,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 aConf.modelData = Utility.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
-                aConf.cRef = that.crudApp.getRefId(that._uid,'a',aName);
+                aConf.cRef = that.$Crud.getRefId(that._uid,'a',aName);
                 actions[aName] = aConf;
             }
             that.actionsClass = actions;

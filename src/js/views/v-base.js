@@ -131,7 +131,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             }
             Server.route(route,function (json) {
                 if (json.error) {
-                    that.crudApp.errorDialog(json.msg);
+                    that.$Crud.errorDialog(json.msg);
                     return
                 }
                 callback(json);
@@ -142,7 +142,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             if (this.conf.customActions[name]) {
                 var aConf = {}
                 if (!this.$options.components[name]) {
-                    console.log('estendo azioni ',name);
+                    //console.log('estendo azioni ',name);
                     Vue.component(name, {
                         extends : actionBase
                     });
@@ -150,7 +150,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
                     aConf = this.$Crud.recordActions[name]?this.$Crud.recordActions[name]:(this.$Crud.globalActions[name]?this.$Crud.globalActions[name]:{})
                 }
                 aConf = Utility.merge(aConf,this.conf.customActions[name]);
-                console.log('CUSTOM',name,aConf);
+                //console.log('CUSTOM',name,aConf);
                 return aConf;
             }
             if (type == 'record') {

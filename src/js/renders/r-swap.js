@@ -68,16 +68,13 @@ Vue.component('r-swap', {
             r.params = {id:that.conf.modelData.id};
             Server.route(r,function (json) {
                 if (json.error) {
-                    that.crudApp.errorDialog(json.msg);
+                    that.$Crud.errorDialog(json.msg);
                     return;
                 }
                 var dV = that.getDV();
                 that.value = key;
                 that.slot = dV[key];
                 that.change();
-                // if (that.view)
-                //     that.crudApp.renderView(self.view.keyId);
-
             })
         },
         getDomainValues : function () {

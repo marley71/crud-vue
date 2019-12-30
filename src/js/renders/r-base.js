@@ -18,7 +18,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             that.resourcesLoaded = false;
-            that.crudApp.loadResources(_conf.resources,function () {
+            that.$Crud.loadResources(_conf.resources,function () {
                 console.log('resoures loaded callback',that);
                 that.resourcesLoaded = true;
                 that.afterLoadResources();

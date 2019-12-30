@@ -35,7 +35,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
-                    dconf.cRef = that.crudApp.getRefId(that._uid,'r',i,key);
+                    dconf.cRef = that.$Crud.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     dconf.value = null;
                     if (data.value[i][key])

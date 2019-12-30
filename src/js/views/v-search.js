@@ -1,6 +1,6 @@
 Vue.component('v-search', {
     extends : Crud.components.views.vRecord,
-    props : ['c-conf','c-model','c-route-conf','c-target-ref'],
+    props : ['cConf','cModel','cRouteConf','cTargetRef'],
     mounted : function() {
         var that = this;
         var route = that._getRoute({
@@ -91,7 +91,7 @@ Vue.component('v-search', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
+                renders[key].cRef = that.$Crud.getRefId(that._uid,'r',key);
                 renders[key].value = null;
                 //renders[key].operator = null;
                 if (that.data.value && that.data.value[key])

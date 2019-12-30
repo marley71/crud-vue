@@ -41,6 +41,7 @@ eval(fs.readFileSync('crud-files.js')+'');
 gulp.task('watch',function () {
     watch([
         './src/js/*.js',
+        './src/js/interfaces/*.js',
         './src/js/actions/*.js',
         './src/js/confs/*.js',
         './src/js/crud/*.js',

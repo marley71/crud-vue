@@ -1,5 +1,5 @@
 Crud.components.dBase = Vue.component('d-base',{
-    props : ['c-message'],
+    props : ['cMessage'],
     extends : Crud.components.cComponent,
     mounted : function () {
         var that = this;
@@ -51,7 +51,7 @@ Crud.components.dConfirm = Vue.component('d-confirm', {
 Crud.components.dMessage = Vue.component('d-message', {
     extends : Crud.components.dBase,
     props : {
-        'c-title': {
+        'cTitle': {
             default : 'Informazione'
         }
     },

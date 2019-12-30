@@ -50,7 +50,7 @@ const actionBase = Vue.component('action-base', {
             }
             if (!('view' in adata) )
                 adata.view = that.$parent;
-            console.log('action ',adata);
+            //console.log('action ',adata);
             return adata;
         },
         _beforeExecute : function (callback) {
@@ -75,7 +75,7 @@ const actionBase = Vue.component('action-base', {
                 return ;
             }
             that._beforeExecute(function () {
-                console.log('call execute')
+                //console.log('call execute')
                 that.execute.apply(that);
                 that._afterExecute();
             })

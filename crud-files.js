@@ -3,12 +3,16 @@ var crudJsFiles = [
     'src/js/crud/OOP.js',
     'src/js/confs/Crud.js',
 
+    'src/js/interfaces/dialogs.js',
+    'src/js/interfaces/core.js',
+    'src/js/interfaces/translations.js',
+
     'src/js/crud/Actions.js',
     'src/js/crud/Protocols.js',
     'src/js/crud/Routes.js',
     'src/js/crud/Utility.js',
     'src/js/crud/Server.js',
-    'src/js/crud/App.js',
+    //'src/js/crud/App.js',
 
     'src/js/misc/c-component.js',
     'src/js/misc/c-loading.js',
