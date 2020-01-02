@@ -5394,7 +5394,7 @@ Vue.component('v-hasmany-view', {
 const CrudApp = Vue.extend({
     created : function() {
         var that = this;
-
+        Vue.prototype.$crud = crud;
         for (var k in window) {
             //console.log('window key ',k);
             if (k.indexOf('_interface') > 0) {
