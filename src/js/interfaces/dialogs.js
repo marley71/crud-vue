@@ -101,4 +101,4 @@ dialogs_interface = {
     }
 
 
-}
+};

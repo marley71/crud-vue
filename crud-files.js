@@ -6,6 +6,7 @@ var crudJsFiles = [
     'src/js/interfaces/dialogs.js',
     'src/js/interfaces/core.js',
     'src/js/interfaces/translations.js',
+    'src/js/interfaces/wait.js',
 
     'src/js/crud/Actions.js',
     'src/js/crud/Protocols.js',
@@ -20,7 +21,7 @@ var crudJsFiles = [
     'src/js/actions/actions.js',
     'src/js/misc/c-paginator.js',
     'src/js/misc/dialogs.js',
-    'src/js/misc/c-wait.js',
+    //'src/js/misc/c-wait.js',
 
 
     'src/js/renders/r-base.js',
@@ -76,7 +77,7 @@ var crudHtmlFiles = [
     'src/templates/misc/cr-templates.html',
     'src/templates/misc/c-paginator.html',
     'src/templates/misc/dialogs.html',
-    'src/templates/misc/c-wait.html',
+    //'src/templates/misc/c-wait.html',
 
     'src/templates/renders/r-render.html',
     'src/templates/renders/r-input.html',

@@ -147,6 +147,4 @@ core_interface = {
             return callback();
         }
     }
-
-
-}
+};
