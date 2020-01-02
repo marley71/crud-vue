@@ -1,5 +1,5 @@
 Vue.component('r-upload-ajax',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
@@ -57,7 +57,7 @@ Vue.component('r-upload-ajax',{
             var fileName = fDesc.filename;
             var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+            var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
             var route = Route.factory('uploadfile',routeConf);
 
             that.error = false;

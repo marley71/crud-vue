@@ -78,7 +78,7 @@ Vue.prototype.$LANG = {
         attachment : 'allegato'
     }
 }
-Crud = {
+crud = {
     application : {
         useRouter : false,
     },
@@ -103,7 +103,7 @@ Crud = {
             text : '',
             icon : 'fa fa-edit',
             execute : function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/edit/" + this.modelName + "/" + this.modelData.id;
                 document.location.href=url
             }
@@ -115,7 +115,7 @@ Crud = {
             icon : 'fa fa-list',
             text : '',
             execute : function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/view/" + this.modelName + "/" + this.modelData.id;
                 document.location.href=url;
             }
@@ -128,7 +128,7 @@ Crud = {
             text : '',
             execute : function () {
                 var that = this;
-                that.$Crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
+                that.$crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
                     ok : function () {
 
                         var r = Route.factory('delete');
@@ -159,7 +159,7 @@ Crud = {
             icon : 'fa fa-plus',
             text : 'New',
             execute  :function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/insert/" + this.modelName + "/new";
                 document.location.href=url;
             }
@@ -193,17 +193,17 @@ Crud = {
                     // })
                 }
                 var r = null;
-                if (Crud.routes[rName]) {
-                    r =  new Route(Crud.routes[rName]);
+                if (crud.routes[rName]) {
+                    r =  new Route(crud.routes[rName]);
                 } else {
                     r = Route.factory(rName);
                 }
                 r.values = values;
-                //r.params = this.$Crud.getFormData(jQuery(this.rootElement).find('form'));
+                //r.params = this.$crud.getFormData(jQuery(this.rootElement).find('form'));
                 r.params = Utility.getFormData(this.view.jQe('form'));
                 Server.route(r, function (json) {
                     if (json.error) {
-                        that.$Crud.errorDialog(json.msg)
+                        that.$crud.errorDialog(json.msg)
                         //alert(json.msg);
                         return ;
                     }
@@ -284,17 +284,17 @@ Crud = {
                 var num = checked.length;
                 if (num === 0)
                     return ;
-                that.$Crud.confirmDialog(that.$Crud.translate('app.conferma-multidelete',false,[num]), {
+                that.$crud.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
                     ok : function () {
                         var r = Route.factory('multi_delete');
                         r.values = {
                             modelName: that.view.modelName
                         };
-                        that.$Crud.waitStart();
+                        that.$crud.waitStart();
                         r.params = {'ids': checked};
                         //console.log('MULTIDELETE',checked);
                         Server.route(r,function (json) {
-                            that.$Crud.waitEnd();
+                            that.$crud.waitEnd();
                             that.view.reload();
                             //that.callback(json);
                         })
@@ -468,7 +468,7 @@ dialogs_interface = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new Crud.components.dMessage({
+            var d = new crud.components.dMessage({
                 propsData : props,
                 methods : callbacks,
             });
@@ -484,7 +484,7 @@ dialogs_interface = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new Crud.components.dError({
+            var d = new crud.components.dError({
                 propsData : props,
                 methods : callbacks,
             });
@@ -501,7 +501,7 @@ dialogs_interface = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new Crud.components.dConfirm({
+            var d = new crud.components.dConfirm({
                 propsData : props,
                 methods : callbacks,
             });
@@ -518,7 +518,7 @@ dialogs_interface = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new Crud.components.dWarning({
+            var d = new crud.components.dWarning({
                 propsData : props,
                 methods : callbacks,
             });
@@ -538,7 +538,7 @@ dialogs_interface = {
             } else
                 props.cCallbacks = callbacks;
 
-            var d = new Crud.components.dCustom({
+            var d = new crud.components.dCustom({
                 propsData : props,
                 //methods : callbacks,
             });
@@ -578,7 +578,7 @@ core_interface = {
             }
 
             var _recursive = function (i) {
-                self.$Crud.loadResource(resources[i],function () {
+                self.$crud.loadResource(resources[i],function () {
                     //log.info('_recursive', resources[i]);
                     if (i < resources.length-1) {
                         _recursive(i+1);
@@ -722,7 +722,7 @@ translations_interface = {
         translateIfExist : function (key,plural,params) {
             if (!jQuery.langDefs[key])
                 return ""
-            return this.$Crud.translate(key,plural,params);
+            return this.$crud.translate(key,plural,params);
         },
     },
     _translate : function (key,plural,params) {
@@ -2483,7 +2483,7 @@ Server.route = function(route,callback) {
 
 Server.subdomain = null;
 
-Crud.components.cComponent = Vue.component('c-component',{
+crud.components.cComponent = Vue.component('c-component',{
     // props : {
     //     'c-conf' : {
     //         default : function () {
@@ -2498,13 +2498,13 @@ Crud.components.cComponent = Vue.component('c-component',{
     mounted : function() {
         //console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
-            this.$Crud.cRefs[this.cRef] = this;
+            this.$crud.cRefs[this.cRef] = this;
         }
 
         // else  {
         //     var _conf = this.conf || {};
         //     if ( _conf.cRef) {
-        //         this.$Crud.cRefs[_conf.cRef] = this;
+        //         this.$crud.cRefs[_conf.cRef] = this;
         //     }
         // }
     },
@@ -2536,34 +2536,34 @@ Crud.components.cComponent = Vue.component('c-component',{
 Vue.component('c-loading',{
     template : '<span>Carico ...</span>'
 })
-Crud.components.cTplBase = Vue.component('c-tpl-base',{
+crud.components.cTplBase = Vue.component('c-tpl-base',{
     props : ['cRender','cType','cKey','cRef'],
     template : '<span>template base</span>'
 });
 
 
 Vue.component('c-tpl-record',{
-    extends : Crud.components.cTplBase,
+    extends : crud.components.cTplBase,
     template : '#c-tpl-record-template'
 });
 
 Vue.component('c-tpl-record2',{
-    extends : Crud.components.cTplBase,
+    extends : crud.components.cTplBase,
     template : '#c-tpl-record2-template'
 });
 
 
 Vue.component('c-tpl-list', {
-    extends : Crud.components.cTplBase,
+    extends : crud.components.cTplBase,
     template : '#c-tpl-list-template'
 });
 Vue.component('c-tpl-no', {
-    extends : Crud.components.cTplBase,
+    extends : crud.components.cTplBase,
     template : '#c-tpl-no-template'
 });
 const actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
 
     computed :  {
         _disabled : function () {
@@ -2799,9 +2799,9 @@ Vue.component('c-paginator',{
         },
     }
 })
-Crud.components.dBase = Vue.component('d-base',{
+crud.components.dBase = Vue.component('d-base',{
     props : ['cMessage'],
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
     mounted : function () {
         var that = this;
         console.log('message',this.cMessage,this.message)
@@ -2834,8 +2834,8 @@ Crud.components.dBase = Vue.component('d-base',{
     }
 });
 
-Crud.components.dConfirm = Vue.component('d-confirm', {
-    extends : Crud.components.dBase,
+crud.components.dConfirm = Vue.component('d-confirm', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Richiesta di Conferma'
@@ -2849,8 +2849,8 @@ Crud.components.dConfirm = Vue.component('d-confirm', {
     template : '#d-confirm-template'
 });
 
-Crud.components.dMessage = Vue.component('d-message', {
-    extends : Crud.components.dBase,
+crud.components.dMessage = Vue.component('d-message', {
+    extends : crud.components.dBase,
     props : {
         'cTitle': {
             default : 'Informazione'
@@ -2864,8 +2864,8 @@ Crud.components.dMessage = Vue.component('d-message', {
     template : '#d-message-template'
 });
 
-Crud.components.dError = Vue.component('d-error', {
-    extends : Crud.components.dBase,
+crud.components.dError = Vue.component('d-error', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Errore'
@@ -2878,8 +2878,8 @@ Crud.components.dError = Vue.component('d-error', {
     },
     template : '#d-error-template'
 });
-Crud.components.dWarning = Vue.component('d-warning', {
-    extends : Crud.components.dBase,
+crud.components.dWarning = Vue.component('d-warning', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Attenzione'
@@ -2893,7 +2893,7 @@ Crud.components.dWarning = Vue.component('d-warning', {
     template : '#d-warning-template'
 });
 
-Crud.components.dCustom = Vue.component('d-custom', {
+crud.components.dCustom = Vue.component('d-custom', {
     // mounted : function () {
     //     var that = this;
     //     for (var k in that.cCallbacks) {
@@ -2903,7 +2903,7 @@ Crud.components.dCustom = Vue.component('d-custom', {
     //         }
     //     }
     // },
-    extends : Crud.components.dBase,
+    extends : crud.components.dBase,
     // methods : {
     //     cbCall : function (key) {
     //         var that = this;
@@ -2931,8 +2931,8 @@ Crud.components.dCustom = Vue.component('d-custom', {
     },
     template : '#d-custom-template'
 });
-Crud.components.cWait = Vue.component('c-wait',{
-    extends : Crud.components.cComponent,
+crud.components.cWait = Vue.component('c-wait',{
+    extends : crud.components.cComponent,
     data : function () {
         return {
             msg : ''
@@ -2951,8 +2951,8 @@ Crud.components.cWait = Vue.component('c-wait',{
     },
     template : '#c-wait-template'
 })
-Crud.components.renders.rBase = Vue.component('r-base', {
-    extends : Crud.components.cComponent,
+crud.components.renders.rBase = Vue.component('r-base', {
+    extends : crud.components.cComponent,
     props : ['cMarker'],
 
     mounted : function() {
@@ -2971,7 +2971,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             that.resourcesLoaded = false;
-            that.$Crud.loadResources(_conf.resources,function () {
+            that.$crud.loadResources(_conf.resources,function () {
                 console.log('resoures loaded callback',that);
                 that.resourcesLoaded = true;
                 that.afterLoadResources();
@@ -3047,11 +3047,11 @@ Crud.components.renders.rBase = Vue.component('r-base', {
 });
 
 Vue.component('r-render', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-render-template',
 });
 Vue.component('r-input', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-input-template',
     data : function () {
         var d = this.defaultData();
@@ -3063,7 +3063,7 @@ Vue.component('r-input', {
     }
 });
 Vue.component('r-input-helped', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-input-helped-template',
     data : function () {
         var d = this.defaultData();
@@ -3079,19 +3079,19 @@ Vue.component('r-input-helped', {
 
 });
 Vue.component('r-hidden', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-hidden-template'
 });
 Vue.component('r-text',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-text-template'
 });
 Vue.component('r-textarea', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-textarea-template'
 });
 Vue.component('r-select',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-select-template',
     data :  function () {
         var metadata = this.cConf.metadata || {};
@@ -3108,7 +3108,7 @@ Vue.component('r-select',{
 
 
 Vue.component('r-radio',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     data :  function () {
         var metadata = this.cConf.metadata || {};
         var dV = metadata.domainValues || {};
@@ -3125,7 +3125,7 @@ Vue.component('r-radio',{
 
 
 Vue.component('r-checkbox',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     data :  function () {
         var that = this;
         //console.log('c-select',this.cData);
@@ -3155,7 +3155,7 @@ Vue.component('r-checkbox',{
 
 
 Vue.component('r-autocomplete', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-autocomplete-template',
 
     data : function () {
@@ -3202,18 +3202,11 @@ Vue.component('r-autocomplete', {
 
 });
 Vue.component('r-belongsto', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-belongsto-template',
-    // data : function () {
-    //     var d = this.defaultData();
-    //     d.inputType = 'text';
-    //     if (this.cData.inputType)
-    //         d.inputType = this.cData.inputType;
-    //     return d;
-    // }
 });
 Vue.component('r-date-select', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-date-select-template',
 
     computed : {
@@ -3303,7 +3296,7 @@ Vue.component('r-date-select', {
     }
 });
 Vue.component('r-date-picker', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-date-picker-template',
     methods : {
         changed : function() {
@@ -3342,7 +3335,7 @@ Vue.component('r-date-picker', {
     }
 });
 Vue.component('r-texthtml',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-texthtml-template',
     methods : {
         afterLoadResources : function () {
@@ -3353,8 +3346,8 @@ Vue.component('r-texthtml',{
         }
     }
 });
-Crud.components.rHasmany =Vue.component('r-hasmany', {
-    extends : Crud.components.renders.rBase,
+crud.components.rHasmany =Vue.component('r-hasmany', {
+    extends : crud.components.renders.rBase,
     template: '#r-hasmany-template',
     data : function () {
         var that = this;
@@ -3446,13 +3439,13 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                 console.log('update status deleted ', index)
                 this.$set(this.value[index], 'status', 'deleted');
                 this.$set(this.confViews[index], 'status' , 'deleted');
-                this.$Crud.cRefs['hm-'+index].setFieldValue('status','deleted');
+                this.$crud.cRefs['hm-'+index].setFieldValue('status','deleted');
             }
         }
     }
 });
 Vue.component('r-hasmany-view', {
-    extends : Crud.components.rHasmany,
+    extends : crud.components.rHasmany,
     template: '#r-hasmany-view-template',
     beforeCreated : function() {
         this.$options.template  = '#r-hasmany-view-template1';
@@ -3466,7 +3459,7 @@ Vue.component('r-hasmany-view', {
     }
 });
 Vue.component('r-swap', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-swap-template',
     data : function () {
         var that = this;
@@ -3535,7 +3528,7 @@ Vue.component('r-swap', {
             r.params = {id:that.conf.modelData.id};
             Server.route(r,function (json) {
                 if (json.error) {
-                    that.$Crud.errorDialog(json.msg);
+                    that.$crud.errorDialog(json.msg);
                     return;
                 }
                 var dV = that.getDV();
@@ -3549,8 +3542,8 @@ Vue.component('r-swap', {
         }
     }
 });
-Crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
-    extends : Crud.components.renders.rBase,
+crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
+    extends : crud.components.renders.rBase,
     template: '#r-hasmany-through-template',
     data : function () {
         var d = this.defaultData();
@@ -3598,7 +3591,7 @@ Crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
     }
 });
 Vue.component('r-b2-select2', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-b2-select2-template',
     data : function () {
         var d = this.defaultData();
@@ -3674,7 +3667,7 @@ Vue.component('r-b2-select2', {
 
 });
 Vue.component('r-b2m-select2', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-b2m-select2-template',
     data : function () {
         var d = this.defaultData();
@@ -3768,8 +3761,8 @@ Vue.component('r-b2m-select2', {
     }
 
 });
-Crud.components.renders.rUpload = Vue.component('r-upload',{
-    extends : Crud.components.renders.rBase,
+crud.components.renders.rUpload = Vue.component('r-upload',{
+    extends : crud.components.renders.rBase,
     template : '#r-upload-template',
     data : function () {
         var d = this.defaultData();
@@ -3846,7 +3839,7 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
     }
 })
 Vue.component('r-upload-ajax',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
@@ -3904,7 +3897,7 @@ Vue.component('r-upload-ajax',{
             var fileName = fDesc.filename;
             var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+            var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
             var route = Route.factory('uploadfile',routeConf);
 
             that.error = false;
@@ -3975,7 +3968,7 @@ Vue.component('r-upload-ajax',{
     }
 })
 Vue.component('r-preview',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template : '#r-preview-template',
     mounted : function() {
         var that = this;
@@ -4010,9 +4003,9 @@ Vue.component('r-preview',{
                     break;
                 case 'default':
                     that.icon=true;
-                    that.iconClass = that.$Crud.icons.mimetypes['default'];
-                    if (that.$Crud.icons.mimetypes[ext])
-                        that.iconClass = that.$Crud.icons.mimetypes[ext];
+                    that.iconClass = that.$crud.icons.mimetypes['default'];
+                    if (that.$crud.icons.mimetypes[ext])
+                        that.iconClass = that.$crud.icons.mimetypes[ext];
                     break;
             }
             that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
@@ -4037,7 +4030,7 @@ Vue.component('r-preview',{
     }
 })
 Vue.component('v-action', {
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
     props : ['cName','cAction'],
     data : function () {
         var that = this;
@@ -4063,7 +4056,7 @@ Vue.component('v-action', {
 })
 
 Vue.component('v-render', {
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
@@ -4101,9 +4094,9 @@ Vue.component('v-render', {
     template : '<component :is="type" :c-conf="conf"></component>'
 })
 
-Crud.components.views.vBase = Vue.component('v-base', {
+crud.components.views.vBase = Vue.component('v-base', {
     props : ['cConf','cFields'],
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
     // created : function() {
     //     var that = this;
     //     var _conf = that.getConf(that.cConf) || {};
@@ -4169,7 +4162,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             }
             Server.route(route,function (json) {
                 if (json.error) {
-                    that.$Crud.errorDialog(json.msg);
+                    that.$crud.errorDialog(json.msg);
                     return
                 }
                 callback(json);
@@ -4185,21 +4178,21 @@ Crud.components.views.vBase = Vue.component('v-base', {
                         extends : actionBase
                     });
                 } else {
-                    aConf = this.$Crud.recordActions[name]?this.$Crud.recordActions[name]:(this.$Crud.globalActions[name]?this.$Crud.globalActions[name]:{})
+                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.globalActions[name]?this.$crud.globalActions[name]:{})
                 }
                 aConf = Utility.merge(aConf,this.conf.customActions[name]);
                 //console.log('CUSTOM',name,aConf);
                 return aConf;
             }
             if (type == 'record') {
-                if (this.$Crud.recordActions[name]) {
-                    return Utility.cloneObj(this.$Crud.recordActions[name]);
+                if (this.$crud.recordActions[name]) {
+                    return Utility.cloneObj(this.$crud.recordActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
             }
             if (type == 'global') {
-                if (this.$Crud.globalActions[name]) {
-                    return Utility.cloneObj(this.$Crud.globalActions[name]);
+                if (this.$crud.globalActions[name]) {
+                    return Utility.cloneObj(this.$crud.globalActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo global non trovata nelle azioni generali";
             }
@@ -4212,12 +4205,12 @@ Crud.components.views.vBase = Vue.component('v-base', {
          */
         getConf : function (modelName,type) {
             var conf = null;
-            var defaltConf = this.$Crud.conf[type];
+            var defaltConf = this.$crud.conf[type];
 
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String)
-                    conf = window[this.cConf]?window[this.cConf]:(this.$Crud.conf[this.cConf]?this.$Crud.conf[this.cConf]:null);
+                    conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
                 else
                     conf = this.cConf;
             } else {
@@ -4246,8 +4239,8 @@ Crud.components.views.vBase = Vue.component('v-base', {
             if (that.conf.routeName == null)
                 return null;
             if (!that.route) {
-                if (Crud.routes[that.conf.routeName]) {
-                    route =  new Route(Crud.routes[that.conf.routeName]);
+                if (crud.routes[that.conf.routeName]) {
+                    route =  new Route(crud.routes[that.conf.routeName]);
                 } else {
                     route = Route.factory(that.conf.routeName);
                 }
@@ -4294,8 +4287,8 @@ Crud.components.views.vBase = Vue.component('v-base', {
     },
     template : '<div>view base</div>'
 });
-Crud.components.views.vRecord = Vue.component('v-record', {
-    extends : Crud.components.views.vBase,
+crud.components.views.vRecord = Vue.component('v-record', {
+    extends : crud.components.views.vBase,
     props : ['cModel','cPk'],
     methods : {
 
@@ -4304,7 +4297,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             if (!that.renders[key]) {
                 throw 'accesso a render con chiave inesistente ' + key;
             }
-            Crud.cRefs[that.renders[key].cRef].setValue(value);
+            crud.cRefs[that.renders[key].cRef].setValue(value);
         },
 
         createRenders : function() {
@@ -4314,7 +4307,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.$Crud.getRefId(that._uid,'r',key);
+                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
                 renders[key].value = null;
                 renders[key].operator = null;
                 if (that.data.value && (key in that.data.value) )
@@ -4343,7 +4336,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.globalActions[aName])
+                if (that.$crud.globalActions[aName])
                     actions.push(aName);
                 else if (that.conf.customActions[aName])
                     actions.push(aName);
@@ -4362,7 +4355,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 aConf.modelData = Utility.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
-                aConf.cRef = that.$Crud.getRefId(that._uid,'a',aName);
+                aConf.cRef = that.$crud.getRefId(that._uid,'a',aName);
                 actions[aName] = aConf;
             }
             that.actionsClass = actions;
@@ -4412,12 +4405,12 @@ Crud.components.views.vRecord = Vue.component('v-record', {
         getRender : function (key) {
             var rConf = this.renders[key];
             console.log('getRenderd',key,rConf);
-            return this.$Crud.cRefs[rConf.cRef];
+            return this.$crud.cRefs[rConf.cRef];
         },
         getAction : function (name) {
             var rConf = this.actionsClass[name];
             console.log('getAction',name,rConf);
-            return this.$Crud.cRefs[rConf.cRef];
+            return this.$crud.cRefs[rConf.cRef];
         }
     },
     data : function() {
@@ -4430,8 +4423,8 @@ Crud.components.views.vRecord = Vue.component('v-record', {
     },
     template : '<div>view record base</div>'
 });
-Crud.components.views.vCollection = Vue.component('v-collection', {
-    extends : Crud.components.views.vBase,
+crud.components.views.vCollection = Vue.component('v-collection', {
+    extends : crud.components.views.vBase,
     props : ['cModel'],
     methods : {
         setFieldValue : function(row,key,value) {
@@ -4467,7 +4460,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
-                    dconf.cRef = that.$Crud.getRefId(that._uid,'r',i,key);
+                    dconf.cRef = that.$crud.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     dconf.value = null;
                     if (data.value[i][key])
@@ -4509,7 +4502,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
 });
 
 Vue.component('v-list', {
-    extends : Crud.components.views.vCollection,
+    extends : crud.components.views.vCollection,
     conf : {},
     // beforeCreate : function() {
     //     this.template = '#v-view-template';
@@ -4530,7 +4523,7 @@ Vue.component('v-list', {
         var that = this;
         console.log('DATA CALLED');
         //console.log('CRUDCONF',that.$Crud);
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }
@@ -4620,9 +4613,9 @@ Vue.component('v-list', {
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.recordActions[aName])
+                if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$Crud.globalActions[aName])
+                else if (that.$crud.globalActions[aName])
                     globalActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
@@ -4737,7 +4730,7 @@ Vue.component('v-list', {
 
 
 Vue.component('v-list-edit', {
-    extends : Crud.components.views.vCollection,
+    extends : crud.components.views.vCollection,
     conf : {},
     props : ['c-conf','c-model'],
 
@@ -4755,7 +4748,7 @@ Vue.component('v-list-edit', {
     data :  function () {
         var that = this;
 
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }
@@ -4865,9 +4858,9 @@ Vue.component('v-list-edit', {
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.recordActions[aName])
+                if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$Crud.globalActions[aName])
+                else if (that.$crud.globalActions[aName])
                     globalActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
@@ -4992,11 +4985,11 @@ Vue.component('v-list-edit', {
         },
         hideRA : function (index,name) {
             var n = 'ra-'+index+'-'+name;
-            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(false):null;
+            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var n = 'ra-'+index+'-'+name;
-            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(true):null;
+            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
         },
         getRef : function (prefix,index,key) {
             var s =  prefix + '-' + index + '-' + key;
@@ -5015,7 +5008,7 @@ Vue.component('v-list-edit', {
 });
 
 Vue.component('v-edit', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
 
     mounted : function() {
@@ -5062,7 +5055,7 @@ Vue.component('v-edit', {
 });
 
 Vue.component('v-view', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
 
     mounted : function() {
@@ -5106,7 +5099,7 @@ Vue.component('v-view', {
 });
 
 Vue.component('v-insert', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['c-conf','c-model'],
 
     mounted : function() {
@@ -5147,7 +5140,7 @@ Vue.component('v-insert', {
 });
 
 Vue.component('v-search', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['cConf','cModel','cRouteConf','cTargetRef'],
     mounted : function() {
         var that = this;
@@ -5239,7 +5232,7 @@ Vue.component('v-search', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.$Crud.getRefId(that._uid,'r',key);
+                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
                 renders[key].value = null;
                 //renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
@@ -5277,7 +5270,7 @@ Vue.component('v-search', {
 });
 
 Vue.component('v-hasmany', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['c-conf'],
     data :  function () {
         var that = this;
@@ -5321,7 +5314,7 @@ Vue.component('v-hasmany', {
 });
 
 Vue.component('v-hasmany-view', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['c-conf'],
     data :  function () {
         var that = this;
@@ -5374,7 +5367,7 @@ const CrudApp = Vue.extend({
                 console.log('found interface ',k)
                 var methods = window[k].methods || {};
                 var __call = function (interface,lk) {
-                    that.$Crud[lk] = function () {
+                    that.$crud[lk] = function () {
                         var localk = new String(lk);
                         var int = new String(interface);
                         //var arguments = this.arguments;
@@ -5391,17 +5384,17 @@ const CrudApp = Vue.extend({
 
 
 
-        that.$Crud.instance = that;
-        that.$Crud.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
+        that.$crud.instance = that;
+        that.$crud.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
         var resources = [];
         resources.push(this.templatesFile);
-        for (var k in this.$Crud.components.libs) {
-            if (that.$Crud.components.libs[k].tpl)
-                resources.push(that.$Crud.components.libs[k].tpl);
-            if (that.$Crud.components.libs[k].js)
-                resources.push(that.$Crud.components.libs[k].js);
+        for (var k in this.$crud.components.libs) {
+            if (that.$crud.components.libs[k].tpl)
+                resources.push(that.$crud.components.libs[k].tpl);
+            if (that.$crud.components.libs[k].js)
+                resources.push(that.$crud.components.libs[k].js);
         }
-        that.$Crud.loadResources(resources,function () {
+        that.$crud.loadResources(resources,function () {
             console.log('monto app');
 
             that.$mount(that.el);

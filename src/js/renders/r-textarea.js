@@ -1,4 +1,4 @@
 Vue.component('r-textarea', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-textarea-template'
 });

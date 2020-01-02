@@ -1,5 +1,5 @@
 Vue.component('r-date-select', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-date-select-template',
 
     computed : {

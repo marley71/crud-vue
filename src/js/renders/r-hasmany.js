@@ -1,5 +1,5 @@
-Crud.components.rHasmany =Vue.component('r-hasmany', {
-    extends : Crud.components.renders.rBase,
+crud.components.rHasmany =Vue.component('r-hasmany', {
+    extends : crud.components.renders.rBase,
     template: '#r-hasmany-template',
     data : function () {
         var that = this;
@@ -91,7 +91,7 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                 console.log('update status deleted ', index)
                 this.$set(this.value[index], 'status', 'deleted');
                 this.$set(this.confViews[index], 'status' , 'deleted');
-                this.$Crud.cRefs['hm-'+index].setFieldValue('status','deleted');
+                this.$crud.cRefs['hm-'+index].setFieldValue('status','deleted');
             }
         }
     }

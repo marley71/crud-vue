@@ -8,7 +8,7 @@ const CrudApp = Vue.extend({
                 console.log('found interface ',k)
                 var methods = window[k].methods || {};
                 var __call = function (interface,lk) {
-                    that.$Crud[lk] = function () {
+                    that.$crud[lk] = function () {
                         var localk = new String(lk);
                         var int = new String(interface);
                         //var arguments = this.arguments;
@@ -25,17 +25,17 @@ const CrudApp = Vue.extend({
 
 
 
-        that.$Crud.instance = that;
-        that.$Crud.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
+        that.$crud.instance = that;
+        that.$crud.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
         var resources = [];
         resources.push(this.templatesFile);
-        for (var k in this.$Crud.components.libs) {
-            if (that.$Crud.components.libs[k].tpl)
-                resources.push(that.$Crud.components.libs[k].tpl);
-            if (that.$Crud.components.libs[k].js)
-                resources.push(that.$Crud.components.libs[k].js);
+        for (var k in this.$crud.components.libs) {
+            if (that.$crud.components.libs[k].tpl)
+                resources.push(that.$crud.components.libs[k].tpl);
+            if (that.$crud.components.libs[k].js)
+                resources.push(that.$crud.components.libs[k].js);
         }
-        that.$Crud.loadResources(resources,function () {
+        that.$crud.loadResources(resources,function () {
             console.log('monto app');
 
             that.$mount(that.el);

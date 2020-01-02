@@ -1,5 +1,5 @@
 Vue.component('r-input-helped', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-input-helped-template',
     data : function () {
         var d = this.defaultData();

@@ -1,5 +1,5 @@
-Crud.components.renders.rBase = Vue.component('r-base', {
-    extends : Crud.components.cComponent,
+crud.components.renders.rBase = Vue.component('r-base', {
+    extends : crud.components.cComponent,
     props : ['cMarker'],
 
     mounted : function() {
@@ -18,7 +18,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             that.resourcesLoaded = false;
-            that.$Crud.loadResources(_conf.resources,function () {
+            that.$crud.loadResources(_conf.resources,function () {
                 console.log('resoures loaded callback',that);
                 that.resourcesLoaded = true;
                 that.afterLoadResources();

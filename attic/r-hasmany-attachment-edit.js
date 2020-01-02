@@ -1,9 +1,9 @@
 Vue.component('r-hasmany-attachment-edit',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
 
     data :  function () {
         var that = this;
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
         var route = Route.factory('uploadfile',routeConf);
         var types = {
             ext : 'r-hidden',
@@ -84,7 +84,7 @@ Vue.component('r-hasmany-attachment-edit',{
         },
         uploadImage : function () {
             var that = this;
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+            var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
             var route = Route.factory('uploadfile',routeConf);
             //route.params.file = document.getElementById("image-file").files[0]; // jQuery(that.$el).find('input[name="file"]').val();
             //route.params.file = jQuery(that.$el).find('input[name="file"]').prop('files')[0];
@@ -130,7 +130,7 @@ Vue.component('r-hasmany-attachment-edit',{
                     return;
                 }
                 that.complete = true;
-                that.preview = that.$Crud.icons.mimetypes[data.result.ext]?that.$Crud.icons.mimetypes[data.result.ext]:that.$Crud.icons.mimetypes[that.iconType] //Server.getUrl('/imagecache/small/' + data.result.filename);
+                that.preview = that.$crud.icons.mimetypes[data.result.ext]?that.$crud.icons.mimetypes[data.result.ext]:that.$crud.icons.mimetypes[that.iconType] //Server.getUrl('/imagecache/small/' + data.result.filename);
                 that.lastUpload = Utility.cloneObj(data.result);
                 for (var k in data.result) {
                     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
@@ -180,7 +180,7 @@ Vue.component('r-hasmany-attachment-edit',{
                     value : values[field]
                 }
             }
-            renders.preview = that.$Crud.icons.mimetypes[values.ext]?that.$Crud.icons.mimetypes[values.ext]:that.$Crud.icons.mimetypes[that.iconType];
+            renders.preview = that.$crud.icons.mimetypes[values.ext]?that.$crud.icons.mimetypes[values.ext]:that.$crud.icons.mimetypes[that.iconType];
             that.renders.push(renders);
         }
 

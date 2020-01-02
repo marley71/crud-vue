@@ -1,5 +1,5 @@
 Vue.component('r-radio',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     data :  function () {
         var metadata = this.cConf.metadata || {};
         var dV = metadata.domainValues || {};

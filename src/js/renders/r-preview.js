@@ -1,5 +1,5 @@
 Vue.component('r-preview',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template : '#r-preview-template',
     mounted : function() {
         var that = this;
@@ -34,9 +34,9 @@ Vue.component('r-preview',{
                     break;
                 case 'default':
                     that.icon=true;
-                    that.iconClass = that.$Crud.icons.mimetypes['default'];
-                    if (that.$Crud.icons.mimetypes[ext])
-                        that.iconClass = that.$Crud.icons.mimetypes[ext];
+                    that.iconClass = that.$crud.icons.mimetypes['default'];
+                    if (that.$crud.icons.mimetypes[ext])
+                        that.iconClass = that.$crud.icons.mimetypes[ext];
                     break;
             }
             that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;

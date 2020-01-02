@@ -1,5 +1,5 @@
-Crud.components.cWait = Vue.component('c-wait',{
-    extends : Crud.components.cComponent,
+crud.components.cWait = Vue.component('c-wait',{
+    extends : crud.components.cComponent,
     data : function () {
         return {
             msg : ''

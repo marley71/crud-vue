@@ -1,6 +1,6 @@
 const actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
 
     computed :  {
         _disabled : function () {

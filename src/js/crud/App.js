@@ -421,7 +421,7 @@ function App() {
             _cW.msg = msg;
             return;
         }
-        _cW = new Crud.components.cWait();
+        _cW = new crud.components.cWait();
         var id= 'd' + (new Date().getTime());
         jQuery('body').append('<div id="'+id+'"></div>');
         _cW.$mount('#'+id);

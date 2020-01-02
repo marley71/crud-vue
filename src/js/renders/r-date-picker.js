@@ -1,5 +1,5 @@
 Vue.component('r-date-picker', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-date-picker-template',
     methods : {
         changed : function() {

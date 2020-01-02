@@ -1,5 +1,5 @@
-Crud.components.renders.rUpload = Vue.component('r-upload',{
-    extends : Crud.components.renders.rBase,
+crud.components.renders.rUpload = Vue.component('r-upload',{
+    extends : crud.components.renders.rBase,
     template : '#r-upload-template',
     data : function () {
         var d = this.defaultData();

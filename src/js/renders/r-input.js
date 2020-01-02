@@ -1,5 +1,5 @@
 Vue.component('r-input', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-input-template',
     data : function () {
         var d = this.defaultData();

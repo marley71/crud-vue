@@ -1,6 +1,6 @@
-Crud.components.dBase = Vue.component('d-base',{
+crud.components.dBase = Vue.component('d-base',{
     props : ['cMessage'],
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
     mounted : function () {
         var that = this;
         console.log('message',this.cMessage,this.message)
@@ -33,8 +33,8 @@ Crud.components.dBase = Vue.component('d-base',{
     }
 });
 
-Crud.components.dConfirm = Vue.component('d-confirm', {
-    extends : Crud.components.dBase,
+crud.components.dConfirm = Vue.component('d-confirm', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Richiesta di Conferma'
@@ -48,8 +48,8 @@ Crud.components.dConfirm = Vue.component('d-confirm', {
     template : '#d-confirm-template'
 });
 
-Crud.components.dMessage = Vue.component('d-message', {
-    extends : Crud.components.dBase,
+crud.components.dMessage = Vue.component('d-message', {
+    extends : crud.components.dBase,
     props : {
         'cTitle': {
             default : 'Informazione'
@@ -63,8 +63,8 @@ Crud.components.dMessage = Vue.component('d-message', {
     template : '#d-message-template'
 });
 
-Crud.components.dError = Vue.component('d-error', {
-    extends : Crud.components.dBase,
+crud.components.dError = Vue.component('d-error', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Errore'
@@ -77,8 +77,8 @@ Crud.components.dError = Vue.component('d-error', {
     },
     template : '#d-error-template'
 });
-Crud.components.dWarning = Vue.component('d-warning', {
-    extends : Crud.components.dBase,
+crud.components.dWarning = Vue.component('d-warning', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Attenzione'
@@ -92,7 +92,7 @@ Crud.components.dWarning = Vue.component('d-warning', {
     template : '#d-warning-template'
 });
 
-Crud.components.dCustom = Vue.component('d-custom', {
+crud.components.dCustom = Vue.component('d-custom', {
     // mounted : function () {
     //     var that = this;
     //     for (var k in that.cCallbacks) {
@@ -102,7 +102,7 @@ Crud.components.dCustom = Vue.component('d-custom', {
     //         }
     //     }
     // },
-    extends : Crud.components.dBase,
+    extends : crud.components.dBase,
     // methods : {
     //     cbCall : function (key) {
     //         var that = this;

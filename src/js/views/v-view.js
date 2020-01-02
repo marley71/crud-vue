@@ -1,5 +1,5 @@
 Vue.component('v-view', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
 
     mounted : function() {

@@ -1,6 +1,6 @@
 
 Vue.component('v-list', {
-    extends : Crud.components.views.vCollection,
+    extends : crud.components.views.vCollection,
     conf : {},
     // beforeCreate : function() {
     //     this.template = '#v-view-template';
@@ -21,7 +21,7 @@ Vue.component('v-list', {
         var that = this;
         console.log('DATA CALLED');
         //console.log('CRUDCONF',that.$Crud);
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }
@@ -111,9 +111,9 @@ Vue.component('v-list', {
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.recordActions[aName])
+                if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$Crud.globalActions[aName])
+                else if (that.$crud.globalActions[aName])
                     globalActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {

@@ -14,7 +14,7 @@ core_interface = {
             }
 
             var _recursive = function (i) {
-                self.$Crud.loadResource(resources[i],function () {
+                self.$crud.loadResource(resources[i],function () {
                     //log.info('_recursive', resources[i]);
                     if (i < resources.length-1) {
                         _recursive(i+1);

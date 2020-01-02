@@ -1,5 +1,5 @@
 Vue.component('r-checkbox',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     data :  function () {
         var that = this;
         //console.log('c-select',this.cData);

@@ -1,10 +1,10 @@
 Vue.component('r-upload-image',{
-    extends : Crud.components.renders.rBase, //Crud.components.renders.rHasmanyImageEdit,
+    extends : crud.components.renders.rBase, //Crud.components.renders.rHasmanyImageEdit,
 
     data :  function () {
         var that = this;
         console.log('image edit',that);
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.upload);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.upload);
         var route = Route.factory('upload',routeConf);
         var types = {
             ext : 'r-hidden',
@@ -124,7 +124,7 @@ Vue.component('r-upload-image',{
         },
         uploadImage : function () {
             var that = this;
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+            var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
             var route = Route.factory('uploadfile',routeConf);
             //route.params.file = document.getElementById("image-file").files[0]; // jQuery(that.$el).find('input[name="file"]').val();
             //route.params.file = jQuery(that.$el).find('input[name="file"]').prop('files')[0];

@@ -9,7 +9,7 @@ Vue.prototype.$LANG = {
         attachment : 'allegato'
     }
 }
-Crud = {
+crud = {
     application : {
         useRouter : false,
     },
@@ -34,7 +34,7 @@ Crud = {
             text : '',
             icon : 'fa fa-edit',
             execute : function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/edit/" + this.modelName + "/" + this.modelData.id;
                 document.location.href=url
             }
@@ -46,7 +46,7 @@ Crud = {
             icon : 'fa fa-list',
             text : '',
             execute : function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/view/" + this.modelName + "/" + this.modelData.id;
                 document.location.href=url;
             }
@@ -59,7 +59,7 @@ Crud = {
             text : '',
             execute : function () {
                 var that = this;
-                that.$Crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
+                that.$crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
                     ok : function () {
 
                         var r = Route.factory('delete');
@@ -90,7 +90,7 @@ Crud = {
             icon : 'fa fa-plus',
             text : 'New',
             execute  :function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/insert/" + this.modelName + "/new";
                 document.location.href=url;
             }
@@ -124,17 +124,17 @@ Crud = {
                     // })
                 }
                 var r = null;
-                if (Crud.routes[rName]) {
-                    r =  new Route(Crud.routes[rName]);
+                if (crud.routes[rName]) {
+                    r =  new Route(crud.routes[rName]);
                 } else {
                     r = Route.factory(rName);
                 }
                 r.values = values;
-                //r.params = this.$Crud.getFormData(jQuery(this.rootElement).find('form'));
+                //r.params = this.$crud.getFormData(jQuery(this.rootElement).find('form'));
                 r.params = Utility.getFormData(this.view.jQe('form'));
                 Server.route(r, function (json) {
                     if (json.error) {
-                        that.$Crud.errorDialog(json.msg)
+                        that.$crud.errorDialog(json.msg)
                         //alert(json.msg);
                         return ;
                     }
@@ -215,17 +215,17 @@ Crud = {
                 var num = checked.length;
                 if (num === 0)
                     return ;
-                that.$Crud.confirmDialog(that.$Crud.translate('app.conferma-multidelete',false,[num]), {
+                that.$crud.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
                     ok : function () {
                         var r = Route.factory('multi_delete');
                         r.values = {
                             modelName: that.view.modelName
                         };
-                        that.$Crud.waitStart();
+                        that.$crud.waitStart();
                         r.params = {'ids': checked};
                         //console.log('MULTIDELETE',checked);
                         Server.route(r,function (json) {
-                            that.$Crud.waitEnd();
+                            that.$crud.waitEnd();
                             that.view.reload();
                             //that.callback(json);
                         })

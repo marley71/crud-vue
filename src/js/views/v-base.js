@@ -1,5 +1,5 @@
 Vue.component('v-action', {
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
     props : ['cName','cAction'],
     data : function () {
         var that = this;
@@ -25,7 +25,7 @@ Vue.component('v-action', {
 })
 
 Vue.component('v-render', {
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
@@ -63,9 +63,9 @@ Vue.component('v-render', {
     template : '<component :is="type" :c-conf="conf"></component>'
 })
 
-Crud.components.views.vBase = Vue.component('v-base', {
+crud.components.views.vBase = Vue.component('v-base', {
     props : ['cConf','cFields'],
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
     // created : function() {
     //     var that = this;
     //     var _conf = that.getConf(that.cConf) || {};
@@ -131,7 +131,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             }
             Server.route(route,function (json) {
                 if (json.error) {
-                    that.$Crud.errorDialog(json.msg);
+                    that.$crud.errorDialog(json.msg);
                     return
                 }
                 callback(json);
@@ -147,21 +147,21 @@ Crud.components.views.vBase = Vue.component('v-base', {
                         extends : actionBase
                     });
                 } else {
-                    aConf = this.$Crud.recordActions[name]?this.$Crud.recordActions[name]:(this.$Crud.globalActions[name]?this.$Crud.globalActions[name]:{})
+                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.globalActions[name]?this.$crud.globalActions[name]:{})
                 }
                 aConf = Utility.merge(aConf,this.conf.customActions[name]);
                 //console.log('CUSTOM',name,aConf);
                 return aConf;
             }
             if (type == 'record') {
-                if (this.$Crud.recordActions[name]) {
-                    return Utility.cloneObj(this.$Crud.recordActions[name]);
+                if (this.$crud.recordActions[name]) {
+                    return Utility.cloneObj(this.$crud.recordActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
             }
             if (type == 'global') {
-                if (this.$Crud.globalActions[name]) {
-                    return Utility.cloneObj(this.$Crud.globalActions[name]);
+                if (this.$crud.globalActions[name]) {
+                    return Utility.cloneObj(this.$crud.globalActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo global non trovata nelle azioni generali";
             }
@@ -174,12 +174,12 @@ Crud.components.views.vBase = Vue.component('v-base', {
          */
         getConf : function (modelName,type) {
             var conf = null;
-            var defaltConf = this.$Crud.conf[type];
+            var defaltConf = this.$crud.conf[type];
 
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String)
-                    conf = window[this.cConf]?window[this.cConf]:(this.$Crud.conf[this.cConf]?this.$Crud.conf[this.cConf]:null);
+                    conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
                 else
                     conf = this.cConf;
             } else {
@@ -208,8 +208,8 @@ Crud.components.views.vBase = Vue.component('v-base', {
             if (that.conf.routeName == null)
                 return null;
             if (!that.route) {
-                if (Crud.routes[that.conf.routeName]) {
-                    route =  new Route(Crud.routes[that.conf.routeName]);
+                if (crud.routes[that.conf.routeName]) {
+                    route =  new Route(crud.routes[that.conf.routeName]);
                 } else {
                     route = Route.factory(that.conf.routeName);
                 }

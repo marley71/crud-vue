@@ -1,5 +1,5 @@
 Vue.component('r-swap', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-swap-template',
     data : function () {
         var that = this;
@@ -68,7 +68,7 @@ Vue.component('r-swap', {
             r.params = {id:that.conf.modelData.id};
             Server.route(r,function (json) {
                 if (json.error) {
-                    that.$Crud.errorDialog(json.msg);
+                    that.$crud.errorDialog(json.msg);
                     return;
                 }
                 var dV = that.getDV();

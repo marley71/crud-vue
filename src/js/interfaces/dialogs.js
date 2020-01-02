@@ -8,7 +8,7 @@ dialogs_interface = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new Crud.components.dMessage({
+            var d = new crud.components.dMessage({
                 propsData : props,
                 methods : callbacks,
             });
@@ -24,7 +24,7 @@ dialogs_interface = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new Crud.components.dError({
+            var d = new crud.components.dError({
                 propsData : props,
                 methods : callbacks,
             });
@@ -41,7 +41,7 @@ dialogs_interface = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new Crud.components.dConfirm({
+            var d = new crud.components.dConfirm({
                 propsData : props,
                 methods : callbacks,
             });
@@ -58,7 +58,7 @@ dialogs_interface = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new Crud.components.dWarning({
+            var d = new crud.components.dWarning({
                 propsData : props,
                 methods : callbacks,
             });
@@ -78,7 +78,7 @@ dialogs_interface = {
             } else
                 props.cCallbacks = callbacks;
 
-            var d = new Crud.components.dCustom({
+            var d = new crud.components.dCustom({
                 propsData : props,
                 //methods : callbacks,
             });

@@ -1,5 +1,5 @@
 Vue.component('r-hasmany-attachment',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     data :  function () {
         //console.log('r-hasmany-image',this.cData);
         //var dV = this.cData.metadata.domainValues;
@@ -14,10 +14,10 @@ Vue.component('r-hasmany-attachment',{
     methods : {
         mimeTypeIcon : function (index) {
             var that = this;
-            var icon = that.$Crud.icons.mimetypes['default'];
+            var icon = that.$crud.icons.mimetypes['default'];
             if (that.value && that.value[index]) {
-                if (that.$Crud.icons.mimetypes[that.value[index].ext])
-                    icon = that.$Crud.icons.mimetypes[that.value[index].ext];
+                if (that.$crud.icons.mimetypes[that.value[index].ext])
+                    icon = that.$crud.icons.mimetypes[that.value[index].ext];
             }
             return icon;
         }

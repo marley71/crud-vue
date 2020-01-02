@@ -6,7 +6,7 @@ translations_interface = {
         translateIfExist : function (key,plural,params) {
             if (!jQuery.langDefs[key])
                 return ""
-            return this.$Crud.translate(key,plural,params);
+            return this.$crud.translate(key,plural,params);
         },
     },
     _translate : function (key,plural,params) {

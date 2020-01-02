@@ -1,5 +1,5 @@
-Crud.components.views.vCollection = Vue.component('v-collection', {
-    extends : Crud.components.views.vBase,
+crud.components.views.vCollection = Vue.component('v-collection', {
+    extends : crud.components.views.vBase,
     props : ['cModel'],
     methods : {
         setFieldValue : function(row,key,value) {
@@ -35,7 +35,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
-                    dconf.cRef = that.$Crud.getRefId(that._uid,'r',i,key);
+                    dconf.cRef = that.$crud.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     dconf.value = null;
                     if (data.value[i][key])
