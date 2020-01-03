@@ -9,7 +9,7 @@ Vue.prototype.$LANG = {
         attachment : 'allegato'
     }
 }
-Crud = {
+crud = {
     application : {
         useRouter : false,
     },
@@ -31,9 +31,10 @@ Crud = {
             type : 'record',
             title : 'edit',
             css: 'btn btn-outline-secondary btn-sm ',
+            text : '',
             icon : 'fa fa-edit',
             execute : function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/edit/" + this.modelName + "/" + this.modelData.id;
                 document.location.href=url
             }
@@ -43,8 +44,9 @@ Crud = {
             title : 'view',
             css: 'btn btn-outline-secondary btn-sm ',
             icon : 'fa fa-list',
+            text : '',
             execute : function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/view/" + this.modelName + "/" + this.modelData.id;
                 document.location.href=url;
             }
@@ -54,9 +56,10 @@ Crud = {
             title : 'delete record',
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
+            text : '',
             execute : function () {
                 var that = this;
-                that.crudApp.confirmDialog(that.$LANG.app['conferma-delete'] ,{
+                that.$crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
                     ok : function () {
 
                         var r = Route.factory('delete');
@@ -77,14 +80,17 @@ Crud = {
         },
     },
     globalActions : {
+
         'action-insert' : {
             type : 'global',
+            visible : true,
+            enabled : true,
             title : 'New',
             css: 'btn btn-outline-primary btn-sm btn-group',
             icon : 'fa fa-plus',
             text : 'New',
             execute  :function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/insert/" + this.modelName + "/new";
                 document.location.href=url;
             }
@@ -98,26 +104,37 @@ Crud = {
             execute : function () {
                 var that = this;
                 console.log('action save',this);
-                if (this.modelData.id) {
-                    var r = Route.factory('update',{
-                        values :  {
-                            modelName : this.modelName,
-                            pk : this.modelData.id
-                        }
-                    })
-                } else {
-                    var r = Route.factory('save',{
-                        values :  {
-                            modelName : this.modelName,
-                        }
-                    })
-                }
+                var rName = 'create';
+                var values = {};
+                if (this.view.route.type == 'update') {
+                    rName = 'update';
 
-                //r.params = this.$Crud.getFormData(jQuery(this.rootElement).find('form'));
+                    // var r = Route.factory('update',{
+                        values =  {
+                            modelName : this.modelName,
+                            pk : this.view.cPk
+                        }
+                    // })
+                } else {
+                    rName = 'create'
+                    // var r = Route.factory('save',{
+                        values =  {
+                            modelName : this.modelName,
+                        }
+                    // })
+                }
+                var r = null;
+                if (crud.routes[rName]) {
+                    r =  new Route(crud.routes[rName]);
+                } else {
+                    r = Route.factory(rName);
+                }
+                r.values = values;
+                //r.params = this.$crud.getFormData(jQuery(this.rootElement).find('form'));
                 r.params = Utility.getFormData(this.view.jQe('form'));
                 Server.route(r, function (json) {
                     if (json.error) {
-                        that.crudApp.errorDialog(json.msg)
+                        that.$crud.errorDialog(json.msg)
                         //alert(json.msg);
                         return ;
                     }
@@ -150,8 +167,10 @@ Crud = {
                         console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
                         throw "errore";
                     }
-                    var form = jQuery(this.view.$el).find('form');
-                    var formData = Utility.getFormData(form);
+                    var formData = this.view.getFormData();
+
+                    //var form = jQuery(this.view.$el).find('form');
+                    //var formData = Utility.getFormData(form);
                     ref.routeConf.params = formData;
                     return ;
                 }
@@ -180,7 +199,7 @@ Crud = {
                 console.log('order execute',this.view);
                 var params = Utility.cloneObj(this.view.routeConf.params);
                 params.order_field = this.orderField;
-                params.order_direction = (this.view.data.metadata.order_field == this.orderField)?(this.view.data.metadata.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+                params.order_direction = (this.view.data.metadata.order.order_field == this.orderField)?(this.view.data.metadata.order.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
                 this.view.routeConf.params = params;
             }
         },
@@ -196,17 +215,17 @@ Crud = {
                 var num = checked.length;
                 if (num === 0)
                     return ;
-                app.crudApp.confirmDialog(app.crudApp.translate('app.conferma-multidelete',false,[num]), {
+                that.$crud.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
                     ok : function () {
                         var r = Route.factory('multi_delete');
                         r.values = {
                             modelName: that.view.modelName
                         };
-                        that.crudApp.waitStart();
+                        that.$crud.waitStart();
                         r.params = {'ids': checked};
                         //console.log('MULTIDELETE',checked);
                         Server.route(r,function (json) {
-                            that.crudApp.waitEnd();
+                            that.$crud.waitEnd();
                             that.view.reload();
                             //that.callback(json);
                         })
@@ -222,17 +241,17 @@ Crud = {
             fieldsConfig : {},
             actions : ['action-back'],
             customActions: {},
-            renderTemplate : 'c-tpl-record',
+            renderTemplate : 'c-tpl-record2',
         },
         edit : {
             routeName : 'edit',
             customActions : {},
             fieldsConfig : {
-                id : {type:'r-hidden'}
+                id : 'r-hidden'
             },
-            actions : [],
             fields : [],
             renderTemplate : 'c-tpl-record',
+            actions : ['action-save','action-back']
         },
         list : {
             routeName : 'list',
@@ -240,8 +259,10 @@ Crud = {
             fieldsConfig : {},
             orderFields: {},
             renderTemplate : 'c-tpl-list',
+            actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
         },
         search : {
+            routeName : 'search',
             actions : ['action-search'],
             fieldsConfig : {},
             customActions: {},
@@ -250,6 +271,11 @@ Crud = {
         insert : {
             routeName : 'insert',
             renderTemplate : 'c-tpl-record',
+            actions : ['action-save','action-back'],
+            fieldsConfig : {
+                id : 'r-hidden'
+            },
+            actions : ['action-save','action-back']
         },
         uploadFile : {
             routeName : null,
@@ -267,7 +293,7 @@ Crud = {
     routes : {
         list : {
             method      : 'get',
-            url         : '/api/json/{modelName}',
+            url         : '/foorm/{modelName}',
             resultType  : 'list',
             protocol    : 'list',
             extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
@@ -291,8 +317,55 @@ Crud = {
             extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
-        }
+        },
+        insert : {
+            method      : "get",
+            url         :'/foorm/{modelName}/new',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'create',
+        },
+        update : {
+            method      : "post",
+            url         :'/foorm/{modelName}/{pk}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'update',
+            extraParams : {_method:'PUT'}
+        },
+        create : {
+            method      : "post",
+            url         :'/foorm/{modelName}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'create',
+            extraParams : {_method:'POST'}
+        },
+        edit : {
+            method      : "get",
+            url         :'/foorm/{modelName}/{pk}/edit',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'update',
+        },
+        search : {
+            method      : "get",
+            url         :'/foorm/{modelName}/search',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record'
+        },
+        view : {
+            method      : "get",
+            url         :'/foorm/{modelName}/{pk}/view',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'read',
+        },
     },
+    cRefs : {},
     components : {
         renders : {
 
@@ -310,5 +383,8 @@ Crud = {
                 tpl : '/vue-app/templates/dashboard-csv-template.html'
             }
         }
+    },
+    interfaces : {
+        //js : 'vue-app/js/'
     }
 }

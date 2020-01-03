@@ -1,5 +1,5 @@
 Vue.component('v-hasmany', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['c-conf'],
     data :  function () {
         var that = this;

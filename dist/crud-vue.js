@@ -78,7 +78,7 @@ Vue.prototype.$LANG = {
         attachment : 'allegato'
     }
 }
-Crud = {
+crud = {
     application : {
         useRouter : false,
     },
@@ -100,9 +100,10 @@ Crud = {
             type : 'record',
             title : 'edit',
             css: 'btn btn-outline-secondary btn-sm ',
+            text : '',
             icon : 'fa fa-edit',
             execute : function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/edit/" + this.modelName + "/" + this.modelData.id;
                 document.location.href=url
             }
@@ -112,8 +113,9 @@ Crud = {
             title : 'view',
             css: 'btn btn-outline-secondary btn-sm ',
             icon : 'fa fa-list',
+            text : '',
             execute : function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/view/" + this.modelName + "/" + this.modelData.id;
                 document.location.href=url;
             }
@@ -123,9 +125,10 @@ Crud = {
             title : 'delete record',
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
+            text : '',
             execute : function () {
                 var that = this;
-                that.crudApp.confirmDialog(that.$LANG.app['conferma-delete'] ,{
+                that.$crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
                     ok : function () {
 
                         var r = Route.factory('delete');
@@ -146,14 +149,17 @@ Crud = {
         },
     },
     globalActions : {
+
         'action-insert' : {
             type : 'global',
+            visible : true,
+            enabled : true,
             title : 'New',
             css: 'btn btn-outline-primary btn-sm btn-group',
             icon : 'fa fa-plus',
             text : 'New',
             execute  :function () {
-                var url = this.$Crud.application.useRouter?'#':'';
+                var url = this.$crud.application.useRouter?'#':'';
                 url += "/insert/" + this.modelName + "/new";
                 document.location.href=url;
             }
@@ -167,26 +173,37 @@ Crud = {
             execute : function () {
                 var that = this;
                 console.log('action save',this);
-                if (this.modelData.id) {
-                    var r = Route.factory('update',{
-                        values :  {
-                            modelName : this.modelName,
-                            pk : this.modelData.id
-                        }
-                    })
-                } else {
-                    var r = Route.factory('save',{
-                        values :  {
-                            modelName : this.modelName,
-                        }
-                    })
-                }
+                var rName = 'create';
+                var values = {};
+                if (this.view.route.type == 'update') {
+                    rName = 'update';
 
-                //r.params = this.$Crud.getFormData(jQuery(this.rootElement).find('form'));
+                    // var r = Route.factory('update',{
+                        values =  {
+                            modelName : this.modelName,
+                            pk : this.view.cPk
+                        }
+                    // })
+                } else {
+                    rName = 'create'
+                    // var r = Route.factory('save',{
+                        values =  {
+                            modelName : this.modelName,
+                        }
+                    // })
+                }
+                var r = null;
+                if (crud.routes[rName]) {
+                    r =  new Route(crud.routes[rName]);
+                } else {
+                    r = Route.factory(rName);
+                }
+                r.values = values;
+                //r.params = this.$crud.getFormData(jQuery(this.rootElement).find('form'));
                 r.params = Utility.getFormData(this.view.jQe('form'));
                 Server.route(r, function (json) {
                     if (json.error) {
-                        that.crudApp.errorDialog(json.msg)
+                        that.$crud.errorDialog(json.msg)
                         //alert(json.msg);
                         return ;
                     }
@@ -219,8 +236,10 @@ Crud = {
                         console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
                         throw "errore";
                     }
-                    var form = jQuery(this.view.$el).find('form');
-                    var formData = Utility.getFormData(form);
+                    var formData = this.view.getFormData();
+
+                    //var form = jQuery(this.view.$el).find('form');
+                    //var formData = Utility.getFormData(form);
                     ref.routeConf.params = formData;
                     return ;
                 }
@@ -249,7 +268,7 @@ Crud = {
                 console.log('order execute',this.view);
                 var params = Utility.cloneObj(this.view.routeConf.params);
                 params.order_field = this.orderField;
-                params.order_direction = (this.view.data.metadata.order_field == this.orderField)?(this.view.data.metadata.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+                params.order_direction = (this.view.data.metadata.order.order_field == this.orderField)?(this.view.data.metadata.order.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
                 this.view.routeConf.params = params;
             }
         },
@@ -265,17 +284,17 @@ Crud = {
                 var num = checked.length;
                 if (num === 0)
                     return ;
-                app.crudApp.confirmDialog(app.crudApp.translate('app.conferma-multidelete',false,[num]), {
+                that.$crud.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
                     ok : function () {
                         var r = Route.factory('multi_delete');
                         r.values = {
                             modelName: that.view.modelName
                         };
-                        that.crudApp.waitStart();
+                        that.$crud.waitStart();
                         r.params = {'ids': checked};
                         //console.log('MULTIDELETE',checked);
                         Server.route(r,function (json) {
-                            that.crudApp.waitEnd();
+                            that.$crud.waitEnd();
                             that.view.reload();
                             //that.callback(json);
                         })
@@ -291,17 +310,17 @@ Crud = {
             fieldsConfig : {},
             actions : ['action-back'],
             customActions: {},
-            renderTemplate : 'c-tpl-record',
+            renderTemplate : 'c-tpl-record2',
         },
         edit : {
             routeName : 'edit',
             customActions : {},
             fieldsConfig : {
-                id : {type:'r-hidden'}
+                id : 'r-hidden'
             },
-            actions : [],
             fields : [],
             renderTemplate : 'c-tpl-record',
+            actions : ['action-save','action-back']
         },
         list : {
             routeName : 'list',
@@ -309,8 +328,10 @@ Crud = {
             fieldsConfig : {},
             orderFields: {},
             renderTemplate : 'c-tpl-list',
+            actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
         },
         search : {
+            routeName : 'search',
             actions : ['action-search'],
             fieldsConfig : {},
             customActions: {},
@@ -319,6 +340,11 @@ Crud = {
         insert : {
             routeName : 'insert',
             renderTemplate : 'c-tpl-record',
+            actions : ['action-save','action-back'],
+            fieldsConfig : {
+                id : 'r-hidden'
+            },
+            actions : ['action-save','action-back']
         },
         uploadFile : {
             routeName : null,
@@ -336,7 +362,7 @@ Crud = {
     routes : {
         list : {
             method      : 'get',
-            url         : '/api/json/{modelName}',
+            url         : '/foorm/{modelName}',
             resultType  : 'list',
             protocol    : 'list',
             extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
@@ -360,8 +386,55 @@ Crud = {
             extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
-        }
+        },
+        insert : {
+            method      : "get",
+            url         :'/foorm/{modelName}/new',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'create',
+        },
+        update : {
+            method      : "post",
+            url         :'/foorm/{modelName}/{pk}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'update',
+            extraParams : {_method:'PUT'}
+        },
+        create : {
+            method      : "post",
+            url         :'/foorm/{modelName}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'create',
+            extraParams : {_method:'POST'}
+        },
+        edit : {
+            method      : "get",
+            url         :'/foorm/{modelName}/{pk}/edit',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'update',
+        },
+        search : {
+            method      : "get",
+            url         :'/foorm/{modelName}/search',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record'
+        },
+        view : {
+            method      : "get",
+            url         :'/foorm/{modelName}/{pk}/view',
+            //url         :'/foorm/{modelName}/{pk}/edit',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'read',
+        },
     },
+    cRefs : {},
     components : {
         renders : {
 
@@ -379,9 +452,358 @@ Crud = {
                 tpl : '/vue-app/templates/dashboard-csv-template.html'
             }
         }
+    },
+    interfaces : {
+        //js : 'vue-app/js/'
     }
 }
 
+dialogs_interface = {
+    methods  : {
+        messageDialog : function (bodyProps,callbacks) {
+            var that = this;
+            var props = bodyProps;
+            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+                props = {
+                    cMessage : bodyProps,
+                }
+            }
+            var d = new crud.components.dMessage({
+                propsData : props,
+                methods : callbacks,
+            });
+            var id= 'd' + (new Date().getTime());
+            jQuery('body').append('<div id="'+id+'"></div>');
+            d.$mount('#'+id);
+            return ;
+        },
+        errorDialog : function (bodyProps,callbacks) {
+            var props = bodyProps;
+            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+                props = {
+                    cMessage : bodyProps,
+                }
+            }
+            var d = new crud.components.dError({
+                propsData : props,
+                methods : callbacks,
+            });
+            var id= 'd' + (new Date().getTime());
+            jQuery('body').append('<div id="'+id+'"></div>');
+            d.$mount('#'+id);
+        },
+
+        confirmDialog : function (bodyProps,callbacks) {
+            var that = this;
+            var props = bodyProps;
+            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+                props = {
+                    cMessage : bodyProps,
+                }
+            }
+            var d = new crud.components.dConfirm({
+                propsData : props,
+                methods : callbacks,
+            });
+            var id= 'd' + (new Date().getTime());
+            jQuery('body').append('<div id="'+id+'"></div>');
+            d.$mount('#'+id);
+        },
+
+        warningDialog : function (bodyProps,callbacks) {
+            var that = this;
+            var props = bodyProps;
+            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+                props = {
+                    cMessage : bodyProps,
+                }
+            }
+            var d = new crud.components.dWarning({
+                propsData : props,
+                methods : callbacks,
+            });
+            var id= 'd' + (new Date().getTime());
+            jQuery('body').append('<div id="'+id+'"></div>');
+            d.$mount('#'+id);
+        },
+
+        customDialog : function (bodyProps,callbacks) {
+            var that = this;
+            var props = bodyProps;
+            if (!bodyProps || typeof bodyProps === 'string' || bodyProps instanceof String) {
+                props = {
+                    cContent : bodyProps,
+                    cCallbacks : callbacks
+                }
+            } else
+                props.cCallbacks = callbacks;
+
+            var d = new crud.components.dCustom({
+                propsData : props,
+                //methods : callbacks,
+            });
+            var id= 'd' + (new Date().getTime());
+            jQuery('body').append('<div id="'+id+'"></div>');
+            d.$mount('#'+id);
+        }
+
+// var _progressDialog = null;
+// App.progressDialog = function (content,callbacks) {
+//     var self = this;
+//     if (!_progressDialog) {
+//         _progressDialog = new ProgressModal({
+//             labels : jQuery.langDefs
+//         });
+//     }
+//     _progressDialog.show(content,callbacks);
+//     return _progressDialog;
+// }
+    }
+
+
+};
+core_interface = {
+    methods : {
+        /**
+         * carica un vettore di risorse, al fine caricamento chiama la callback
+         * @param resources
+         * @param callback
+         */
+        loadResources : function(resources, callback) {
+            var self = this;
+            var _callback = callback?callback:function () {};
+            if (!resources || resources.length == 0) {
+                _callback();
+                return ;
+            }
+
+            var _recursive = function (i) {
+                self.$crud.loadResource(resources[i],function () {
+                    //log.info('_recursive', resources[i]);
+                    if (i < resources.length-1) {
+                        _recursive(i+1);
+                    } else {
+                        _callback();
+                        return ;
+                    }
+                });
+            }
+
+            _recursive(0);
+        },
+        /**
+         * carica una risorsa script o css dinamicamente partendo dalla cartella
+         * pluginsPath quando lo script e' stato caricato chiama la callback
+         * @param fileName
+         * @param callback
+         */
+        loadResource : function (fileName, callback) {
+            var self = this;
+            //console.log('App.loadResourece',fileName)
+            var _callback = callback?callback:function () {};
+            if (!fileName) {
+                self.log.warn('App.loadResorce fileName non definito!');
+                _callback();
+                return ;
+            }
+            var re = /(?:\.([^.]+))?$/;
+            var ext = re.exec(fileName)[1];
+            var realPath = fileName;
+            if (fileName.indexOf('http') != 0) {
+                realPath = fileName.charAt(0) == '/' ? fileName : self.pluginsPath + fileName;
+            }
+            if (ext == 'js') {
+                core_interface._loadScript(realPath,_callback);
+            } else if (ext == 'css') {
+                core_interface._loadCss(realPath,_callback);
+            } else if (ext == 'html') {
+                core_interface._loadHtml(realPath,_callback);
+            } else {
+                throw 'invalid extension ' + ext + ", filename: " + fileName;
+            }
+        },
+        getRefId : function () {
+            var id = "";
+            for (var i = 0; i < arguments.length; i++) {
+                id += arguments[i];
+                if (i < arguments.length-1)
+                    id += '-';
+            }
+            return id;
+        }
+    },
+
+    _resources : {},
+    _resources_loaded : {},
+
+    _loadHtml  : function (fileName,callback) {
+        var self = this;
+        var _callback = function () {
+            //self.log.info('loaded... ' + scriptName);
+            core_interface._resources[fileName] = true;
+            core_interface._resources_loaded[fileName] = true;
+            if (callback) {
+                callback();
+            };
+        }
+        if (!core_interface._resources[fileName]) {
+            jQuery.get(fileName,function (html) {
+                jQuery('body').append(html);
+                callback();
+            }).fail(function (e) {
+                throw 'load ' + fileName + ' failed! ' + e;
+            });
+        } else {
+            return callback();
+        }
+    },
+    _loadScript : function (scriptName, callback) {
+        var self = this;
+        var _callback = function () {
+            //self.log.info('loaded... ' + scriptName)
+            core_interface._resources[scriptName] = true;
+            core_interface._resources_loaded[scriptName] = true;
+            if (callback) {
+                callback();
+            }
+        }
+        if (!core_interface._resources[scriptName]) {
+            //self.log.info('loading... ' + scriptName);
+
+            var body 		= document.getElementsByTagName('body')[0];
+            var script 		= document.createElement('script');
+            script.type 	= 'text/javascript';
+            script.src 		= scriptName;
+            script.onload = _callback;
+            script.onerror = function() {
+                self.log.error("cannot load script " + scriptName);
+            }
+            // fire the loading
+            body.appendChild(script);
+            //return _waitLoad(scriptName,_callback);
+            return ;
+        }
+        callback();
+    },
+
+    _loadCss : function (scriptName,callback) {
+        var self = this;
+        var _callback = function () {
+            //self.log.info('loaded... ' + scriptName);
+            core_interface._resources[scriptName] = true;
+            core_interface._resources_loaded[scriptName] = true;
+            if (callback) {
+                callback();
+            };
+        }
+        if (!core_interface._resources[scriptName]) {
+            //self.log.info('loading... ' + scriptName);
+            var body 		= document.getElementsByTagName('body')[0];
+            var script 		= document.createElement('link');
+            script.type 	= 'text/css';
+            script.rel      = 'stylesheet';
+            script.href 	= scriptName;
+            script.onload = _callback;
+            // fire the loading
+            body.appendChild(script);
+            return ;
+        } else {
+            return callback();
+        }
+    }
+};
+translations_interface = {
+    methods : {
+        translate : function (key,plural,params) {
+            return translations_interface._translate(key,plural,params);
+        },
+        translateIfExist : function (key,plural,params) {
+            if (!jQuery.langDefs[key])
+                return ""
+            return this.$crud.translate(key,plural,params);
+        },
+    },
+    _translate : function (key,plural,params) {
+        var tmp = key.split('.');
+        var s = this.$LANG[tmp[0]];
+        for (var i=1;i<tmp.length;i++) {
+            s = s[tmp[i]];
+        }
+        //var s = app.$LANG[key];
+        if (!s)
+            return key;
+        var testo = s;
+        if (testo.indexOf('|') >= 0) {
+            if (plural > 0) {
+                var tmp = testo.split("|");
+                testo = tmp.length>plural?tmp[plural]:tmp[0];
+            } else
+                testo = testo.substr(0, testo.indexOf('|'));
+        }
+        if (params instanceof Array) {
+            for (var i = 0; i < params.length; i++) {
+                testo= testo.replace("(" + i +")", params[i] );
+            }
+        }
+        return testo;
+    }
+}
+wait_interface = {
+    methods: {
+        waitStart : function (msg,container) {
+            var c = container?container:'body';
+            var id = wait_interface._createContainer(c);
+            //wait_interface._createWaitComponent();
+
+            var comp = new wait_interface._waitComponent({
+                data : function() {
+                    console.log('grlobal',(container?true:false));
+                    return {
+                        msg : msg,
+                        global : !container?true:false,
+                    }
+                },
+                mounted : function () {
+
+                }
+            })
+            console.log('comp created',comp);
+            comp.$mount('#'+id);
+            wait_interface._istances.push(comp);
+            // if (container) {
+            //     jQuery(container).fadeTo(250,.30).css('cursor','wait').css('pointer-events','none');
+            //     return ;
+            // }
+            //
+            // if (msg) {
+            //     jQuery('#wait').find('[crud-msg]').html(msg);
+            // }
+            // jQuery('#wait').removeClass(this.htmlClass.hide);
+            // jQuery('#wait').css('cursor','wait');
+        },
+        waitEnd : function () {
+            var that = this;
+            if (wait_interface._istances.length == 0)
+                return ;
+            var comp = wait_interface._istances.pop();
+            comp.$destroy();
+            comp.$el.parentNode.removeChild(comp.$el);
+        }
+    },
+    _createContainer : function (container) {
+        var id= 'd' + (new Date().getTime());
+        jQuery(container).append('<div id="'+id+'" ></div>');
+        return id;
+    },
+    _waitComponent : Vue.component('c-wait', {
+                template: '<div c-wait :class="{ \'crud-overlay-body\' : global, \'crud-overlay\' : !global}">' +
+                    '<span class="crud-wait-msg">' +
+                    '{{msg}}' +
+                    '</span>' +
+                    '</div>',
+            }),
+    _istances : [],
+};
 
 var Action = Class.extend({
     className : 'Action',
@@ -1039,7 +1461,7 @@ var ProtocolList = Protocol.extend({
     summary : {},
     jsonToData : function (json) {
         this.value = json.result.data;
-        this.metadata = json.metadata;
+        this.metadata = json.metadata || {};
         this.pagination = {
             current_page : json.result.current_page,
             from : json.result.from,
@@ -1126,7 +1548,20 @@ var Route = Class.extend({
             }
         }
     },
-
+    /**
+     * riempe i valori parametri della route prendendoli dalle proprietà dell'oggetto
+     * @param obj
+     */
+    fillValues : function(obj) {
+        var self = this;
+        var keys = self.getKeys();
+        console.log('fillValues',keys,obj);
+        for (var k in keys) {
+            var key = keys[k];
+            if (obj[key])
+                self.values[key] = obj[key]
+        }
+    },
     /**
      * setta i valori dei values necessari per le keys che formano l'url della route.
      * @param values
@@ -1200,38 +1635,38 @@ Route.factory = function (type,attrs) {
     return new window[className](_a);
 }
 
-var RouteList = Route.extend({
-    method      : 'get',
-    url         : '/api/json/{modelName}',
-    resultType  : 'list',
-    protocol    : 'list'
-});
+// var RouteList = Route.extend({
+//     method      : 'get',
+//     url         : '/api/json/{modelName}',
+//     resultType  : 'list',
+//     protocol    : 'list'
+// });
 
-var RouteListConstraint = RouteList.extend({
-    url         : '/api/json/{modelName}/{constraintKey}/{constraintValue}',
-});
+// var RouteListConstraint = RouteList.extend({
+//     url         : '/api/json/{modelName}/{constraintKey}/{constraintValue}',
+// });
 
-var RouteEdit = Route.extend({
-    method      : "get",
-    url         :'/api/json/{modelName}/{pk}/edit',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteEdit = Route.extend({
+//     method      : "get",
+//     url         :'/api/json/{modelName}/{pk}/edit',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
-var RouteEditConstraint = RouteEdit.extend({
-    url         :'/api/json/{modelName}/{pk}/edit/{constraintKey}/{constraintValue}',
-});
+// var RouteEditConstraint = RouteEdit.extend({
+//     url         :'/api/json/{modelName}/{pk}/edit/{constraintKey}/{constraintValue}',
+// });
 
-var RouteSearch = Route.extend({
-    method      : "get",
-    url         :'/api/json/{modelName}/search',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteSearch = Route.extend({
+//     method      : "get",
+//     url         :'/api/json/{modelName}/search',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
-var RouteSearchConstraint = RouteSearch.extend({
-    url         :'/api/json/{modelName}/search/{constraintKey}/{constraintValue}',
-});
+// var RouteSearchConstraint = RouteSearch.extend({
+//     url         :'/api/json/{modelName}/search/{constraintKey}/{constraintValue}',
+// });
 
 
 // var RouteInsert = Route.extend({
@@ -1257,41 +1692,41 @@ var RouteInsertHasmanyConstraint = RouteInsertHasmany.extend({
     url         :'/api/json/{modelName}/create_has_many/{constraintKey}/{constraintValue}',
 });
 
-var RouteSave = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/create',
-    resultType  : 'record',
-    protocol    : 'record',
-    extraParams : {_method:'POST'}
-});
+// var RouteSave = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/create',
+//     resultType  : 'record',
+//     protocol    : 'record',
+//     extraParams : {_method:'POST'}
+// });
 
-var RouteSaveConstraint = RouteSave.extend({
-    url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-});
+// var RouteSaveConstraint = RouteSave.extend({
+//     url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
+// });
 
-var RouteUpdate = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/{pk}',
-    resultType  : 'record',
-    protocol    : 'record',
-    extraParams : {_method:'PUT'}
-});
+// var RouteUpdate = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/{pk}',
+//     resultType  : 'record',
+//     protocol    : 'record',
+//     extraParams : {_method:'PUT'}
+// });
+//
+// var RouteUpdateConstraint = RouteUpdate.extend({
+//     url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
+// });
 
-var RouteUpdateConstraint = RouteUpdate.extend({
-    url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
-});
-
-var RouteCreate = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/create',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteCreate = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/create',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
 
-var RouteCreateConstraint = RouteCreate.extend({
-    url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-});
+// var RouteCreateConstraint = RouteCreate.extend({
+//     url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
+// });
 
 var RouteView = Route.extend({
     method      : "get",
@@ -1326,15 +1761,15 @@ RouteSet = Route.extend({
     protocol    : 'record'
 });
 
-RouteAutocomplete = RouteList.extend({
+RouteAutocomplete = Route.extend({
     method      : "get",
     url         : '/api/json/autocomplete/{modelName}',
-    resultType  : 'record',
-    protocol    : 'record'
+    resultType  : 'list',
+    protocol    : 'list'
 
 })
 
-RouteCalendar = RouteList.extend({});
+RouteCalendar = Route.extend({});
 
 
 RouteCaptcha = Route.extend({
@@ -2102,747 +2537,28 @@ Server.route = function(route,callback) {
 
 Server.subdomain = null;
 
-/**
- * Created by pier on 28/03/17.
- */
-
-
-
-function App() {
-    //var _confs = null;
-    var _locale = 'it';
-    var _resources = {};        // vettore di risorse registrate al caricamento della pagina
-    var _resources_loaded = {}; // vettore di risorse gia' caricate
-    //var _supportedViewTypes = ['list', 'search', 'edit', 'view', 'calendar', 'csv','record','insert'];
-    var _viewCounter = 0;       // counter per la generazione automatica id view
-    var _views = {};            // vettore contenente le views generate
-    var _viewsId = {};          // vettore di views che hanno un id html per poterle riferire
-    var _dashCounter = 0;       // counter delle dashboards istanziate
-    var _dashsId = {};          // vettore di dashboards che hanno un id html per poterle riferire
-    var _dashs = {};            // vettore dashboards istanziate
-    var _log = null;
-    var _autoparse = false;
-
-
-
-    // opzioni
-    App.resources = [];     // vettore di risorse iniziali da caricare
-    App.pluginsPath = '/crud/plugins/';
-    App.log = null;
-    App.show_log = false;
-    App.mobile = false;
-
-    App.getRefId = function () {
-        var id = "";
-        for (var i = 0; i < arguments.length; i++) {
-            id += arguments[i];
-            if (i < arguments.length-1)
-                id += '-';
-        }
-        return id;
-    };
-
-    App.getResources = function () {
-        return _resources;
-    }
-
-    App.init = function(options,callback) {
-        var self = this;
-
-        var _o = options?options:{};
-
-        for(var k in _o) {
-            self[k] = _o[k];
-        }
-
-        _log = new Log(this.showLog,this.mobile);
-        if (this.showLog)
-            _log.enable();
-        if (this.locale)
-            _locale = this.locale;
-        _autoparse = _o.autoparse;
-
-        this.log = _log;
-        // Component.prototype.app = this;
-        // Route.prototype.app = this;
-        // Render.prototype.app = this;
-        // View.prototype.app = this;
-        // Dashboard.prototype.app = this;
-        // Action.prototype.app = this;
-        // Template.prototype.app = this;
-        // Modal.prototype.app = this;
-        // jQuery.app = this;
-        // Utility.app = this;
-
-        if (_autoparse) {
-            jQuery("body").bind("DOMNodeInserted", function(event) {
-                //EVENT_TARGET=event;
-                //
-                //console.log('body change2',event.currentTarget);
-                if ( !event.target.hasAttribute || ! event.target.hasAttribute('crud-parse') )
-                    return ;
-
-                event.target.removeAttribute('crud-parse');
-                self.parse(jQuery(event.target));
-                //console.log('PARSE');
-            });
-            window.onload = function () {
-                console.log('body on load');
-                jQuery('body').find('[crud-parse]').each(function () {
-                    jQuery(this).removeAttr('crud-parse');
-                    self.parse(jQuery(this));
-                });
-            };
-        }
-
-
-
-        EventManager.on("loadResource",function (event) {
-            event.preventDefault();
-            //self.log.info('on loadResource fired',event.params.resource);
-            self.loadResource(event.params.resource,event.callback);
-        })
-        EventManager.on("loadResources",function (event) {
-            event.preventDefault();
-            //self.log.info('on loadResources fired',event.params.resources);
-            self.loadResources(event.params.resources,event.callback);
-        })
-        _extraHtml();
-        var _cb = callback?callback:function () {};
-        App.loadResources(App.resources,_cb);
-    }
-    /**
-     * carica una risorsa script o css dinamicamente partendo dalla cartella
-     * pluginsPath quando lo script e' stato caricato chiama la callback
-     * @param fileName
-     * @param callback
-     */
-    App.loadResource = function (fileName, callback) {
-        var self = this;
-        //console.log('App.loadResourece',fileName)
-        var _callback = callback?callback:function () {};
-        if (!fileName) {
-            self.log.warn('App.loadResorce fileName non definito!');
-            _callback();
-            return ;
-        }
-        var re = /(?:\.([^.]+))?$/;
-        var ext = re.exec(fileName)[1];
-        var realPath = fileName;
-        if (fileName.indexOf('http') != 0) {
-            realPath = fileName.charAt(0) == '/' ? fileName : self.pluginsPath + fileName;
-        }
-        if (ext == 'js') {
-            _loadScript(realPath,_callback);
-        } else if (ext == 'css') {
-            _loadCss(realPath,_callback);
-        } else if (ext == 'html') {
-            _loadHtml(realPath,_callback);
-        } else {
-            throw 'invalid extension ' + ext + ", filename: " + fileName;
-        }
-    }
-    /**
-     * carica un vettore di risorse, al fine caricamento chiama la callback
-     * @param resources
-     * @param callback
-     */
-    App.loadResources = function(resources, callback) {
-        var self = this;
-        //console.log('App.loadResoureces',resources)
-        var _callback = callback?callback:function () {};
-        if (!resources || resources.length == 0) {
-            _callback();
-            return ;
-        }
-
-        var _recursive = function (i) {
-            self.loadResource(resources[i],function () {
-                //log.info('_recursive', resources[i]);
-                if (i < resources.length-1) {
-                    _recursive(i+1);
-                } else {
-                    _callback();
-                    return ;
-                }
-            });
-        }
-
-        _recursive(0);
-    };
-
-    App.addDashboard = function(options) {
-        var self = this;
-        var dashName = options.dashboardClass?options.dashboardClass:'Dashboard';
-        var dash = new window[dashName](options);
-        var dashKey = 'd'+_dashCounter;
-        dash.setId(dashKey);
-        if (options['id'])
-            _dashsId[options['id']] = dashKey;
-        self.log.debug('add dashboard',dashName,options,dashKey);
-        _dashs[dashKey] = dash;
-        _dashCounter++;
-        dash.draw();
-        return dash;
-    };
-
-    App.getDashboard = function(key) {
-        return _dashs[key];
-    };
-
-    App.getDashboardById = function(htmlId) {
-        return this.getDashboard(_dashsId[htmlId]);
-    };
-
-    /**
-     * aggiunge una view
-     * @param options : configurazione view
-     * @returns {string}
-     */
-    App.addView = function (options) {
-        var self = this;
-
-        self.log.debug('App.addView', options);
-        //if (!options.modelName)
-        //    throw 'Invalid model Name';
-        if (!window[options.viewClass])
-            throw 'View Class name ' + options.viewClass + ' not definited!';
-        //console.log(options);
-
-        var view = View.factory(options.viewClass,options);
-        self.log.debug('App.addView type', view.type);
-        //var view = new window[options.viewClass](options);
-
-        //view.config = params.config?params.config: new self._defaultConfs[view.type]();
-        var viewKey = 'v' + _viewCounter;
-        view.setId(viewKey);
-        //view.setActionListener();
-        self.log.debug("constraint ", options.constraint);
-        _views[viewKey] = view;
-        if (options['id'])
-            _viewsId[options['id']] = viewKey;
-        self.log.debug('addView ' + viewKey, _views[viewKey]);
-        _viewCounter++;
-        if (options.autorender)
-            self.renderView(viewKey);
-        return viewKey;
-    };
-
-    App.renderViews = function () {
-        var self = this;
-        for (var key in _views) {
-            self.renderView(key);
-        }
-    };
-
-    App.renderView = function (key, callback) {
-        var _cb = callback?callback:function() {};
-        _views[key].draw(_cb);
-    };
-
-    App.getView = function (key) {
-        return _views[key];
-    };
-
-    App.getViews = function () {
-        return _views;
-    };
-
-    App.getKeyFromId = function (htmlId) {
-        return _viewsId[htmlId];
-    };
-
-    App.removeViewById = function (htmlId) {
-        return this.removeView(this.getKeyFromId(htmlId));
-    };
-
-    App.removeAllViews = function () {
-        var self = this;
-        for (var k in _views) {
-            self.removeView(k);
-        }
-        //delete _views;
-        _views = {};
-        _viewCounter = 0;
-    };
-
-    App.removeView = function(key) {
-        // constrollo che non esiste la key negli id html, altrimenti rimuovo anche da li'.
-        var self = this;
-        for (var k in _viewsId) {
-            if (key == _viewsId[k]) {
-                delete _viewsId[k];
-                break;
-            }
-        }
-        var v = _views[key];
-        if (!v) {
-            self.log.warn('App.removeView con key ' + key + ' non trovata!');
-            return ;
-        }
-        jQuery(v.container).html("");
-        v.delete();
-        //delete v;
-        delete _views[key];
-        //this.controller.removeView(key);
-    };
-
-    App.renderViewById = function (htmlId,callback) {
-        this.renderView(this.getKeyFromId(htmlId),callback);
-    };
-
-    App.getViewById = function(htmlId) {
-        return this.getView(this.getKeyFromId(htmlId));
-    }
-
-    App.getHtmlConf = function (jQe) {
-        var self = this;
-        var type = jQe.attr('crud-view');
-        //var viewClass = jQe.attr('view_class')?jQe.attr('view_class'):Utility.pascalCase('view_'+ type);
-
-        //var params = jQe.attr();
-        var params = {};
-        $.each(jQe[0].attributes, function() {
-            if(this.specified) {
-                params[Utility.camelCase(this.name)] = this.value;
-            }
-        });
-        if (Utility.lowerCase(params.autorender)  === 'false') {
-            params.autorender = false;
-        } else {
-            params.autorender = true;
-        }
-
-        params.container =  jQe;
-        // if (Utility.hasAttr(jQe,'crud-inline')) {
-        //     params.template = jQe[0].outerHTML;
-        // }
-        self.log.debug('Htlm param',params);
-        return params;
-    }
-
-    /**
-     * esegue il parse di un container html e istanzia tutte le views trovate
-     * @param container
-     * @returns {Array}
-     */
-    App.parse = function (container) {
-        var self = this;
-        var realContainer = container?container:'body';
-        self.log.debug("App.parse " + realContainer,jQuery(realContainer).length);
-        var new_keys = [];
-        var founds = [];
-        var viewKeys = [];
-        TraitTranslate.app = self;
-        TraitTranslate.TraitTranslate(jQuery(realContainer));
-        jQuery.each(jQuery(realContainer).find('[crud-view]').addBack('[crud-view]'),function () {
-            var htmlConf = self.getHtmlConf(jQuery(this));
-            htmlConf.viewClass = jQuery(this).attr('crud-view');
-            if (htmlConf.conf) {
-                if (!window[htmlConf.conf])
-                    throw "impossibile trovare la definizione della configurazione " + htmlConf.conf;
-                htmlConf = Conf.extend(window[htmlConf.conf],htmlConf);
-            } else {
-                if (htmlConf.modelName) {
-                    var type = window[htmlConf.viewClass].prototype.type;
-                    self.log.debug('Check conf Model_'+htmlConf.modelName+"."+type);
-                    var _conf = self.getConf(htmlConf.modelName,type);
-                    if (!_conf)
-                        _conf = self.getDefaultConf(type);
-                    htmlConf = Conf.extend(_conf,htmlConf);
-                }
-            }
-            self.log.debug('Created view options ',htmlConf);
-
-            var vkey = self.addView(htmlConf);
-            viewKeys.push(vkey);
-            founds.push(jQuery(this).attr('crud-view') + " " + jQuery(this).attr('model_name'));
-        });
-        self.log.debug('founds ',founds);
-        jQuery.each(jQuery(realContainer).find('[crud-dashboard]').addBack('[crud-dashboard]'),function () {
-            var dashName = jQuery(this).attr('crud-dashboard');
-            self.log.debug('found dashboard',dashName);
-            var htmlConf = self.getHtmlConf(jQuery(this));
-            jQuery(this).removeAttr('crud-dashboard'); // lo rimuovo per la ricorsione perche' dentro riviene rifatto il parse
-            htmlConf.container = jQuery(this);
-            htmlConf.dashboardClass = dashName;
-            self.addDashboard(htmlConf);
-
-            //var d = new window[dashName](htmlConf);
-            //d.draw();
-        });
-        return viewKeys;
-    };
-
-
-    App.viewModal = function (title,ViewConf,callback) { //(model,type,title,attrs,callback) {
-        var self = this;
-        var _cb = callback?callback:function(){};
-        var d = self.customDialog(null);
-
-        ViewConf.autorender = true;
-        ViewConf.container = jQuery(d.id).find('.modal-body');
-        d.setTitle(title);
-        var vkey = app.addView(ViewConf);
-
-        jQuery(d.id).on('hidden.bs.modal', function () {
-            app.removeView(vkey);
-            _cb();
-        })
-        return vkey;
-    };
-
-    App.closeViewModal = function () {
-        var self = this;
-        _customDialog.hide();
-    };
-
-    App.dashboardModal = function (title,dash,callback) {
-        var self = this;
-        var _cb = callback?callback:function(){};
-        var d = self.customDialog(null);
-        d.setTitle(title);
-
-
-        dash.container = jQuery(d.id).find('.modal-body');
-        dash.draw();
-        jQuery(d.id).on('hidden.bs.modal', function () {
-            _cb();
-        });
-        return;
-    };
-
-    App.getConf = function (model,action,role) {
-
-        var self = this;
-        var className = "Model_"+Utility.pascalCase(model);
-
-        if (role && ! _existConfRole(model,action,role)) {
-            throw "Model_"+Utility.pascalCase(model) + Utility.pascalCase(role) + " Class not found!" ;
-        }
-
-        if (self.role && _existConfRole(model,action,self.role)) {
-            className += self.role?Utility.pascalCase(self.role):"";
-        }
-
-        //self.log.debug('checking configuration action ' + action +  ' for  ' + model + " className " + className);
-        if (window[className] && window[className][action]) {
-            self.log.debug('create configuration class ' + className + '.' + action);
-            return Conf.extend(window[className][action],{});
-        }
-        // il caso speciale action insert se non c'e' e' uguale all'edit
-        if (action == 'insert') {
-            if (window[className] && window[className]['edit']) {
-                self.log.debug('create configuration class ' + className + '.edit for action ' + action);
-                return Conf.extend(window[className]['edit'],{
-                    routeName : 'insert'
-                });
-            }
-        }
-        return null;
-
-        // className = 'Conf'+Utility.upperCaseFirst(action);
-        // self.log.debug('create configuration Default ConfClass Conf' + className);
-        // return Conf.extend(window[className],{});
-        //return Conf.factory(action);
-    };
-
-    App.getDefaultConf = function(type) {
-        var self = this;
-        var className = 'Conf'+Utility.upperCaseFirst(type);
-        self.log.debug('create configuration Default ConfClass' + className);
-        return Conf.extend(window[className]);
-    };
-
-    App.translate = function (key,plural,params) {
-        return _translate(key,plural,params);
-    };
-
-    App.translateIfExist = function (key,plural,params) {
-        if (!jQuery.langDefs[key])
-            return ""
-        return this.translate(key,plural,params);
-    };
-
-    App.getLocale = function () {
-        return _locale;
-    };
-
-    App.setLocale = function (locale) {
-        _locale = locale;
-    };
-    var _cW = null;
-    App.waitStart = function (msg,container) {
-        var that = this;
-        if (_cW) {
-            _cW.msg = msg;
-            return;
-        }
-        _cW = new Crud.components.cWait();
-        var id= 'd' + (new Date().getTime());
-        jQuery('body').append('<div id="'+id+'"></div>');
-        _cW.$mount('#'+id);
-        _cW.msg = msg;
-        _cW.start();
-    };
-
-    App.waitEnd = function (container) {
-        if (container) {
-            jQuery(container).fadeTo(250,1).css('cursor','auto').css('pointer-events','auto');
-            return ;
-        }
-        _cW.end();
-    }
-
-    App.messageDialog = function (bodyProps,callbacks) {
-        var that = this;
-        var props = bodyProps;
-        if (typeof bodyProps === 'string' || bodyProps instanceof String) {
-            props = {
-                cMessage : bodyProps,
-            }
-        }
-        var d = new Crud.components.dMessage({
-            propsData : props,
-            methods : callbacks,
-        });
-        var id= 'd' + (new Date().getTime());
-        jQuery('body').append('<div id="'+id+'"></div>');
-        d.$mount('#'+id);
-        return ;
-    }
-
-    App.errorDialog = function (bodyProps,callbacks) {
-        var props = bodyProps;
-        if (typeof bodyProps === 'string' || bodyProps instanceof String) {
-            props = {
-                cMessage : bodyProps,
-            }
-        }
-        var d = new Crud.components.dError({
-            propsData : props,
-            methods : callbacks,
-        });
-        var id= 'd' + (new Date().getTime());
-        jQuery('body').append('<div id="'+id+'"></div>');
-        d.$mount('#'+id);
-    }
-
-    App.confirmDialog = function (bodyProps,callbacks) {
-        var that = this;
-        var props = bodyProps;
-        if (typeof bodyProps === 'string' || bodyProps instanceof String) {
-            props = {
-                cMessage : bodyProps,
-            }
-        }
-        var d = new Crud.components.dConfirm({
-            propsData : props,
-            methods : callbacks,
-        });
-        var id= 'd' + (new Date().getTime());
-        jQuery('body').append('<div id="'+id+'"></div>');
-        d.$mount('#'+id);
-    }
-
-    App.warningDialog = function (bodyProps,callbacks) {
-        var that = this;
-        var props = bodyProps;
-        if (typeof bodyProps === 'string' || bodyProps instanceof String) {
-            props = {
-                cMessage : bodyProps,
-            }
-        }
-        var d = new Crud.components.dWarning({
-            propsData : props,
-            methods : callbacks,
-        });
-        var id= 'd' + (new Date().getTime());
-        jQuery('body').append('<div id="'+id+'"></div>');
-        d.$mount('#'+id);
-    };
-
-    App.customDialog = function (bodyProps,callbacks) {
-        var that = this;
-        var props = bodyProps;
-        if (!bodyProps || typeof bodyProps === 'string' || bodyProps instanceof String) {
-            props = {
-                cContent : bodyProps,
-                cCallbacks : callbacks
-            }
-        } else
-            props.cCallbacks = callbacks;
-
-        var d = new Crud.components.dCustom({
-            propsData : props,
-            //methods : callbacks,
-        });
-        var id= 'd' + (new Date().getTime());
-        jQuery('body').append('<div id="'+id+'"></div>');
-        d.$mount('#'+id);
-    }
-
-    var _progressDialog = null;
-    App.progressDialog = function (content,callbacks) {
-        var self = this;
-        if (!_progressDialog) {
-            _progressDialog = new ProgressModal({
-                labels : jQuery.langDefs
-            });
-        }
-        _progressDialog.show(content,callbacks);
-        return _progressDialog;
-    }
-
-
-
-    var _existConfRole = function (model,action,role) {
-
-        var className = "Model_"+Utility.pascalCase(model) + Utility.pascalCase(role);
-        if (window[className] && window[className][action]) {
-            return true;
-        }
-        if (action == 'insert') {
-            if (window[className] && window[className]['edit']) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    var _loadScript = function (scriptName, callback) {
-        var self = App;
-        var _callback = function () {
-            //self.log.info('loaded... ' + scriptName)
-            _resources[scriptName] = true;
-            _resources_loaded[scriptName] = true;
-            if (callback) {
-                callback();
-            }
-        }
-        if (!_resources[scriptName]) {
-            //self.log.info('loading... ' + scriptName);
-
-            var body 		= document.getElementsByTagName('body')[0];
-            var script 		= document.createElement('script');
-            script.type 	= 'text/javascript';
-            script.src 		= scriptName;
-            script.onload = _callback;
-            script.onerror = function() {
-                self.log.error("cannot load script " + scriptName);
-            }
-            // fire the loading
-            body.appendChild(script);
-            //return _waitLoad(scriptName,_callback);
-            return ;
-        }
-        callback();
-    }
-
-    var _loadCss  = function (scriptName,callback) {
-        var self = App;
-        var _callback = function () {
-            //self.log.info('loaded... ' + scriptName);
-            _resources[scriptName] = true;
-            _resources_loaded[scriptName] = true;
-            if (callback) {
-                callback();
-            };
-        }
-        if (!_resources[scriptName]) {
-            //self.log.info('loading... ' + scriptName);
-            var body 		= document.getElementsByTagName('body')[0];
-            var script 		= document.createElement('link');
-            script.type 	= 'text/css';
-            script.rel      = 'stylesheet';
-            script.href 	= scriptName;
-            script.onload = _callback;
-            // fire the loading
-            body.appendChild(script);
-            return ;
-        } else {
-            return callback();
-        }
-    }
-
-    var _loadHtml  = function (fileName,callback) {
-        var self = App;
-        var _callback = function () {
-            //self.log.info('loaded... ' + scriptName);
-            _resources[fileName] = true;
-            _resources_loaded[fileName] = true;
-            if (callback) {
-                callback();
-            };
-        }
-        if (!_resources[fileName]) {
-            jQuery.get(fileName,function (html) {
-                jQuery('body').append(html);
-                callback();
-            }).fail(function (e) {
-                throw 'load ' + fileName + ' failed! ' + e;
-            });
-        } else {
-            return callback();
-        }
-    }
-
-    var _translate = function (key,plural,params) {
-        var tmp = key.split('.');
-        var s = app.$LANG[tmp[0]];
-        for (var i=1;i<tmp.length;i++) {
-            s = s[tmp[i]];
-        }
-        //var s = app.$LANG[key];
-        if (!s)
-            return key;
-        var testo = s;
-        if (testo.indexOf('|') >= 0) {
-            if (plural > 0) {
-                var tmp = testo.split("|");
-                testo = tmp.length>plural?tmp[plural]:tmp[0];
-            } else
-                testo = testo.substr(0, testo.indexOf('|'));
-        }
-        if (params instanceof Array) {
-            for (var i = 0; i < params.length; i++) {
-                testo= testo.replace("(" + i +")", params[i] );
-            }
-        }
-        return testo;
-    };
-
-
-    var _extraHtml = function () {
-        jQuery('body').append('<div id="wait" class="overlay hide">' +
-            '<span crud-msg style="position:absolute;width:100%;top:50%;text-align:center;color:white"></span>' +
-            '</div>');
-    }
-    return App;
-}
-
-Vue.prototype.crudApp = new App();
-Crud.components.cComponent = Vue.component('c-component',{
-    props : {
-        'c-conf' : {
-            default : function () {
-                return {
-                    value : null,
-                    name : null,
-                }
-            }
-        }
-    },
+crud.components.cComponent = Vue.component('c-component',{
+    // props : {
+    //     'c-conf' : {
+    //         default : function () {
+    //             return {
+    //                 value : null,
+    //                 name : null,
+    //             }
+    //         }
+    //     }
+    // },
+    props : ['cConf'],
     mounted : function() {
         //console.log(this.$options.name + ' cref ',this.cRef)
         if (this.cRef) {
-            this.$Crud.cRefs[this.cRef] = this;
+            this.$crud.cRefs[this.cRef] = this;
         }
 
         // else  {
         //     var _conf = this.conf || {};
         //     if ( _conf.cRef) {
-        //         this.$Crud.cRefs[_conf.cRef] = this;
+        //         this.$crud.cRefs[_conf.cRef] = this;
         //     }
         // }
     },
@@ -2859,12 +2575,13 @@ Crud.components.cComponent = Vue.component('c-component',{
         },
         defaultData : function () {
             var _c = this.cConf || {};
-            var d = {}
+            var d = {};
             for (var k in _c) {
                 if (k == 'methods')
                     continue;
                 d[k] = _c[k];
             }
+            d.conf = _c;
             //console.log('c-component::defaultData',d);
             return d;
         },
@@ -2873,34 +2590,34 @@ Crud.components.cComponent = Vue.component('c-component',{
 Vue.component('c-loading',{
     template : '<span>Carico ...</span>'
 })
-Crud.components.cTplBase = Vue.component('c-tpl-base',{
-    props : ['c-render','c-type','c-key','c-ref'],
+crud.components.cTplBase = Vue.component('c-tpl-base',{
+    props : ['cRender','cType','cKey','cRef'],
     template : '<span>template base</span>'
 });
 
 
 Vue.component('c-tpl-record',{
-    extends : Crud.components.cTplBase,
+    extends : crud.components.cTplBase,
     template : '#c-tpl-record-template'
 });
 
 Vue.component('c-tpl-record2',{
-    extends : Crud.components.cTplBase,
+    extends : crud.components.cTplBase,
     template : '#c-tpl-record2-template'
 });
 
 
 Vue.component('c-tpl-list', {
-    extends : Crud.components.cTplBase,
+    extends : crud.components.cTplBase,
     template : '#c-tpl-list-template'
 });
 Vue.component('c-tpl-no', {
-    extends : Crud.components.cTplBase,
+    extends : crud.components.cTplBase,
     template : '#c-tpl-no-template'
 });
 const actionBase = Vue.component('action-base', {
-    props : ['c-conf','c-key'],
-    extends : Crud.components.cComponent,
+    props : ['cConf','cKey'],
+    extends : crud.components.cComponent,
 
     computed :  {
         _disabled : function () {
@@ -2933,7 +2650,7 @@ const actionBase = Vue.component('action-base', {
                 css: 'btn btn-outline-secondary',
                 icon : 'fa fa-help',
                 text : '',
-                view : that.$parent,
+                //view : that.$parent,
                 // execute : function () {
                 //     alert('definire execute')
                 // }
@@ -2948,6 +2665,9 @@ const actionBase = Vue.component('action-base', {
                 //if (jQuery.inArray(c,['execute','beforeExecute','afterExecute','enabled','visible']) < 0)
                     adata[c] = this.cConf[c];
             }
+            if (!('view' in adata) )
+                adata.view = that.$parent;
+            //console.log('action ',adata);
             return adata;
         },
         _beforeExecute : function (callback) {
@@ -2972,7 +2692,7 @@ const actionBase = Vue.component('action-base', {
                 return ;
             }
             that._beforeExecute(function () {
-                console.log('call execute')
+                //console.log('call execute')
                 that.execute.apply(that);
                 that._afterExecute();
             })
@@ -3072,7 +2792,7 @@ Vue.component('c-paginator',{
     template : '#c-paginator-template',
     data : function () {
         var that = this;
-        PAGINATOR = this;
+        //PAGINATOR = this;
         console.log('paginator',that.cPagination, that.$parent.pagination )
         var pagination = that.cPagination || that.$parent.data.pagination || {};
         var d = {
@@ -3121,7 +2841,8 @@ Vue.component('c-paginator',{
             var that = this;
             var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
             params['page'] = parseInt(page);
-            that.cRouteConf.params = params;
+            that.$parent.routeConf.params = params;
+            //that.cRouteConf.params = params;
 
         },
         lastPage : function () {
@@ -3132,9 +2853,9 @@ Vue.component('c-paginator',{
         },
     }
 })
-Crud.components.dBase = Vue.component('d-base',{
-    props : ['c-message'],
-    extends : Crud.components.cComponent,
+crud.components.dBase = Vue.component('d-base',{
+    props : ['cMessage'],
+    extends : crud.components.cComponent,
     mounted : function () {
         var that = this;
         console.log('message',this.cMessage,this.message)
@@ -3167,8 +2888,8 @@ Crud.components.dBase = Vue.component('d-base',{
     }
 });
 
-Crud.components.dConfirm = Vue.component('d-confirm', {
-    extends : Crud.components.dBase,
+crud.components.dConfirm = Vue.component('d-confirm', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Richiesta di Conferma'
@@ -3182,10 +2903,10 @@ Crud.components.dConfirm = Vue.component('d-confirm', {
     template : '#d-confirm-template'
 });
 
-Crud.components.dMessage = Vue.component('d-message', {
-    extends : Crud.components.dBase,
+crud.components.dMessage = Vue.component('d-message', {
+    extends : crud.components.dBase,
     props : {
-        'c-title': {
+        'cTitle': {
             default : 'Informazione'
         }
     },
@@ -3197,8 +2918,8 @@ Crud.components.dMessage = Vue.component('d-message', {
     template : '#d-message-template'
 });
 
-Crud.components.dError = Vue.component('d-error', {
-    extends : Crud.components.dBase,
+crud.components.dError = Vue.component('d-error', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Errore'
@@ -3211,8 +2932,8 @@ Crud.components.dError = Vue.component('d-error', {
     },
     template : '#d-error-template'
 });
-Crud.components.dWarning = Vue.component('d-warning', {
-    extends : Crud.components.dBase,
+crud.components.dWarning = Vue.component('d-warning', {
+    extends : crud.components.dBase,
     props : {
         'c-title': {
             default : 'Attenzione'
@@ -3226,7 +2947,7 @@ Crud.components.dWarning = Vue.component('d-warning', {
     template : '#d-warning-template'
 });
 
-Crud.components.dCustom = Vue.component('d-custom', {
+crud.components.dCustom = Vue.component('d-custom', {
     // mounted : function () {
     //     var that = this;
     //     for (var k in that.cCallbacks) {
@@ -3236,7 +2957,7 @@ Crud.components.dCustom = Vue.component('d-custom', {
     //         }
     //     }
     // },
-    extends : Crud.components.dBase,
+    extends : crud.components.dBase,
     // methods : {
     //     cbCall : function (key) {
     //         var that = this;
@@ -3264,29 +2985,9 @@ Crud.components.dCustom = Vue.component('d-custom', {
     },
     template : '#d-custom-template'
 });
-Crud.components.cWait = Vue.component('c-wait',{
-    extends : Crud.components.cComponent,
-    data : function () {
-        return {
-            msg : ''
-        }
-    },
-    methods : {
-        start : function () {
-            this.jQe().removeClass('hide');
-            this.jQe().css('cursor','wait');
-        },
-        end : function () {
-            var that = this;
-            that.jQe().remove();
-            that.$destroy();
-        }
-    },
-    template : '#c-wait-template'
-})
-Crud.components.renders.rBase = Vue.component('r-base', {
-    extends : Crud.components.cComponent,
-    props : ['c-marker'],
+crud.components.renders.rBase = Vue.component('r-base', {
+    extends : crud.components.cComponent,
+    props : ['cMarker'],
 
     mounted : function() {
         var that = this;
@@ -3304,16 +3005,24 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             that.resourcesLoaded = false;
-            that.crudApp.loadResources(_conf.resources,function () {
+            that.$crud.loadResources(_conf.resources,function () {
                 console.log('resoures loaded callback',that);
                 that.resourcesLoaded = true;
                 that.afterLoadResources();
             })
         }
 
+        if ( _conf.mounted ) {
+            _conf.mounted.apply(that);
+        }
     },
     data :  function () {
-        return this.defaultData();
+        var d  = this.defaultData();
+        if (! ('value' in d))
+            d.value = null;
+        if (! ('operator' in d))
+            d.operator = null;
+        return d;
     },
     methods : {
         getFieldName: function () {
@@ -3326,7 +3035,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         },
         getOperatorName : function () {
             var that = this;
-            return this.cKey + "_operator";
+            return that.name + "_operator";
         },
 
         beforeLoadResources : function () {
@@ -3372,11 +3081,11 @@ Crud.components.renders.rBase = Vue.component('r-base', {
 });
 
 Vue.component('r-render', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-render-template',
 });
 Vue.component('r-input', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-input-template',
     data : function () {
         var d = this.defaultData();
@@ -3388,13 +3097,10 @@ Vue.component('r-input', {
     }
 });
 Vue.component('r-input-helped', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-input-helped-template',
     data : function () {
         var d = this.defaultData();
-        d.inputType = 'text';
-        if (this.cConf.inputType)
-            d.inputType = this.cConf.inputType;
         return d;
     },
 
@@ -3407,29 +3113,40 @@ Vue.component('r-input-helped', {
 
 });
 Vue.component('r-hidden', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-hidden-template'
 });
 Vue.component('r-text',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-text-template'
 });
 Vue.component('r-textarea', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-textarea-template'
 });
 Vue.component('r-select',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-select-template',
+    data :  function () {
+        var metadata = this.cConf.metadata || {};
+        var dV = metadata.domainValues || {};
+        var dVO = metadata.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
+        return {
+            name : this.cConf.name,
+            value: this.cConf.value,
+            domainValues : dV,
+            domainValuesOrder : dVO
+        }
+    },
 });
 
 
 Vue.component('r-radio',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     data :  function () {
-        //console.log('c-select',this.cData);
-        var dV = this.cConf.metadata.domainValues;
-        var dVO = this.cConf.metadata.domainValuesOrder?this.cConf.metadata.domainValuesOrder:Object.keys(dV);
+        var metadata = this.cConf.metadata || {};
+        var dV = metadata.domainValues || {};
+        var dVO = metadata.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
         return {
             name : this.cConf.name,
             value: this.cConf.value,
@@ -3442,11 +3159,12 @@ Vue.component('r-radio',{
 
 
 Vue.component('r-checkbox',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     data :  function () {
+        var that = this;
         //console.log('c-select',this.cData);
-        var d = this.defaultData();
-
+        var d = that.defaultData();
+        console.log('checkbox',d);
         var dV = d.conf.metadata.domainValues;
         var dVO = d.conf.metadata.domainValuesOrder?d.conf.metadata.domainValuesOrder:Object.keys(dV);
         d.value = Array.isArray(d.conf.value)?d.conf.value:[d.conf.value];
@@ -3471,7 +3189,7 @@ Vue.component('r-checkbox',{
 
 
 Vue.component('r-autocomplete', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-autocomplete-template',
 
     data : function () {
@@ -3518,18 +3236,11 @@ Vue.component('r-autocomplete', {
 
 });
 Vue.component('r-belongsto', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-belongsto-template',
-    // data : function () {
-    //     var d = this.defaultData();
-    //     d.inputType = 'text';
-    //     if (this.cData.inputType)
-    //         d.inputType = this.cData.inputType;
-    //     return d;
-    // }
 });
 Vue.component('r-date-select', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-date-select-template',
 
     computed : {
@@ -3614,12 +3325,12 @@ Vue.component('r-date-select', {
             this.$refs.month.updateConf(that.cMonth);
             this.$refs.year.updateConf(that.cYear);
 
-            console.log(this);
+            console.log(this.getValue());
         }
     }
 });
 Vue.component('r-date-picker', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-date-picker-template',
     methods : {
         changed : function() {
@@ -3649,6 +3360,7 @@ Vue.component('r-date-picker', {
                 that.value =  moment(ev.date.toISOString()).format('Y-M-D'); //ev.date.toISOString();
                 moment(ev.date.valueOf);
                 console.log('date ' ,ev.date.toISOString());
+                console.log('date2 ',that.getValue())
                 // if (ev.date.valueOf() < startDate.valueOf()){
                 //
                 // }
@@ -3657,7 +3369,7 @@ Vue.component('r-date-picker', {
     }
 });
 Vue.component('r-texthtml',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-texthtml-template',
     methods : {
         afterLoadResources : function () {
@@ -3668,8 +3380,8 @@ Vue.component('r-texthtml',{
         }
     }
 });
-Crud.components.rHasmany =Vue.component('r-hasmany', {
-    extends : Crud.components.renders.rBase,
+crud.components.rHasmany =Vue.component('r-hasmany', {
+    extends : crud.components.renders.rBase,
     template: '#r-hasmany-template',
     data : function () {
         var that = this;
@@ -3761,13 +3473,13 @@ Crud.components.rHasmany =Vue.component('r-hasmany', {
                 console.log('update status deleted ', index)
                 this.$set(this.value[index], 'status', 'deleted');
                 this.$set(this.confViews[index], 'status' , 'deleted');
-                this.$Crud.cRefs['hm-'+index].setFieldValue('status','deleted');
+                this.$crud.cRefs['hm-'+index].setFieldValue('status','deleted');
             }
         }
     }
 });
 Vue.component('r-hasmany-view', {
-    extends : Crud.components.rHasmany,
+    extends : crud.components.rHasmany,
     template: '#r-hasmany-view-template',
     beforeCreated : function() {
         this.$options.template  = '#r-hasmany-view-template1';
@@ -3781,7 +3493,7 @@ Vue.component('r-hasmany-view', {
     }
 });
 Vue.component('r-swap', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-swap-template',
     data : function () {
         var that = this;
@@ -3850,16 +3562,13 @@ Vue.component('r-swap', {
             r.params = {id:that.conf.modelData.id};
             Server.route(r,function (json) {
                 if (json.error) {
-                    that.crudApp.errorDialog(json.msg);
+                    that.$crud.errorDialog(json.msg);
                     return;
                 }
                 var dV = that.getDV();
                 that.value = key;
                 that.slot = dV[key];
                 that.change();
-                // if (that.view)
-                //     that.crudApp.renderView(self.view.keyId);
-
             })
         },
         getDomainValues : function () {
@@ -3867,8 +3576,8 @@ Vue.component('r-swap', {
         }
     }
 });
-Crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
-    extends : Crud.components.renders.rBase,
+crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
+    extends : crud.components.renders.rBase,
     template: '#r-hasmany-through-template',
     data : function () {
         var d = this.defaultData();
@@ -3916,7 +3625,7 @@ Crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
     }
 });
 Vue.component('r-b2-select2', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-b2-select2-template',
     data : function () {
         var d = this.defaultData();
@@ -3992,7 +3701,7 @@ Vue.component('r-b2-select2', {
 
 });
 Vue.component('r-b2m-select2', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-b2m-select2-template',
     data : function () {
         var d = this.defaultData();
@@ -4086,8 +3795,8 @@ Vue.component('r-b2m-select2', {
     }
 
 });
-Crud.components.renders.rUpload = Vue.component('r-upload',{
-    extends : Crud.components.renders.rBase,
+crud.components.renders.rUpload = Vue.component('r-upload',{
+    extends : crud.components.renders.rBase,
     template : '#r-upload-template',
     data : function () {
         var d = this.defaultData();
@@ -4164,7 +3873,7 @@ Crud.components.renders.rUpload = Vue.component('r-upload',{
     }
 })
 Vue.component('r-upload-ajax',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
@@ -4222,7 +3931,7 @@ Vue.component('r-upload-ajax',{
             var fileName = fDesc.filename;
             var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+            var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
             var route = Route.factory('uploadfile',routeConf);
 
             that.error = false;
@@ -4293,7 +4002,7 @@ Vue.component('r-upload-ajax',{
     }
 })
 Vue.component('r-preview',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template : '#r-preview-template',
     mounted : function() {
         var that = this;
@@ -4328,9 +4037,9 @@ Vue.component('r-preview',{
                     break;
                 case 'default':
                     that.icon=true;
-                    that.iconClass = that.$Crud.icons.mimetypes['default'];
-                    if (that.$Crud.icons.mimetypes[ext])
-                        that.iconClass = that.$Crud.icons.mimetypes[ext];
+                    that.iconClass = that.$crud.icons.mimetypes['default'];
+                    if (that.$crud.icons.mimetypes[ext])
+                        that.iconClass = that.$crud.icons.mimetypes[ext];
                     break;
             }
             that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
@@ -4354,37 +4063,119 @@ Vue.component('r-preview',{
         }
     }
 })
+Vue.component('v-action', {
+    extends : crud.components.cComponent,
+    props : ['cName','cAction'],
+    data : function () {
+        var that = this;
+        //console.log('v-action',this.cKey,this.cAction);
+        var aConf =  {
+            name: 'action-base',
+            conf: {},
+        }
+        if (this.cAction) {
+            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            aConf =  {
+                name : this.cName,
+                conf : this.cAction
+            }
+        } else {
+            console.warn('configurazione azione non valida', this.cName, this.cAction);
+        }
+        aConf.conf.view = that.$parent;
+        console.log('v-action create',aConf);
+        return aConf;
+    },
+    template : '<component :is="name" :c-conf="conf"></component>'
+})
+
 Vue.component('v-render', {
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
+    props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
-        console.log('v-render',this.conf)
+        //console.log('v-render',this.cConf);
     },
     data : function() {
-        var render = this.$parent.renders[this.cKey];
-        console.log('V-RENDER ',this.cConf);
-        return {
-            type : this.cConf.type,
-            conf : this.conf
+        if (this.cKey) {
+            var ckeys = this.cKey.split(',');
+            var render = null;
+            for (var i in ckeys) {
+                render = this.$parent.renders[ckeys[i]];
+            }
+            //var render = this.$parent.renders[this.cKey];
+            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            return {
+                type : render.type,
+                conf : render
+            }
         }
+
+        if (this.cRender) {
+            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            return {
+                type : this.cRender.type,
+                conf : this.cRender
+            }
+        }
+        console.warn('configurazione non valida',this.cKey,this.cRender);
+        return {
+            type : 'r-text',
+            conf : {},
+        }
+
     },
     template : '<component :is="type" :c-conf="conf"></component>'
 })
 
-Crud.components.views.vBase = Vue.component('v-base', {
+crud.components.views.vBase = Vue.component('v-base', {
     props : ['cConf','cFields'],
-    extends : Crud.components.cComponent,
+    extends : crud.components.cComponent,
+    // created : function() {
+    //     var that = this;
+    //     var _conf = that.getConf(that.cConf) || {};
+    //     for (var k in _conf.methods) {
+    //         console.log('v-base implements methods',k);
+    //         that[k] = function () {
+    //             var arguments = this.arguments;
+    //             console.log('arguments');
+    //             _conf.methods[k].apply(that,arguments);
+    //         }
+    //     }
+    // },
     data : function () {
         return this.defaultData();
     },
     mounted : function() {
         var that = this;
-        var methods = that.conf?that.conf.methods:{};
-        for (var k in methods) {
-            console.log('v-base implements methods',k);
-            that.methods[k] = function () {
-                methods.apply(that,this.arguments);
+        //var methods = that.conf?that.conf.methods:{};
+        // for (var k in methods) {
+        //     console.log('v-base implements methods',k);
+        //     that.methods[k] = function () {
+        //         methods.apply(that,this.arguments);
+        //     }
+        // }
+        var __call = function (lk) {
+            that[lk] = function () {
+                var localk = new String(lk);
+                //var arguments = this.arguments;
+                console.log(localk,'arguments',arguments);
+                return that.conf.methods[localk].apply(that,arguments);
             }
+        }
+        for (var k in that.conf.methods) {
+            //console.log('v-base implements methods',k);
+            __call(k);
+            // that[k] = function () {
+            //     var localk = new String(k);
+            //     //var arguments = this.arguments;
+            //     console.log(localk,'arguments',arguments);
+            //     return that.conf.methods[k].apply(that,arguments);
+            // }
+        }
+
+        if ( that.conf.mounted ) {
+            that.conf.mounted.apply(that);
         }
     },
     methods : {
@@ -4405,7 +4196,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
             }
             Server.route(route,function (json) {
                 if (json.error) {
-                    that.crudApp.errorDialog(json.msg);
+                    that.$crud.errorDialog(json.msg);
                     return
                 }
                 callback(json);
@@ -4415,25 +4206,27 @@ Crud.components.views.vBase = Vue.component('v-base', {
             //console.log('v-base.getActionConfig',name,type,this.conf);
             if (this.conf.customActions[name]) {
                 var aConf = {}
-                //console.log('CUSTOM',name);
                 if (!this.$options.components[name]) {
+                    //console.log('estendo azioni ',name);
                     Vue.component(name, {
                         extends : actionBase
                     });
                 } else {
-                    aConf = this.$Crud.recordActions[name]?this.$Crud.recordActions[name]:(this.$Crud.globalActions[name]?this.$Crud.globalActions[name]:{})
+                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.globalActions[name]?this.$crud.globalActions[name]:{})
                 }
-                return Utility.merge(aConf,this.conf.customActions[name]);
+                aConf = Utility.merge(aConf,this.conf.customActions[name]);
+                //console.log('CUSTOM',name,aConf);
+                return aConf;
             }
             if (type == 'record') {
-                if (this.$Crud.recordActions[name]) {
-                    return Utility.cloneObj(this.$Crud.recordActions[name]);
+                if (this.$crud.recordActions[name]) {
+                    return Utility.cloneObj(this.$crud.recordActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
             }
             if (type == 'global') {
-                if (this.$Crud.globalActions[name]) {
-                    return Utility.cloneObj(this.$Crud.globalActions[name]);
+                if (this.$crud.globalActions[name]) {
+                    return Utility.cloneObj(this.$crud.globalActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo global non trovata nelle azioni generali";
             }
@@ -4446,12 +4239,12 @@ Crud.components.views.vBase = Vue.component('v-base', {
          */
         getConf : function (modelName,type) {
             var conf = null;
-            var defaltConf = this.$Crud.conf[type];
+            var defaltConf = this.$crud.conf[type];
 
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String)
-                    conf = window[this.cConf]?window[this.cConf]:(this.$Crud.conf[this.cConf]?this.$Crud.conf[this.cConf]:null);
+                    conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
                 else
                     conf = this.cConf;
             } else {
@@ -4480,12 +4273,14 @@ Crud.components.views.vBase = Vue.component('v-base', {
             if (that.conf.routeName == null)
                 return null;
             if (!that.route) {
-                if (Crud.routes[that.conf.routeName]) {
-                    route =  new Route(Crud.routes[that.conf.routeName]);
+                if (crud.routes[that.conf.routeName]) {
+                    route =  new Route(crud.routes[that.conf.routeName]);
                 } else {
                     route = Route.factory(that.conf.routeName);
                 }
-                route.values = values;
+                route.fillValues(that.conf);
+                console.log('ROUTEN ',route.values);
+                //route.values = values;
             }
             // if (!that.route)
             //     route = Route.factory(that.conf.routeName);
@@ -4513,6 +4308,7 @@ Crud.components.views.vBase = Vue.component('v-base', {
                     c = Utility.merge(c,that.conf.fieldsConfig[key]);
                 }
             }
+
             if (!c.template)
                 c.template = that.conf.renderTemplate;
             c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
@@ -4525,9 +4321,9 @@ Crud.components.views.vBase = Vue.component('v-base', {
     },
     template : '<div>view base</div>'
 });
-Crud.components.views.vRecord = Vue.component('v-record', {
-    extends : Crud.components.views.vBase,
-    props : ['c-conf','c-model'],
+crud.components.views.vRecord = Vue.component('v-record', {
+    extends : crud.components.views.vBase,
+    props : ['cModel','cPk'],
     methods : {
 
         setFieldValue : function(key,value) {
@@ -4535,7 +4331,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             if (!that.renders[key]) {
                 throw 'accesso a render con chiave inesistente ' + key;
             }
-            Crud.cRefs[that.renders[key].cRef].setValue(value);
+            crud.cRefs[that.renders[key].cRef].setValue(value);
         },
 
         createRenders : function() {
@@ -4545,10 +4341,10 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
+                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
                 renders[key].value = null;
                 renders[key].operator = null;
-                if (that.data.value && that.data.value[key])
+                if (that.data.value && (key in that.data.value) )
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
@@ -4574,7 +4370,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.globalActions[aName])
+                if (that.$crud.globalActions[aName])
                     actions.push(aName);
                 else if (that.conf.customActions[aName])
                     actions.push(aName);
@@ -4586,13 +4382,14 @@ Crud.components.views.vRecord = Vue.component('v-record', {
         createActionsClass : function () {
             var that = this;
             var actions = {};
-            console.log('confff',that.conf);
+            console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName,'global');
                 aConf.modelData = Utility.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
+                aConf.cRef = that.$crud.getRefId(that._uid,'a',aName);
                 actions[aName] = aConf;
             }
             that.actionsClass = actions;
@@ -4601,6 +4398,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var that = this;
             var data = {value : {}};
             if (!route) {
+                console.log('dati manuali',that.conf.data);
                 if (that.conf.data) {
                     data = that.conf.data;
                 }
@@ -4627,6 +4425,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 actionsName : [],
                 actions : {},
                 vueRefs:{},
+                conf : this.cConf || {}
             }
         },
         getFormData : function () {
@@ -4637,14 +4436,30 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
+        getRender : function (key) {
+            var rConf = this.renders[key];
+            console.log('getRenderd',key,rConf);
+            return this.$crud.cRefs[rConf.cRef];
+        },
+        getAction : function (name) {
+            var rConf = this.actionsClass[name];
+            console.log('getAction',name,rConf);
+            return this.$crud.cRefs[rConf.cRef];
+        }
     },
     data : function() {
-        return this.defaultData();
+        var d =  this.defaultData();
+        if (this.cModel)
+            d.conf.modelName = this.cModel;
+        if (this.cPk)
+            d.conf.pk = this.cPk;
+        return d;
     },
     template : '<div>view record base</div>'
 });
-Crud.components.views.vCollection = Vue.component('v-collection', {
-    extends : Crud.components.views.vBase,
+crud.components.views.vCollection = Vue.component('v-collection', {
+    extends : crud.components.views.vBase,
+    props : ['cModel'],
     methods : {
         setFieldValue : function(row,key,value) {
             var that = this;
@@ -4660,6 +4475,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
+                conf : this.cConf || {},
             }
         },
         createRenders : function () {
@@ -4678,7 +4494,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
-                    dconf.cRef = that.crudApp.getRefId(that._uid,'r',i,key);
+                    dconf.cRef = that.$crud.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     dconf.value = null;
                     if (data.value[i][key])
@@ -4702,21 +4518,26 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             if (that.cFields) {
                 keys = that.cFields.split(',');
             }
-            if (keys.length == 0)
+            if (keys.length == 0 && that.data.value.length)
                 keys =Object.keys(that.data.value[0]);
             return keys;
+        },
+        getRender : function (row,key) {
+            return this.renders[row][key];
         }
     },
     data : function () {
-        return this.defaultData();
+        var d =  this.defaultData();
+        if (this.cModel)
+           d.conf.modelName = this.cModel;
+        return d;
     },
     template : '<div>view collection base</div>'
 });
 
 Vue.component('v-list', {
-    extends : Crud.components.views.vCollection,
+    extends : crud.components.views.vCollection,
     conf : {},
-    props : ['c-conf','c-model'],
     // beforeCreate : function() {
     //     this.template = '#v-view-template';
     // },
@@ -4736,7 +4557,7 @@ Vue.component('v-list', {
         var that = this;
         console.log('DATA CALLED');
         //console.log('CRUDCONF',that.$Crud);
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }
@@ -4753,7 +4574,6 @@ Vue.component('v-list', {
         //that.conf = ModelTest.list;
 
         //this.loading = true;
-
         var d = {
             loading : true,
             renders : {},
@@ -4770,7 +4590,7 @@ Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
-            defaultRenderType : 'r-text'
+            defaultRenderType : 'r-text',
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
@@ -4787,8 +4607,8 @@ Vue.component('v-list', {
             that.createActions();
             that.createRenders();
             that.createGlobalActions();
-            console.log('renders',that.renders,'recordActions',that.recordActions);
-            console.log('globalActions',that.globalActions);
+            //console.log('renders',that.renders,'recordActions',that.recordActions);
+            //console.log('globalActions',that.globalActions);
         },
 
         fillData : function(route, json) {
@@ -4827,9 +4647,9 @@ Vue.component('v-list', {
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.recordActions[aName])
+                if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$Crud.globalActions[aName])
+                else if (that.$crud.globalActions[aName])
                     globalActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
@@ -4900,10 +4720,12 @@ Vue.component('v-list', {
         },
         reload : function () {
             var that = this;
-            var route = Route.factory('list',that.routeConf);
+            //that.route = that._getRoute(that.routeConf.values);
+            //var route = Route.factory('list',that.routeConf);
+            that.route = new Route(that.routeConf);
             that.loading = true;
-            that.fetchData(route,function (json) {
-                that.fillData(route,json);
+            that.fetchData(that.route,function (json) {
+                that.fillData(that.route,json);
                 that.draw();
                 that.loading = false;
             });
@@ -4942,7 +4764,7 @@ Vue.component('v-list', {
 
 
 Vue.component('v-list-edit', {
-    extends : Crud.components.views.vCollection,
+    extends : crud.components.views.vCollection,
     conf : {},
     props : ['c-conf','c-model'],
 
@@ -4960,7 +4782,7 @@ Vue.component('v-list-edit', {
     data :  function () {
         var that = this;
 
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }
@@ -5070,9 +4892,9 @@ Vue.component('v-list-edit', {
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.recordActions[aName])
+                if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$Crud.globalActions[aName])
+                else if (that.$crud.globalActions[aName])
                     globalActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
@@ -5197,11 +5019,11 @@ Vue.component('v-list-edit', {
         },
         hideRA : function (index,name) {
             var n = 'ra-'+index+'-'+name;
-            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(false):null;
+            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var n = 'ra-'+index+'-'+name;
-            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(true):null;
+            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
         },
         getRef : function (prefix,index,key) {
             var s =  prefix + '-' + index + '-' + key;
@@ -5220,8 +5042,8 @@ Vue.component('v-list-edit', {
 });
 
 Vue.component('v-edit', {
-    extends : Crud.components.views.vRecord,
-    props : ['c-model','c-pk'],
+    extends : crud.components.views.vRecord,
+    //props : ['cModel','cPk'],
 
     mounted : function() {
         var that = this;
@@ -5267,11 +5089,12 @@ Vue.component('v-edit', {
 });
 
 Vue.component('v-view', {
-    extends : Crud.components.views.vRecord,
-    props : ['c-model','c-pk'],
+    extends : crud.components.views.vRecord,
+    //props : ['cModel','cPk'],
 
     mounted : function() {
         var that = this;
+        //console.log('view route param',this.cModel,this.cPk);
         var route = that._getRoute({
             modelName: this.cModel,
             pk: this.cPk
@@ -5283,7 +5106,6 @@ Vue.component('v-view', {
             that.createActions();
             that.createActionsClass();
             that.createRenders();
-            console.log('BBBBBBB');
             that.loading = false;
         });
     },
@@ -5311,7 +5133,7 @@ Vue.component('v-view', {
 });
 
 Vue.component('v-insert', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['c-conf','c-model'],
 
     mounted : function() {
@@ -5352,25 +5174,15 @@ Vue.component('v-insert', {
 });
 
 Vue.component('v-search', {
-    extends : Crud.components.views.vRecord,
-    props : ['c-conf','c-model','c-route-conf','c-target-ref'],
-    data :  function () {
+    extends : crud.components.views.vRecord,
+    props : ['cConf','cModel','cRouteConf','cTargetRef'],
+    mounted : function() {
         var that = this;
+        var route = that._getRoute({
+            modelName: this.cModel,
+        });
+        that.route = route;
 
-        //var targetView = this.parent.$refs[that.cTargetView];
-        //var targetView = null;
-        //console.log('SEARCH',that.cModel,that.cRouteConf,that.cTargetView,targetView);
-        that.conf = that.getConf(that.cModel,'search');
-        var routeName = 'search';
-        if (that.conf.routeName != null) {
-            routeName = that.conf.routeName;
-        }
-        that.route = Route.factory(routeName,{
-            values : {
-                modelName: that.cModel,
-            }
-        })
-        //that.createActions();
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.createActions();
@@ -5378,18 +5190,61 @@ Vue.component('v-search', {
             that.createRenders();
             that.loading = false;
         });
+    },
 
-        return {
+    data :  function () {
+        //var that = this;
+
+        //var targetView = this.parent.$refs[that.cTargetView];
+        //var targetView = null;
+        //console.log('SEARCH',that.cModel,that.cRouteConf,that.cTargetView,targetView);
+        // that.conf = that.getConf(that.cModel,'search');
+        // var routeName = 'search';
+        // if (that.conf.routeName != null) {
+        //     routeName = that.conf.routeName;
+        // }
+        // that.route = Route.factory(routeName,{
+        //     values : {
+        //         modelName: that.cModel,
+        //     }
+        // })
+        // //that.createActions();
+        // this.fetchData(that.route,function (json) {
+        //     that.fillData(that.route,json);
+        //     that.createActions();
+        //     that.createActionsClass();
+        //     that.createRenders();
+        //     that.loading = false;
+        // });
+
+        var that = this;
+        var d = this.defaultData();
+        d.conf = that.getConf(that.cModel,'search');
+
+
+        var dSearch = {
             loading : true,
             renders : {},
             actionsClass : [],
             actions : {},
             data : {},
-            conf : that.conf,
-            //route : route,
+            route : null,
+            viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
             targetRef : that.cTargetRef,
         }
+        return Utility.merge(d,dSearch);
+        // return {
+        //     loading : true,
+        //     renders : {},
+        //     actionsClass : [],
+        //     actions : {},
+        //     data : {},
+        //     conf : that.conf,
+        //     //route : route,
+        //     defaultRenderType : 'r-input',
+        //     targetRef : that.cTargetRef,
+        // }
     },
     methods : {
         doSearch : function (params) {
@@ -5411,34 +5266,45 @@ Vue.component('v-search', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
+                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
+                renders[key].value = null;
+                //renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
+
+                renders[key].name = that.getFieldName(key);
                 if (!renders[key].operator) {
                     renders[key].operator = '=';
                 }
-
-                // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
-                // if (!c.type)
-                //     c.type = that.defaultRenderType;
-                // if (that.data.value && that.data.value[key])
-                //     c.value = that.data.value[key];
-                // if (!c.template)
-                //     c.template = that.conf.renderTemplate;
-                // renders[key] = c;
-                //
-                // var metadata = renders[key].metadata || {};
-                // renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
             }
 
-            console.log('v-search.renders',renders);
+            console.log('v-searc.renders',renders);
             that.renders = renders;
         },
+
+        // createRenders : function() {
+        //     var that = this;
+        //     var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+        //     var renders = {};
+        //     for (var k in keys) {
+        //         var key = keys[k];
+        //         renders[key] = that._defaultRenderConfig(key);
+        //         if (that.data.value && that.data.value[key])
+        //             renders[key].value = that.data.value[key];
+        //         if (!renders[key].operator) {
+        //             renders[key].operator = '=';
+        //         }
+        //     }
+        //
+        //     console.log('v-search.renders',renders);
+        //     that.renders = renders;
+        // },
     },
     template : '#v-search-template'
 });
 
 Vue.component('v-hasmany', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['c-conf'],
     data :  function () {
         var that = this;
@@ -5482,7 +5348,7 @@ Vue.component('v-hasmany', {
 });
 
 Vue.component('v-hasmany-view', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['c-conf'],
     data :  function () {
         var that = this;
@@ -5528,19 +5394,44 @@ Vue.component('v-hasmany-view', {
 const CrudApp = Vue.extend({
     created : function() {
         var that = this;
-        that.$Crud.instance = that;
-        that.crudApp.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
+        Vue.prototype.$crud = crud;
+        for (var k in window) {
+            //console.log('window key ',k);
+            if (k.indexOf('_interface') > 0) {
+                console.log('found interface ',k)
+                var methods = window[k].methods || {};
+                var __call = function (interface,lk) {
+                    that.$crud[lk] = function () {
+                        var localk = new String(lk);
+                        var int = new String(interface);
+                        //var arguments = this.arguments;
+                        //console.log(localk,'arguments',arguments);
+                        return window[interface].methods[localk].apply(that,arguments);
+                    }
+                }
+                for (var m in methods) {
+                    console.log('....method',m)
+                    __call(k,m);
+                }
+            }
+        }
+
+
+
+        that.$crud.instance = that;
+        that.$crud.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
         var resources = [];
         resources.push(this.templatesFile);
-        for (var k in this.$Crud.components.libs) {
-            if (that.$Crud.components.libs[k].tpl)
-                resources.push(that.$Crud.components.libs[k].tpl);
-            if (that.$Crud.components.libs[k].js)
-                resources.push(that.$Crud.components.libs[k].js);
+        for (var k in this.$crud.components.libs) {
+            if (that.$crud.components.libs[k].tpl)
+                resources.push(that.$crud.components.libs[k].tpl);
+            if (that.$crud.components.libs[k].js)
+                resources.push(that.$crud.components.libs[k].js);
         }
-        that.crudApp.loadResources(resources,function () {
+        that.$crud.loadResources(resources,function () {
             console.log('monto app');
-            that.$mount('#app');
+
+            that.$mount(that.el);
             console.log('mounted');
         })
 
@@ -5548,6 +5439,7 @@ const CrudApp = Vue.extend({
     methods : {
         onChangeViewConf : function (view) {
             
-        }
+        },
+
     }
 });

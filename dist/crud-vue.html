@@ -194,24 +194,6 @@
         </div>
     </div>
 </template>
-<template id="c-wait-template">
-    <div c-wait class="overlay hide">
-        <span c-msg style="position:absolute;width:100%;top:50%;text-align:center;color:white">
-            {{msg}}
-        </span>
-    </div>
-</template>
-<style>
-    .overlay {
-        background-color: rgba(1, 1, 1, 0.3);
-        bottom: 0;
-        left: 0;
-        position: fixed;
-        right: 0;
-        top: 0;
-        z-index:10000;
-    }
-</style>
 <script type="text/x-template" id="r-render-template">
     <component :is="type" :c-conf="item" :c-key="key"></component>
 </script>
@@ -224,12 +206,12 @@
 <script type="text/x-template" id="r-input-helped-template">
     <div>
         <div crud-render_element>
-            <input v-bind:readonly="!conf.customValue"
+            <input v-bind:readonly="!customValue"
                    class="form-control" type="text" name="getFieldName()" v-model="value"
                    v-bind:c-marker="cMarker" v-on:change="change" >
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-for="(label,dVal) in conf.metadata.domainValues" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{label}}</button>
+                    <button v-for="(label,dVal) in metadata.domainValues" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{label}}</button>
                 </div>
             </div>
         </div>
@@ -243,7 +225,7 @@
     </div>
 </script>
 <script type="text/x-template" id="r-text-template">
-    <div v-html="value"></div>
+    <div>{{value}}</div>
 </script>
 <script type="text/x-template" id="r-textarea-template">
     <div>
@@ -257,8 +239,8 @@
     <div>
         <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
                 v-on:change="change">
-            <option v-for="key in (conf.metadata.domainValuesOrder?conf.metadata.domainValuesOrder:Object.keys(conf.metadata.domainValues))" :value="key"
-                    >{{conf.metadata.domainValues[key]}}</option>
+            <option v-for="key in domainValuesOrder" :value="key"
+                    >{{domainValues[key]}}</option>
         </select>
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
@@ -301,7 +283,7 @@
 </template>
 <template id="r-belongsto-template">
     <div>
-        <span v-for="field in conf.fields">{{value[field]}}&nbsp;</span>
+        <span v-for="field in fields">{{value[field]}}&nbsp;</span>
     </div>
 </template>
 <template id="r-date-select-template">

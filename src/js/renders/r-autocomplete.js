@@ -1,5 +1,5 @@
 Vue.component('r-autocomplete', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-autocomplete-template',
 
     data : function () {

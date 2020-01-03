@@ -1,4 +1,4 @@
 Vue.component('r-text',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-text-template'
 });

@@ -1,6 +1,6 @@
 const actionBase = Vue.component('action-base', {
-    props : ['c-conf','c-key'],
-    extends : Crud.components.cComponent,
+    props : ['cConf','cKey'],
+    extends : crud.components.cComponent,
 
     computed :  {
         _disabled : function () {
@@ -33,7 +33,7 @@ const actionBase = Vue.component('action-base', {
                 css: 'btn btn-outline-secondary',
                 icon : 'fa fa-help',
                 text : '',
-                view : that.$parent,
+                //view : that.$parent,
                 // execute : function () {
                 //     alert('definire execute')
                 // }
@@ -48,6 +48,9 @@ const actionBase = Vue.component('action-base', {
                 //if (jQuery.inArray(c,['execute','beforeExecute','afterExecute','enabled','visible']) < 0)
                     adata[c] = this.cConf[c];
             }
+            if (!('view' in adata) )
+                adata.view = that.$parent;
+            //console.log('action ',adata);
             return adata;
         },
         _beforeExecute : function (callback) {
@@ -72,7 +75,7 @@ const actionBase = Vue.component('action-base', {
                 return ;
             }
             that._beforeExecute(function () {
-                console.log('call execute')
+                //console.log('call execute')
                 that.execute.apply(that);
                 that._afterExecute();
             })

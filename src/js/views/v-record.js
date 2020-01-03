@@ -1,6 +1,6 @@
-Crud.components.views.vRecord = Vue.component('v-record', {
-    extends : Crud.components.views.vBase,
-    props : ['c-conf','c-model'],
+crud.components.views.vRecord = Vue.component('v-record', {
+    extends : crud.components.views.vBase,
+    props : ['cModel','cPk'],
     methods : {
 
         setFieldValue : function(key,value) {
@@ -8,7 +8,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             if (!that.renders[key]) {
                 throw 'accesso a render con chiave inesistente ' + key;
             }
-            Crud.cRefs[that.renders[key].cRef].setValue(value);
+            crud.cRefs[that.renders[key].cRef].setValue(value);
         },
 
         createRenders : function() {
@@ -18,10 +18,10 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.crudApp.getRefId(that._uid,'r',key);
+                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
                 renders[key].value = null;
                 renders[key].operator = null;
-                if (that.data.value && that.data.value[key])
+                if (that.data.value && (key in that.data.value) )
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
@@ -47,7 +47,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.globalActions[aName])
+                if (that.$crud.globalActions[aName])
                     actions.push(aName);
                 else if (that.conf.customActions[aName])
                     actions.push(aName);
@@ -59,13 +59,14 @@ Crud.components.views.vRecord = Vue.component('v-record', {
         createActionsClass : function () {
             var that = this;
             var actions = {};
-            console.log('confff',that.conf);
+            console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName,'global');
                 aConf.modelData = Utility.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
+                aConf.cRef = that.$crud.getRefId(that._uid,'a',aName);
                 actions[aName] = aConf;
             }
             that.actionsClass = actions;
@@ -74,6 +75,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             var that = this;
             var data = {value : {}};
             if (!route) {
+                console.log('dati manuali',that.conf.data);
                 if (that.conf.data) {
                     data = that.conf.data;
                 }
@@ -100,6 +102,7 @@ Crud.components.views.vRecord = Vue.component('v-record', {
                 actionsName : [],
                 actions : {},
                 vueRefs:{},
+                conf : this.cConf || {}
             }
         },
         getFormData : function () {
@@ -110,9 +113,24 @@ Crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
+        getRender : function (key) {
+            var rConf = this.renders[key];
+            console.log('getRenderd',key,rConf);
+            return this.$crud.cRefs[rConf.cRef];
+        },
+        getAction : function (name) {
+            var rConf = this.actionsClass[name];
+            console.log('getAction',name,rConf);
+            return this.$crud.cRefs[rConf.cRef];
+        }
     },
     data : function() {
-        return this.defaultData();
+        var d =  this.defaultData();
+        if (this.cModel)
+            d.conf.modelName = this.cModel;
+        if (this.cPk)
+            d.conf.pk = this.cPk;
+        return d;
     },
     template : '<div>view record base</div>'
 });

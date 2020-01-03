@@ -1,8 +1,7 @@
 
 Vue.component('v-list', {
-    extends : Crud.components.views.vCollection,
+    extends : crud.components.views.vCollection,
     conf : {},
-    props : ['c-conf','c-model'],
     // beforeCreate : function() {
     //     this.template = '#v-view-template';
     // },
@@ -22,7 +21,7 @@ Vue.component('v-list', {
         var that = this;
         console.log('DATA CALLED');
         //console.log('CRUDCONF',that.$Crud);
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }
@@ -39,7 +38,6 @@ Vue.component('v-list', {
         //that.conf = ModelTest.list;
 
         //this.loading = true;
-
         var d = {
             loading : true,
             renders : {},
@@ -56,7 +54,7 @@ Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
-            defaultRenderType : 'r-text'
+            defaultRenderType : 'r-text',
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
@@ -73,8 +71,8 @@ Vue.component('v-list', {
             that.createActions();
             that.createRenders();
             that.createGlobalActions();
-            console.log('renders',that.renders,'recordActions',that.recordActions);
-            console.log('globalActions',that.globalActions);
+            //console.log('renders',that.renders,'recordActions',that.recordActions);
+            //console.log('globalActions',that.globalActions);
         },
 
         fillData : function(route, json) {
@@ -113,9 +111,9 @@ Vue.component('v-list', {
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.recordActions[aName])
+                if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$Crud.globalActions[aName])
+                else if (that.$crud.globalActions[aName])
                     globalActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
@@ -186,10 +184,12 @@ Vue.component('v-list', {
         },
         reload : function () {
             var that = this;
-            var route = Route.factory('list',that.routeConf);
+            //that.route = that._getRoute(that.routeConf.values);
+            //var route = Route.factory('list',that.routeConf);
+            that.route = new Route(that.routeConf);
             that.loading = true;
-            that.fetchData(route,function (json) {
-                that.fillData(route,json);
+            that.fetchData(that.route,function (json) {
+                that.fillData(that.route,json);
                 that.draw();
                 that.loading = false;
             });

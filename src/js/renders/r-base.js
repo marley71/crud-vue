@@ -1,6 +1,6 @@
-Crud.components.renders.rBase = Vue.component('r-base', {
-    extends : Crud.components.cComponent,
-    props : ['c-marker'],
+crud.components.renders.rBase = Vue.component('r-base', {
+    extends : crud.components.cComponent,
+    props : ['cMarker'],
 
     mounted : function() {
         var that = this;
@@ -18,16 +18,24 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             that.resourcesLoaded = false;
-            that.crudApp.loadResources(_conf.resources,function () {
+            that.$crud.loadResources(_conf.resources,function () {
                 console.log('resoures loaded callback',that);
                 that.resourcesLoaded = true;
                 that.afterLoadResources();
             })
         }
 
+        if ( _conf.mounted ) {
+            _conf.mounted.apply(that);
+        }
     },
     data :  function () {
-        return this.defaultData();
+        var d  = this.defaultData();
+        if (! ('value' in d))
+            d.value = null;
+        if (! ('operator' in d))
+            d.operator = null;
+        return d;
     },
     methods : {
         getFieldName: function () {
@@ -40,7 +48,7 @@ Crud.components.renders.rBase = Vue.component('r-base', {
         },
         getOperatorName : function () {
             var that = this;
-            return this.cKey + "_operator";
+            return that.name + "_operator";
         },
 
         beforeLoadResources : function () {

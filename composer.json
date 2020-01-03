@@ -1,0 +1,24 @@
+{
+  "name": "marley71/crud-vue",
+  "description": "javascript crud working with json protocol",
+  "keywords": ["crud", "js", "json","rest","model"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pier Paolo Ciullo",
+      "email": "ciullo@gmail.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+    },
+    "files": [
+
+    ]
+  },
+  "extra": {
+
+  }
+}

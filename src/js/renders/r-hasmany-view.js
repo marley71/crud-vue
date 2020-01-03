@@ -1,5 +1,5 @@
 Vue.component('r-hasmany-view', {
-    extends : Crud.components.rHasmany,
+    extends : crud.components.rHasmany,
     template: '#r-hasmany-view-template',
     beforeCreated : function() {
         this.$options.template  = '#r-hasmany-view-template1';

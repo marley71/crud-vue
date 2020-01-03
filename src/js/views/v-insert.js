@@ -1,5 +1,5 @@
 Vue.component('v-insert', {
-    extends : Crud.components.views.vRecord,
+    extends : crud.components.views.vRecord,
     props : ['c-conf','c-model'],
 
     mounted : function() {

@@ -1,5 +1,5 @@
 Vue.component('r-hasmany-image',{
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     // data :  function () {
     //     //console.log('r-hasmany-image',this.cData);
     //     //var dV = this.cData.metadata.domainValues;

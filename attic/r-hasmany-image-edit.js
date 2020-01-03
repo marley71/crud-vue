@@ -1,9 +1,9 @@
-Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit',{
-    extends : Crud.components.renders.rBase,
+crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit',{
+    extends : crud.components.renders.rBase,
 
     data :  function () {
         var that = this;
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
         var route = Route.factory('uploadfile',routeConf);
         var types = {
             ext : 'r-hidden',
@@ -88,7 +88,7 @@ Crud.components.renders.rHasmanyImageEdit = Vue.component('r-hasmany-image-edit'
             console.log('ref',that.$refs.refUpload.getValue());
 
 
-            var routeConf =  Utility.cloneObj(that.$Crud.routes.uploadfile);
+            var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
             var route = Route.factory('uploadfile',routeConf);
             //route.params.file = document.getElementById("image-file").files[0]; // jQuery(that.$el).find('input[name="file"]').val();
             //route.params.file = jQuery(that.$el).find('input[name="file"]').prop('files')[0];

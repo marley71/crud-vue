@@ -24,7 +24,20 @@ var Route = Class.extend({
             }
         }
     },
-
+    /**
+     * riempe i valori parametri della route prendendoli dalle proprietà dell'oggetto
+     * @param obj
+     */
+    fillValues : function(obj) {
+        var self = this;
+        var keys = self.getKeys();
+        console.log('fillValues',keys,obj);
+        for (var k in keys) {
+            var key = keys[k];
+            if (obj[key])
+                self.values[key] = obj[key]
+        }
+    },
     /**
      * setta i valori dei values necessari per le keys che formano l'url della route.
      * @param values
@@ -98,38 +111,38 @@ Route.factory = function (type,attrs) {
     return new window[className](_a);
 }
 
-var RouteList = Route.extend({
-    method      : 'get',
-    url         : '/api/json/{modelName}',
-    resultType  : 'list',
-    protocol    : 'list'
-});
+// var RouteList = Route.extend({
+//     method      : 'get',
+//     url         : '/api/json/{modelName}',
+//     resultType  : 'list',
+//     protocol    : 'list'
+// });
 
-var RouteListConstraint = RouteList.extend({
-    url         : '/api/json/{modelName}/{constraintKey}/{constraintValue}',
-});
+// var RouteListConstraint = RouteList.extend({
+//     url         : '/api/json/{modelName}/{constraintKey}/{constraintValue}',
+// });
 
-var RouteEdit = Route.extend({
-    method      : "get",
-    url         :'/api/json/{modelName}/{pk}/edit',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteEdit = Route.extend({
+//     method      : "get",
+//     url         :'/api/json/{modelName}/{pk}/edit',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
-var RouteEditConstraint = RouteEdit.extend({
-    url         :'/api/json/{modelName}/{pk}/edit/{constraintKey}/{constraintValue}',
-});
+// var RouteEditConstraint = RouteEdit.extend({
+//     url         :'/api/json/{modelName}/{pk}/edit/{constraintKey}/{constraintValue}',
+// });
 
-var RouteSearch = Route.extend({
-    method      : "get",
-    url         :'/api/json/{modelName}/search',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteSearch = Route.extend({
+//     method      : "get",
+//     url         :'/api/json/{modelName}/search',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
-var RouteSearchConstraint = RouteSearch.extend({
-    url         :'/api/json/{modelName}/search/{constraintKey}/{constraintValue}',
-});
+// var RouteSearchConstraint = RouteSearch.extend({
+//     url         :'/api/json/{modelName}/search/{constraintKey}/{constraintValue}',
+// });
 
 
 // var RouteInsert = Route.extend({
@@ -155,41 +168,41 @@ var RouteInsertHasmanyConstraint = RouteInsertHasmany.extend({
     url         :'/api/json/{modelName}/create_has_many/{constraintKey}/{constraintValue}',
 });
 
-var RouteSave = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/create',
-    resultType  : 'record',
-    protocol    : 'record',
-    extraParams : {_method:'POST'}
-});
+// var RouteSave = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/create',
+//     resultType  : 'record',
+//     protocol    : 'record',
+//     extraParams : {_method:'POST'}
+// });
 
-var RouteSaveConstraint = RouteSave.extend({
-    url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-});
+// var RouteSaveConstraint = RouteSave.extend({
+//     url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
+// });
 
-var RouteUpdate = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/{pk}',
-    resultType  : 'record',
-    protocol    : 'record',
-    extraParams : {_method:'PUT'}
-});
+// var RouteUpdate = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/{pk}',
+//     resultType  : 'record',
+//     protocol    : 'record',
+//     extraParams : {_method:'PUT'}
+// });
+//
+// var RouteUpdateConstraint = RouteUpdate.extend({
+//     url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
+// });
 
-var RouteUpdateConstraint = RouteUpdate.extend({
-    url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
-});
-
-var RouteCreate = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/create',
-    resultType  : 'record',
-    protocol    : 'record'
-});
+// var RouteCreate = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/{modelName}/create',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
 
 
-var RouteCreateConstraint = RouteCreate.extend({
-    url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-});
+// var RouteCreateConstraint = RouteCreate.extend({
+//     url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
+// });
 
 var RouteView = Route.extend({
     method      : "get",
@@ -224,15 +237,15 @@ RouteSet = Route.extend({
     protocol    : 'record'
 });
 
-RouteAutocomplete = RouteList.extend({
+RouteAutocomplete = Route.extend({
     method      : "get",
     url         : '/api/json/autocomplete/{modelName}',
-    resultType  : 'record',
-    protocol    : 'record'
+    resultType  : 'list',
+    protocol    : 'list'
 
 })
 
-RouteCalendar = RouteList.extend({});
+RouteCalendar = Route.extend({});
 
 
 RouteCaptcha = Route.extend({

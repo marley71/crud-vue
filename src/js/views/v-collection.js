@@ -1,5 +1,6 @@
-Crud.components.views.vCollection = Vue.component('v-collection', {
-    extends : Crud.components.views.vBase,
+crud.components.views.vCollection = Vue.component('v-collection', {
+    extends : crud.components.views.vBase,
+    props : ['cModel'],
     methods : {
         setFieldValue : function(row,key,value) {
             var that = this;
@@ -15,6 +16,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 renders : {},
                 actionsName : [],
                 actions : {},
+                conf : this.cConf || {},
             }
         },
         createRenders : function () {
@@ -33,7 +35,7 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
-                    dconf.cRef = that.crudApp.getRefId(that._uid,'r',i,key);
+                    dconf.cRef = that.$crud.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     dconf.value = null;
                     if (data.value[i][key])
@@ -57,13 +59,19 @@ Crud.components.views.vCollection = Vue.component('v-collection', {
             if (that.cFields) {
                 keys = that.cFields.split(',');
             }
-            if (keys.length == 0)
+            if (keys.length == 0 && that.data.value.length)
                 keys =Object.keys(that.data.value[0]);
             return keys;
+        },
+        getRender : function (row,key) {
+            return this.renders[row][key];
         }
     },
     data : function () {
-        return this.defaultData();
+        var d =  this.defaultData();
+        if (this.cModel)
+           d.conf.modelName = this.cModel;
+        return d;
     },
     template : '<div>view collection base</div>'
 });

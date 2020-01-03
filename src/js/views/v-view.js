@@ -1,9 +1,10 @@
 Vue.component('v-view', {
-    extends : Crud.components.views.vRecord,
-    props : ['c-model','c-pk'],
+    extends : crud.components.views.vRecord,
+    //props : ['cModel','cPk'],
 
     mounted : function() {
         var that = this;
+        //console.log('view route param',this.cModel,this.cPk);
         var route = that._getRoute({
             modelName: this.cModel,
             pk: this.cPk
@@ -15,7 +16,6 @@ Vue.component('v-view', {
             that.createActions();
             that.createActionsClass();
             that.createRenders();
-            console.log('BBBBBBB');
             that.loading = false;
         });
     },

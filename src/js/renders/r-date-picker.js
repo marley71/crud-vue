@@ -1,5 +1,5 @@
 Vue.component('r-date-picker', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-date-picker-template',
     methods : {
         changed : function() {
@@ -29,6 +29,7 @@ Vue.component('r-date-picker', {
                 that.value =  moment(ev.date.toISOString()).format('Y-M-D'); //ev.date.toISOString();
                 moment(ev.date.valueOf);
                 console.log('date ' ,ev.date.toISOString());
+                console.log('date2 ',that.getValue())
                 // if (ev.date.valueOf() < startDate.valueOf()){
                 //
                 // }

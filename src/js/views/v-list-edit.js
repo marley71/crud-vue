@@ -2,7 +2,7 @@
 
 
 Vue.component('v-list-edit', {
-    extends : Crud.components.views.vCollection,
+    extends : crud.components.views.vCollection,
     conf : {},
     props : ['c-conf','c-model'],
 
@@ -20,7 +20,7 @@ Vue.component('v-list-edit', {
     data :  function () {
         var that = this;
 
-        var routeConf =  Utility.cloneObj(that.$Crud.routes.list);
+        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }
@@ -130,9 +130,9 @@ Vue.component('v-list-edit', {
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$Crud.recordActions[aName])
+                if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$Crud.globalActions[aName])
+                else if (that.$crud.globalActions[aName])
                     globalActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
@@ -257,11 +257,11 @@ Vue.component('v-list-edit', {
         },
         hideRA : function (index,name) {
             var n = 'ra-'+index+'-'+name;
-            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(false):null;
+            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var n = 'ra-'+index+'-'+name;
-            this.$Crud.cRefs[n]? this.$Crud.cRefs[n].setVisible(true):null;
+            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
         },
         getRef : function (prefix,index,key) {
             var s =  prefix + '-' + index + '-' + key;

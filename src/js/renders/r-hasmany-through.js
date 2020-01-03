@@ -1,5 +1,5 @@
-Crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
-    extends : Crud.components.renders.rBase,
+crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
+    extends : crud.components.renders.rBase,
     template: '#r-hasmany-through-template',
     data : function () {
         var d = this.defaultData();

@@ -73,7 +73,7 @@ var ProtocolList = Protocol.extend({
     summary : {},
     jsonToData : function (json) {
         this.value = json.result.data;
-        this.metadata = json.metadata;
+        this.metadata = json.metadata || {};
         this.pagination = {
             current_page : json.result.current_page,
             from : json.result.from,

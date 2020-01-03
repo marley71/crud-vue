@@ -1,5 +1,5 @@
 Vue.component('r-b2-select2', {
-    extends : Crud.components.renders.rBase,
+    extends : crud.components.renders.rBase,
     template: '#r-b2-select2-template',
     data : function () {
         var d = this.defaultData();
