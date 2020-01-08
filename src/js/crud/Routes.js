@@ -225,7 +225,7 @@ RouteDelete = Route.extend({
 
 RouteMultiDelete = Route.extend({
     method      : "post",
-    url         :  '/api/json/{modelName}/deleteall',
+    url         :  '/api/json/{modelName}/multi-delete',
     resultType  : 'record',
     protocol    : 'record'
 });

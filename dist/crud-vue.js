@@ -67,7 +67,7 @@
     };
 })();
 
-Vue.prototype.$LANG = {
+lang = {
     app : {
         'add' : "Aggiungi",
         'conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
@@ -286,9 +286,10 @@ crud = {
                     return ;
                 that.$crud.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
                     ok : function () {
+                        console.log('VIEW',that.view);
                         var r = Route.factory('multi_delete');
                         r.values = {
-                            modelName: that.view.modelName
+                            modelName: that.modelName
                         };
                         that.$crud.waitStart();
                         r.params = {'ids': checked};
@@ -443,14 +444,14 @@ crud = {
 
         },
         libs :  {
-            'r-hasmany-through2' : {
-                js : '/vue-app/js/r-hasmany-through2.js',
-                tpl : '/vue-app/templates/r-hasmany-through2-template.html'
-            },
-            'dashboard-csv' : {
-                js : '/vue-app/js/dashboard-csv.js',
-                tpl : '/vue-app/templates/dashboard-csv-template.html'
-            }
+            // 'r-hasmany-through2' : {
+            //     js : '/vue-app/js/r-hasmany-through2.js',
+            //     tpl : '/vue-app/templates/r-hasmany-through2-template.html'
+            // },
+            // 'dashboard-csv' : {
+            //     js : '/vue-app/js/dashboard-csv.js',
+            //     tpl : '/vue-app/templates/dashboard-csv-template.html'
+            // }
         }
     },
     interfaces : {
@@ -714,18 +715,37 @@ core_interface = {
 };
 translations_interface = {
     methods : {
+        /**
+         * ritorna la traduzione della chiave passata presente nel vettore $lang altrimenti ritorna al chiave stessa
+         * @param key
+         * @param plural
+         * @param params
+         * @returns {*}
+         */
         translate : function (key,plural,params) {
-            return translations_interface._translate(key,plural,params);
+            return translations_interface._translate.apply(this,[key,plural,params]);
         },
+        /**
+         * esegue la traduzione solo se esiste la chiave corrispondente nel vettore $lang
+         * @param key
+         * @param plural
+         * @param params
+         * @returns {string|*}
+         */
         translateIfExist : function (key,plural,params) {
-            if (!jQuery.langDefs[key])
-                return ""
+            var tmp = key.split('.');
+            var skey = this.$lang;
+            for (var i in tmp) {
+                if (! (tmp[i] in skey))
+                    return "";
+                skey = skey[tmp[i]];
+            }
             return this.$crud.translate(key,plural,params);
         },
     },
     _translate : function (key,plural,params) {
         var tmp = key.split('.');
-        var s = this.$LANG[tmp[0]];
+        var s = this.$lang[tmp[0]];
         for (var i=1;i<tmp.length;i++) {
             s = s[tmp[i]];
         }
@@ -1169,7 +1189,7 @@ RouteDelete = Route.extend({
 
 RouteMultiDelete = Route.extend({
     method      : "post",
-    url         :  '/api/json/{modelName}/deleteall',
+    url         :  '/api/json/{modelName}/multi-delete',
     resultType  : 'record',
     protocol    : 'record'
 });
@@ -2011,7 +2031,7 @@ Vue.component('c-loading',{
     template : '<span>Carico ...</span>'
 })
 crud.components.cTplBase = Vue.component('c-tpl-base',{
-    props : ['cRender','cType','cKey','cRef'],
+    props : ['cRender'],
     template : '<span>template base</span>'
 });
 
@@ -3768,18 +3788,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
-                // var c = that.conf.fieldsConfig[key]?that.conf.fieldsConfig[key]:{type:that.defaultRenderType};
-                // if (!c.type)
-                //     c.type = that.defaultRenderType;
-                // if (that.data.value && that.data.value[key])
-                //     c.value = that.data.value[key];
-                // if (!c.template)
-                //     c.template = that.conf.renderTemplate;
-                // renders[key] = c;
-                //
-                // var metadata = renders[key].metadata || {};
-                // renders[key].metadata = Utility.merge( metadata,(that.data.metadata[key] || {}));
-
+                if (! ('label' in renders[key]) )
+                    renders[key].label = key;
             }
 
             console.log('v-record.renders',renders);
@@ -4688,6 +4698,8 @@ Vue.component('v-search', {
                 renders[key] = that._defaultRenderConfig(key);
                 renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
                 renders[key].value = null;
+                if (! ('label' in renders[key]) )
+                    renders[key].label = key;
                 //renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
@@ -4815,6 +4827,7 @@ const CrudApp = Vue.extend({
     created : function() {
         var that = this;
         Vue.prototype.$crud = crud;
+        Vue.prototype.$lang = lang;
         for (var k in window) {
             //console.log('window key ',k);
             if (k.indexOf('_interface') > 0) {

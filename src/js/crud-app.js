@@ -2,6 +2,7 @@ const CrudApp = Vue.extend({
     created : function() {
         var that = this;
         Vue.prototype.$crud = crud;
+        Vue.prototype.$lang = lang;
         for (var k in window) {
             //console.log('window key ',k);
             if (k.indexOf('_interface') > 0) {

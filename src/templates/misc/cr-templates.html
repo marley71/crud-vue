@@ -1,45 +1,49 @@
 <template id="c-tpl-record-template">
     <div>
-        <label>{{cKey}}</label>
+        <label>{{cRender.label}}</label>
         <div>
-            <component
-                    :is="cType"
-                    :c-conf="cRender"
-                    :c-key="cKey"
-                    :c-ref="cRef">
-            </component>
+            <v-render :c-render="cRender"></v-render>
+<!--            <component-->
+<!--                    :is="cType"-->
+<!--                    :c-conf="cRender"-->
+<!--                    :c-key="cKey"-->
+<!--                    :c-ref="cRef">-->
+<!--            </component>-->
         </div>
     </div>
 </template>
 
 <template id="c-tpl-record2-template">
     <div class="row">
-        <div class="col col-sm-6">{{cKey}}</div>
+        <div class="col col-sm-6">{{cRender.label}}</div>
         <div class="col col-sm-6">
-            <component
-                    :is="cType"
-                    :c-conf="cRender"
-                    :c-key="cKey"
-                    :c-ref="cRef">
-            </component>
+            <v-render :c-render="cRender"></v-render>
+<!--            <component-->
+<!--                    :is="cType"-->
+<!--                    :c-conf="cRender"-->
+<!--                    :c-key="cKey"-->
+<!--                    :c-ref="cRef">-->
+<!--            </component>-->
         </div>
     </div>
 </template>
 
 <template id="c-tpl-list-template">
-    <component
-            :is="cType"
-            :c-conf="cRender"
-            :c-key="cKey"
-            :c-ref="cRef">
-    </component>
+    <v-render :c-render="cRender"></v-render>
+<!--    <component-->
+<!--            :is="cType"-->
+<!--            :c-conf="cRender"-->
+<!--            :c-key="cKey"-->
+<!--            :c-ref="cRef">-->
+<!--    </component>-->
 </template>
 
 <template id="c-tpl-no-template">
-    <component
-            :is="cType"
-            :c-conf="cRender"
-            :c-key="cKey"
-            :c-ref="cRef">
-    </component>
+    <v-render :c-render="cRender"></v-render>
+<!--    <component-->
+<!--            :is="cType"-->
+<!--            :c-conf="cRender"-->
+<!--            :c-key="cKey"-->
+<!--            :c-ref="cRef">-->
+<!--    </component>-->
 </template>

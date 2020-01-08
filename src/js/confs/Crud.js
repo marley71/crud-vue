@@ -1,4 +1,4 @@
-Vue.prototype.$LANG = {
+lang = {
     app : {
         'add' : "Aggiungi",
         'conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
@@ -217,9 +217,10 @@ crud = {
                     return ;
                 that.$crud.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
                     ok : function () {
+                        console.log('VIEW',that.view);
                         var r = Route.factory('multi_delete');
                         r.values = {
-                            modelName: that.view.modelName
+                            modelName: that.modelName
                         };
                         that.$crud.waitStart();
                         r.params = {'ids': checked};
@@ -374,14 +375,14 @@ crud = {
 
         },
         libs :  {
-            'r-hasmany-through2' : {
-                js : '/vue-app/js/r-hasmany-through2.js',
-                tpl : '/vue-app/templates/r-hasmany-through2-template.html'
-            },
-            'dashboard-csv' : {
-                js : '/vue-app/js/dashboard-csv.js',
-                tpl : '/vue-app/templates/dashboard-csv-template.html'
-            }
+            // 'r-hasmany-through2' : {
+            //     js : '/vue-app/js/r-hasmany-through2.js',
+            //     tpl : '/vue-app/templates/r-hasmany-through2-template.html'
+            // },
+            // 'dashboard-csv' : {
+            //     js : '/vue-app/js/dashboard-csv.js',
+            //     tpl : '/vue-app/templates/dashboard-csv-template.html'
+            // }
         }
     },
     interfaces : {

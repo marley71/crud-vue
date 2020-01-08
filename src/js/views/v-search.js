@@ -93,6 +93,8 @@ Vue.component('v-search', {
                 renders[key] = that._defaultRenderConfig(key);
                 renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
                 renders[key].value = null;
+                if (! ('label' in renders[key]) )
+                    renders[key].label = key;
                 //renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
