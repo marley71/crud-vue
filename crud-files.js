@@ -8,7 +8,7 @@ var crudJsFiles = [
     'src/js/interfaces/translations.js',
     'src/js/interfaces/wait.js',
 
-    'src/js/crud/Actions.js',
+    //'src/js/crud/Actions.js',
     'src/js/crud/Protocols.js',
     'src/js/crud/Routes.js',
     'src/js/crud/Utility.js',

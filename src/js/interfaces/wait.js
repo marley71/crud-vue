@@ -20,24 +20,26 @@ wait_interface = {
             console.log('comp created',comp);
             comp.$mount('#'+id);
             wait_interface._istances.push(comp);
-            // if (container) {
-            //     jQuery(container).fadeTo(250,.30).css('cursor','wait').css('pointer-events','none');
-            //     return ;
-            // }
-            //
-            // if (msg) {
-            //     jQuery('#wait').find('[crud-msg]').html(msg);
-            // }
-            // jQuery('#wait').removeClass(this.htmlClass.hide);
-            // jQuery('#wait').css('cursor','wait');
+            return comp;
         },
-        waitEnd : function () {
+        waitEnd : function (component) {
             var that = this;
             if (wait_interface._istances.length == 0)
                 return ;
-            var comp = wait_interface._istances.pop();
-            comp.$destroy();
-            comp.$el.parentNode.removeChild(comp.$el);
+            if (component) {
+                for (var i in wait_interface._istances) {
+                    var comp = wait_interface._istances[i];
+                    if (comp._uid == component._uid) {
+                        wait_interface._istances.splice(i,1);
+                    }
+
+                }
+            } else {
+                var comp = wait_interface._istances.pop();
+                comp.$destroy();
+                comp.$el.parentNode.removeChild(comp.$el);
+            }
+
         }
     },
     _createContainer : function (container) {
