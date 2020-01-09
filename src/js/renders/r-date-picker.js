@@ -1,6 +1,17 @@
 Vue.component('r-date-picker', {
     extends : crud.components.renders.rBase,
     template: '#r-date-picker-template',
+    data : function() {
+        var d = this.defaultData();
+        if (!( 'resources' in d.conf) ) {
+            d.conf.resources = [
+                'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
+            ];
+        }
+        return d;
+    },
     methods : {
         changed : function() {
             var that = this;

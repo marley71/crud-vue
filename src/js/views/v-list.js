@@ -1,5 +1,5 @@
 
-Vue.component('v-list', {
+crud.components.views.vList = Vue.component('v-list', {
     extends : crud.components.views.vCollection,
     conf : {},
     // beforeCreate : function() {
@@ -104,73 +104,73 @@ Vue.component('v-list', {
 
         },
 
-        createActions : function () {
-            var that = this;
-            var globalActionsName = [];
-            var recordActionsName = [];
-
-            for (var i in that.conf.actions) {
-                var aName = that.conf.actions[i];
-                if (that.$crud.recordActions[aName])
-                    recordActionsName.push(that.conf.actions[i]);
-                else if (that.$crud.globalActions[aName])
-                    globalActionsName.push(aName);
-                else if (that.conf.customActions[aName]) {
-                    Vue.component(aName, {
-                        extends : actionBase
-                    });
-                    if (that.conf.customActions[aName].type == 'global')
-                        globalActionsName.push(aName);
-                    else if (that.conf.customActions[aName].type == 'record')
-                        recordActionsName.push(aName);
-                    else
-                        throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,global";
-                } else {
-                    throw "Impossibile trovare la definizione di " + aName;
-                }
-            }
-            //console.log('data',data,'conf',conf,'keys',keys);
-            that.globalActionsName = globalActionsName;
-            that.recordActionsName = recordActionsName;
-            that.globalActions = {};
-            that.recordActions = [];
-        },
-        createRecordActions : function(row) {
-            //console.log('row',row);
-            var that = this;
-            var recordActionsName = that.recordActionsName;
-            var recordActions = that.recordActions;
-            var data = that.data;
-
-            for(var k in recordActionsName) {
-                var aName = recordActionsName[k];
-                var aConf = that.getActionConfig(aName,'record');
-                //var a = jQuery.extend(true,{},aConf);
-                //a.id = data.value[i].id;
-                aConf.modelData = Utility.cloneObj(data.value[row]);
-                aConf.modelName = that.cModel;
-                aConf._index = row;
-                recordActions[row][aName] = aConf;
-            }
-        },
-        createGlobalActions : function () {
-            var that = this;
-            var globalActions = [];
-            var globalActionsName = that.globalActionsName;
-            var data = that.data;
-
-            for (var i in globalActionsName) {
-                var aName = globalActionsName[i];
-                var aConf = that.getActionConfig(aName,'global');
-                //var a = jQuery.extend(true,{},aConf);
-                //a.id = data.value[i].id;
-                aConf.modelData = jQuery.extend(true,{},data.value);
-                aConf.modelName = that.cModel;
-                aConf.rootElement = that.$el;
-                globalActions[aName] = aConf;
-            }
-            that.globalActions = globalActions;
-        },
+        // createActions : function () {
+        //     var that = this;
+        //     var globalActionsName = [];
+        //     var recordActionsName = [];
+        //
+        //     for (var i in that.conf.actions) {
+        //         var aName = that.conf.actions[i];
+        //         if (that.$crud.recordActions[aName])
+        //             recordActionsName.push(that.conf.actions[i]);
+        //         else if (that.$crud.globalActions[aName])
+        //             globalActionsName.push(aName);
+        //         else if (that.conf.customActions[aName]) {
+        //             Vue.component(aName, {
+        //                 extends : actionBase
+        //             });
+        //             if (that.conf.customActions[aName].type == 'global')
+        //                 globalActionsName.push(aName);
+        //             else if (that.conf.customActions[aName].type == 'record')
+        //                 recordActionsName.push(aName);
+        //             else
+        //                 throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,global";
+        //         } else {
+        //             throw "Impossibile trovare la definizione di " + aName;
+        //         }
+        //     }
+        //     //console.log('data',data,'conf',conf,'keys',keys);
+        //     that.globalActionsName = globalActionsName;
+        //     that.recordActionsName = recordActionsName;
+        //     that.globalActions = {};
+        //     that.recordActions = [];
+        // },
+        // createRecordActions : function(row) {
+        //     //console.log('row',row);
+        //     var that = this;
+        //     var recordActionsName = that.recordActionsName;
+        //     var recordActions = that.recordActions;
+        //     var data = that.data;
+        //
+        //     for(var k in recordActionsName) {
+        //         var aName = recordActionsName[k];
+        //         var aConf = that.getActionConfig(aName,'record');
+        //         //var a = jQuery.extend(true,{},aConf);
+        //         //a.id = data.value[i].id;
+        //         aConf.modelData = Utility.cloneObj(data.value[row]);
+        //         aConf.modelName = that.cModel;
+        //         aConf._index = row;
+        //         recordActions[row][aName] = aConf;
+        //     }
+        // },
+        // createGlobalActions : function () {
+        //     var that = this;
+        //     var globalActions = [];
+        //     var globalActionsName = that.globalActionsName;
+        //     var data = that.data;
+        //
+        //     for (var i in globalActionsName) {
+        //         var aName = globalActionsName[i];
+        //         var aConf = that.getActionConfig(aName,'global');
+        //         //var a = jQuery.extend(true,{},aConf);
+        //         //a.id = data.value[i].id;
+        //         aConf.modelData = jQuery.extend(true,{},data.value);
+        //         aConf.modelName = that.cModel;
+        //         aConf.rootElement = that.$el;
+        //         globalActions[aName] = aConf;
+        //     }
+        //     that.globalActions = globalActions;
+        // },
         getOrderConf : function (key) {
             var that = this;
             console.log('GETORDERCONF CALLED');

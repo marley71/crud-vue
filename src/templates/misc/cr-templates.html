@@ -3,12 +3,6 @@
         <label>{{cRender.label}}</label>
         <div>
             <v-render :c-render="cRender"></v-render>
-<!--            <component-->
-<!--                    :is="cType"-->
-<!--                    :c-conf="cRender"-->
-<!--                    :c-key="cKey"-->
-<!--                    :c-ref="cRef">-->
-<!--            </component>-->
         </div>
     </div>
 </template>
@@ -18,32 +12,14 @@
         <div class="col col-sm-6">{{cRender.label}}</div>
         <div class="col col-sm-6">
             <v-render :c-render="cRender"></v-render>
-<!--            <component-->
-<!--                    :is="cType"-->
-<!--                    :c-conf="cRender"-->
-<!--                    :c-key="cKey"-->
-<!--                    :c-ref="cRef">-->
-<!--            </component>-->
         </div>
     </div>
 </template>
 
 <template id="c-tpl-list-template">
     <v-render :c-render="cRender"></v-render>
-<!--    <component-->
-<!--            :is="cType"-->
-<!--            :c-conf="cRender"-->
-<!--            :c-key="cKey"-->
-<!--            :c-ref="cRef">-->
-<!--    </component>-->
 </template>
 
 <template id="c-tpl-no-template">
     <v-render :c-render="cRender"></v-render>
-<!--    <component-->
-<!--            :is="cType"-->
-<!--            :c-conf="cRender"-->
-<!--            :c-key="cKey"-->
-<!--            :c-ref="cRef">-->
-<!--    </component>-->
 </template>

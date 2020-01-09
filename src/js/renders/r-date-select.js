@@ -1,7 +1,15 @@
 Vue.component('r-date-select', {
     extends : crud.components.renders.rBase,
     template: '#r-date-select-template',
-
+    data : function() {
+        var d = this.defaultData();
+        if (!( 'resources' in d.conf) ) {
+            d.conf.resources = [
+                'moment-with-locales.min.js'
+            ];
+        }
+        return d;
+    },
     computed : {
         cDay : function () {
             var that = this;

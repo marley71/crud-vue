@@ -17,12 +17,14 @@ crud.components.renders.rBase = Vue.component('r-base', {
         }
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
-            that.resourcesLoaded = false;
+            //that.resourcesLoaded = false;
             that.$crud.loadResources(_conf.resources,function () {
-                console.log('resoures loaded callback',that);
+                //console.log('resoures loaded callback',that);
                 that.resourcesLoaded = true;
                 that.afterLoadResources();
             })
+        } else {
+            that.resourcesLoaded = true;
         }
 
         if ( _conf.mounted ) {
@@ -35,6 +37,7 @@ crud.components.renders.rBase = Vue.component('r-base', {
             d.value = null;
         if (! ('operator' in d))
             d.operator = null;
+        d.resourcesLoaded = false;
         return d;
     },
     methods : {
@@ -74,7 +77,6 @@ crud.components.renders.rBase = Vue.component('r-base', {
         updateConf : function (conf) {
             this.conf = conf;
         },
-
     },
     // watch : {
     //     resourcesLoaded : {

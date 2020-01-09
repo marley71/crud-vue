@@ -1,22 +1,20 @@
 
-
-
 Vue.component('v-list-edit', {
-    extends : crud.components.views.vCollection,
+    extends : crud.components.views.vList,
     conf : {},
-    props : ['c-conf','c-model'],
+    props : ['cConf','cModel'],
 
-    mounted : function() {
-        var that = this;
-        VLIST = this;
-        that.route = that._getRoute(that.routeConf.values);
-        this.fetchData(that.route,function (json) {
-            that.fillData(that.route,json);
-            that.keys = that.getKeys();
-            that.draw();
-            that.loading = false;
-        });
-    },
+    // mounted : function() {
+    //     var that = this;
+    //     VLISTEDIT = this;
+    //     that.route = that._getRoute(that.routeConf.values);
+    //     this.fetchData(that.route,function (json) {
+    //         that.fillData(that.route,json);
+    //         that.keys = that.getKeys();
+    //         that.draw();
+    //         that.loading = false;
+    //     });
+    // },
     data :  function () {
         var that = this;
 
@@ -29,12 +27,12 @@ Vue.component('v-list-edit', {
             routeConf.params = that.$route.query;
 
         var conf = that.getConf(that.cModel,Utility.camelCase('list-edit'));
-        conf.customActions['action-edit'] = {
-            execute : function () {
-                var thatA = this;
-                that.$set(that.editMode,thatA.cIndex, true);
-            }
-        };
+        // conf.customActions['action-edit'] = {
+        //     execute : function () {
+        //         var thatA = this;
+        //         that.$set(that.editMode,thatA.cIndex, true);
+        //     }
+        // };
         console.log('v-list-edit conf',conf)
 
         var d = {
@@ -79,6 +77,7 @@ Vue.component('v-list-edit', {
                 for (var key in that.renders[row]) {
                     rendersEdit[row][key] = Utility.cloneObj(that.renders[row][key])
                     rendersEdit[row][key].type = 'r-input';
+                    rendersEdit[row][key].cRef = that.$crud.getRefId(that._uid,'redit',row,key);
                 }
             }
             // var rowRenders = that.renders[0];
@@ -94,107 +93,107 @@ Vue.component('v-list-edit', {
             console.log('editMode',that.editMode)
         },
 
-        fillData : function(route, json) {
-            var that = this;
-            var data = {};
-            if (!route) {
-                console.log('dati manuali',that.conf.data);
-                if (that.conf.data) {
-                    data = that.conf.data;
-                    that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
-                }
-            } else {
+        // fillData : function(route, json) {
+        //     var that = this;
+        //     var data = {};
+        //     if (!route) {
+        //         console.log('dati manuali',that.conf.data);
+        //         if (that.conf.data) {
+        //             data = that.conf.data;
+        //             that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
+        //         }
+        //     } else {
+        //
+        //         var protocol = Protocol.factory(route.protocol);
+        //         protocol.jsonToData(json);
+        //         var prop = Object.getOwnPropertyNames(protocol);
+        //         //console.log(prop);
+        //         var data = {};
+        //
+        //         for (var i in prop) {
+        //             //console.log(k,k,prop[k]);
+        //             data[prop[i]] = protocol[prop[i]];
+        //         }
+        //         var data = data;
+        //         //this.maxPage = data.pagination.last_page;
+        //         that.pagination = data.pagination;
+        //     }
+        //     that.data = data;
+        //
+        // },
 
-                var protocol = Protocol.factory(route.protocol);
-                protocol.jsonToData(json);
-                var prop = Object.getOwnPropertyNames(protocol);
-                //console.log(prop);
-                var data = {};
-
-                for (var i in prop) {
-                    //console.log(k,k,prop[k]);
-                    data[prop[i]] = protocol[prop[i]];
-                }
-                var data = data;
-                //this.maxPage = data.pagination.last_page;
-                that.pagination = data.pagination;
-            }
-            that.data = data;
-
-        },
-
-        createActions : function () {
-            var that = this;
-            var globalActionsName = [];
-            var recordActionsName = [];
-
-            for (var i in that.conf.actions) {
-                var aName = that.conf.actions[i];
-                if (that.$crud.recordActions[aName])
-                    recordActionsName.push(that.conf.actions[i]);
-                else if (that.$crud.globalActions[aName])
-                    globalActionsName.push(aName);
-                else if (that.conf.customActions[aName]) {
-                    Vue.component(aName, {
-                        extends : actionBase
-                    });
-                    if (that.conf.customActions[aName].type == 'global')
-                        globalActionsName.push(aName);
-                    else if (that.conf.customActions[aName].type == 'record')
-                        recordActionsName.push(aName);
-                    else
-                        throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,global";
-                } else {
-                    throw "Impossibile trovare la definizione di " + aName;
-                }
-            }
-            //console.log('data',data,'conf',conf,'keys',keys);
-            that.globalActionsName = globalActionsName;
-            that.recordActionsName = recordActionsName;
-            that.globalActions = {};
-            that.recordActions = [];
-        },
-        createRecordActions : function(row) {
-            //console.log('row',row);
-            var that = this;
-            var recordActionsName = that.recordActionsName;
-            var recordActions = that.recordActions;
-            var data = that.data;
-
-            for(var k in recordActionsName) {
-                var aName = recordActionsName[k];
-                var aConf = that.getActionConfig(aName,'record');
-                //var a = jQuery.extend(true,{},aConf);
-                //a.id = data.value[i].id;
-                aConf.modelData = Utility.cloneObj(data.value[row]);
-                aConf.modelName = that.cModel;
-                aConf.cIndex = row;
-                if (['action-view-mode','action-save-row'].indexOf(aName) >= 0) {
-                    aConf.visible = false;
-                    //console.log('nazoscond')
-                }
-                console.log('ACTION RECORD INDEX',aConf.cIndex)
-                recordActions[row][aName] = aConf;
-            }
-        },
-        createGlobalActions : function () {
-            var that = this;
-            var globalActions = [];
-            var globalActionsName = that.globalActionsName;
-            var data = that.data;
-
-            for (var i in globalActionsName) {
-                var aName = globalActionsName[i];
-                var aConf = that.getActionConfig(aName,'global');
-                //var a = jQuery.extend(true,{},aConf);
-                //a.id = data.value[i].id;
-                aConf.modelData = jQuery.extend(true,{},data.value);
-                aConf.modelName = that.cModel;
-                aConf.rootElement = that.$el;
-                globalActions[aName] = aConf;
-            }
-            that.globalActions = globalActions;
-        },
+        // createActions : function () {
+        //     var that = this;
+        //     var globalActionsName = [];
+        //     var recordActionsName = [];
+        //
+        //     for (var i in that.conf.actions) {
+        //         var aName = that.conf.actions[i];
+        //         if (that.$crud.recordActions[aName])
+        //             recordActionsName.push(that.conf.actions[i]);
+        //         else if (that.$crud.globalActions[aName])
+        //             globalActionsName.push(aName);
+        //         else if (that.conf.customActions[aName]) {
+        //             Vue.component(aName, {
+        //                 extends : actionBase
+        //             });
+        //             if (that.conf.customActions[aName].type == 'global')
+        //                 globalActionsName.push(aName);
+        //             else if (that.conf.customActions[aName].type == 'record')
+        //                 recordActionsName.push(aName);
+        //             else
+        //                 throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,global";
+        //         } else {
+        //             throw "Impossibile trovare la definizione di " + aName;
+        //         }
+        //     }
+        //     //console.log('data',data,'conf',conf,'keys',keys);
+        //     that.globalActionsName = globalActionsName;
+        //     that.recordActionsName = recordActionsName;
+        //     that.globalActions = {};
+        //     that.recordActions = [];
+        // },
+        // createRecordActions : function(row) {
+        //     //console.log('row',row);
+        //     var that = this;
+        //     var recordActionsName = that.recordActionsName;
+        //     var recordActions = that.recordActions;
+        //     var data = that.data;
+        //
+        //     for(var k in recordActionsName) {
+        //         var aName = recordActionsName[k];
+        //         var aConf = that.getActionConfig(aName,'record');
+        //         //var a = jQuery.extend(true,{},aConf);
+        //         //a.id = data.value[i].id;
+        //         aConf.modelData = Utility.cloneObj(data.value[row]);
+        //         aConf.modelName = that.cModel;
+        //         aConf.cIndex = row;
+        //         if (['action-view-mode','action-save-row'].indexOf(aName) >= 0) {
+        //             aConf.visible = false;
+        //             //console.log('nazoscond')
+        //         }
+        //         console.log('ACTION RECORD INDEX',aConf.cIndex)
+        //         recordActions[row][aName] = aConf;
+        //     }
+        // },
+        // createGlobalActions : function () {
+        //     var that = this;
+        //     var globalActions = [];
+        //     var globalActionsName = that.globalActionsName;
+        //     var data = that.data;
+        //
+        //     for (var i in globalActionsName) {
+        //         var aName = globalActionsName[i];
+        //         var aConf = that.getActionConfig(aName,'global');
+        //         //var a = jQuery.extend(true,{},aConf);
+        //         //a.id = data.value[i].id;
+        //         aConf.modelData = jQuery.extend(true,{},data.value);
+        //         aConf.modelName = that.cModel;
+        //         aConf.rootElement = that.$el;
+        //         globalActions[aName] = aConf;
+        //     }
+        //     that.globalActions = globalActions;
+        // },
         getOrderConf : function (key) {
             var that = this;
             console.log('GETORDERCONF CALLED');
@@ -206,16 +205,16 @@ Vue.component('v-list-edit', {
                 conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
             return conf;
         },
-        reload : function () {
-            var that = this;
-            var route = Route.factory('list',that.routeConf);
-            that.loading = true;
-            that.fetchData(route,function (json) {
-                that.fillData(route,json);
-                that.draw();
-                that.loading = false;
-            });
-        },
+        // reload : function () {
+        //     var that = this;
+        //     var route = Route.factory('list',that.routeConf);
+        //     that.loading = true;
+        //     that.fetchData(route,function (json) {
+        //         that.fillData(route,json);
+        //         that.draw();
+        //         that.loading = false;
+        //     });
+        // },
         selectAllRows : function () {
             var that = this;
             var sel = that.jQe('[c-row-check-all]').prop('checked');
@@ -256,16 +255,24 @@ Vue.component('v-list-edit', {
             that.hideRA(index,'action-save-row');
         },
         hideRA : function (index,name) {
-            var n = 'ra-'+index+'-'+name;
+            var that = this;
+            //var n = 'ra-'+index+'-'+name;
+
+            var n = that.$crud.getRefId(that._uid,'ra',index,name);
+            console.log('HIDE',n);
             this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
-            var n = 'ra-'+index+'-'+name;
+            var that = this;
+            //var n = 'ra-'+index+'-'+name;
+
+            var n = that.$crud.getRefId(that._uid,'ra',index,name);
+            console.log('SHOW',n);
             this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
         },
-        getRef : function (prefix,index,key) {
-            var s =  prefix + '-' + index + '-' + key;
-        }
+        // getRef : function (prefix,index,key) {
+        //     var s =  prefix + '-' + index + '-' + key;
+        // }
     },
     watch : {
         routeConf : {

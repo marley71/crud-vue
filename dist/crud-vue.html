@@ -9,12 +9,6 @@
         <label>{{cRender.label}}</label>
         <div>
             <v-render :c-render="cRender"></v-render>
-<!--            <component-->
-<!--                    :is="cType"-->
-<!--                    :c-conf="cRender"-->
-<!--                    :c-key="cKey"-->
-<!--                    :c-ref="cRef">-->
-<!--            </component>-->
         </div>
     </div>
 </template>
@@ -24,34 +18,16 @@
         <div class="col col-sm-6">{{cRender.label}}</div>
         <div class="col col-sm-6">
             <v-render :c-render="cRender"></v-render>
-<!--            <component-->
-<!--                    :is="cType"-->
-<!--                    :c-conf="cRender"-->
-<!--                    :c-key="cKey"-->
-<!--                    :c-ref="cRef">-->
-<!--            </component>-->
         </div>
     </div>
 </template>
 
 <template id="c-tpl-list-template">
     <v-render :c-render="cRender"></v-render>
-<!--    <component-->
-<!--            :is="cType"-->
-<!--            :c-conf="cRender"-->
-<!--            :c-key="cKey"-->
-<!--            :c-ref="cRef">-->
-<!--    </component>-->
 </template>
 
 <template id="c-tpl-no-template">
     <v-render :c-render="cRender"></v-render>
-<!--    <component-->
-<!--            :is="cType"-->
-<!--            :c-conf="cRender"-->
-<!--            :c-key="cKey"-->
-<!--            :c-ref="cRef">-->
-<!--    </component>-->
 </template>
 <script type="text/x-template" id="c-paginator-template">
     <div>
@@ -290,15 +266,15 @@
         <span v-for="field in fields">{{value[field]}}&nbsp;</span>
     </div>
 </template>
-<template id="r-date-select-template">
-    <div class="input-group">
+<script type="text/x-template" id="r-date-select-template">
+    <div v-if="resourcesLoaded" class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
         <r-select ref="day" v-bind:c-conf="cDay" c-marker="day"></r-select>
         <r-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></r-select>
         <r-select ref="year" v-bind:c-conf="cYear" c-marker="year"></r-select>
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
-</template>
+</script>
 <script type="text/x-template" id="r-date-picker-template">
     <div class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
@@ -339,10 +315,10 @@
                     <div >
                         <div crud-render_limit class="hide">
                             <!-- Limite massimo raggiunto -->
-                            {{$LANG.app.limite_raggiunto}}
+                            {{$lang.app.limite_raggiunto}}
                         </div>
                         <button v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
-                            <span >{{$LANG.app.add}}</span>&nbsp;
+                            <span >{{$lang.app.add}}</span>&nbsp;
                             <span crud-label="modelMetadata.singular"></span>&nbsp;
                         </button>
                     </div>

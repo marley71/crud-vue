@@ -1,9 +1,13 @@
 Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
     template: '#r-autocomplete-template',
-
-    data : function () {
+    data : function() {
         var d = this.defaultData();
+        if (!( 'resources' in d.conf) ) {
+            d.conf.resources = [
+                'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js'
+            ];
+        }
         return d;
     },
     methods : {
