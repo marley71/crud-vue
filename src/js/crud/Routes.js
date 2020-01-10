@@ -239,7 +239,7 @@ RouteSet = Route.extend({
 
 RouteAutocomplete = Route.extend({
     method      : "get",
-    url         : '/api/json/autocomplete/{modelName}',
+    url         : '/api/json/{modelName}/autocomplete',
     resultType  : 'list',
     protocol    : 'list'
 

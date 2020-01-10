@@ -372,7 +372,7 @@ crud = {
         },
         uploadfile : {
             method      : 'post',
-            url         : '/uploadfile',
+            url         : '/api/json/{modelName}/uploadfile',
             resultType  : 'record',
             protocol    : 'record',
             extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
@@ -1203,7 +1203,7 @@ RouteSet = Route.extend({
 
 RouteAutocomplete = Route.extend({
     method      : "get",
-    url         : '/api/json/autocomplete/{modelName}',
+    url         : '/api/json/{modelName}/autocomplete',
     resultType  : 'list',
     protocol    : 'list'
 
@@ -2532,9 +2532,6 @@ Vue.component('r-input', {
     data : function () {
         var d = this.defaultData();
         d.inputType = d.inputType?d.inputType:'text';
-        // var _conf = this.cConf || {};
-        // if (_conf.inputType)
-        //     d.inputType = _conf.inputType;
         return d;
     }
 });
@@ -2637,7 +2634,7 @@ Vue.component('r-autocomplete', {
         var d = this.defaultData();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js'
+                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
         return d;
@@ -2646,11 +2643,15 @@ Vue.component('r-autocomplete', {
         afterLoadResources : function () {
             var that = this;
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
-                //data: that.conf.metadata.domainValues
                 resolverSettings: {
                     url: that._createUrl()
-                }
+                },
+                valueKey : 'email'
             });
+            //{
+            //data: that.conf.metadata.domainValues
+
+            //});
         },
         _createUrl : function () {
             var that = this;
@@ -2909,7 +2910,6 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
                 that.confViews[index].data.value.status = 'updated';
             } else {
                 if (!hmConf.data.value.status) {
-                    console.log('PRRRRRRRRRRRRRRRR');
                     hmConf.data.value.status = 'new';
                 }
                 that.confViews.push(hmConf);
@@ -3104,8 +3104,13 @@ Vue.component('r-b2-select2', {
     template: '#r-b2-select2-template',
     data : function () {
         var d = this.defaultData();
-        //d.conf = this.cConf;
-        console.log('conf ',d.conf);
+        if (!( 'resources' in d.conf) ) {
+            d.conf.resources = [
+                'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
+
+            ];
+        }
         return d;
     },
     methods : {
@@ -3142,13 +3147,13 @@ Vue.component('r-b2-select2', {
                             page: params.page
                         };
                     },
-                    processResults: function (data) {
+                    processResults: function (json) {
                         // Tranforms the top-level key of the response object from 'items' to 'results'
                         var items = [];
-                        for (var i in data.result) {
+                        for (var i in json.result) {
                             items.push({
-                                id : data.result[i].id,
-                                text : that._getLabel(data.result[i])
+                                id : json.result[i].id,
+                                text : that._getLabel(json.result[i])
                             });
                         }
                         return {
@@ -3159,12 +3164,16 @@ Vue.component('r-b2-select2', {
                 allowClear : that.allowClear,
                 placeholder: that.placeholder?that.placeholder:"Seleziona",
             });
+            jQuery(that.$el).find('[c-select2]').on('select2:select', function () {
+                console.log('value',that.getValue())
+                that.$emit('change');
+            });
         },
         _getLabel : function(value) {
             var that  =this;
             var label = "";
-            for (var i in that.conf.labelFields) {
-                label += value[that.conf.labelFields[i]] + " ";
+            for (var i in that.conf.metadata.labelFields) {
+                label += value[that.conf.metadata.labelFields[i]] + " ";
             }
             return label;
         },

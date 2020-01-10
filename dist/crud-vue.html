@@ -671,7 +671,7 @@
                 <!--<component :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>-->
 
                 <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='r-hidden'" :is="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
 
             </div>
         </div>

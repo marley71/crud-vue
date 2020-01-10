@@ -5,7 +5,7 @@ Vue.component('r-autocomplete', {
         var d = this.defaultData();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js'
+                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
         return d;
@@ -14,11 +14,15 @@ Vue.component('r-autocomplete', {
         afterLoadResources : function () {
             var that = this;
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
-                //data: that.conf.metadata.domainValues
                 resolverSettings: {
                     url: that._createUrl()
-                }
+                },
+                valueKey : 'email'
             });
+            //{
+            //data: that.conf.metadata.domainValues
+
+            //});
         },
         _createUrl : function () {
             var that = this;

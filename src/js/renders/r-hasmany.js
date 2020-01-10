@@ -52,7 +52,6 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
                 that.confViews[index].data.value.status = 'updated';
             } else {
                 if (!hmConf.data.value.status) {
-                    console.log('PRRRRRRRRRRRRRRRR');
                     hmConf.data.value.status = 'new';
                 }
                 that.confViews.push(hmConf);

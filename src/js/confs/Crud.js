@@ -303,7 +303,7 @@ crud = {
         },
         uploadfile : {
             method      : 'post',
-            url         : '/uploadfile',
+            url         : '/api/json/{modelName}/uploadfile',
             resultType  : 'record',
             protocol    : 'record',
             extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
