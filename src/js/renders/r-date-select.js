@@ -5,7 +5,7 @@ Vue.component('r-date-select', {
         var d = this.defaultData();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
-                'moment-with-locales.min.js'
+                'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
             ];
         }
         return d;

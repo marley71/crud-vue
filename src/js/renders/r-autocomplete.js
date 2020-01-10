@@ -5,7 +5,9 @@ Vue.component('r-autocomplete', {
         var d = this.defaultData();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
-                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
+                'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
+//                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
         return d;
@@ -14,10 +16,27 @@ Vue.component('r-autocomplete', {
         afterLoadResources : function () {
             var that = this;
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
-                resolverSettings: {
-                    url: that._createUrl()
+                source : function(term,suggest) {
+                    jQuery.getJSON(that._createUrl(),{query:term},function (json) {
+                        var suggestions = [];
+                        for (var i in json.result) {
+                            var s = "";
+                            for (var k in that.metadata.fields) {
+                                s += json.result[i][that.metadata.fields[k]] + " ";
+                            }
+                            suggestions.push(s);
+                        }
+                        return suggest(suggestions)
+                    })
                 },
-                valueKey : 'email'
+                onSelect: function(e, term, item){
+                    //alert('Item "'+item.data('langname')+' ('+item.data('lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
+                    that.setValue(item.id);
+                }
+                // resolverSettings: {
+                //     url: that._createUrl()
+                // },
+                // valueKey : 'email'
             });
             //{
             //data: that.conf.metadata.domainValues

@@ -85,6 +85,14 @@ dialogs_interface = {
             var id= 'd' + (new Date().getTime());
             jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
+        },
+        
+        popover : function (message) {
+            jQuery('body').append('<div id="c-pop">'+ message +'</div>');
+            jQuery('#c-pop').popover({
+                container : 'body',
+                delay : 500
+            })
         }
 
 // var _progressDialog = null;

@@ -138,9 +138,8 @@ crud = {
                         //alert(json.msg);
                         return ;
                     }
-
+                    that.$crud.popover('Ok')
                 })
-
             }
         },
         'action-back' : {
