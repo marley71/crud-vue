@@ -61,7 +61,7 @@ Vue.component('r-swap', {
             //var viewConf = self._viewConfig[viewKey];
             r.values = {
                 modelName: that.conf.metadata.modelName,
-                field : that.conf.key?that.conf.key:that.cKey,
+                field : that.name, //that.conf.key?that.conf.key:that.cKey,
                 value : that.value
             };
 

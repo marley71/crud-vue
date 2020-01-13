@@ -48,6 +48,7 @@ Vue.component('r-upload-ajax',{
             // if (!that.$refs.refUpload) {
             //     throw 'riferimento a file upload non valido';
             // }
+            RUPLOAD = that;
             var fDesc = that.getValue();
             if (!fDesc)
                 throw 'descrittore file upload non valido';
@@ -55,10 +56,11 @@ Vue.component('r-upload-ajax',{
             console.log('fDesc',fDesc);
 
             var fileName = fDesc.filename;
-            var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
+            //var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
-            var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
-            var route = Route.factory('uploadfile',routeConf);
+            //var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
+            var route = Route.factory('uploadfile');
+            route.fillValues(that);
 
             that.error = false;
             that.complete = false;

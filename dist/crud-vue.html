@@ -282,7 +282,13 @@
     </div>
 </script>
 <script type="text/x-template" id="r-texthtml-template">
-    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>
+<!--    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>-->
+    <div>
+        <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" :c-marker="cMarker" v-on:change="change">
+        <div class="summernote" v-html="value">
+
+        </div>
+    </div>
 </script>
 <template id="r-hasmany-template">
     <div class="card"  >
@@ -660,7 +666,7 @@
 
     </div>
 </script>
-<template id="v-hasmany-template">
+<script type="text/x-template" id="v-hasmany-template">
     <div>
         <div>&nbsp;</div>
         <c-loading v-if="loading"></c-loading>
@@ -675,7 +681,7 @@
             </div>
         </div>
     </div>
-</template>
+</script>
 <script type="text/x-template" id="v-hasmany-view-template">
     <div>
         <div>&nbsp;</div>

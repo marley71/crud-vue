@@ -2876,9 +2876,17 @@ Vue.component('r-texthtml',{
     methods : {
         afterLoadResources : function () {
             var that = this;
-            var options = that.cConf.pluginOptions || {};
+            var options = that.conf.pluginOptions || {
+                content : that.value
+            };
             options = Utility.cloneObj(options);
-            that.jQe('[c-summernote]').summernote(options)
+            that.jQe('.summernote').summernote(options);
+            jQuery('.summernote').on('summernote.change', function() {
+                //console.log('Enter/Return key pressed',jQuery('.summernote').summernote('code'));
+                that.jQe('[c-sum]').val(jQuery('.summernote').summernote('code'));
+                that.jQe('[c-sum]').trigger('change');
+                //that.jQe('[c-sum]').val('hh')
+            });
         }
     }
 });
@@ -3056,7 +3064,7 @@ Vue.component('r-swap', {
             //var viewConf = self._viewConfig[viewKey];
             r.values = {
                 modelName: that.conf.metadata.modelName,
-                field : that.conf.key?that.conf.key:that.cKey,
+                field : that.name, //that.conf.key?that.conf.key:that.cKey,
                 value : that.value
             };
 
@@ -3432,6 +3440,7 @@ Vue.component('r-upload-ajax',{
             // if (!that.$refs.refUpload) {
             //     throw 'riferimento a file upload non valido';
             // }
+            RUPLOAD = that;
             var fDesc = that.getValue();
             if (!fDesc)
                 throw 'descrittore file upload non valido';
@@ -3439,10 +3448,11 @@ Vue.component('r-upload-ajax',{
             console.log('fDesc',fDesc);
 
             var fileName = fDesc.filename;
-            var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
+            //var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
-            var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
-            var route = Route.factory('uploadfile',routeConf);
+            //var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
+            var route = Route.factory('uploadfile');
+            route.fillValues(that);
 
             that.error = false;
             that.complete = false;

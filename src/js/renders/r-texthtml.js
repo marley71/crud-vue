@@ -14,9 +14,17 @@ Vue.component('r-texthtml',{
     methods : {
         afterLoadResources : function () {
             var that = this;
-            var options = that.cConf.pluginOptions || {};
+            var options = that.conf.pluginOptions || {
+                content : that.value
+            };
             options = Utility.cloneObj(options);
-            that.jQe('[c-summernote]').summernote(options)
+            that.jQe('.summernote').summernote(options);
+            jQuery('.summernote').on('summernote.change', function() {
+                //console.log('Enter/Return key pressed',jQuery('.summernote').summernote('code'));
+                that.jQe('[c-sum]').val(jQuery('.summernote').summernote('code'));
+                that.jQe('[c-sum]').trigger('change');
+                //that.jQe('[c-sum]').val('hh')
+            });
         }
     }
 });
