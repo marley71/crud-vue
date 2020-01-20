@@ -5,6 +5,7 @@ Vue.component('r-hasmany-view', {
         this.$options.template  = '#r-hasmany-view-template1';
     },
     data : function () {
+        console.log('HASMNAYVIEW',this.value);
         var d = this.defaultData();
         d.inputType = 'text';
         if (this.cConf.inputType)

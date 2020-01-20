@@ -5,8 +5,11 @@
             loading
         </div>
         <div v-else>
-            <div  v-for="(item, key) in this.renders">
-                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>
+            <div>pippo</div>
+            <div  v-for="(item, key) in renders">
+                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+<!--                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
             </div>
         </div>
         <div v-show="actions.length">

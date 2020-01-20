@@ -207,6 +207,9 @@
 <script type="text/x-template" id="r-text-template">
     <div>{{value}}</div>
 </script>
+<script type="text/x-template" id="r-image-template">
+    <img :src="value">
+</script>
 <script type="text/x-template" id="r-textarea-template">
     <div>
         <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
@@ -336,9 +339,9 @@
     <div crud-render_element>
         <div class="list-unstyled" crud-render_list >
             <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
-            <ul class="list-unstyled" v-for="item in value">
+            <ul class="list-unstyled" v-for="(item,index) in value">
                 <li>
-                    <v-hasmany-view v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany-view>
+                    <v-hasmany-view v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(index,item)"></v-hasmany-view>
 
                 </li>
             </ul>
@@ -495,7 +498,7 @@
                     <tr v-for="(row,index) in renders">
                         <td v-show="recordActionsName.length">
 
-                            <div class="btn-group" role="group">
+                            <div class="btn-group btn-group-sm" role="group">
                                 <div class="input-group-text bg-transparent">
                                     <input c-row-check v-show="needSelection"  type="checkbox">
                                 </div>
@@ -689,8 +692,11 @@
             loading
         </div>
         <div v-else>
-            <div  v-for="(item, key) in this.renders">
-                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>
+            <div>pippo</div>
+            <div  v-for="(item, key) in renders">
+                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+<!--                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
             </div>
         </div>
         <div v-show="actions.length">

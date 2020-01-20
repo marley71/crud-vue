@@ -6,7 +6,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
         var d = that.defaultData();
         d.confViews = [];
         for (var i in d.value) {
-            var _conf = that._getHasmanyConf(i,d.value[i]);
+            var _conf = that.getHasmanyConf(i,d.value[i]);
             d.confViews.push(_conf);
         }
         console.log('CONF VIEWS',d.confViews,d.value)
@@ -14,7 +14,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
     },
     methods : {
 
-        _getHasmanyConf : function (index,value) {
+        getHasmanyConf : function (index,value) {
             var that = this;
             var hmConf = that.cConf.hasmanyConf || {};
 

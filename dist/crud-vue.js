@@ -2566,6 +2566,10 @@ Vue.component('r-text',{
     extends : crud.components.renders.rBase,
     template: '#r-text-template'
 });
+Vue.component('r-image',{
+    extends : crud.components.renders.rBase,
+    template: '#r-image-template'
+});
 Vue.component('r-textarea', {
     extends : crud.components.renders.rBase,
     template: '#r-textarea-template'
@@ -2898,7 +2902,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
         var d = that.defaultData();
         d.confViews = [];
         for (var i in d.value) {
-            var _conf = that._getHasmanyConf(i,d.value[i]);
+            var _conf = that.getHasmanyConf(i,d.value[i]);
             d.confViews.push(_conf);
         }
         console.log('CONF VIEWS',d.confViews,d.value)
@@ -2906,7 +2910,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
     },
     methods : {
 
-        _getHasmanyConf : function (index,value) {
+        getHasmanyConf : function (index,value) {
             var that = this;
             var hmConf = that.cConf.hasmanyConf || {};
 
@@ -2994,6 +2998,7 @@ Vue.component('r-hasmany-view', {
         this.$options.template  = '#r-hasmany-view-template1';
     },
     data : function () {
+        console.log('HASMNAYVIEW',this.value);
         var d = this.defaultData();
         d.inputType = 'text';
         if (this.cConf.inputType)
@@ -4288,13 +4293,14 @@ crud.components.views.vList = Vue.component('v-list', {
         // },
         getOrderConf : function (key) {
             var that = this;
-            console.log('GETORDERCONF CALLED');
             var conf = that.getActionConfig('action-order','global');
             conf.title = 'Order by ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
-            if (that.data.order_field)
-                conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
+            //if (that.data.order_field)
+            var order = that.data.metadata.order || {};
+            console.log('GETORDERCONF CALLED',key,order);
+            conf.orderDirection = (order.order_field == conf.orderField)?order.order_direction:null;
             return conf;
         },
         reload : function () {
