@@ -2973,7 +2973,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
             var that = this;
             //var conf = that.getHasmanyConf(null);
             that.value.push({});
-            that.confViews.push(that._getHasmanyConf(that.value.length-1,null));
+            that.confViews.push(that.getHasmanyConf(that.value.length-1,null));
 
         },
         deleteItem : function (index) {
@@ -3400,10 +3400,10 @@ Vue.component('r-upload-ajax',{
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
-        d.conf = this.cConf;
-        console.log('r-upload data',d);
-        d.extensions = d.conf.metadata.extensions?d.conf.metadata.extensions:'';
-        d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
+        d.conf = this.cConf || {};
+        var metadata = d.conf.metadata || {};
+        d.extensions = metadata.extensions?metadata.extensions:[];
+        d.maxFileSize = metadata.maxFileSize?metadata.maxFileSize:'';
         d.uploadConf = d.conf;
         d.previewConf = {
             value : d.conf.value,
@@ -3413,6 +3413,7 @@ Vue.component('r-upload-ajax',{
         };
         d.error = false;
         d.errorMessage = '';
+        console.log('r-upload data',d);
         return d;
     },
 
@@ -3510,7 +3511,7 @@ Vue.component('r-upload-ajax',{
                 that.previewConf = pconf;
                 that.lastUpload = Utility.cloneObj(data.result);
                 jQuery(that.$el).find('input[name="' + that.cKey +'"]');
-                jQuery('<input name="' + that.cKey + '" type="hidden" value="' + data.result.resource_id + '">').appendTo(jQuery(that.$el));
+                jQuery('<input name="' + that.name + '" type="hidden" value="' + data.result.resource_id + '">').appendTo(jQuery(that.$el));
                 RAJAX = that;
                 // for (var k in data.result) {
                 //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
@@ -4300,7 +4301,7 @@ crud.components.views.vList = Vue.component('v-list', {
             //if (that.data.order_field)
             var order = that.data.metadata.order || {};
             console.log('GETORDERCONF CALLED',key,order);
-            conf.orderDirection = (order.order_field == conf.orderField)?order.order_direction:null;
+            conf.orderDirection = (order.field == conf.orderField)?order.direction:null;
             return conf;
         },
         reload : function () {

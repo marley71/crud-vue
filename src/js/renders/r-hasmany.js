@@ -77,7 +77,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
             var that = this;
             //var conf = that.getHasmanyConf(null);
             that.value.push({});
-            that.confViews.push(that._getHasmanyConf(that.value.length-1,null));
+            that.confViews.push(that.getHasmanyConf(that.value.length-1,null));
 
         },
         deleteItem : function (index) {

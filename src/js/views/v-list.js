@@ -180,7 +180,7 @@ crud.components.views.vList = Vue.component('v-list', {
             //if (that.data.order_field)
             var order = that.data.metadata.order || {};
             console.log('GETORDERCONF CALLED',key,order);
-            conf.orderDirection = (order.order_field == conf.orderField)?order.order_direction:null;
+            conf.orderDirection = (order.field == conf.orderField)?order.direction:null;
             return conf;
         },
         reload : function () {

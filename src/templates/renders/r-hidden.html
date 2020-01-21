@@ -1,6 +1,6 @@
 <script type="text/x-template" id="r-hidden-template">
     <div>
-        <input v-model="value" v-bind:name="getFieldName()" type="hidden" v-bind:c-marker="cMarker">
+        <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>

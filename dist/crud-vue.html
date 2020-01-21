@@ -200,7 +200,7 @@
 </script>
 <script type="text/x-template" id="r-hidden-template">
     <div>
-        <input v-model="value" v-bind:name="getFieldName()" type="hidden" v-bind:c-marker="cMarker">
+        <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>
@@ -436,7 +436,7 @@
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
-<template id="r-upload-ajax-template">
+<script type="text/x-template" id="r-upload-ajax-template">
     <div class="row">
         <div class="col-8">
             <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
@@ -458,7 +458,7 @@
             <r-preview :c-conf="previewConf"></r-preview>
         </div>
     </div>
-</template>
+</script>
 <script type="text/x-template" id="r-preview-template">
     <div>
         <img v-show="value" :src="value">
@@ -675,11 +675,8 @@
         <c-loading v-if="loading"></c-loading>
         <div v-else>
             <div  v-for="(item, key) in renders">
-                <!--<component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
-                <!--<component :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>-->
-
                 <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='r-hidden'" :is="item.type"  :c-conf="item" :c-key="getFieldName(key)"></component>
 
             </div>
         </div>

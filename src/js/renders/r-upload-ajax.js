@@ -3,10 +3,10 @@ Vue.component('r-upload-ajax',{
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
-        d.conf = this.cConf;
-        console.log('r-upload data',d);
-        d.extensions = d.conf.metadata.extensions?d.conf.metadata.extensions:'';
-        d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
+        d.conf = this.cConf || {};
+        var metadata = d.conf.metadata || {};
+        d.extensions = metadata.extensions?metadata.extensions:[];
+        d.maxFileSize = metadata.maxFileSize?metadata.maxFileSize:'';
         d.uploadConf = d.conf;
         d.previewConf = {
             value : d.conf.value,
@@ -16,6 +16,7 @@ Vue.component('r-upload-ajax',{
         };
         d.error = false;
         d.errorMessage = '';
+        console.log('r-upload data',d);
         return d;
     },
 
@@ -113,7 +114,7 @@ Vue.component('r-upload-ajax',{
                 that.previewConf = pconf;
                 that.lastUpload = Utility.cloneObj(data.result);
                 jQuery(that.$el).find('input[name="' + that.cKey +'"]');
-                jQuery('<input name="' + that.cKey + '" type="hidden" value="' + data.result.resource_id + '">').appendTo(jQuery(that.$el));
+                jQuery('<input name="' + that.name + '" type="hidden" value="' + data.result.resource_id + '">').appendTo(jQuery(that.$el));
                 RAJAX = that;
                 // for (var k in data.result) {
                 //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
