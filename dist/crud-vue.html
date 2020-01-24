@@ -210,6 +210,9 @@
 <script type="text/x-template" id="r-image-template">
     <img :src="value">
 </script>
+<script type="text/x-template" id="r-download-template">
+    <a :href="value" target="_blank"><i :class="icon"></i></a>
+</script>
 <script type="text/x-template" id="r-textarea-template">
     <div>
         <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
@@ -252,14 +255,13 @@
     </div>
 </script>
 <template id="r-autocomplete-template">
-    <div class="md-form">
+    <div class="input-group">
+        <span class="input-group-addon">{{label}}</span>
         <input type="search" c-autocomplete class="form-control mdb-autocomplete">
-        <button class="mdb-autocomplete-clear">
-            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="https://www.w3.org/2000/svg">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                <path d="M0 0h24v24H0z" fill="none" />
-            </svg>
+        <button class="input-group-btn btn btn-default" v-on:click="clear">
+            <i class="fa fa-times"></i>
         </button>
+        <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
@@ -389,10 +391,10 @@
                     <div >
                         <div crud-render_limit class="hide">
                             <!-- Limite massimo raggiunto -->
-                            {{$LANG.app.limite_raggiunto}}
+                            {{$lang.app.limite_raggiunto}}
                         </div>
                         <button v-on:click="addItem" type="button" class="btn btn-primary btn-sm">
-                            <span >{{$LANG.app.add}}</span>&nbsp;
+                            <span >{{$lang.app.add}}</span>&nbsp;
                             <span crud-label="modelMetadata.singular"></span>&nbsp;
                         </button>
                     </div>
@@ -454,7 +456,7 @@
                 <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
             </div>
         </div>
-        <div class="col-4" v-show="!uploadConf.noPreview">
+        <div class="col-4">
             <r-preview :c-conf="previewConf"></r-preview>
         </div>
     </div>
@@ -617,13 +619,11 @@
 </script>
 <script type="text/x-template" id="v-view-template">
     <div>
-        <div>View View</div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading"></c-loading>
         <div v-else v-for="(item, key) in renders">
             <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
             <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
-
-<!--            <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>-->
         </div>
         <div v-show="actionsName.length">
             <template v-for="(action,name) in actions">

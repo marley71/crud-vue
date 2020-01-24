@@ -1,7 +1,11 @@
 Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
     template: '#r-autocomplete-template',
+    mounted : function() {
+        this._getLabel();
+    },
     data : function() {
+        var that = this;
         var d = this.defaultData();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
@@ -10,6 +14,8 @@ Vue.component('r-autocomplete', {
 //                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
+        d.label = '';
+        d.suggestValues = {};
         return d;
     },
     methods : {
@@ -19,19 +25,26 @@ Vue.component('r-autocomplete', {
                 source : function(term,suggest) {
                     jQuery.getJSON(that._createUrl(),{query:term},function (json) {
                         var suggestions = [];
+                        that.suggestValues = {};
                         for (var i in json.result) {
-                            var s = "";
-                            for (var k in that.metadata.fields) {
-                                s += json.result[i][that.metadata.fields[k]] + " ";
-                            }
+                            // var s = "";
+                            // for (var k in that.metadata.fields) {
+                            //     s += (s?' ':'') + json.result[i][that.metadata.fields[k]];
+                            // }
+                            var s = that._getSuggestion(json.result[i]);
                             suggestions.push(s);
+                            that.suggestValues[s] = json.result[i]['id'];
                         }
                         return suggest(suggestions)
                     })
                 },
                 onSelect: function(e, term, item){
+                    console.log('selected',that.suggestValues[term]);
+                    that.value = that.suggestValues[term];
+                    that.label = term;
+                    that.change();
                     //alert('Item "'+item.data('langname')+' ('+item.data('lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
-                    that.setValue(item.id);
+
                 }
                 // resolverSettings: {
                 //     url: that._createUrl()
@@ -69,6 +82,35 @@ Vue.component('r-autocomplete', {
             return url;
         },
 
+        clear : function () {
+            var that = this;
+            that.value = '';
+            that.label = '';
+            jQuery(that.$el).find('[c-autocomplete]').val('');
+        },
+        _getLabel : function () {
+
+            var that = this;
+            var r = new Route(that.$crud.routes.view);
+            r.values.modelName = that.metadata.autocompleteModel;
+            r.values.pk = that.value;
+            var lb = '';
+            Server.route(r,function (json) {
+                if (json.error) {
+                    that.label = json.msg;
+                    return ;
+                }
+                that.label = that._getSuggestion(json.result);
+            })
+        },
+        _getSuggestion: function(rowData) {
+            var that = this;
+            var s = "";
+            for (var k in that.metadata.fields) {
+                s += (s?' ':'') + rowData[that.metadata.fields[k]];
+            }
+            return s
+        }
     }
 
 });

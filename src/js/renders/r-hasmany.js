@@ -9,7 +9,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
             var _conf = that.getHasmanyConf(i,d.value[i]);
             d.confViews.push(_conf);
         }
-        console.log('CONF VIEWS',d.confViews,d.value)
+        //console.log('CONF VIEWS',d.confViews,d.value)
         return d;
     },
     methods : {

@@ -1,12 +1,10 @@
 <script type="text/x-template" id="v-view-template">
     <div>
-        <div>View View</div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading"></c-loading>
         <div v-else v-for="(item, key) in renders">
             <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
             <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
-
-<!--            <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>-->
         </div>
         <div v-show="actionsName.length">
             <template v-for="(action,name) in actions">

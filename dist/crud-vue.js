@@ -264,10 +264,11 @@ crud = {
             icon : null,
             text : '',
             execute : function () {
-                console.log('order execute',this.view);
+                console.log('order execute',this);
                 var params = Utility.cloneObj(this.view.routeConf.params);
                 params.order_field = this.orderField;
-                params.order_direction = (this.view.data.metadata.order.order_field == this.orderField)?(this.view.data.metadata.order.order_direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+                //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+                params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
                 this.view.routeConf.params = params;
             }
         },
@@ -2570,6 +2571,28 @@ Vue.component('r-image',{
     extends : crud.components.renders.rBase,
     template: '#r-image-template'
 });
+Vue.component('r-download',{
+    extends : crud.components.renders.rBase,
+    template: '#r-download-template',
+    mounted : function() {
+        var that  =this;
+        var url = that.value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.open('HEAD', url);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == this.DONE) {
+                console.log(this.status);
+                console.log(this.getResponseHeader("Content-Type"));
+            }
+        };
+        xhttp.send();
+    },
+    data : function () {
+        var d = this.defaultData();
+        d.icon = 'fa fa-file-o';
+        return d;
+    }
+});
 Vue.component('r-textarea', {
     extends : crud.components.renders.rBase,
     template: '#r-textarea-template'
@@ -2641,7 +2664,11 @@ Vue.component('r-checkbox',{
 Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
     template: '#r-autocomplete-template',
+    mounted : function() {
+        this._getLabel();
+    },
     data : function() {
+        var that = this;
         var d = this.defaultData();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
@@ -2650,6 +2677,8 @@ Vue.component('r-autocomplete', {
 //                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
+        d.label = '';
+        d.suggestValues = {};
         return d;
     },
     methods : {
@@ -2659,19 +2688,26 @@ Vue.component('r-autocomplete', {
                 source : function(term,suggest) {
                     jQuery.getJSON(that._createUrl(),{query:term},function (json) {
                         var suggestions = [];
+                        that.suggestValues = {};
                         for (var i in json.result) {
-                            var s = "";
-                            for (var k in that.metadata.fields) {
-                                s += json.result[i][that.metadata.fields[k]] + " ";
-                            }
+                            // var s = "";
+                            // for (var k in that.metadata.fields) {
+                            //     s += (s?' ':'') + json.result[i][that.metadata.fields[k]];
+                            // }
+                            var s = that._getSuggestion(json.result[i]);
                             suggestions.push(s);
+                            that.suggestValues[s] = json.result[i]['id'];
                         }
                         return suggest(suggestions)
                     })
                 },
                 onSelect: function(e, term, item){
+                    console.log('selected',that.suggestValues[term]);
+                    that.value = that.suggestValues[term];
+                    that.label = term;
+                    that.change();
                     //alert('Item "'+item.data('langname')+' ('+item.data('lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
-                    that.setValue(item.id);
+
                 }
                 // resolverSettings: {
                 //     url: that._createUrl()
@@ -2709,6 +2745,35 @@ Vue.component('r-autocomplete', {
             return url;
         },
 
+        clear : function () {
+            var that = this;
+            that.value = '';
+            that.label = '';
+            jQuery(that.$el).find('[c-autocomplete]').val('');
+        },
+        _getLabel : function () {
+
+            var that = this;
+            var r = new Route(that.$crud.routes.view);
+            r.values.modelName = that.metadata.autocompleteModel;
+            r.values.pk = that.value;
+            var lb = '';
+            Server.route(r,function (json) {
+                if (json.error) {
+                    that.label = json.msg;
+                    return ;
+                }
+                that.label = that._getSuggestion(json.result);
+            })
+        },
+        _getSuggestion: function(rowData) {
+            var that = this;
+            var s = "";
+            for (var k in that.metadata.fields) {
+                s += (s?' ':'') + rowData[that.metadata.fields[k]];
+            }
+            return s
+        }
     }
 
 });
@@ -2905,7 +2970,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
             var _conf = that.getHasmanyConf(i,d.value[i]);
             d.confViews.push(_conf);
         }
-        console.log('CONF VIEWS',d.confViews,d.value)
+        //console.log('CONF VIEWS',d.confViews,d.value)
         return d;
     },
     methods : {
@@ -3059,18 +3124,19 @@ Vue.component('r-swap', {
             var vs = keys.map(String);
             var index = vs.indexOf(""+value);
             index = (index + 1) % vs.length;
-            //console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
+            console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
 
             that._swap(keys[index]);
         },
         _swap : function (key) {
             var that = this;
             var r = Route.factory('set');
+            var dV = that.getDV();
             //var viewConf = self._viewConfig[viewKey];
             r.values = {
                 modelName: that.conf.metadata.modelName,
                 field : that.name, //that.conf.key?that.conf.key:that.cKey,
-                value : that.value
+                value : key
             };
 
             r.params = {id:that.conf.modelData.id};
@@ -3079,7 +3145,6 @@ Vue.component('r-swap', {
                     that.$crud.errorDialog(json.msg);
                     return;
                 }
-                var dV = that.getDV();
                 that.value = key;
                 that.slot = dV[key];
                 that.change();
@@ -3138,7 +3203,7 @@ crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
         }
     }
 });
-Vue.component('r-b2-select2', {
+crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
     extends : crud.components.renders.rBase,
     template: '#r-b2-select2-template',
     data : function () {
@@ -3218,20 +3283,27 @@ Vue.component('r-b2-select2', {
         },
         getValue : function () {
             var that = this;
-            return jQuery(that.$el).find('[c-select2]').select2('data');
+            var selValue = jQuery(that.$el).find('[c-select2]').select2('data');
+            return selValue.length>0?selValue[0]['id']:null;
+
         },
     }
 
 });
 Vue.component('r-b2m-select2', {
-    extends : crud.components.renders.rBase,
+    extends : crud.components.renders.rB2Select2,
     template: '#r-b2m-select2-template',
-    data : function () {
-        var d = this.defaultData();
-        //d.conf = this.cConf;
-        console.log('conf ',d.conf);
-        return d;
-    },
+    // data : function () {
+    //     var d = this.defaultData();
+    //     if (!( 'resources' in d.conf) ) {
+    //         d.conf.resources = [
+    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
+    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
+    //
+    //         ];
+    //     }
+    //     return d;
+    // },
     methods : {
         afterLoadResources : function () {
             var that = this;
@@ -3288,20 +3360,21 @@ Vue.component('r-b2m-select2', {
             that._renderHidden();
 
         },
-        _getLabel : function(value) {
-            var that  =this;
-            var label = "";
-            for (var i in that.conf.labelFields) {
-                label += value[that.conf.labelFields[i]] + " ";
-            }
-            return label;
-        },
+        // _getLabel : function(value) {
+        //     var that  =this;
+        //     var label = "";
+        //     console.log('_getLabel',value,that.conf.labelFields);
+        //     for (var i in that.conf.labelFields) {
+        //         label += value[that.conf.labelFields[i]] + " ";
+        //     }
+        //     return label;
+        // },
         _renderHidden : function () {
             var that = this;
             var values = that.getValue();
             that.jQe('[c-selected-items]').html(' ');
-            for (var f in that.conf.hiddenFields) {
-                var field = that.conf.hiddenFields[f];
+            for (var f in that.metadata.hiddenFields) {
+                var field = that.metadata.hiddenFields[f];
                 for (var i in values) {
                     jQuery('<input type="hidden">').attr({
                         'name': that.getFieldName() + '-' + field + '[]',
@@ -3313,7 +3386,17 @@ Vue.component('r-b2m-select2', {
         },
         getValue : function () {
             var that = this;
-            return jQuery(that.$el).find('[c-select2]').select2('data');
+            var selValues = jQuery(that.$el).find('[c-select2]').select2('data');
+            var values = [];
+            for (var i in selValues) {
+                var item = {};
+                for (var f in that.metadata.hiddenFields) {
+                    var field = that.metadata.hiddenFields[f];
+                    item[field] = selValues[i][field];
+                }
+                values.push(item);
+            }
+            return values;
         },
     }
 
@@ -3508,7 +3591,7 @@ Vue.component('r-upload-ajax',{
                         mimetype : data.result.mimetype
                     }
                 };
-                that.previewConf = pconf;
+                that.$set(that,'previewConf',pconf);
                 that.lastUpload = Utility.cloneObj(data.result);
                 jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 jQuery('<input name="' + that.name + '" type="hidden" value="' + data.result.resource_id + '">').appendTo(jQuery(that.$el));
@@ -4300,7 +4383,7 @@ crud.components.views.vList = Vue.component('v-list', {
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)
             var order = that.data.metadata.order || {};
-            console.log('GETORDERCONF CALLED',key,order);
+            //console.log('GETORDERCONF CALLED',key,order);
             conf.orderDirection = (order.field == conf.orderField)?order.direction:null;
             return conf;
         },

@@ -111,7 +111,7 @@ Vue.component('r-upload-ajax',{
                         mimetype : data.result.mimetype
                     }
                 };
-                that.previewConf = pconf;
+                that.$set(that,'previewConf',pconf);
                 that.lastUpload = Utility.cloneObj(data.result);
                 jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 jQuery('<input name="' + that.name + '" type="hidden" value="' + data.result.resource_id + '">').appendTo(jQuery(that.$el));

@@ -1,4 +1,4 @@
-Vue.component('r-b2-select2', {
+crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
     extends : crud.components.renders.rBase,
     template: '#r-b2-select2-template',
     data : function () {
@@ -78,7 +78,9 @@ Vue.component('r-b2-select2', {
         },
         getValue : function () {
             var that = this;
-            return jQuery(that.$el).find('[c-select2]').select2('data');
+            var selValue = jQuery(that.$el).find('[c-select2]').select2('data');
+            return selValue.length>0?selValue[0]['id']:null;
+
         },
     }
 

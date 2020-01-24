@@ -1,12 +1,17 @@
 Vue.component('r-b2m-select2', {
-    extends : crud.components.renders.rBase,
+    extends : crud.components.renders.rB2Select2,
     template: '#r-b2m-select2-template',
-    data : function () {
-        var d = this.defaultData();
-        //d.conf = this.cConf;
-        console.log('conf ',d.conf);
-        return d;
-    },
+    // data : function () {
+    //     var d = this.defaultData();
+    //     if (!( 'resources' in d.conf) ) {
+    //         d.conf.resources = [
+    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
+    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
+    //
+    //         ];
+    //     }
+    //     return d;
+    // },
     methods : {
         afterLoadResources : function () {
             var that = this;
@@ -63,20 +68,21 @@ Vue.component('r-b2m-select2', {
             that._renderHidden();
 
         },
-        _getLabel : function(value) {
-            var that  =this;
-            var label = "";
-            for (var i in that.conf.labelFields) {
-                label += value[that.conf.labelFields[i]] + " ";
-            }
-            return label;
-        },
+        // _getLabel : function(value) {
+        //     var that  =this;
+        //     var label = "";
+        //     console.log('_getLabel',value,that.conf.labelFields);
+        //     for (var i in that.conf.labelFields) {
+        //         label += value[that.conf.labelFields[i]] + " ";
+        //     }
+        //     return label;
+        // },
         _renderHidden : function () {
             var that = this;
             var values = that.getValue();
             that.jQe('[c-selected-items]').html(' ');
-            for (var f in that.conf.hiddenFields) {
-                var field = that.conf.hiddenFields[f];
+            for (var f in that.metadata.hiddenFields) {
+                var field = that.metadata.hiddenFields[f];
                 for (var i in values) {
                     jQuery('<input type="hidden">').attr({
                         'name': that.getFieldName() + '-' + field + '[]',
@@ -88,7 +94,17 @@ Vue.component('r-b2m-select2', {
         },
         getValue : function () {
             var that = this;
-            return jQuery(that.$el).find('[c-select2]').select2('data');
+            var selValues = jQuery(that.$el).find('[c-select2]').select2('data');
+            var values = [];
+            for (var i in selValues) {
+                var item = {};
+                for (var f in that.metadata.hiddenFields) {
+                    var field = that.metadata.hiddenFields[f];
+                    item[field] = selValues[i][field];
+                }
+                values.push(item);
+            }
+            return values;
         },
     }
 

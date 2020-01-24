@@ -179,7 +179,7 @@ crud.components.views.vList = Vue.component('v-list', {
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)
             var order = that.data.metadata.order || {};
-            console.log('GETORDERCONF CALLED',key,order);
+            //console.log('GETORDERCONF CALLED',key,order);
             conf.orderDirection = (order.field == conf.orderField)?order.direction:null;
             return conf;
         },

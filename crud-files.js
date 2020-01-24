@@ -31,6 +31,8 @@ var crudJsFiles = [
     'src/js/renders/r-hidden.js',
     'src/js/renders/r-text.js',
     'src/js/renders/r-image.js',
+    'src/js/renders/r-download.js',
+
     'src/js/renders/r-textarea.js',
     'src/js/renders/r-select.js',
     'src/js/renders/r-radio.js',
@@ -86,6 +88,8 @@ var crudHtmlFiles = [
     'src/templates/renders/r-hidden.html',
     'src/templates/renders/r-text.html',
     'src/templates/renders/r-image.html',
+    'src/templates/renders/r-download.html',
+
     'src/templates/renders/r-textarea.html',
     'src/templates/renders/r-select.html',
     'src/templates/renders/r-radio.html',

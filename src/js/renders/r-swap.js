@@ -51,18 +51,19 @@ Vue.component('r-swap', {
             var vs = keys.map(String);
             var index = vs.indexOf(""+value);
             index = (index + 1) % vs.length;
-            //console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
+            console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
 
             that._swap(keys[index]);
         },
         _swap : function (key) {
             var that = this;
             var r = Route.factory('set');
+            var dV = that.getDV();
             //var viewConf = self._viewConfig[viewKey];
             r.values = {
                 modelName: that.conf.metadata.modelName,
                 field : that.name, //that.conf.key?that.conf.key:that.cKey,
-                value : that.value
+                value : key
             };
 
             r.params = {id:that.conf.modelData.id};
@@ -71,7 +72,6 @@ Vue.component('r-swap', {
                     that.$crud.errorDialog(json.msg);
                     return;
                 }
-                var dV = that.getDV();
                 that.value = key;
                 that.slot = dV[key];
                 that.change();
