@@ -90,7 +90,7 @@ crud = {
             "zip"       : 'fa fa-file-archive-o',
             "mp3"       : 'fa fa-audio-o',
             "jpg"       : "fa fa-image-o",
-            "pdf"       : "fa fa-file-pdf-o",
+            "application/pdf"       : "fa fa-file-pdf-o",
             "txt"       : "fa fa-file-text-o",
         }
 
@@ -128,7 +128,7 @@ crud = {
             text : '',
             execute : function () {
                 var that = this;
-                that.$crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
+                that.$crud.confirmDialog(that.$lang.app['conferma-delete'] ,{
                     ok : function () {
 
                         var r = Route.factory('delete');
@@ -3489,11 +3489,15 @@ Vue.component('r-upload-ajax',{
         d.maxFileSize = metadata.maxFileSize?metadata.maxFileSize:'';
         d.uploadConf = d.conf;
         d.previewConf = {
-            value : d.conf.value,
-            metadata :  {
-                mimetype : 'image/jpeg'
-            }
-        };
+            value : d.conf.value || {}
+        }
+        d.value = JSON.stringify(d.conf.value).replace(/\\"/g, '"');
+        // d.previewConf = {
+        //     value : d.conf.value,
+        //     metadata :  {
+        //         mimetype : 'image/jpeg'
+        //     }
+        // };
         d.error = false;
         d.errorMessage = '';
         console.log('r-upload data',d);
@@ -3585,16 +3589,18 @@ Vue.component('r-upload-ajax',{
                 }
                 that.$emit('success',that);
                 that.complete = true;
-                var pconf = {
-                    value : data.result.url,
-                    metadata :  {
-                        mimetype : data.result.mimetype
-                    }
-                };
-                that.$set(that,'previewConf',pconf);
+                // var pconf = {
+                //     value : data.result.url,
+                //     metadata :  {
+                //         mimetype : data.result.mimetype
+                //     }
+                // };
+                that.$set(that,'previewConf',data.result);
                 that.lastUpload = Utility.cloneObj(data.result);
-                jQuery(that.$el).find('input[name="' + that.cKey +'"]');
-                jQuery('<input name="' + that.name + '" type="hidden" value="' + data.result.resource_id + '">').appendTo(jQuery(that.$el));
+
+                //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
+                //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));
+                that.value = JSON.stringify(data.result).replace(/\\"/g, '"');
                 RAJAX = that;
                 // for (var k in data.result) {
                 //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
@@ -3615,56 +3621,52 @@ Vue.component('r-preview',{
     template : '#r-preview-template',
     mounted : function() {
         var that = this;
-        // that.$Crud.instance.on('preview',function (url) {
-        //     that.value = url;
-        // })
         this._draw();
     },
     data : function () {
         var that = this;
         var d = that.defaultData();
+        d.type = null;
+        d.url = null;
+        d.mimetype = null;
         d.icon = false;
         d.iconClass = '';
-        d.ext = null;
+        var value = d.value || {};
+        for (var k in value) {
+            d[k] = value[k];
+        }
         return d;
     },
     methods : {
-        _draw : function () {
+        getType : function (mimetype) {
             var that = this;
-            console.log('r-preview.draw',that.conf);
-            //var mimetype = that.conf.mimetype || null;
-            var previewType = that.previewType || null;
-            var ext = that.ext || that._getExt();
-            // if (!previewType && that.value) {
-            //     previewType = that._previewType();
-            // }
-            // console.log('mimetype',previewType);
-            switch (previewType) {
-                case 'image':
-                    that.icon = false;
-                    that.iconClass = '';
+            switch (mimetype) {
+                case 'image/jpg':
+                    return 'image';
                     break;
-                case 'default':
+                case 'application/pdf':
                     that.icon=true;
                     that.iconClass = that.$crud.icons.mimetypes['default'];
                     if (that.$crud.icons.mimetypes[ext])
                         that.iconClass = that.$crud.icons.mimetypes[ext];
-                    break;
+                    return 'doc';
             }
-            that.iconClass = that.iconClass?that.iconClass + ' fa-3x':that.iconClass;
         },
         _getExt : function () {
             var that = this;
             //console.log('value',that.value);
-            if (!that.value || that.value.lastIndexOf('.') < 0)
+            if (!that.url || that.url.lastIndexOf('.') < 0)
                 return null;
-            return this.value.toLowerCase().substr(this.value.lastIndexOf('.'));
+            return this.url.toLowerCase().substr(this.url.lastIndexOf('.'));
         }
     },
     watch : {
         cConf : {
             handler (val) {
                 this.conf = this.cConf;
+                for (var k in this.cConf) {
+                    this[k] = this.cConf[k];
+                }
                 console.log('watch ocnf',this.cConf)
                 this._draw()
             },

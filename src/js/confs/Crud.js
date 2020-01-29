@@ -21,7 +21,7 @@ crud = {
             "zip"       : 'fa fa-file-archive-o',
             "mp3"       : 'fa fa-audio-o',
             "jpg"       : "fa fa-image-o",
-            "pdf"       : "fa fa-file-pdf-o",
+            "application/pdf"       : "fa fa-file-pdf-o",
             "txt"       : "fa fa-file-text-o",
         }
 
@@ -59,7 +59,7 @@ crud = {
             text : '',
             execute : function () {
                 var that = this;
-                that.$crud.confirmDialog(that.$LANG.app['conferma-delete'] ,{
+                that.$crud.confirmDialog(that.$lang.app['conferma-delete'] ,{
                     ok : function () {
 
                         var r = Route.factory('delete');

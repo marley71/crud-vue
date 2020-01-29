@@ -1,6 +1,8 @@
 <script type="text/x-template" id="r-preview-template">
     <div>
-        <img v-show="value" :src="value">
-        <i v-show="icon" :class="iconClass"></i>
+        <img v-show="type=='image'" :src="url">
+        <a v-show="type=='doc'" :href="url">
+            <i :class="iconClass"></i>
+        </a>
     </div>
 </script>
