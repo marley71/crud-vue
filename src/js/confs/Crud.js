@@ -16,11 +16,11 @@ crud = {
     icons : {
         mimetypes : {
             "default"   : 'fa fa-file-o',
-            "xls"       : 'fa fa-file-excel-o',
+            "application/xls"       : 'fa fa-file-excel-o',
             "xlsx"      : 'fa fa-file-excel-o',
             "zip"       : 'fa fa-file-archive-o',
             "mp3"       : 'fa fa-audio-o',
-            "jpg"       : "fa fa-image-o",
+            "image/jpeg"       : "fa fa-image-o",
             "application/pdf"       : "fa fa-file-pdf-o",
             "txt"       : "fa fa-file-text-o",
         }

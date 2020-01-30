@@ -24,7 +24,8 @@ Vue.component('r-texthtml',{
                 that.jQe('[c-sum]').val(jQuery('.summernote').summernote('code'));
                 that.jQe('[c-sum]').trigger('change');
                 //that.jQe('[c-sum]').val('hh')
-            });
+            })
+            jQuery('.summernote').summernote('focus');
         }
     }
 });

@@ -8,10 +8,12 @@ Vue.component('r-upload-ajax',{
         d.extensions = metadata.extensions?metadata.extensions:[];
         d.maxFileSize = metadata.maxFileSize?metadata.maxFileSize:'';
         d.uploadConf = d.conf;
+        var value = d.conf.value || {};
         d.previewConf = {
-            value : d.conf.value || {}
+            value : value,
+            cRef : this._uid + 'preview'
         }
-        d.value = JSON.stringify(d.conf.value).replace(/\\"/g, '"');
+        d.value = JSON.stringify(value).replace(/\\"/g, '"');
         // d.previewConf = {
         //     value : d.conf.value,
         //     metadata :  {
@@ -115,12 +117,17 @@ Vue.component('r-upload-ajax',{
                 //         mimetype : data.result.mimetype
                 //     }
                 // };
-                that.$set(that,'previewConf',data.result);
+
+                console.log('data.result',data.result);
+                //that.$crud.cRefs[that._uid+'preview'].value = data.result;
+
+
+                //that.$set(that,'previewConf', {value : data.result});
                 that.lastUpload = Utility.cloneObj(data.result);
 
                 //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));
-                that.value = JSON.stringify(data.result).replace(/\\"/g, '"');
+                that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
                 RAJAX = that;
                 // for (var k in data.result) {
                 //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);

@@ -85,11 +85,11 @@ crud = {
     icons : {
         mimetypes : {
             "default"   : 'fa fa-file-o',
-            "xls"       : 'fa fa-file-excel-o',
+            "application/xls"       : 'fa fa-file-excel-o',
             "xlsx"      : 'fa fa-file-excel-o',
             "zip"       : 'fa fa-file-archive-o',
             "mp3"       : 'fa fa-audio-o',
-            "jpg"       : "fa fa-image-o",
+            "image/jpeg"       : "fa fa-image-o",
             "application/pdf"       : "fa fa-file-pdf-o",
             "txt"       : "fa fa-file-text-o",
         }
@@ -2955,7 +2955,8 @@ Vue.component('r-texthtml',{
                 that.jQe('[c-sum]').val(jQuery('.summernote').summernote('code'));
                 that.jQe('[c-sum]').trigger('change');
                 //that.jQe('[c-sum]').val('hh')
-            });
+            })
+            jQuery('.summernote').summernote('focus');
         }
     }
 });
@@ -3488,10 +3489,12 @@ Vue.component('r-upload-ajax',{
         d.extensions = metadata.extensions?metadata.extensions:[];
         d.maxFileSize = metadata.maxFileSize?metadata.maxFileSize:'';
         d.uploadConf = d.conf;
+        var value = d.conf.value || {};
         d.previewConf = {
-            value : d.conf.value || {}
+            value : value,
+            cRef : this._uid + 'preview'
         }
-        d.value = JSON.stringify(d.conf.value).replace(/\\"/g, '"');
+        d.value = JSON.stringify(value).replace(/\\"/g, '"');
         // d.previewConf = {
         //     value : d.conf.value,
         //     metadata :  {
@@ -3595,12 +3598,17 @@ Vue.component('r-upload-ajax',{
                 //         mimetype : data.result.mimetype
                 //     }
                 // };
-                that.$set(that,'previewConf',data.result);
+
+                console.log('data.result',data.result);
+                //that.$crud.cRefs[that._uid+'preview'].value = data.result;
+
+
+                //that.$set(that,'previewConf', {value : data.result});
                 that.lastUpload = Utility.cloneObj(data.result);
 
                 //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));
-                that.value = JSON.stringify(data.result).replace(/\\"/g, '"');
+                that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
                 RAJAX = that;
                 // for (var k in data.result) {
                 //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
@@ -3619,58 +3627,45 @@ Vue.component('r-upload-ajax',{
 Vue.component('r-preview',{
     extends : crud.components.renders.rBase,
     template : '#r-preview-template',
-    mounted : function() {
-        var that = this;
-        this._draw();
-    },
+    // mounted : function() {
+    //     var that = this;
+    //     this._draw();
+    // },
     data : function () {
         var that = this;
         var d = that.defaultData();
-        d.type = null;
-        d.url = null;
-        d.mimetype = null;
+        if (!d.value)
+            d.value = {};
+        //d.url = null;
+        //d.mimetype = null;
         d.icon = false;
         d.iconClass = '';
-        var value = d.value || {};
-        for (var k in value) {
-            d[k] = value[k];
-        }
+        // var value = d.value || {};
+        // for (var k in value) {
+        //     d[k] = value[k];
+        // }
+        //d.type = that.getType()
         return d;
     },
     methods : {
-        getType : function (mimetype) {
+        getType : function () {
             var that = this;
-            switch (mimetype) {
-                case 'image/jpg':
+            if (!that.value.mimetype)
+                return null;
+            switch (that.value.mimetype) {
+                case 'image/jpeg':
+                case 'image/png':
                     return 'image';
-                    break;
                 case 'application/pdf':
                     that.icon=true;
                     that.iconClass = that.$crud.icons.mimetypes['default'];
-                    if (that.$crud.icons.mimetypes[ext])
-                        that.iconClass = that.$crud.icons.mimetypes[ext];
+                    if (that.$crud.icons.mimetypes[that.value.mimetype])
+                        that.iconClass = that.$crud.icons.mimetypes[that.value.mimetype];
                     return 'doc';
+                default:
+                    console.warn('mimetype invalid ' + that.value.mimetype)
+                    return null;
             }
-        },
-        _getExt : function () {
-            var that = this;
-            //console.log('value',that.value);
-            if (!that.url || that.url.lastIndexOf('.') < 0)
-                return null;
-            return this.url.toLowerCase().substr(this.url.lastIndexOf('.'));
-        }
-    },
-    watch : {
-        cConf : {
-            handler (val) {
-                this.conf = this.cConf;
-                for (var k in this.cConf) {
-                    this[k] = this.cConf[k];
-                }
-                console.log('watch ocnf',this.cConf)
-                this._draw()
-            },
-            deep:true,
         }
     }
 })
