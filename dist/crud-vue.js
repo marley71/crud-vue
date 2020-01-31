@@ -390,7 +390,7 @@ crud = {
         },
         insert : {
             method      : "get",
-            url         :'/foorm/{modelName}/new',
+            url         :'/foorm/{modelName}/insert',
             resultType  : 'record',
             protocol    : 'record',
             type : 'create',
