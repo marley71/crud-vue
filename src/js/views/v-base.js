@@ -183,6 +183,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 else
                     conf = this.cConf;
             } else {
+                console.log('Check exist default conf '+ 'Model'+Utility.upperCaseFirst(modelName));
                 if (window['Model'+Utility.upperCaseFirst(modelName)]) {
                     var cm = window['Model'+Utility.upperCaseFirst(modelName)];
                     if (cm[type])
@@ -191,7 +192,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                         conf = cm['edit'];
                 }
             }
-            if (!conf && !defaltConf)
+            if (!conf)
                 throw "Nessuna configurazione trovata per questa view";
 
             var finalConf = Utility.confMerge(defaltConf,conf);

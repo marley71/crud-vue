@@ -331,32 +331,7 @@ var Utility = {
 	getURLParameterRegexp : function(reg) {
 		return decodeURIComponent((new RegExp('[?|&]' + reg + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 	},
-	getAllUrlParams : function (url) {
-		var params = {};
-		var tmp = url?url.split('?'):location.search.split("?");
 
-
-		if (tmp.length != 2)
-			return params
-		var sparams = tmp[1].split("&");
-		for(var i in sparams) {
-			var tmp = sparams[i].split("=");
-			if (tmp.length != 2)
-				continue;
-			var name = tmp[0];
-			var value = tmp[1];
-			if (name.indexOf('[]') >= 0) {
-				if (!params[name])
-					params[name] = [];
-				params[name].push(decodeURIComponent(value) )
-			} else {
-				params[name] = decodeURIComponent(value);
-			}
-
-		}
-		return params;
-
-	},
     /**
      * crea un copia di un oggetto complesso utilizzando stringify
      * di JSON

@@ -573,6 +573,40 @@ dialogs_interface = {
 };
 core_interface = {
     methods : {
+
+        /**
+         * ritorna i parametri sotto forma di vettore associativo di un url altrimenti di location.search
+         * @param url
+         */
+        getAllUrlParams : function (url) {
+            var params = {};
+            var tmp = url?url.split('?'):location.search.split("?");
+
+
+            if (tmp.length != 2)
+                return params
+            var sparams = tmp[1].split("&");
+            for(var i in sparams) {
+                var tmp = sparams[i].split("=");
+                if (tmp.length != 2)
+                    continue;
+                var name = tmp[0];
+                var value = tmp[1];
+                if (name.indexOf('[]') >= 0) {
+                    if (!params[name])
+                        params[name] = [];
+                    params[name].push(decodeURIComponent(value) )
+                } else {
+                    params[name] = decodeURIComponent(value);
+                }
+
+            }
+            console.log('getAllUrlParams',url,params);
+            return params;
+
+        },
+
+
         /**
          * carica un vettore di risorse, al fine caricamento chiama la callback
          * @param resources
@@ -1627,32 +1661,7 @@ var Utility = {
 	getURLParameterRegexp : function(reg) {
 		return decodeURIComponent((new RegExp('[?|&]' + reg + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 	},
-	getAllUrlParams : function (url) {
-		var params = {};
-		var tmp = url?url.split('?'):location.search.split("?");
 
-
-		if (tmp.length != 2)
-			return params
-		var sparams = tmp[1].split("&");
-		for(var i in sparams) {
-			var tmp = sparams[i].split("=");
-			if (tmp.length != 2)
-				continue;
-			var name = tmp[0];
-			var value = tmp[1];
-			if (name.indexOf('[]') >= 0) {
-				if (!params[name])
-					params[name] = [];
-				params[name].push(decodeURIComponent(value) )
-			} else {
-				params[name] = decodeURIComponent(value);
-			}
-
-		}
-		return params;
-
-	},
     /**
      * crea un copia di un oggetto complesso utilizzando stringify
      * di JSON
@@ -2067,6 +2076,12 @@ const actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
 
+    mounted : function() {
+        var that = this;
+        if (that.controlType == 'link') {
+            that._execute();
+        }
+    },
     computed :  {
         _disabled : function () {
             var that = this;
@@ -2098,6 +2113,8 @@ const actionBase = Vue.component('action-base', {
                 css: 'btn btn-outline-secondary',
                 icon : 'fa fa-help',
                 text : '',
+                controlType : 'button',
+                href : '',
                 //view : that.$parent,
                 // execute : function () {
                 //     alert('definire execute')
@@ -3854,6 +3871,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 else
                     conf = this.cConf;
             } else {
+                console.log('Check exist default conf '+ 'Model'+Utility.upperCaseFirst(modelName));
                 if (window['Model'+Utility.upperCaseFirst(modelName)]) {
                     var cm = window['Model'+Utility.upperCaseFirst(modelName)];
                     if (cm[type])
@@ -3862,7 +3880,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                         conf = cm['edit'];
                 }
             }
-            if (!conf && !defaltConf)
+            if (!conf)
                 throw "Nessuna configurazione trovata per questa view";
 
             var finalConf = Utility.confMerge(defaltConf,conf);

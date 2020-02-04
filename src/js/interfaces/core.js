@@ -1,5 +1,39 @@
 core_interface = {
     methods : {
+
+        /**
+         * ritorna i parametri sotto forma di vettore associativo di un url altrimenti di location.search
+         * @param url
+         */
+        getAllUrlParams : function (url) {
+            var params = {};
+            var tmp = url?url.split('?'):location.search.split("?");
+
+
+            if (tmp.length != 2)
+                return params
+            var sparams = tmp[1].split("&");
+            for(var i in sparams) {
+                var tmp = sparams[i].split("=");
+                if (tmp.length != 2)
+                    continue;
+                var name = tmp[0];
+                var value = tmp[1];
+                if (name.indexOf('[]') >= 0) {
+                    if (!params[name])
+                        params[name] = [];
+                    params[name].push(decodeURIComponent(value) )
+                } else {
+                    params[name] = decodeURIComponent(value);
+                }
+
+            }
+            console.log('getAllUrlParams',url,params);
+            return params;
+
+        },
+
+
         /**
          * carica un vettore di risorse, al fine caricamento chiama la callback
          * @param resources

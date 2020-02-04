@@ -2,6 +2,12 @@ const actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
 
+    mounted : function() {
+        var that = this;
+        if (that.controlType == 'link') {
+            that._execute();
+        }
+    },
     computed :  {
         _disabled : function () {
             var that = this;
@@ -33,6 +39,8 @@ const actionBase = Vue.component('action-base', {
                 css: 'btn btn-outline-secondary',
                 icon : 'fa fa-help',
                 text : '',
+                controlType : 'button',
+                href : '',
                 //view : that.$parent,
                 // execute : function () {
                 //     alert('definire execute')
