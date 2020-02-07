@@ -62,7 +62,7 @@ crud = {
                 that.$crud.confirmDialog(that.$lang.app['conferma-delete'] ,{
                     ok : function () {
 
-                        var r = Route.factory('delete');
+                        var r = that.$crud.routeFactory('delete');
                         //r.setValues(that.view);
                         r.values = {
                             modelName: that.view.cModel,
@@ -161,11 +161,14 @@ crud = {
             execute : function () {
                 //console.log('action-search',this.view,this.view.targetId);
                 if (this.view && this.view.targetRef) {
-                    var ref = this.view.$parent.$refs[this.view.targetRef];
-                    if (!ref) {
-                        console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
-                        throw "errore";
-                    }
+                    console.log('target ref',this.view.targetRef);
+                    var ref = this.$crud.cRefs[this.view.targetRef];
+
+                    // var ref = this.view.$parent.$refs[this.view.targetRef];
+                    // if (!ref) {
+                    //     console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
+                    //     throw "errore";
+                    // }
                     var formData = this.view.getFormData();
 
                     //var form = jQuery(this.view.$el).find('form');
@@ -364,6 +367,14 @@ crud = {
             resultType  : 'record',
             protocol    : 'record',
             type : 'read',
+        },
+        delete : {
+            method      : "post",
+            url         :'/foorm/{modelName}/{pk}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'delete',
+            extraParams : {_method:'DELETE'}
         },
     },
     cRefs : {},

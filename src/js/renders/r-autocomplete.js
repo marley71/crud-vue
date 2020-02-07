@@ -23,7 +23,7 @@ Vue.component('r-autocomplete', {
             var that = this;
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
                 source : function(term,suggest) {
-                    jQuery.getJSON(that._createUrl(),{query:term},function (json) {
+                    jQuery.getJSON(that._createUrl(),{term:term},function (json) {
                         var suggestions = [];
                         that.suggestValues = {};
                         for (var i in json.result) {

@@ -131,7 +131,7 @@ crud = {
                 that.$crud.confirmDialog(that.$lang.app['conferma-delete'] ,{
                     ok : function () {
 
-                        var r = Route.factory('delete');
+                        var r = that.$crud.routeFactory('delete');
                         //r.setValues(that.view);
                         r.values = {
                             modelName: that.view.cModel,
@@ -230,11 +230,14 @@ crud = {
             execute : function () {
                 //console.log('action-search',this.view,this.view.targetId);
                 if (this.view && this.view.targetRef) {
-                    var ref = this.view.$parent.$refs[this.view.targetRef];
-                    if (!ref) {
-                        console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
-                        throw "errore";
-                    }
+                    console.log('target ref',this.view.targetRef);
+                    var ref = this.$crud.cRefs[this.view.targetRef];
+
+                    // var ref = this.view.$parent.$refs[this.view.targetRef];
+                    // if (!ref) {
+                    //     console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
+                    //     throw "errore";
+                    // }
                     var formData = this.view.getFormData();
 
                     //var form = jQuery(this.view.$el).find('form');
@@ -434,6 +437,14 @@ crud = {
             protocol    : 'record',
             type : 'read',
         },
+        delete : {
+            method      : "post",
+            url         :'/foorm/{modelName}/{pk}',
+            resultType  : 'record',
+            protocol    : 'record',
+            type : 'delete',
+            extraParams : {_method:'DELETE'}
+        },
     },
     cRefs : {},
     components : {
@@ -574,6 +585,13 @@ dialogs_interface = {
 core_interface = {
     methods : {
 
+        routeFactory : function(routeName) {
+            var that = this;
+            if (! that.$crud.routes[routeName])
+                throw "routeName " + routeName + ' not found';
+            var r = new Route(that.$crud.routes[routeName]);
+            return r;
+        },
         /**
          * ritorna i parametri sotto forma di vettore associativo di un url altrimenti di location.search
          * @param url
@@ -2464,7 +2482,7 @@ crud.components.renders.rBase = Vue.component('r-base', {
         for (var k in _conf.methods) {
             //console.log('r-base implements methods',k);
             that[k] = function () {
-                _conf.methods[k].apply(that,this.arguments);
+                return _conf.methods[k].apply(that,this.arguments);
             }
         }
         if (_conf.resources && _conf.resources.length) {
@@ -2545,6 +2563,14 @@ crud.components.renders.rBase = Vue.component('r-base', {
     //     }
     // },
     template: '<div>render base</div>'
+});
+
+crud.components.renders.rCustom = Vue.component('r-custom', {
+    extends : crud.components.renders.rBase,
+    mounted : function() {
+        this.value = this.getContent();
+    },
+    template: '#r-custom-template',
 });
 
 Vue.component('r-render', {
@@ -2703,7 +2729,7 @@ Vue.component('r-autocomplete', {
             var that = this;
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
                 source : function(term,suggest) {
-                    jQuery.getJSON(that._createUrl(),{query:term},function (json) {
+                    jQuery.getJSON(that._createUrl(),{term:term},function (json) {
                         var suggestions = [];
                         that.suggestValues = {};
                         for (var i in json.result) {
@@ -4101,7 +4127,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var data = that.data;
             var conf = that.conf;
             var keys = that.keys;
-
+            console.log('keys',keys);
             for (var i in data.value) {
                 renders.push({});
                 recordActions.push({});
@@ -4110,7 +4136,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     var dconf = that._defaultRenderConfig(key);
                     dconf.cRef = that.$crud.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
-                    dconf.value = null;
+                    if (! ('value' in dconf))
+                        dconf.value = null;
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
                     dconf.name = that.getFieldName(key);

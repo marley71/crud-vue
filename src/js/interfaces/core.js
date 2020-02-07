@@ -1,6 +1,13 @@
 core_interface = {
     methods : {
 
+        routeFactory : function(routeName) {
+            var that = this;
+            if (! that.$crud.routes[routeName])
+                throw "routeName " + routeName + ' not found';
+            var r = new Route(that.$crud.routes[routeName]);
+            return r;
+        },
         /**
          * ritorna i parametri sotto forma di vettore associativo di un url altrimenti di location.search
          * @param url

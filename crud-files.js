@@ -25,6 +25,7 @@ var crudJsFiles = [
 
 
     'src/js/renders/r-base.js',
+    'src/js/renders/r-custom.js',
     'src/js/renders/r-render.js',
     'src/js/renders/r-input.js',
     'src/js/renders/r-input-helped.js',
@@ -83,6 +84,7 @@ var crudHtmlFiles = [
     //'src/templates/misc/c-wait.html',
 
     'src/templates/renders/r-render.html',
+    'src/templates/renders/r-custom.html',
     'src/templates/renders/r-input.html',
     'src/templates/renders/r-input-helped.html',
     'src/templates/renders/r-hidden.html',
