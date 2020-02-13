@@ -35,7 +35,7 @@ core_interface = {
                 }
 
             }
-            console.log('getAllUrlParams',url,params);
+            //console.log('getAllUrlParams',url,params);
             return params;
 
         },
