@@ -36,6 +36,7 @@ const CrudApp = Vue.extend({
             if (that.$crud.components.libs[k].js)
                 resources.push(that.$crud.components.libs[k].js);
         }
+        console.log('resources',resources)
         that.$crud.loadResources(resources,function () {
             console.log('monto app');
 

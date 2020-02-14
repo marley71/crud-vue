@@ -671,7 +671,7 @@ core_interface = {
             var ext = re.exec(fileName)[1];
             var realPath = fileName;
             if (fileName.indexOf('http') != 0) {
-                realPath = fileName.charAt(0) == '/' ? fileName : self.pluginsPath + fileName;
+                realPath = ( (fileName.charAt(0) == '/') || (fileName.indexOf('../') === 0) ) ? fileName : self.pluginsPath + fileName;
             }
             if (ext == 'js') {
                 core_interface._loadScript(realPath,_callback);
@@ -2589,17 +2589,16 @@ Vue.component('r-input', {
 Vue.component('r-input-helped', {
     extends : crud.components.renders.rBase,
     template: '#r-input-helped-template',
-    data : function () {
-        var d = this.defaultData();
-        return d;
-    },
+    // data : function () {
+    //     var d = this.defaultData();
+    //     return d;
+    // },
 
-    methods : {
-        setValue : function (key) {
-            this.value = key;//this.conf.metadata.domainValues[key];
-            //jQuery(this.$el)
-        }
-    }
+    // methods : {
+    //     setValue : function (key) {
+    //         this.value = key;
+    //     }
+    // }
 
 });
 Vue.component('r-hidden', {
@@ -2644,32 +2643,39 @@ Vue.component('r-select',{
     extends : crud.components.renders.rBase,
     template: '#r-select-template',
     data :  function () {
-        var metadata = this.cConf.metadata || {};
-        var dV = metadata.domainValues || {};
-        var dVO = metadata.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
-        return {
-            name : this.cConf.name,
-            value: this.cConf.value,
-            domainValues : dV,
-            domainValuesOrder : dVO
-        }
+        var d = this.defaultData();
+        d.domainValues = d.domainValues || {};
+        d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(d.domainValues);
+        return d;
+        // return {
+        //     name : this.cConf.name,
+        //     value: this.cConf.value,
+        //     domainValues : dV,
+        //     domainValuesOrder : dVO
+        // }
     },
 });
 
 
 Vue.component('r-radio',{
     extends : crud.components.renders.rBase,
-    data :  function () {
-        var metadata = this.cConf.metadata || {};
-        var dV = metadata.domainValues || {};
-        var dVO = metadata.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
-        return {
-            name : this.cConf.name,
-            value: this.cConf.value,
-            domainValues : dV,
-            domainValuesOrder : dVO
-        }
+    data : function() {
+        var d = this.defaultData();
+        var dV = d.domainValues || {};
+        d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
+        return d;
     },
+
+    // data :  function () {
+    //     var dV = this.conf.domainValues || {};
+    //     var dVO = this.cConf.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
+    //     return {
+    //         name : this.cConf.name,
+    //         value: this.cConf.value,
+    //         domainValues : dV,
+    //         domainValuesOrder : dVO
+    //     }
+    // },
     template: '#r-radio-template',
 });
 
@@ -2678,24 +2684,15 @@ Vue.component('r-checkbox',{
     extends : crud.components.renders.rBase,
     data :  function () {
         var that = this;
-        //console.log('c-select',this.cData);
         var d = that.defaultData();
-        console.log('checkbox',d);
-        var dV = d.conf.metadata.domainValues;
-        var dVO = d.conf.metadata.domainValuesOrder?d.conf.metadata.domainValuesOrder:Object.keys(dV);
-        d.value = Array.isArray(d.conf.value)?d.conf.value:[d.conf.value];
+        var dV = d.domainValues;
+        var dVO = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
+        d.value = Array.isArray(d.value)?d.value:[d.value];
         d.domainValues = dV;
         d.domainValuesOrder = dVO;
         return d;
     },
     methods : {
-        // inArray : function (v) {
-        //     if (!this.value || !Array.isArray(this.value))
-        //         return false;
-        //     console.log('inArray ', v,(this.value.map(String).indexOf(""+v)));
-        //     return (this.value.map(String).indexOf(""+v) >= 0)
-        //
-        // },
         getFieldName : function () {
             return this.cKey + '[]';
         }
@@ -2731,7 +2728,7 @@ Vue.component('r-autocomplete', {
                 source : function(term,suggest) {
                     jQuery.getJSON(that._createUrl(),{term:term},function (json) {
                         var suggestions = [];
-                        that.suggestValues = {};
+                        //that.suggestValues = {};
                         for (var i in json.result) {
                             // var s = "";
                             // for (var k in that.metadata.fields) {
@@ -2745,34 +2742,24 @@ Vue.component('r-autocomplete', {
                     })
                 },
                 onSelect: function(e, term, item){
-                    console.log('selected',that.suggestValues[term]);
+                    console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
                     that.value = that.suggestValues[term];
                     that.label = term;
                     that.change();
-                    //alert('Item "'+item.data('langname')+' ('+item.data('lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
-
                 }
-                // resolverSettings: {
-                //     url: that._createUrl()
-                // },
-                // valueKey : 'email'
             });
-            //{
-            //data: that.conf.metadata.domainValues
-
-            //});
         },
         _createUrl : function () {
             var that = this;
-            var r = Route.factory(that.conf.routeName,{values : {modelName:that.conf.metadata.autocompleteModel} });
+            var r = Route.factory(that.conf.routeName,{values : {modelName:that.conf.model} });
 
             //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
             var url = that.url?that.url:r.getUrl();
             url+= '?';
 
-            if (that.conf.metadata.fields) {
-                for(var f in that.conf.metadata.fields) {
-                    url+="field[]="+that.conf.metadata.fields[f]+"&";
+            if (that.conf.fields) {
+                for(var f in that.conf.fields) {
+                    url+="field[]="+that.conf.fields[f]+"&";
                 }
             }
             /* @TODO se metto la description diventa difficile cambiare la
@@ -2782,9 +2769,9 @@ Vue.component('r-autocomplete', {
              }
              }
              */
-            url += that.conf.metadata.separator ? '&separator=' + that.conf.metadata.separator : '';
-            url += that.conf.metadata.n_items ? '&n_items=' + that.conf.metadata.n_items : '';
-            url += that.conf.metadata.method ? '&method=' + that.conf.metadata.method: '';
+            url += that.conf.separator ? '&separator=' + that.conf.separator : '';
+            url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
+            url += that.conf.method ? '&method=' + that.conf.method: '';
             return url;
         },
 
@@ -2792,13 +2779,14 @@ Vue.component('r-autocomplete', {
             var that = this;
             that.value = '';
             that.label = '';
+            that.suggestValues = {};
             jQuery(that.$el).find('[c-autocomplete]').val('');
         },
         _getLabel : function () {
 
             var that = this;
             var r = new Route(that.$crud.routes.view);
-            r.values.modelName = that.metadata.autocompleteModel;
+            r.values.modelName = that.conf.model;
             r.values.pk = that.value;
             var lb = '';
             Server.route(r,function (json) {
@@ -2812,8 +2800,8 @@ Vue.component('r-autocomplete', {
         _getSuggestion: function(rowData) {
             var that = this;
             var s = "";
-            for (var k in that.metadata.fields) {
-                s += (s?' ':'') + rowData[that.metadata.fields[k]];
+            for (var k in that.conf.fields) {
+                s += (s?' ':'') + rowData[that.conf.fields[k]];
             }
             return s
         }
@@ -2842,9 +2830,7 @@ Vue.component('r-date-select', {
             var d = moment(that.value?that.value:that.conf.value);
             var cd = {
                 value: d.date(),
-                metadata: {
-                    domainValues: {}
-                },
+                domainValues: {},
                 methods: {
                     change: function () {
                         that.changed();
@@ -2852,11 +2838,11 @@ Vue.component('r-date-select', {
                 }
             };
             for (let i=1;i<=d.daysInMonth();i++) {
-                cd.metadata.domainValues[i] = i;
+                cd.domainValues[i] = i;
             }
             if (d.date() > d.daysInMonth())
                 cd.value = 1;
-            cd.metadata.domainValuesOrder = Object.keys(cd.metadata.domainValues);
+            cd.domainValuesOrder = Object.keys(cd.domainValues);
             return cd;
         },
         cMonth : function () {
@@ -2864,9 +2850,7 @@ Vue.component('r-date-select', {
             var d = moment(that.value ? that.value : that.conf.value);
             var cm = {
                 value: d.month() + 1,
-                metadata: {
-                    domainValues: {}
-                },
+                domainValues: {},
                 methods: {
                     change: function () {
                         that.changed();
@@ -2874,7 +2858,7 @@ Vue.component('r-date-select', {
                 }
             };
             for (let i=1;i<=12;i++) {
-                cm.metadata.domainValues[i] = i;
+                cm.domainValues[i] = i;
             }
             return cm;
         },
@@ -2883,10 +2867,8 @@ Vue.component('r-date-select', {
             var d = moment(that.value ? that.value : that.conf.value);
             var cy = {
                 value : d.year(),
-                metadata : {
-                    domainValues: {
+                domainValues: {
 
-                    }
                 },
                 methods: {
                     change : function () {
@@ -2897,7 +2879,7 @@ Vue.component('r-date-select', {
             var minY = that.cConf.minYear?that.cConf.minYear:d.year()-5;
             var maxY = that.cConf.maxYear?that.cConf.maxYear:d.year()+5;
             for (let i=minY;i<=maxY;i++) {
-                cy.metadata.domainValues[i] = i;
+                cy.domainValues[i] = i;
             }
             return cy;
         }
@@ -3125,7 +3107,7 @@ Vue.component('r-swap', {
         d.iconClass = 'fa fa-circle';
         d.title = "swap";
         d.swapType = d.swapType?d.swapType:'icon';
-        d.domainValues = {
+        var defaultDomainValues = {
             icon : {
                 0 : 'fa fa-circle text-danger',
                 1 : 'fa fa-circle text-success'
@@ -3135,26 +3117,22 @@ Vue.component('r-swap', {
                 1 : 'Si'
             }
         }
-        var dV = (d.metadata && d.metadata.domainValues)? d.metadata.domainValues:d.domainValues[d.swapType];
+        var dV = (d.domainValues)? d.domainValues:defaultDomainValues[d.swapType];
+        console.log('dV',dV);
         var keys = Object.keys(dV).map(String);
         if (keys.indexOf(""+d.value) >= 0) {
             d.slot = dV[""+d.value];
         } else {
             d.slot = dV[keys[0]];
         }
-        //d.slot = '';
+        d.domainValues = dV;
         return d;
     },
-    // computed : {
-    //     domainValues : function () {
-    //
-    //     }
-    // },
     methods : {
         getDV : function() {
             var that = this;
             console.log('swaptype',that.swapType,'domainValues',that.domainValues)
-            return (that.conf.metadata && that.conf.metadata.domainValues)? that.conf.metadata.domainValues:that.domainValues[that.swapType];
+            return (that.domainValues)? that.domainValues:that.domainValues[that.swapType];
 
         },
         swap : function () {
@@ -3178,7 +3156,7 @@ Vue.component('r-swap', {
             var dV = that.getDV();
             //var viewConf = self._viewConfig[viewKey];
             r.values = {
-                modelName: that.conf.metadata.modelName,
+                modelName: that.conf.model,
                 field : that.name, //that.conf.key?that.conf.key:that.cKey,
                 value : key
             };
@@ -3259,23 +3237,25 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
 
             ];
         }
+        d.routeName = d.conf.routeName || 'autocomplete';
         return d;
     },
     methods : {
         afterLoadResources : function () {
             var that = this;
             console.log('b2 afterloadresources')
-            var r = Route.factory('autocomplete',{
-                values : {
-                    modelName : that.conf.metadata.autocompleteModel
-                }
-            });
+            // var r = Route.factory('autocomplete',{
+            //     values : {
+            //         modelName : that.model
+            //     }
+            // });
+            // r.params['field[]'] = 'email'
             var data = [];
             if (that.value) {
                 data.push({
                     id : that.value,
                     selected : true,
-                    text : that._getLabel(that.conf.metadata.modelData)
+                    text : that._getLabel(that.modelData)
                 });
                 // that.value.selected = true;
                 // that.value.text = that._getLabel(that.value);
@@ -3286,7 +3266,7 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
             jQuery(that.$el).find('[c-select2]').select2({
                 data : data,
                 ajax : {
-                    url : r.getUrl(),
+                    url : that._createUrl(),
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -3320,8 +3300,8 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
         _getLabel : function(value) {
             var that  =this;
             var label = "";
-            for (var i in that.conf.metadata.labelFields) {
-                label += value[that.conf.metadata.labelFields[i]] + " ";
+            for (var i in that.labelFields) {
+                label += value[that.labelFields[i]] + " ";
             }
             return label;
         },
@@ -3330,6 +3310,32 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
             var selValue = jQuery(that.$el).find('[c-select2]').select2('data');
             return selValue.length>0?selValue[0]['id']:null;
 
+        },
+
+        _createUrl : function () {
+            var that = this;
+            var r = Route.factory(that.routeName,{values : {modelName:that.model} });
+
+            //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
+            var url = that.url?that.url:r.getUrl();
+            url+= '?';
+
+            if (that.conf.fields) {
+                for(var f in that.conf.fields) {
+                    url+="field[]="+that.conf.fields[f]+"&";
+                }
+            }
+            /* @TODO se metto la description diventa difficile cambiare la
+             if (that.model_description) {
+             for(var f in that.model_description) {
+             url+="description[]="+that.model_description[f]+"&";
+             }
+             }
+             */
+            url += that.conf.separator ? '&separator=' + that.conf.separator : '';
+            url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
+            url += that.conf.method ? '&method=' + that.conf.method: '';
+            return url;
         },
     }
 
@@ -3352,11 +3358,11 @@ Vue.component('r-b2m-select2', {
         afterLoadResources : function () {
             var that = this;
             console.log('b2 afterloadresources')
-            var r = Route.factory('autocomplete',{
-                values : {
-                    modelName : that.conf.metadata.autocompleteModel
-                }
-            });
+            // var r = Route.factory('autocomplete',{
+            //     values : {
+            //         modelName : that.conf.metadata.autocompleteModel
+            //     }
+            // });
             var selected = [];
             for (var i in that.value) {
                 selected.push({
@@ -3370,7 +3376,7 @@ Vue.component('r-b2m-select2', {
             jQuery(that.$el).find('[c-select2]').select2({
                 data : selected,
                 ajax : {
-                    url : r.getUrl(),
+                    url : that._createUrl(),
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -3379,13 +3385,13 @@ Vue.component('r-b2m-select2', {
                             page: params.page
                         };
                     },
-                    processResults: function (data) {
+                    processResults: function (json) {
                         // Tranforms the top-level key of the response object from 'items' to 'results'
                         var items = [];
-                        for (var i in data.result) {
+                        for (var i in json.result) {
                             items.push({
-                                id : data.result[i].id,
-                                text : that._getLabel(data.result[i])
+                                id : json.result[i].id,
+                                text : that._getLabel(json.result[i])
                             });
                         }
                         return {
@@ -3393,7 +3399,7 @@ Vue.component('r-b2m-select2', {
                         };
                     },
                 },
-                placeholder: that.placeholder?self.placeholder:"Seleziona",
+                placeholder: that.placeholder?that.placeholder:"Seleziona",
             });
             jQuery(that.$el).find('[c-select2]').on('select2:select', function () {
                 that._renderHidden();
@@ -3417,8 +3423,8 @@ Vue.component('r-b2m-select2', {
             var that = this;
             var values = that.getValue();
             that.jQe('[c-selected-items]').html(' ');
-            for (var f in that.metadata.hiddenFields) {
-                var field = that.metadata.hiddenFields[f];
+            for (var f in that.hiddenFields) {
+                var field = that.hiddenFields[f];
                 for (var i in values) {
                     jQuery('<input type="hidden">').attr({
                         'name': that.getFieldName() + '-' + field + '[]',
@@ -3434,8 +3440,8 @@ Vue.component('r-b2m-select2', {
             var values = [];
             for (var i in selValues) {
                 var item = {};
-                for (var f in that.metadata.hiddenFields) {
-                    var field = that.metadata.hiddenFields[f];
+                for (var f in that.hiddenFields) {
+                    var field = that.hiddenFields[f];
                     item[field] = selValues[i][field];
                 }
                 values.push(item);
@@ -3452,8 +3458,8 @@ crud.components.renders.rUpload = Vue.component('r-upload',{
         var d = this.defaultData();
         d.conf = this.cConf;
         console.log('r-upload data',d);
-        d.extensions = d.conf.metadata.extensions?d.conf.metadata.extensions:'';
-        d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
+        d.extensions = d.conf.extensions?d.conf.extensions:'';
+        d.maxFileSize = d.conf.maxFileSize?d.conf.maxFileSize:'';
         d.error = false;
         d.errorMessage = '';
         return d;
@@ -3527,12 +3533,12 @@ Vue.component('r-upload-ajax',{
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
-        d.conf = this.cConf || {};
-        var metadata = d.conf.metadata || {};
-        d.extensions = metadata.extensions?metadata.extensions:[];
-        d.maxFileSize = metadata.maxFileSize?metadata.maxFileSize:'';
+        //d.conf = this.cConf || {};
+        //var metadata = d.conf.metadata || {};
+        d.extensions = d.extensions?d.extensions:[];
+        d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
         d.uploadConf = d.conf;
-        var value = d.conf.value || {};
+        var value = d.value || {};
         d.previewConf = {
             value : value,
             cRef : this._uid + 'preview'
@@ -3600,9 +3606,9 @@ Vue.component('r-upload-ajax',{
             var fdata = new FormData();
             //data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
             fdata.append('file',fDesc)
-            console.log('ajaxFields',that.conf.metadata.ajaxFields)
-            for (var k in that.conf.metadata.ajaxFields)
-                fdata.append(k,that.conf.metadata.ajaxFields[k])
+            console.log('ajaxFields',that.ajaxFields)
+            for (var k in that.ajaxFields)
+                fdata.append(k,that.ajaxFields[k])
 
             jQuery.ajax({
                 url: realUrl,
@@ -3652,12 +3658,14 @@ Vue.component('r-upload-ajax',{
                 //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));
                 that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
-                RAJAX = that;
+
                 // for (var k in data.result) {
                 //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
                 //     jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
                 // }
-
+                var refPreview = that._uid + 'preview';
+                //console.log('refPreview',refPreview,that.$crud.cRefs[refPreview])
+                that.$crud.cRefs[refPreview].value = data.result;
             }).fail(function(data, error, msg){
                 console.log("An error occurred, the files couldn't be sent!");
                 that.lastUpload = false;
@@ -5149,6 +5157,7 @@ const CrudApp = Vue.extend({
             if (that.$crud.components.libs[k].js)
                 resources.push(that.$crud.components.libs[k].js);
         }
+        console.log('resources',resources)
         that.$crud.loadResources(resources,function () {
             console.log('monto app');
 

@@ -16,11 +16,11 @@ Vue.component('r-b2m-select2', {
         afterLoadResources : function () {
             var that = this;
             console.log('b2 afterloadresources')
-            var r = Route.factory('autocomplete',{
-                values : {
-                    modelName : that.conf.metadata.autocompleteModel
-                }
-            });
+            // var r = Route.factory('autocomplete',{
+            //     values : {
+            //         modelName : that.conf.metadata.autocompleteModel
+            //     }
+            // });
             var selected = [];
             for (var i in that.value) {
                 selected.push({
@@ -34,7 +34,7 @@ Vue.component('r-b2m-select2', {
             jQuery(that.$el).find('[c-select2]').select2({
                 data : selected,
                 ajax : {
-                    url : r.getUrl(),
+                    url : that._createUrl(),
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -43,13 +43,13 @@ Vue.component('r-b2m-select2', {
                             page: params.page
                         };
                     },
-                    processResults: function (data) {
+                    processResults: function (json) {
                         // Tranforms the top-level key of the response object from 'items' to 'results'
                         var items = [];
-                        for (var i in data.result) {
+                        for (var i in json.result) {
                             items.push({
-                                id : data.result[i].id,
-                                text : that._getLabel(data.result[i])
+                                id : json.result[i].id,
+                                text : that._getLabel(json.result[i])
                             });
                         }
                         return {
@@ -57,7 +57,7 @@ Vue.component('r-b2m-select2', {
                         };
                     },
                 },
-                placeholder: that.placeholder?self.placeholder:"Seleziona",
+                placeholder: that.placeholder?that.placeholder:"Seleziona",
             });
             jQuery(that.$el).find('[c-select2]').on('select2:select', function () {
                 that._renderHidden();
@@ -81,8 +81,8 @@ Vue.component('r-b2m-select2', {
             var that = this;
             var values = that.getValue();
             that.jQe('[c-selected-items]').html(' ');
-            for (var f in that.metadata.hiddenFields) {
-                var field = that.metadata.hiddenFields[f];
+            for (var f in that.hiddenFields) {
+                var field = that.hiddenFields[f];
                 for (var i in values) {
                     jQuery('<input type="hidden">').attr({
                         'name': that.getFieldName() + '-' + field + '[]',
@@ -98,8 +98,8 @@ Vue.component('r-b2m-select2', {
             var values = [];
             for (var i in selValues) {
                 var item = {};
-                for (var f in that.metadata.hiddenFields) {
-                    var field = that.metadata.hiddenFields[f];
+                for (var f in that.hiddenFields) {
+                    var field = that.hiddenFields[f];
                     item[field] = selValues[i][field];
                 }
                 values.push(item);

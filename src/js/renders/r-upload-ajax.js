@@ -3,12 +3,12 @@ Vue.component('r-upload-ajax',{
     template : '#r-upload-ajax-template',
     data : function () {
         var d = this.defaultData();
-        d.conf = this.cConf || {};
-        var metadata = d.conf.metadata || {};
-        d.extensions = metadata.extensions?metadata.extensions:[];
-        d.maxFileSize = metadata.maxFileSize?metadata.maxFileSize:'';
+        //d.conf = this.cConf || {};
+        //var metadata = d.conf.metadata || {};
+        d.extensions = d.extensions?d.extensions:[];
+        d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
         d.uploadConf = d.conf;
-        var value = d.conf.value || {};
+        var value = d.value || {};
         d.previewConf = {
             value : value,
             cRef : this._uid + 'preview'
@@ -76,9 +76,9 @@ Vue.component('r-upload-ajax',{
             var fdata = new FormData();
             //data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
             fdata.append('file',fDesc)
-            console.log('ajaxFields',that.conf.metadata.ajaxFields)
-            for (var k in that.conf.metadata.ajaxFields)
-                fdata.append(k,that.conf.metadata.ajaxFields[k])
+            console.log('ajaxFields',that.ajaxFields)
+            for (var k in that.ajaxFields)
+                fdata.append(k,that.ajaxFields[k])
 
             jQuery.ajax({
                 url: realUrl,
@@ -128,12 +128,14 @@ Vue.component('r-upload-ajax',{
                 //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));
                 that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
-                RAJAX = that;
+
                 // for (var k in data.result) {
                 //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
                 //     jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
                 // }
-
+                var refPreview = that._uid + 'preview';
+                //console.log('refPreview',refPreview,that.$crud.cRefs[refPreview])
+                that.$crud.cRefs[refPreview].value = data.result;
             }).fail(function(data, error, msg){
                 console.log("An error occurred, the files couldn't be sent!");
                 that.lastUpload = false;

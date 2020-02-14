@@ -16,9 +16,7 @@ Vue.component('r-date-select', {
             var d = moment(that.value?that.value:that.conf.value);
             var cd = {
                 value: d.date(),
-                metadata: {
-                    domainValues: {}
-                },
+                domainValues: {},
                 methods: {
                     change: function () {
                         that.changed();
@@ -26,11 +24,11 @@ Vue.component('r-date-select', {
                 }
             };
             for (let i=1;i<=d.daysInMonth();i++) {
-                cd.metadata.domainValues[i] = i;
+                cd.domainValues[i] = i;
             }
             if (d.date() > d.daysInMonth())
                 cd.value = 1;
-            cd.metadata.domainValuesOrder = Object.keys(cd.metadata.domainValues);
+            cd.domainValuesOrder = Object.keys(cd.domainValues);
             return cd;
         },
         cMonth : function () {
@@ -38,9 +36,7 @@ Vue.component('r-date-select', {
             var d = moment(that.value ? that.value : that.conf.value);
             var cm = {
                 value: d.month() + 1,
-                metadata: {
-                    domainValues: {}
-                },
+                domainValues: {},
                 methods: {
                     change: function () {
                         that.changed();
@@ -48,7 +44,7 @@ Vue.component('r-date-select', {
                 }
             };
             for (let i=1;i<=12;i++) {
-                cm.metadata.domainValues[i] = i;
+                cm.domainValues[i] = i;
             }
             return cm;
         },
@@ -57,10 +53,8 @@ Vue.component('r-date-select', {
             var d = moment(that.value ? that.value : that.conf.value);
             var cy = {
                 value : d.year(),
-                metadata : {
-                    domainValues: {
+                domainValues: {
 
-                    }
                 },
                 methods: {
                     change : function () {
@@ -71,7 +65,7 @@ Vue.component('r-date-select', {
             var minY = that.cConf.minYear?that.cConf.minYear:d.year()-5;
             var maxY = that.cConf.maxYear?that.cConf.maxYear:d.year()+5;
             for (let i=minY;i<=maxY;i++) {
-                cy.metadata.domainValues[i] = i;
+                cy.domainValues[i] = i;
             }
             return cy;
         }

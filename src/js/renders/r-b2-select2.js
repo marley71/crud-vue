@@ -10,23 +10,25 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
 
             ];
         }
+        d.routeName = d.conf.routeName || 'autocomplete';
         return d;
     },
     methods : {
         afterLoadResources : function () {
             var that = this;
             console.log('b2 afterloadresources')
-            var r = Route.factory('autocomplete',{
-                values : {
-                    modelName : that.conf.metadata.autocompleteModel
-                }
-            });
+            // var r = Route.factory('autocomplete',{
+            //     values : {
+            //         modelName : that.model
+            //     }
+            // });
+            // r.params['field[]'] = 'email'
             var data = [];
             if (that.value) {
                 data.push({
                     id : that.value,
                     selected : true,
-                    text : that._getLabel(that.conf.metadata.modelData)
+                    text : that._getLabel(that.modelData)
                 });
                 // that.value.selected = true;
                 // that.value.text = that._getLabel(that.value);
@@ -37,7 +39,7 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
             jQuery(that.$el).find('[c-select2]').select2({
                 data : data,
                 ajax : {
-                    url : r.getUrl(),
+                    url : that._createUrl(),
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
@@ -71,8 +73,8 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
         _getLabel : function(value) {
             var that  =this;
             var label = "";
-            for (var i in that.conf.metadata.labelFields) {
-                label += value[that.conf.metadata.labelFields[i]] + " ";
+            for (var i in that.labelFields) {
+                label += value[that.labelFields[i]] + " ";
             }
             return label;
         },
@@ -81,6 +83,32 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
             var selValue = jQuery(that.$el).find('[c-select2]').select2('data');
             return selValue.length>0?selValue[0]['id']:null;
 
+        },
+
+        _createUrl : function () {
+            var that = this;
+            var r = Route.factory(that.routeName,{values : {modelName:that.model} });
+
+            //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
+            var url = that.url?that.url:r.getUrl();
+            url+= '?';
+
+            if (that.conf.fields) {
+                for(var f in that.conf.fields) {
+                    url+="field[]="+that.conf.fields[f]+"&";
+                }
+            }
+            /* @TODO se metto la description diventa difficile cambiare la
+             if (that.model_description) {
+             for(var f in that.model_description) {
+             url+="description[]="+that.model_description[f]+"&";
+             }
+             }
+             */
+            url += that.conf.separator ? '&separator=' + that.conf.separator : '';
+            url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
+            url += that.conf.method ? '&method=' + that.conf.method: '';
+            return url;
         },
     }
 

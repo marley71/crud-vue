@@ -5,8 +5,8 @@ crud.components.renders.rUpload = Vue.component('r-upload',{
         var d = this.defaultData();
         d.conf = this.cConf;
         console.log('r-upload data',d);
-        d.extensions = d.conf.metadata.extensions?d.conf.metadata.extensions:'';
-        d.maxFileSize = d.conf.metadata.maxFileSize?d.conf.metadata.maxFileSize:'';
+        d.extensions = d.conf.extensions?d.conf.extensions:'';
+        d.maxFileSize = d.conf.maxFileSize?d.conf.maxFileSize:'';
         d.error = false;
         d.errorMessage = '';
         return d;

@@ -25,7 +25,7 @@ Vue.component('r-autocomplete', {
                 source : function(term,suggest) {
                     jQuery.getJSON(that._createUrl(),{term:term},function (json) {
                         var suggestions = [];
-                        that.suggestValues = {};
+                        //that.suggestValues = {};
                         for (var i in json.result) {
                             // var s = "";
                             // for (var k in that.metadata.fields) {
@@ -39,34 +39,24 @@ Vue.component('r-autocomplete', {
                     })
                 },
                 onSelect: function(e, term, item){
-                    console.log('selected',that.suggestValues[term]);
+                    console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
                     that.value = that.suggestValues[term];
                     that.label = term;
                     that.change();
-                    //alert('Item "'+item.data('langname')+' ('+item.data('lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
-
                 }
-                // resolverSettings: {
-                //     url: that._createUrl()
-                // },
-                // valueKey : 'email'
             });
-            //{
-            //data: that.conf.metadata.domainValues
-
-            //});
         },
         _createUrl : function () {
             var that = this;
-            var r = Route.factory(that.conf.routeName,{values : {modelName:that.conf.metadata.autocompleteModel} });
+            var r = Route.factory(that.conf.routeName,{values : {modelName:that.conf.model} });
 
             //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
             var url = that.url?that.url:r.getUrl();
             url+= '?';
 
-            if (that.conf.metadata.fields) {
-                for(var f in that.conf.metadata.fields) {
-                    url+="field[]="+that.conf.metadata.fields[f]+"&";
+            if (that.conf.fields) {
+                for(var f in that.conf.fields) {
+                    url+="field[]="+that.conf.fields[f]+"&";
                 }
             }
             /* @TODO se metto la description diventa difficile cambiare la
@@ -76,9 +66,9 @@ Vue.component('r-autocomplete', {
              }
              }
              */
-            url += that.conf.metadata.separator ? '&separator=' + that.conf.metadata.separator : '';
-            url += that.conf.metadata.n_items ? '&n_items=' + that.conf.metadata.n_items : '';
-            url += that.conf.metadata.method ? '&method=' + that.conf.metadata.method: '';
+            url += that.conf.separator ? '&separator=' + that.conf.separator : '';
+            url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
+            url += that.conf.method ? '&method=' + that.conf.method: '';
             return url;
         },
 
@@ -86,13 +76,14 @@ Vue.component('r-autocomplete', {
             var that = this;
             that.value = '';
             that.label = '';
+            that.suggestValues = {};
             jQuery(that.$el).find('[c-autocomplete]').val('');
         },
         _getLabel : function () {
 
             var that = this;
             var r = new Route(that.$crud.routes.view);
-            r.values.modelName = that.metadata.autocompleteModel;
+            r.values.modelName = that.conf.model;
             r.values.pk = that.value;
             var lb = '';
             Server.route(r,function (json) {
@@ -106,8 +97,8 @@ Vue.component('r-autocomplete', {
         _getSuggestion: function(rowData) {
             var that = this;
             var s = "";
-            for (var k in that.metadata.fields) {
-                s += (s?' ':'') + rowData[that.metadata.fields[k]];
+            for (var k in that.conf.fields) {
+                s += (s?' ':'') + rowData[that.conf.fields[k]];
             }
             return s
         }

@@ -202,7 +202,7 @@
                    v-bind:c-marker="cMarker" v-on:change="change" >
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-for="(label,dVal) in metadata.domainValues" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{label}}</button>
+                    <button v-for="(label,dVal) in domainValues" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{label}}</button>
                 </div>
             </div>
         </div>

@@ -2,15 +2,16 @@ Vue.component('r-select',{
     extends : crud.components.renders.rBase,
     template: '#r-select-template',
     data :  function () {
-        var metadata = this.cConf.metadata || {};
-        var dV = metadata.domainValues || {};
-        var dVO = metadata.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
-        return {
-            name : this.cConf.name,
-            value: this.cConf.value,
-            domainValues : dV,
-            domainValuesOrder : dVO
-        }
+        var d = this.defaultData();
+        d.domainValues = d.domainValues || {};
+        d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(d.domainValues);
+        return d;
+        // return {
+        //     name : this.cConf.name,
+        //     value: this.cConf.value,
+        //     domainValues : dV,
+        //     domainValuesOrder : dVO
+        // }
     },
 });
 

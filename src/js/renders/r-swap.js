@@ -8,7 +8,7 @@ Vue.component('r-swap', {
         d.iconClass = 'fa fa-circle';
         d.title = "swap";
         d.swapType = d.swapType?d.swapType:'icon';
-        d.domainValues = {
+        var defaultDomainValues = {
             icon : {
                 0 : 'fa fa-circle text-danger',
                 1 : 'fa fa-circle text-success'
@@ -18,26 +18,22 @@ Vue.component('r-swap', {
                 1 : 'Si'
             }
         }
-        var dV = (d.metadata && d.metadata.domainValues)? d.metadata.domainValues:d.domainValues[d.swapType];
+        var dV = (d.domainValues)? d.domainValues:defaultDomainValues[d.swapType];
+        console.log('dV',dV);
         var keys = Object.keys(dV).map(String);
         if (keys.indexOf(""+d.value) >= 0) {
             d.slot = dV[""+d.value];
         } else {
             d.slot = dV[keys[0]];
         }
-        //d.slot = '';
+        d.domainValues = dV;
         return d;
     },
-    // computed : {
-    //     domainValues : function () {
-    //
-    //     }
-    // },
     methods : {
         getDV : function() {
             var that = this;
             console.log('swaptype',that.swapType,'domainValues',that.domainValues)
-            return (that.conf.metadata && that.conf.metadata.domainValues)? that.conf.metadata.domainValues:that.domainValues[that.swapType];
+            return (that.domainValues)? that.domainValues:that.domainValues[that.swapType];
 
         },
         swap : function () {
@@ -61,7 +57,7 @@ Vue.component('r-swap', {
             var dV = that.getDV();
             //var viewConf = self._viewConfig[viewKey];
             r.values = {
-                modelName: that.conf.metadata.modelName,
+                modelName: that.conf.model,
                 field : that.name, //that.conf.key?that.conf.key:that.cKey,
                 value : key
             };
