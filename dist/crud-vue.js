@@ -339,7 +339,7 @@ crud = {
             actions : ['action-search'],
             fieldsConfig : {},
             customActions: {},
-            renderTemplate : 'c-tpl-record2',
+            renderTemplate : 'c-tpl-record',
         },
         insert : {
             routeName : 'insert',
