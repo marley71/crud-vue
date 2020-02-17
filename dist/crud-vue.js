@@ -3912,7 +3912,8 @@ crud.components.views.vBase = Vue.component('v-base', {
                         conf = cm[type];
                     if (type == 'insert' && cm['edit'])
                         conf = cm['edit'];
-                }
+                } else
+                    conf = Utility.confMerge(this.$crud.conf[this.cConf]);
             }
             if (!conf)
                 throw "Nessuna configurazione trovata per questa view";
