@@ -310,6 +310,7 @@ crud = {
     },
     conf : {
         view : {
+            primaryKey : 'id',
             routeName : 'view',
             fieldsConfig : {},
             actions : ['action-back'],
@@ -317,6 +318,7 @@ crud = {
             renderTemplate : 'c-tpl-record2',
         },
         edit : {
+            primaryKey : 'id',
             routeName : 'edit',
             customActions : {},
             fieldsConfig : {
@@ -327,6 +329,7 @@ crud = {
             actions : ['action-save','action-back']
         },
         list : {
+            primaryKey : 'id',
             routeName : 'list',
             customActions: {},
             fieldsConfig : {},
@@ -335,6 +338,7 @@ crud = {
             actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
         },
         search : {
+            primaryKey : 'id',
             routeName : 'search',
             actions : ['action-search'],
             fieldsConfig : {},
@@ -342,6 +346,7 @@ crud = {
             renderTemplate : 'c-tpl-record',
         },
         insert : {
+            primaryKey : 'id',
             routeName : 'insert',
             renderTemplate : 'c-tpl-record',
             actions : ['action-save','action-back'],

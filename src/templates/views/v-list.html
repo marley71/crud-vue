@@ -10,13 +10,13 @@
                     </template>
                 </div>
                 <div class="float-right">
-                    <c-paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                    <c-paginator v-if="renders.length > 0" v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" >
                     <thead>
-                    <tr>
+                    <tr v-if="renders.length > 0">
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
                             <span>Actions</span>
@@ -24,6 +24,11 @@
                         <th v-for="key in keys">
                             <span v-show="!conf.orderFields[key]">{{key}}</span>
                             <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
+                        </th>
+                    </tr>
+                    <tr v-if="renders.length == 0">
+                        <th v-show="recordActionsName.length">
+                            Nessun elemento trovato
                         </th>
                     </tr>
                     </thead>
@@ -58,7 +63,7 @@
                     </template>
                 </div>
                 <div class="float-right">
-                    <c-paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                    <c-paginator v-if="renders.length > 0" v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
         </div>
