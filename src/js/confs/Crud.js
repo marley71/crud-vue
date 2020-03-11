@@ -1,15 +1,24 @@
-lang = {
-    app : {
-        'add' : "Aggiungi",
-        'conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
-        'conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?'
-    },
-    model : {
-        foto : 'foto',
-        attachment : 'allegato'
-    }
-}
+// lang = {
+//     app : {
+//         'add' : "Aggiungi",
+//         'conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
+//         'conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?'
+//     },
+//     model : {
+//         foto : 'foto',
+//         attachment : 'allegato'
+//     }
+// }
 crud = {
+    lang : {
+        'app.add' : 'Aggiungi',
+        'app.conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
+        'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
+        'model.foto' : 'foto',
+        'model.attachment' : 'allegato',
+        'name' : 'nome1',
+        'user.name' : 'nome2'
+    },
     application : {
         useRouter : false,
     },
@@ -59,7 +68,7 @@ crud = {
             text : '',
             execute : function () {
                 var that = this;
-                that.$crud.confirmDialog(that.$lang.app['conferma-delete'] ,{
+                that.$crud.confirmDialog(that.$crud.lang['app.conferma-delete'] ,{
                     ok : function () {
 
                         var r = that.$crud.routeFactory('delete');

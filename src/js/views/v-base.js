@@ -119,6 +119,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             return {
                 viewTitle : '',
                 conf : _c,
+                langContext : null,
             }
         },
 

@@ -2,7 +2,7 @@ const CrudApp = Vue.extend({
     created : function() {
         var that = this;
         Vue.prototype.$crud = crud;
-        Vue.prototype.$lang = lang;
+        //Vue.prototype.$lang = lang;
         for (var k in window) {
             //console.log('window key ',k);
             if (k.indexOf('_interface') > 0) {
@@ -52,3 +52,9 @@ const CrudApp = Vue.extend({
 
     }
 });
+
+Vue.filter('translate', function (value,context) {
+    var langKey = context?context+'.'+value:value;
+    console.log('translate global',value,context,langKey);
+    return crud.lang[langKey]?crud.lang[langKey]:langKey;
+})

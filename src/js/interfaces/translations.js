@@ -19,7 +19,7 @@ translations_interface = {
          */
         translateIfExist : function (key,plural,params) {
             var tmp = key.split('.');
-            var skey = this.$lang;
+            var skey = this.$crud.lang;
             for (var i in tmp) {
                 if (! (tmp[i] in skey))
                     return "";
@@ -30,7 +30,7 @@ translations_interface = {
     },
     _translate : function (key,plural,params) {
         var tmp = key.split('.');
-        var s = this.$lang[tmp[0]];
+        var s = this.$crud.lang[tmp[0]];
         for (var i=1;i<tmp.length;i++) {
             s = s[tmp[i]];
         }

@@ -334,11 +334,11 @@
                     <div >
                         <div crud-render_limit class="hide">
                             <!-- Limite massimo raggiunto -->
-                            {{$lang.app.limite_raggiunto}}
+                            {{  'app.limite-raggiunto' | translate }}
                         </div>
                         <button v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
-                            <span >{{$lang.app.add}}</span>&nbsp;
-                            <span crud-label="modelMetadata.singular"></span>&nbsp;
+                            <span >{{ 'app.add' | translate }}</span>&nbsp;
+<!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
                         </button>
                     </div>
                 </div>
@@ -400,11 +400,11 @@
                     <div >
                         <div crud-render_limit class="hide">
                             <!-- Limite massimo raggiunto -->
-                            {{$lang.app.limite_raggiunto}}
+                            {{'app.limite-raggiunto' | translate }}
                         </div>
                         <button v-on:click="addItem" type="button" class="btn btn-primary btn-sm">
-                            <span >{{$lang.app.add}}</span>&nbsp;
-                            <span crud-label="modelMetadata.singular"></span>&nbsp;
+                            <span >{{'app.add' | translate}}</span>&nbsp;
+<!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
                         </button>
                     </div>
                 </div>
@@ -503,8 +503,8 @@
                             <span>Actions</span>
                         </th>
                         <th v-for="key in keys">
-                            <span v-show="!conf.orderFields[key]">{{key}}</span>
-                            <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
+                            <action-order v-if="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
+                            <span v-else>{{key | translate(langContext) }}</span>
                         </th>
                     </tr>
                     <tr v-if="renders.length == 0">
