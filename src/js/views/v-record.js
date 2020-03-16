@@ -25,8 +25,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
-                if (! ('label' in renders[key]) )
-                    renders[key].label = key;
+                if (! ('label' in renders[key]) ) {
+                    var langKey = that.langContext?that.langContext+'.'+key:key;
+                    renders[key].label = langKey;
+                }
             }
 
             console.log('v-record.renders',renders);
@@ -92,7 +94,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 actionsName : [],
                 actions : {},
                 vueRefs:{},
-                conf : this.cConf || {}
+                conf : this.cConf || {},
+                langContext : this.cModel
             }
         },
         getFormData : function () {

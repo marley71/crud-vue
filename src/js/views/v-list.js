@@ -104,7 +104,7 @@ crud.components.views.vList = Vue.component('v-list', {
             that.data = data;
 
         },
-        
+
         getOrderConf : function (key) {
             var that = this;
             var conf = that.getActionConfig('action-order','global');

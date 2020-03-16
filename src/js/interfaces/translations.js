@@ -8,7 +8,8 @@ translations_interface = {
          * @returns {*}
          */
         translate : function (key,plural,params) {
-            return translations_interface._translate.apply(this,[key,plural,params]);
+            return translations_interface._translate2.apply(this,[key,plural,params]);
+            //return translations_interface._translate.apply(this,[key,plural,params]);
         },
         /**
          * esegue la traduzione solo se esiste la chiave corrispondente nel vettore $lang
@@ -45,6 +46,18 @@ translations_interface = {
             } else
                 testo = testo.substr(0, testo.indexOf('|'));
         }
+        if (params instanceof Array) {
+            for (var i = 0; i < params.length; i++) {
+                testo= testo.replace("(" + i +")", params[i] );
+            }
+        }
+        return testo;
+    },
+
+    _translate2 : function (key,plural,params) {
+        var testo = this.$crud.lang[key];
+        if (!testo)
+            return key;
         if (params instanceof Array) {
             for (var i = 0; i < params.length; i++) {
                 testo= testo.replace("(" + i +")", params[i] );

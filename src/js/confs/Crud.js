@@ -17,7 +17,8 @@ crud = {
         'model.foto' : 'foto',
         'model.attachment' : 'allegato',
         'name' : 'nome1',
-        'user.name' : 'nome2'
+        'user.name' : 'nome2',
+        'user.email' : 'email'
     },
     application : {
         useRouter : false,

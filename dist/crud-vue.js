@@ -86,7 +86,8 @@ crud = {
         'model.foto' : 'foto',
         'model.attachment' : 'allegato',
         'name' : 'nome1',
-        'user.name' : 'nome2'
+        'user.name' : 'nome2',
+        'user.email' : 'email'
     },
     application : {
         useRouter : false,
@@ -797,7 +798,8 @@ translations_interface = {
          * @returns {*}
          */
         translate : function (key,plural,params) {
-            return translations_interface._translate.apply(this,[key,plural,params]);
+            return translations_interface._translate2.apply(this,[key,plural,params]);
+            //return translations_interface._translate.apply(this,[key,plural,params]);
         },
         /**
          * esegue la traduzione solo se esiste la chiave corrispondente nel vettore $lang
@@ -834,6 +836,18 @@ translations_interface = {
             } else
                 testo = testo.substr(0, testo.indexOf('|'));
         }
+        if (params instanceof Array) {
+            for (var i = 0; i < params.length; i++) {
+                testo= testo.replace("(" + i +")", params[i] );
+            }
+        }
+        return testo;
+    },
+
+    _translate2 : function (key,plural,params) {
+        var testo = this.$crud.lang[key];
+        if (!testo)
+            return key;
         if (params instanceof Array) {
             for (var i = 0; i < params.length; i++) {
                 testo= testo.replace("(" + i +")", params[i] );
@@ -2147,10 +2161,6 @@ const actionBase = Vue.component('action-base', {
                 text : '',
                 controlType : 'button',
                 href : '',
-                //view : that.$parent,
-                // execute : function () {
-                //     alert('definire execute')
-                // }
             };
             for (var c in this.cConf) {
                 // if (c ===  'execute') {
@@ -2164,6 +2174,9 @@ const actionBase = Vue.component('action-base', {
             }
             if (!('view' in adata) )
                 adata.view = that.$parent;
+            // if (! ('langContext' in adata) ){
+            //     adata.langContext = adata.view?adata.view.langContext:null;
+            // }
             //console.log('action ',adata);
             return adata;
         },
@@ -2258,6 +2271,11 @@ Vue.component('action-order', {
             this.icon = this.cConf.iconUp
         else
             this.icon = null;
+        if (this.text) {
+            var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
+            this.text = this.$crud.translate(langKey)
+        }
+
         //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);
     }
 })
@@ -4030,8 +4048,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
-                if (! ('label' in renders[key]) )
-                    renders[key].label = key;
+                if (! ('label' in renders[key]) ) {
+                    var langKey = that.langContext?that.langContext+'.'+key:key;
+                    renders[key].label = langKey;
+                }
             }
 
             console.log('v-record.renders',renders);
@@ -4097,7 +4117,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 actionsName : [],
                 actions : {},
                 vueRefs:{},
-                conf : this.cConf || {}
+                conf : this.cConf || {},
+                langContext : this.cModel
             }
         },
         getFormData : function () {
@@ -4382,7 +4403,7 @@ crud.components.views.vList = Vue.component('v-list', {
             that.data = data;
 
         },
-        
+
         getOrderConf : function (key) {
             var that = this;
             var conf = that.getActionConfig('action-order','global');
@@ -5134,6 +5155,6 @@ const CrudApp = Vue.extend({
 
 Vue.filter('translate', function (value,context) {
     var langKey = context?context+'.'+value:value;
-    console.log('translate global',value,context,langKey);
+    //console.log('translate global',value,context,langKey);
     return crud.lang[langKey]?crud.lang[langKey]:langKey;
 })

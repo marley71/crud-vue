@@ -41,10 +41,6 @@ const actionBase = Vue.component('action-base', {
                 text : '',
                 controlType : 'button',
                 href : '',
-                //view : that.$parent,
-                // execute : function () {
-                //     alert('definire execute')
-                // }
             };
             for (var c in this.cConf) {
                 // if (c ===  'execute') {
@@ -58,6 +54,9 @@ const actionBase = Vue.component('action-base', {
             }
             if (!('view' in adata) )
                 adata.view = that.$parent;
+            // if (! ('langContext' in adata) ){
+            //     adata.langContext = adata.view?adata.view.langContext:null;
+            // }
             //console.log('action ',adata);
             return adata;
         },
@@ -152,6 +151,11 @@ Vue.component('action-order', {
             this.icon = this.cConf.iconUp
         else
             this.icon = null;
+        if (this.text) {
+            var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
+            this.text = this.$crud.translate(langKey)
+        }
+
         //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);
     }
 })
