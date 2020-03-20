@@ -32,7 +32,7 @@ const actionBase = Vue.component('action-base', {
         defaultData : function () {
             var that = this;
             var adata = {
-                type : 'global',
+                type : 'collection',
                 visible : true,
                 enabled : true,
                 title : '',

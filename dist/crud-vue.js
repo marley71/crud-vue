@@ -78,11 +78,13 @@
 //         attachment : 'allegato'
 //     }
 // }
-crud = {
+const crud = {
     lang : {
         'app.add' : 'Aggiungi',
         'app.conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
         'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
+        'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
+        'app.actions' : 'azioni',
         'model.foto' : 'foto',
         'model.attachment' : 'allegato',
         'name' : 'nome1',
@@ -158,10 +160,10 @@ crud = {
             }
         },
     },
-    globalActions : {
+    collectionActions : {
 
         'action-insert' : {
-            type : 'global',
+            type : 'collection',
             visible : true,
             enabled : true,
             title : 'New',
@@ -175,7 +177,7 @@ crud = {
             }
         },
         'action-save' : {
-            type : 'global',
+            type : 'collection',
             title : 'save',
             css: 'btn btn-primary btn-sm',
             icon : 'fa fa-save',
@@ -222,7 +224,7 @@ crud = {
             }
         },
         'action-back' : {
-            type : 'global',
+            type : 'collection',
             title : 'Back',
             css: 'btn btn-secondary btn-sm',
             icon : 'fa fa-backward',
@@ -232,7 +234,7 @@ crud = {
             }
         },
         'action-search' : {
-            type : 'global',
+            type : 'collection',
             title : 'Search',
             css: 'btn btn-primary btn-sm btn-group',
             icon : 'fa fa-search',
@@ -269,7 +271,7 @@ crud = {
             }
         },
         'action-order' : {
-            type : 'global',
+            type : 'collection',
             title : 'Order',
             css: 'btn btn-default btn-sm',
             iconUp : 'fa fa-caret-up',
@@ -286,7 +288,7 @@ crud = {
             }
         },
         'action-delete-selected' : {
-            type : 'global',
+            type : 'collection',
             title : 'Cancella selezionati',
             css: 'btn btn-outline-danger btn-sm',
             icon : 'fa fa-trash',
@@ -2152,7 +2154,7 @@ const actionBase = Vue.component('action-base', {
         defaultData : function () {
             var that = this;
             var adata = {
-                type : 'global',
+                type : 'collection',
                 visible : true,
                 enabled : true,
                 title : '',
@@ -2951,38 +2953,18 @@ Vue.component('r-date-picker', {
         return d;
     },
     methods : {
-        changed : function() {
-            var that = this;
-            //var s = jQuery(that.$el).find('[c-marker="year"]').val() +  "-" + jQuery(that.$el).find('[c-marker="month"]').val().padStart(2,'0')  + "-" + jQuery(that.$el).find('[c-marker="day"]').val().padStart(2,'0') ;
-            // var dds = moment(s);
-            // if (dds.isValid()) {
-            //     that.value = s;
-            // }
-            //
-            // //var sR = that.selectRanges();
-            // //that.cDay = sR.cDay;
-            // //console.log('changed',sR);
-            // this.$refs.day.updateConf(that.cDay);
-            // this.$refs.month.updateConf(that.cMonth);
-            // this.$refs.year.updateConf(that.cYear);
-            //
-            // console.log(this);
-        },
         afterLoadResources : function () {
             var that = this;
-            console.log('resources loaded',that.value);
+            var displayFormat = that.displayFormat || "mm/dd/yyyy";
+            var dateFormat = that.dateFormat || displayFormat;
             jQuery(that.$el).find('[c-picker]').datepicker({
-                format : 'yyyy-mm-dd',
-                startDate : moment(that.value).toDate(),
+                format : displayFormat,
             }).on('changeDate', function(ev) {
-                that.value =  moment(ev.date.toISOString()).format('Y-M-D'); //ev.date.toISOString();
-                moment(ev.date.valueOf);
-                console.log('date ' ,ev.date.toISOString());
-                console.log('date2 ',that.getValue())
-                // if (ev.date.valueOf() < startDate.valueOf()){
-                //
-                // }
+                that.value =  moment(ev.date.toISOString()).format(dateFormat.toUpperCase()); //ev.date.toISOString();
+                that.change();
             });
+            console.log('dateformat',dateFormat.toUpperCase())
+            jQuery(that.$el).find('[c-picker]').datepicker('update',moment(that.value).format(displayFormat.toUpperCase()));
         }
     }
 });
@@ -2993,8 +2975,11 @@ Vue.component('r-texthtml',{
         var d = this.defaultData();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
-                'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js'
+                //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
+                //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js',
+                'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
+                'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
+
             ];
         }
         return d;
@@ -3003,7 +2988,8 @@ Vue.component('r-texthtml',{
         afterLoadResources : function () {
             var that = this;
             var options = that.conf.pluginOptions || {
-                content : that.value
+                content : that.value,
+                //airMode : true
             };
             options = Utility.cloneObj(options);
             that.jQe('.summernote').summernote(options);
@@ -3020,17 +3006,24 @@ Vue.component('r-texthtml',{
 crud.components.rHasmany =Vue.component('r-hasmany', {
     extends : crud.components.renders.rBase,
     template: '#r-hasmany-template',
+    mounted : function() {
+         var that = this;
+        for (var i in that.value) {
+            var _conf = that.getHasmanyConf(i,that.value[i]);
+            that.confViews.push(_conf);
+        }
+    },
     data : function () {
         var that = this;
         var d = that.defaultData();
         d.confViews = [];
-        for (var i in d.value) {
-            var _conf = that.getHasmanyConf(i,d.value[i]);
-            d.confViews.push(_conf);
-        }
+        if (!("limit" in d) )
+            d.limit = 1000;
+
         //console.log('CONF VIEWS',d.confViews,d.value)
         return d;
     },
+
     methods : {
 
         getHasmanyConf : function (index,value) {
@@ -3041,7 +3034,8 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
                 fields : [],
                 fieldsConfig : {},
                 data :  {
-                    value : {},
+                    value : {
+                    },
                     metadata : {
 
                     }
@@ -3056,40 +3050,42 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
                 }
             }
             if (!value) {
+                that.value[index].status = 'new';
                 hmConf.data.value.status = 'new';
             } else {
+                that.value[index].status = 'updated';
                 hmConf.data.value.status = 'updated';
             }
             // if (!hmConf.data.value.status )
             //     hmConf.data.value.status = 'new';
-            console.log('HMS',hmConf)
+            console.log('HMS',hmConf,that.value)
             return hmConf;
 
 
-            if (that.confViews.length > index) {
-                that.confViews[index] = hmConf;
-                that.confViews[index].data.value.status = 'updated';
-            } else {
-                if (!hmConf.data.value.status) {
-                    hmConf.data.value.status = 'new';
-                }
-                that.confViews.push(hmConf);
-                if (that.confViews.length < (index + 1))
-                    throw "confView.length" + that.confViews.length + " minore di index " + index;
-            }
-            // else {
-            //     // ci sono record gia' presenti prendo da li i fields.
-            //     if (this.value && this.value.length > 0) {
-            //         if (!hmConf.fields || !hmConf.fields.length) {
-            //             hmConf.fields = Object.keys(this.value[0]);
-            //             hmConf.data.value = Utility.cloneObj(this.value[0]);
-            //         }
+            // if (that.confViews.length > index) {
+            //     that.confViews[index] = hmConf;
+            //     that.confViews[index].data.value.status = 'updated';
+            // } else {
+            //     if (!hmConf.data.value.status) {
+            //         hmConf.data.value.status = 'new';
             //     }
+            //     that.confViews.push(hmConf);
+            //     if (that.confViews.length < (index + 1))
+            //         throw "confView.length" + that.confViews.length + " minore di index " + index;
             // }
-            //console.log('hmConf',hmConf)
-            //hmConf.metadata.modelName = that.cKey;
-            console.log('HMS',that.confViews[index])
-            return that.confViews[index];
+            // // else {
+            // //     // ci sono record gia' presenti prendo da li i fields.
+            // //     if (this.value && this.value.length > 0) {
+            // //         if (!hmConf.fields || !hmConf.fields.length) {
+            // //             hmConf.fields = Object.keys(this.value[0]);
+            // //             hmConf.data.value = Utility.cloneObj(this.value[0]);
+            // //         }
+            // //     }
+            // // }
+            // //console.log('hmConf',hmConf)
+            // //hmConf.metadata.modelName = that.cKey;
+            // console.log('HMS',that.confViews[index],that.value)
+            // return that.confViews[index];
 
         },
         addItem : function () {
@@ -3100,17 +3096,34 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
 
         },
         deleteItem : function (index) {
-            console.log('index',index,this.value[index],this.confViews[index]);
+            //console.log('index',index,this.value[index].status,this.confViews[index]);
             if (this.value[index].status == 'new') {
                 this.value.splice(index, 1);
                 this.confViews.splice(index,1);
             }
             else {
-                console.log('update status deleted ', index)
+                //console.log('update status deleted ', index,this.confViews[index].data.value)
                 this.$set(this.value[index], 'status', 'deleted');
-                this.$set(this.confViews[index], 'status' , 'deleted');
+                this.$set(this.confViews[index].data.value, 'status' , 'deleted');
                 this.$crud.cRefs['hm-'+index].setFieldValue('status','deleted');
             }
+            this.$forceUpdate();
+        },
+        showItem : function (index) {
+            //console.log('show item',index,this.confViews[index]);
+            if (!this.confViews[index])
+                return false;
+            return (this.confViews[index].data.value.status != 'deleted'  )
+        },
+        outOfLimit : function () {
+            var that = this;
+            var valid = 0;
+            for (var i in that.value) {
+                if (that.value[i].status != 'deleted')
+                    valid++;
+            }
+            //console.log('outlimit',valid,that.limit);
+            return (valid >= that.limit);
         }
     }
 });
@@ -3902,7 +3915,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                         extends : actionBase
                     });
                 } else {
-                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.globalActions[name]?this.$crud.globalActions[name]:{})
+                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.collectionActions[name]?this.$crud.collectionActions[name]:{})
                 }
                 aConf = Utility.merge(aConf,this.conf.customActions[name]);
                 //console.log('CUSTOM',name,aConf);
@@ -3914,11 +3927,11 @@ crud.components.views.vBase = Vue.component('v-base', {
                 } else
                     throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
             }
-            if (type == 'global') {
-                if (this.$crud.globalActions[name]) {
-                    return Utility.cloneObj(this.$crud.globalActions[name]);
+            if (type == 'collection') {
+                if (this.$crud.collectionActions[name]) {
+                    return Utility.cloneObj(this.$crud.collectionActions[name]);
                 } else
-                    throw "Azione " + name +  " di tipo global non trovata nelle azioni generali";
+                    throw "Azione " + name +  " di tipo collection non trovata nelle azioni generali";
             }
             throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },
@@ -4048,10 +4061,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
-                if (! ('label' in renders[key]) ) {
-                    var langKey = that.langContext?that.langContext+'.'+key:key;
-                    renders[key].label = langKey;
-                }
+                if (! ('label' in renders[key]) )
+                    renders[key].label = key;
+
+                renders[key].label = that.$options.filters.translate(renders[key].label,that.langContext);
             }
 
             console.log('v-record.renders',renders);
@@ -4062,7 +4075,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$crud.globalActions[aName])
+                if (that.$crud.collectionActions[aName])
                     actions.push(aName);
                 else if (that.conf.customActions[aName])
                     actions.push(aName);
@@ -4077,7 +4090,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
-                var aConf = that.getActionConfig(aName,'global');
+                var aConf = that.getActionConfig(aName,'collection');
                 aConf.modelData = Utility.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
@@ -4221,33 +4234,33 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         },
         createActions : function () {
             var that = this;
-            var globalActionsName = [];
+            var collectionActionsName = [];
             var recordActionsName = [];
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
                 if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$crud.globalActions[aName])
-                    globalActionsName.push(aName);
+                else if (that.$crud.collectionActions[aName])
+                    collectionActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
                         extends : actionBase
                     });
-                    if (that.conf.customActions[aName].type == 'global')
-                        globalActionsName.push(aName);
+                    if (that.conf.customActions[aName].type == 'collection')
+                        collectionActionsName.push(aName);
                     else if (that.conf.customActions[aName].type == 'record')
                         recordActionsName.push(aName);
                     else
-                        throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,global";
+                        throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,collection";
                 } else {
                     throw "Impossibile trovare la definizione di " + aName;
                 }
             }
             //console.log('data',data,'conf',conf,'keys',keys);
-            that.globalActionsName = globalActionsName;
+            that.collectionActionsName = collectionActionsName;
             that.recordActionsName = recordActionsName;
-            that.globalActions = {};
+            that.collectionActions = {};
             that.recordActions = [];
         },
         createRecordActions : function(row) {
@@ -4269,24 +4282,24 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 recordActions[row][aName] = aConf;
             }
         },
-        createGlobalActions : function () {
+        createCollectionActions : function () {
             var that = this;
-            var globalActions = [];
-            var globalActionsName = that.globalActionsName;
+            var collectionActions = [];
+            var collectionActionsName = that.collectionActionsName;
             var data = that.data;
 
-            for (var i in globalActionsName) {
-                var aName = globalActionsName[i];
-                var aConf = that.getActionConfig(aName,'global');
+            for (var i in collectionActionsName) {
+                var aName = collectionActionsName[i];
+                var aConf = that.getActionConfig(aName,'collection');
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
                 aConf.modelData = jQuery.extend(true,{},data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
-                aConf.cRef = that.$crud.getRefId(that._uid,'ga',aName);
-                globalActions[aName] = aConf;
+                aConf.cRef = that.$crud.getRefId(that._uid,'ca',aName);
+                collectionActions[aName] = aConf;
             }
-            that.globalActions = globalActions;
+            that.collectionActions = collectionActions;
         },
     },
     data : function () {
@@ -4343,8 +4356,8 @@ crud.components.views.vList = Vue.component('v-list', {
             keys : [],
             recordActionsName : [],
             recordActions: [],
-            globalActions : {},
-            globalActionsName : [],
+            collectionActions : {},
+            collectionActionsName : [],
             routeConf : routeConf,
             route : null,
             data : [],
@@ -4370,9 +4383,7 @@ crud.components.views.vList = Vue.component('v-list', {
             var that = this;
             that.createActions();
             that.createRenders();
-            that.createGlobalActions();
-            //console.log('renders',that.renders,'recordActions',that.recordActions);
-            //console.log('globalActions',that.globalActions);
+            that.createCollectionActions();
         },
 
         fillData : function(route, json) {
@@ -4406,7 +4417,7 @@ crud.components.views.vList = Vue.component('v-list', {
 
         getOrderConf : function (key) {
             var that = this;
-            var conf = that.getActionConfig('action-order','global');
+            var conf = that.getActionConfig('action-order','collection');
             conf.title = 'Order by ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
@@ -4502,8 +4513,8 @@ Vue.component('v-list-edit', {
             keys : [],
             recordActionsName : [],
             recordActions: [],
-            globalActions : {},
-            globalActionsName : [],
+            collectionActions : {},
+            collectionActionsName : [],
             routeConf : routeConf,
             route : null,
             data : [],
@@ -4546,10 +4557,10 @@ Vue.component('v-list-edit', {
             //     that.rendersEdit[k].type = 'r-input';
             // }
             that.rendersEdit = rendersEdit;
-            that.createGlobalActions();
+            that.createCollectionActions();
             console.log('rendersEdit',that.rendersEdit);
             console.log('renders',that.renders,'recordActions',that.recordActions);
-            console.log('globalActions',that.globalActions);
+            console.log('collectionActions',that.collectionActions);
             console.log('editMode',that.editMode)
         },
 
@@ -4582,37 +4593,7 @@ Vue.component('v-list-edit', {
         //
         // },
 
-        // createActions : function () {
-        //     var that = this;
-        //     var globalActionsName = [];
-        //     var recordActionsName = [];
-        //
-        //     for (var i in that.conf.actions) {
-        //         var aName = that.conf.actions[i];
-        //         if (that.$crud.recordActions[aName])
-        //             recordActionsName.push(that.conf.actions[i]);
-        //         else if (that.$crud.globalActions[aName])
-        //             globalActionsName.push(aName);
-        //         else if (that.conf.customActions[aName]) {
-        //             Vue.component(aName, {
-        //                 extends : actionBase
-        //             });
-        //             if (that.conf.customActions[aName].type == 'global')
-        //                 globalActionsName.push(aName);
-        //             else if (that.conf.customActions[aName].type == 'record')
-        //                 recordActionsName.push(aName);
-        //             else
-        //                 throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,global";
-        //         } else {
-        //             throw "Impossibile trovare la definizione di " + aName;
-        //         }
-        //     }
-        //     //console.log('data',data,'conf',conf,'keys',keys);
-        //     that.globalActionsName = globalActionsName;
-        //     that.recordActionsName = recordActionsName;
-        //     that.globalActions = {};
-        //     that.recordActions = [];
-        // },
+
         // createRecordActions : function(row) {
         //     //console.log('row',row);
         //     var that = this;
@@ -4636,28 +4617,11 @@ Vue.component('v-list-edit', {
         //         recordActions[row][aName] = aConf;
         //     }
         // },
-        // createGlobalActions : function () {
-        //     var that = this;
-        //     var globalActions = [];
-        //     var globalActionsName = that.globalActionsName;
-        //     var data = that.data;
-        //
-        //     for (var i in globalActionsName) {
-        //         var aName = globalActionsName[i];
-        //         var aConf = that.getActionConfig(aName,'global');
-        //         //var a = jQuery.extend(true,{},aConf);
-        //         //a.id = data.value[i].id;
-        //         aConf.modelData = jQuery.extend(true,{},data.value);
-        //         aConf.modelName = that.cModel;
-        //         aConf.rootElement = that.$el;
-        //         globalActions[aName] = aConf;
-        //     }
-        //     that.globalActions = globalActions;
-        // },
+
         getOrderConf : function (key) {
             var that = this;
             console.log('GETORDERCONF CALLED');
-            var conf = that.getActionConfig('action-order','global');
+            var conf = that.getActionConfig('action-order','collection');
             conf.title = 'Order by ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
@@ -4898,30 +4862,6 @@ Vue.component('v-search', {
     },
 
     data :  function () {
-        //var that = this;
-
-        //var targetView = this.parent.$refs[that.cTargetView];
-        //var targetView = null;
-        //console.log('SEARCH',that.cModel,that.cRouteConf,that.cTargetView,targetView);
-        // that.conf = that.getConf(that.cModel,'search');
-        // var routeName = 'search';
-        // if (that.conf.routeName != null) {
-        //     routeName = that.conf.routeName;
-        // }
-        // that.route = Route.factory(routeName,{
-        //     values : {
-        //         modelName: that.cModel,
-        //     }
-        // })
-        // //that.createActions();
-        // this.fetchData(that.route,function (json) {
-        //     that.fillData(that.route,json);
-        //     that.createActions();
-        //     that.createActionsClass();
-        //     that.createRenders();
-        //     that.loading = false;
-        // });
-
         var that = this;
         var d = this.defaultData();
         d.conf = that.getConf(that.cModel,'search');
@@ -4939,17 +4879,6 @@ Vue.component('v-search', {
             targetRef : that.cTargetRef,
         }
         return Utility.merge(d,dSearch);
-        // return {
-        //     loading : true,
-        //     renders : {},
-        //     actionsClass : [],
-        //     actions : {},
-        //     data : {},
-        //     conf : that.conf,
-        //     //route : route,
-        //     defaultRenderType : 'r-input',
-        //     targetRef : that.cTargetRef,
-        // }
     },
     methods : {
         doSearch : function (params) {
@@ -4975,6 +4904,7 @@ Vue.component('v-search', {
                 renders[key].value = null;
                 if (! ('label' in renders[key]) )
                     renders[key].label = key;
+                renders[key].label = that.$options.filters.translate(renders[key].label,that.langContext);
                 //renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
@@ -5156,5 +5086,5 @@ const CrudApp = Vue.extend({
 Vue.filter('translate', function (value,context) {
     var langKey = context?context+'.'+value:value;
     //console.log('translate global',value,context,langKey);
-    return crud.lang[langKey]?crud.lang[langKey]:langKey;
+    return crud.lang[langKey]?crud.lang[langKey]:value;
 })

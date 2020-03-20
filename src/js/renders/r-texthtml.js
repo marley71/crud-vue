@@ -5,8 +5,11 @@ Vue.component('r-texthtml',{
         var d = this.defaultData();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
-                'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js'
+                //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
+                //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js',
+                'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
+                'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
+
             ];
         }
         return d;
@@ -15,7 +18,8 @@ Vue.component('r-texthtml',{
         afterLoadResources : function () {
             var that = this;
             var options = that.conf.pluginOptions || {
-                content : that.value
+                content : that.value,
+                //airMode : true
             };
             options = Utility.cloneObj(options);
             that.jQe('.summernote').summernote(options);

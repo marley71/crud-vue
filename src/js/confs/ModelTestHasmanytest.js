@@ -151,7 +151,7 @@ var ModelTestHasmanytest = {
                 text : 'miag',
                 title : 'maglob',
                 css: 'btn btn-outline-secondary btn-sm',
-                type : 'global'
+                type : 'collection'
             }
         }
     }

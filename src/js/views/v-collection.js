@@ -69,33 +69,33 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         },
         createActions : function () {
             var that = this;
-            var globalActionsName = [];
+            var collectionActionsName = [];
             var recordActionsName = [];
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
                 if (that.$crud.recordActions[aName])
                     recordActionsName.push(that.conf.actions[i]);
-                else if (that.$crud.globalActions[aName])
-                    globalActionsName.push(aName);
+                else if (that.$crud.collectionActions[aName])
+                    collectionActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
                         extends : actionBase
                     });
-                    if (that.conf.customActions[aName].type == 'global')
-                        globalActionsName.push(aName);
+                    if (that.conf.customActions[aName].type == 'collection')
+                        collectionActionsName.push(aName);
                     else if (that.conf.customActions[aName].type == 'record')
                         recordActionsName.push(aName);
                     else
-                        throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,global";
+                        throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,collection";
                 } else {
                     throw "Impossibile trovare la definizione di " + aName;
                 }
             }
             //console.log('data',data,'conf',conf,'keys',keys);
-            that.globalActionsName = globalActionsName;
+            that.collectionActionsName = collectionActionsName;
             that.recordActionsName = recordActionsName;
-            that.globalActions = {};
+            that.collectionActions = {};
             that.recordActions = [];
         },
         createRecordActions : function(row) {
@@ -117,24 +117,24 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 recordActions[row][aName] = aConf;
             }
         },
-        createGlobalActions : function () {
+        createCollectionActions : function () {
             var that = this;
-            var globalActions = [];
-            var globalActionsName = that.globalActionsName;
+            var collectionActions = [];
+            var collectionActionsName = that.collectionActionsName;
             var data = that.data;
 
-            for (var i in globalActionsName) {
-                var aName = globalActionsName[i];
-                var aConf = that.getActionConfig(aName,'global');
+            for (var i in collectionActionsName) {
+                var aName = collectionActionsName[i];
+                var aConf = that.getActionConfig(aName,'collection');
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
                 aConf.modelData = jQuery.extend(true,{},data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
-                aConf.cRef = that.$crud.getRefId(that._uid,'ga',aName);
-                globalActions[aName] = aConf;
+                aConf.cRef = that.$crud.getRefId(that._uid,'ca',aName);
+                collectionActions[aName] = aConf;
             }
-            that.globalActions = globalActions;
+            that.collectionActions = collectionActions;
         },
     },
     data : function () {

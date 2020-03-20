@@ -25,10 +25,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     renders[key].value = that.data.value[key];
 
                 renders[key].name = that.getFieldName(key);
-                if (! ('label' in renders[key]) ) {
-                    var langKey = that.langContext?that.langContext+'.'+key:key;
-                    renders[key].label = langKey;
-                }
+                if (! ('label' in renders[key]) )
+                    renders[key].label = key;
+
+                renders[key].label = that.$options.filters.translate(renders[key].label,that.langContext);
             }
 
             console.log('v-record.renders',renders);
@@ -39,7 +39,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$crud.globalActions[aName])
+                if (that.$crud.collectionActions[aName])
                     actions.push(aName);
                 else if (that.conf.customActions[aName])
                     actions.push(aName);
@@ -54,7 +54,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
-                var aConf = that.getActionConfig(aName,'global');
+                var aConf = that.getActionConfig(aName,'collection');
                 aConf.modelData = Utility.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;

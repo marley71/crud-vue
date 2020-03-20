@@ -9,11 +9,13 @@
 //         attachment : 'allegato'
 //     }
 // }
-crud = {
+const crud = {
     lang : {
         'app.add' : 'Aggiungi',
         'app.conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
         'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
+        'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
+        'app.actions' : 'azioni',
         'model.foto' : 'foto',
         'model.attachment' : 'allegato',
         'name' : 'nome1',
@@ -89,10 +91,10 @@ crud = {
             }
         },
     },
-    globalActions : {
+    collectionActions : {
 
         'action-insert' : {
-            type : 'global',
+            type : 'collection',
             visible : true,
             enabled : true,
             title : 'New',
@@ -106,7 +108,7 @@ crud = {
             }
         },
         'action-save' : {
-            type : 'global',
+            type : 'collection',
             title : 'save',
             css: 'btn btn-primary btn-sm',
             icon : 'fa fa-save',
@@ -153,7 +155,7 @@ crud = {
             }
         },
         'action-back' : {
-            type : 'global',
+            type : 'collection',
             title : 'Back',
             css: 'btn btn-secondary btn-sm',
             icon : 'fa fa-backward',
@@ -163,7 +165,7 @@ crud = {
             }
         },
         'action-search' : {
-            type : 'global',
+            type : 'collection',
             title : 'Search',
             css: 'btn btn-primary btn-sm btn-group',
             icon : 'fa fa-search',
@@ -200,7 +202,7 @@ crud = {
             }
         },
         'action-order' : {
-            type : 'global',
+            type : 'collection',
             title : 'Order',
             css: 'btn btn-default btn-sm',
             iconUp : 'fa fa-caret-up',
@@ -217,7 +219,7 @@ crud = {
             }
         },
         'action-delete-selected' : {
-            type : 'global',
+            type : 'collection',
             title : 'Cancella selezionati',
             css: 'btn btn-outline-danger btn-sm',
             icon : 'fa fa-trash',

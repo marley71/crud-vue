@@ -42,8 +42,8 @@ Vue.component('v-list-edit', {
             keys : [],
             recordActionsName : [],
             recordActions: [],
-            globalActions : {},
-            globalActionsName : [],
+            collectionActions : {},
+            collectionActionsName : [],
             routeConf : routeConf,
             route : null,
             data : [],
@@ -86,10 +86,10 @@ Vue.component('v-list-edit', {
             //     that.rendersEdit[k].type = 'r-input';
             // }
             that.rendersEdit = rendersEdit;
-            that.createGlobalActions();
+            that.createCollectionActions();
             console.log('rendersEdit',that.rendersEdit);
             console.log('renders',that.renders,'recordActions',that.recordActions);
-            console.log('globalActions',that.globalActions);
+            console.log('collectionActions',that.collectionActions);
             console.log('editMode',that.editMode)
         },
 
@@ -122,37 +122,7 @@ Vue.component('v-list-edit', {
         //
         // },
 
-        // createActions : function () {
-        //     var that = this;
-        //     var globalActionsName = [];
-        //     var recordActionsName = [];
-        //
-        //     for (var i in that.conf.actions) {
-        //         var aName = that.conf.actions[i];
-        //         if (that.$crud.recordActions[aName])
-        //             recordActionsName.push(that.conf.actions[i]);
-        //         else if (that.$crud.globalActions[aName])
-        //             globalActionsName.push(aName);
-        //         else if (that.conf.customActions[aName]) {
-        //             Vue.component(aName, {
-        //                 extends : actionBase
-        //             });
-        //             if (that.conf.customActions[aName].type == 'global')
-        //                 globalActionsName.push(aName);
-        //             else if (that.conf.customActions[aName].type == 'record')
-        //                 recordActionsName.push(aName);
-        //             else
-        //                 throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,global";
-        //         } else {
-        //             throw "Impossibile trovare la definizione di " + aName;
-        //         }
-        //     }
-        //     //console.log('data',data,'conf',conf,'keys',keys);
-        //     that.globalActionsName = globalActionsName;
-        //     that.recordActionsName = recordActionsName;
-        //     that.globalActions = {};
-        //     that.recordActions = [];
-        // },
+
         // createRecordActions : function(row) {
         //     //console.log('row',row);
         //     var that = this;
@@ -176,28 +146,11 @@ Vue.component('v-list-edit', {
         //         recordActions[row][aName] = aConf;
         //     }
         // },
-        // createGlobalActions : function () {
-        //     var that = this;
-        //     var globalActions = [];
-        //     var globalActionsName = that.globalActionsName;
-        //     var data = that.data;
-        //
-        //     for (var i in globalActionsName) {
-        //         var aName = globalActionsName[i];
-        //         var aConf = that.getActionConfig(aName,'global');
-        //         //var a = jQuery.extend(true,{},aConf);
-        //         //a.id = data.value[i].id;
-        //         aConf.modelData = jQuery.extend(true,{},data.value);
-        //         aConf.modelName = that.cModel;
-        //         aConf.rootElement = that.$el;
-        //         globalActions[aName] = aConf;
-        //     }
-        //     that.globalActions = globalActions;
-        // },
+
         getOrderConf : function (key) {
             var that = this;
             console.log('GETORDERCONF CALLED');
-            var conf = that.getActionConfig('action-order','global');
+            var conf = that.getActionConfig('action-order','collection');
             conf.title = 'Order by ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;

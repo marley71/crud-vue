@@ -316,7 +316,7 @@
                     <p crud-hasmany_title_msg></p>
                     <ul class="list-inline"  >
                         <!--  -- contenitore delle views hasmany -- -->
-                        <li v-for="(item,index) in confViews"  :class="{'list-inline-item':true, 'd-none' : item.data.value.status == 'deleted'}">
+                        <li v-for="(item,index) in confViews" v-show="showItem(index)" class="list-inline-item">
                             <div class="card">
                                 <div class="card-header">
                                     <small class="pull-left" crud-field="label" crud-trim="12" crud-attrs="{title:label}"></small>
@@ -332,11 +332,11 @@
                 </div>
                 <div class="panel-footer">
                     <div >
-                        <div crud-render_limit class="hide">
+                        <div v-if="outOfLimit()">
                             <!-- Limite massimo raggiunto -->
                             {{  'app.limite-raggiunto' | translate }}
                         </div>
-                        <button v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
+                        <button v-else v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
                             <span >{{ 'app.add' | translate }}</span>&nbsp;
 <!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
                         </button>
@@ -485,9 +485,9 @@
         <c-loading v-if="loading"></c-loading>
         <div v-else>
             <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="name in collectionActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
                     </template>
                 </div>
                 <div class="float-right">
@@ -500,7 +500,7 @@
                     <tr v-if="renders.length > 0">
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>Actions</span>
+                            <span>{{"app.actions" | translate }}</span>
                         </th>
                         <th v-for="key in keys">
                             <action-order v-if="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
@@ -538,9 +538,9 @@
                 </table>
             </div>
             <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="name in collectionActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
                     </template>
                 </div>
                 <div class="float-right">
@@ -557,9 +557,9 @@
         <c-loading v-if="loading"></c-loading>
         <div v-else>
             <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="name in collectionActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
                     </template>
                 </div>
                 <div class="float-right">
@@ -604,9 +604,9 @@
                 </table>
             </div>
             <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="name in collectionActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
                     </template>
                 </div>
                 <div class="float-right">

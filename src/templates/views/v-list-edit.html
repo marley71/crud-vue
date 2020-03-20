@@ -4,9 +4,9 @@
         <c-loading v-if="loading"></c-loading>
         <div v-else>
             <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="name in collectionActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
                     </template>
                 </div>
                 <div class="float-right">
@@ -51,9 +51,9 @@
                 </table>
             </div>
             <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="name in collectionActionsName">
+                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
                     </template>
                 </div>
                 <div class="float-right">

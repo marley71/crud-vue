@@ -148,7 +148,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                         extends : actionBase
                     });
                 } else {
-                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.globalActions[name]?this.$crud.globalActions[name]:{})
+                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.collectionActions[name]?this.$crud.collectionActions[name]:{})
                 }
                 aConf = Utility.merge(aConf,this.conf.customActions[name]);
                 //console.log('CUSTOM',name,aConf);
@@ -160,11 +160,11 @@ crud.components.views.vBase = Vue.component('v-base', {
                 } else
                     throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
             }
-            if (type == 'global') {
-                if (this.$crud.globalActions[name]) {
-                    return Utility.cloneObj(this.$crud.globalActions[name]);
+            if (type == 'collection') {
+                if (this.$crud.collectionActions[name]) {
+                    return Utility.cloneObj(this.$crud.collectionActions[name]);
                 } else
-                    throw "Azione " + name +  " di tipo global non trovata nelle azioni generali";
+                    throw "Azione " + name +  " di tipo collection non trovata nelle azioni generali";
             }
             throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },

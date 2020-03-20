@@ -44,8 +44,8 @@ crud.components.views.vList = Vue.component('v-list', {
             keys : [],
             recordActionsName : [],
             recordActions: [],
-            globalActions : {},
-            globalActionsName : [],
+            collectionActions : {},
+            collectionActionsName : [],
             routeConf : routeConf,
             route : null,
             data : [],
@@ -71,9 +71,7 @@ crud.components.views.vList = Vue.component('v-list', {
             var that = this;
             that.createActions();
             that.createRenders();
-            that.createGlobalActions();
-            //console.log('renders',that.renders,'recordActions',that.recordActions);
-            //console.log('globalActions',that.globalActions);
+            that.createCollectionActions();
         },
 
         fillData : function(route, json) {
@@ -107,7 +105,7 @@ crud.components.views.vList = Vue.component('v-list', {
 
         getOrderConf : function (key) {
             var that = this;
-            var conf = that.getActionConfig('action-order','global');
+            var conf = that.getActionConfig('action-order','collection');
             conf.title = 'Order by ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;

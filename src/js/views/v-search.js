@@ -18,30 +18,6 @@ Vue.component('v-search', {
     },
 
     data :  function () {
-        //var that = this;
-
-        //var targetView = this.parent.$refs[that.cTargetView];
-        //var targetView = null;
-        //console.log('SEARCH',that.cModel,that.cRouteConf,that.cTargetView,targetView);
-        // that.conf = that.getConf(that.cModel,'search');
-        // var routeName = 'search';
-        // if (that.conf.routeName != null) {
-        //     routeName = that.conf.routeName;
-        // }
-        // that.route = Route.factory(routeName,{
-        //     values : {
-        //         modelName: that.cModel,
-        //     }
-        // })
-        // //that.createActions();
-        // this.fetchData(that.route,function (json) {
-        //     that.fillData(that.route,json);
-        //     that.createActions();
-        //     that.createActionsClass();
-        //     that.createRenders();
-        //     that.loading = false;
-        // });
-
         var that = this;
         var d = this.defaultData();
         d.conf = that.getConf(that.cModel,'search');
@@ -59,17 +35,6 @@ Vue.component('v-search', {
             targetRef : that.cTargetRef,
         }
         return Utility.merge(d,dSearch);
-        // return {
-        //     loading : true,
-        //     renders : {},
-        //     actionsClass : [],
-        //     actions : {},
-        //     data : {},
-        //     conf : that.conf,
-        //     //route : route,
-        //     defaultRenderType : 'r-input',
-        //     targetRef : that.cTargetRef,
-        // }
     },
     methods : {
         doSearch : function (params) {
@@ -95,6 +60,7 @@ Vue.component('v-search', {
                 renders[key].value = null;
                 if (! ('label' in renders[key]) )
                     renders[key].label = key;
+                renders[key].label = that.$options.filters.translate(renders[key].label,that.langContext);
                 //renders[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     renders[key].value = that.data.value[key];
