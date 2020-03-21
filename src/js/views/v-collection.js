@@ -26,7 +26,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var recordActions = that.recordActions;
             var recordActionsName = that.recordActionsName;
             var data = that.data;
-            var conf = that.conf;
             var keys = that.keys;
             console.log('keys',keys);
             for (var i in data.value) {

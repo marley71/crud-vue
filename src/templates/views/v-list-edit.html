@@ -19,11 +19,16 @@
                     <tr>
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>Actions</span>
+                            <span>{{"app.actions" | translate }}</span>
                         </th>
                         <th v-for="key in keys">
                             <span v-show="!conf.orderFields[key]">{{key}}</span>
                             <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
+                        </th>
+                    </tr>
+                    <tr v-if="renders.length == 0">
+                        <th v-show="recordActionsName.length">
+                            {{"app.nessun-elemento" | translate }}
                         </th>
                     </tr>
                     </thead>

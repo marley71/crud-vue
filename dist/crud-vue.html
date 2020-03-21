@@ -1,12 +1,12 @@
 <script type="text/x-template" id="action-template">
     <span>
-        <button v-if="controlType=='button'" type="button" v-show="_visible" v-bind:title="title" v-bind:class="css" v-on:click="_execute" v-bind:disabled="_disabled">
-            <i v-show="icon" v-bind:class="icon"></i>
-            <span v-html="text"></span>
-        </button>
-        <a v-else :target="target" :href="href" v-show="_visible" :title="title" :class="css" :disabled="_disabled" >
+        <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
             <i v-show="icon" :class="icon"></i>
-            <span v-html="text"></span>
+            <span>{{text | translate}}</span>
+        </button>
+        <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >
+            <i v-show="icon" :class="icon"></i>
+            <span>{{text | translate}}</span>
         </a>
     </span>
 </script>
@@ -509,7 +509,7 @@
                     </tr>
                     <tr v-if="renders.length == 0">
                         <th v-show="recordActionsName.length">
-                            Nessun elemento trovato
+                            {{"app.nessun-elemento" | translate }}
                         </th>
                     </tr>
                     </thead>
@@ -572,11 +572,16 @@
                     <tr>
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>Actions</span>
+                            <span>{{"app.actions" | translate }}</span>
                         </th>
                         <th v-for="key in keys">
                             <span v-show="!conf.orderFields[key]">{{key}}</span>
                             <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
+                        </th>
+                    </tr>
+                    <tr v-if="renders.length == 0">
+                        <th v-show="recordActionsName.length">
+                            {{"app.nessun-elemento" | translate }}
                         </th>
                     </tr>
                     </thead>

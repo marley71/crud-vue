@@ -234,24 +234,28 @@ crud.components.views.vBase = Vue.component('v-base', {
             return route;
         },
         /**
-         * ritorna la configurazione minimale di un render rispettando le priorita' tra le configurazioni
-         * @param key
+         * ritorna la configurazione minimale di base di un render rispettando le priorita' tra le configurazioni
+         * @param key : nome del campo di cui vogliamo la configurazione
+         * @param confiName : nome variabile configurazione nell'oggetto conf. opzionale
          * @returns {{type: *}}
          * @private
          */
-        _defaultRenderConfig : function(key) {
+        _defaultRenderConfig : function(key,configName) {
             var that = this;
             var c = {
                 type:that.defaultRenderType,
                 value : null,
                 operator : null,
             };
-            if (that.conf.fieldsConfig[key]) {
+            configName = configName?configName:'fieldsConfig';
+            var conf = (that.conf[configName] && that.conf[configName][key])?that.conf[configName][name]:null;
+
+            if (conf) {
                 // in caso di stringa lo considero come il type del render
-                if (typeof that.conf.fieldsConfig[key] === 'string' || that.conf.fieldsConfig[key] instanceof String) {
-                    c.type = that.conf.fieldsConfig[key];
+                if (typeof conf === 'string' || conf instanceof String) {
+                    c.type = conf;
                 } else {
-                    c = Utility.merge(c,that.conf.fieldsConfig[key]);
+                    c = Utility.merge(c,conf);
                 }
             }
 

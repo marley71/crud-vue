@@ -4,17 +4,6 @@ Vue.component('v-list-edit', {
     conf : {},
     props : ['cConf','cModel'],
 
-    // mounted : function() {
-    //     var that = this;
-    //     VLISTEDIT = this;
-    //     that.route = that._getRoute(that.routeConf.values);
-    //     this.fetchData(that.route,function (json) {
-    //         that.fillData(that.route,json);
-    //         that.keys = that.getKeys();
-    //         that.draw();
-    //         that.loading = false;
-    //     });
-    // },
     data :  function () {
         var that = this;
 
@@ -71,21 +60,22 @@ Vue.component('v-list-edit', {
             that.editMode = new Array(that.data.value.length).fill(false);
             that.createActions();
             that.createRenders();
-            var rendersEdit = [];
-            for (var row in that.renders) {
-                rendersEdit.push({});
-                for (var key in that.renders[row]) {
-                    rendersEdit[row][key] = Utility.cloneObj(that.renders[row][key])
-                    rendersEdit[row][key].type = 'r-input';
-                    rendersEdit[row][key].cRef = that.$crud.getRefId(that._uid,'redit',row,key);
-                }
-            }
-            // var rowRenders = that.renders[0];
-            // for (var k in rowRenders) {
-            //     that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
-            //     that.rendersEdit[k].type = 'r-input';
+            that.createRendersEdit();
+            // var rendersEdit = [];
+            // for (var row in that.renders) {
+            //     rendersEdit.push({});
+            //     for (var key in that.renders[row]) {
+            //         rendersEdit[row][key] = Utility.cloneObj(that.renders[row][key])
+            //         rendersEdit[row][key].type = 'r-input';
+            //         rendersEdit[row][key].cRef = that.$crud.getRefId(that._uid,'redit',row,key);
+            //     }
             // }
-            that.rendersEdit = rendersEdit;
+            // // var rowRenders = that.renders[0];
+            // // for (var k in rowRenders) {
+            // //     that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
+            // //     that.rendersEdit[k].type = 'r-input';
+            // // }
+            // that.rendersEdit = rendersEdit;
             that.createCollectionActions();
             console.log('rendersEdit',that.rendersEdit);
             console.log('renders',that.renders,'recordActions',that.recordActions);
@@ -93,65 +83,37 @@ Vue.component('v-list-edit', {
             console.log('editMode',that.editMode)
         },
 
-        // fillData : function(route, json) {
-        //     var that = this;
-        //     var data = {};
-        //     if (!route) {
-        //         console.log('dati manuali',that.conf.data);
-        //         if (that.conf.data) {
-        //             data = that.conf.data;
-        //             that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
-        //         }
-        //     } else {
-        //
-        //         var protocol = Protocol.factory(route.protocol);
-        //         protocol.jsonToData(json);
-        //         var prop = Object.getOwnPropertyNames(protocol);
-        //         //console.log(prop);
-        //         var data = {};
-        //
-        //         for (var i in prop) {
-        //             //console.log(k,k,prop[k]);
-        //             data[prop[i]] = protocol[prop[i]];
-        //         }
-        //         var data = data;
-        //         //this.maxPage = data.pagination.last_page;
-        //         that.pagination = data.pagination;
-        //     }
-        //     that.data = data;
-        //
-        // },
-
-
-        // createRecordActions : function(row) {
-        //     //console.log('row',row);
-        //     var that = this;
-        //     var recordActionsName = that.recordActionsName;
-        //     var recordActions = that.recordActions;
-        //     var data = that.data;
-        //
-        //     for(var k in recordActionsName) {
-        //         var aName = recordActionsName[k];
-        //         var aConf = that.getActionConfig(aName,'record');
-        //         //var a = jQuery.extend(true,{},aConf);
-        //         //a.id = data.value[i].id;
-        //         aConf.modelData = Utility.cloneObj(data.value[row]);
-        //         aConf.modelName = that.cModel;
-        //         aConf.cIndex = row;
-        //         if (['action-view-mode','action-save-row'].indexOf(aName) >= 0) {
-        //             aConf.visible = false;
-        //             //console.log('nazoscond')
-        //         }
-        //         console.log('ACTION RECORD INDEX',aConf.cIndex)
-        //         recordActions[row][aName] = aConf;
-        //     }
-        // },
+        createRendersEdit : function () {
+            var that = this;
+            //console.log('Vlist-create renders',that.data);
+            var rendersEdit = [];
+            var data = that.data;
+            var keys = that.keys;
+            for (var i in data.value) {
+                rendersEdit.push({});
+                for (var k in that.keys) {
+                    var key = keys[k];
+                    var dconf = that._defaultRenderConfig(key,'fieldsConfigEditMode');
+                    // se non c'e' la configurazione in modalità edit lo forzo ad essere un r-input
+                    if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
+                        dconf.type = 'r-input';
+                    dconf.cRef = that.$crud.getRefId(that._uid,'redit',i,key);
+                    dconf.modelData = data.value[i];
+                    if (! ('value' in dconf))
+                        dconf.value = null;
+                    if (data.value[i][key])
+                        dconf.value = data.value[i][key];
+                    dconf.name = that.getFieldName(key);
+                    rendersEdit[i][key] = dconf;
+                }
+            }
+            that.rendersEdit = rendersEdit;
+        },
 
         getOrderConf : function (key) {
             var that = this;
-            console.log('GETORDERCONF CALLED');
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = 'Order by ' + key;
+            conf.title = 'app.ordina ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             if (that.data.order_field)
@@ -182,7 +144,7 @@ Vue.component('v-list-edit', {
                     sel.push(that.data.value[index].id);
                 }
             });
-            console.log('select3ed',sel);
+
             return sel;
         },
         setEditMode : function (index) {
@@ -209,23 +171,14 @@ Vue.component('v-list-edit', {
         },
         hideRA : function (index,name) {
             var that = this;
-            //var n = 'ra-'+index+'-'+name;
-
             var n = that.$crud.getRefId(that._uid,'ra',index,name);
-            console.log('HIDE',n);
             this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var that = this;
-            //var n = 'ra-'+index+'-'+name;
-
             var n = that.$crud.getRefId(that._uid,'ra',index,name);
-            console.log('SHOW',n);
             this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
         },
-        // getRef : function (prefix,index,key) {
-        //     var s =  prefix + '-' + index + '-' + key;
-        // }
     },
     watch : {
         routeConf : {

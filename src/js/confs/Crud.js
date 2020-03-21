@@ -11,16 +11,27 @@
 // }
 const crud = {
     lang : {
-        'app.add' : 'Aggiungi',
-        'app.conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
+        'app.annulla' : 'Annulla',
+        'app.nuovo' : 'Nuovo',
+        'app.modifica' : 'Modifica',
+        'app.vista' : 'Vista',
+        'app.cancella' : 'Cancella elemento',
+        'app.cancella-selezionati' : 'Cancella elementi selezionati',
+        'app.salva' : 'Salva',
+        'app.indietro' : 'Indietro',
+        'app.cerca' : 'Cerca',
+        'app.ordina' : 'Ordina',
+        'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
+        'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
         'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
         'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
-        'app.actions' : 'azioni',
-        'model.foto' : 'foto',
-        'model.attachment' : 'allegato',
-        'name' : 'nome1',
-        'user.name' : 'nome2',
-        'user.email' : 'email'
+        'app.actions' : 'Azioni',
+        'app.nessun-elemento' : 'Nessun elemento trovato',
+        'model.foto' : 'Foto',
+        'model.attachment' : 'Allegato',
+        'name' : 'Nome1',
+        'user.name' : 'Nome2',
+        'user.email' : 'Email'
     },
     application : {
         useRouter : false,
@@ -41,7 +52,7 @@ const crud = {
     recordActions : {
         'action-edit' : {
             type : 'record',
-            title : 'edit',
+            title : 'app.modifica',
             css: 'btn btn-outline-secondary btn-sm ',
             text : '',
             icon : 'fa fa-edit',
@@ -53,9 +64,9 @@ const crud = {
         },
         'action-view' : {
             type : 'record',
-            title : 'view',
+            title : 'app.vista',
             css: 'btn btn-outline-secondary btn-sm ',
-            icon : 'fa fa-list',
+            icon : 'fa fa-eye',
             text : '',
             execute : function () {
                 var url = this.$crud.application.useRouter?'#':'';
@@ -65,7 +76,7 @@ const crud = {
         },
         'action-delete' : {
             type : 'record',
-            title : 'delete record',
+            title : 'app.cancella',
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
             text : '',
@@ -80,11 +91,8 @@ const crud = {
                             modelName: that.view.cModel,
                             pk : that.modelData.id
                         };
-                        //self.app.waitStart();
                         Server.route(r,function (json) {
                             that.view.reload();
-                            //self.app.waitEnd();
-                            //self.callback(json);
                         });
                     }
                 });
@@ -97,10 +105,10 @@ const crud = {
             type : 'collection',
             visible : true,
             enabled : true,
-            title : 'New',
+            title : 'app.nuovo',
             css: 'btn btn-outline-primary btn-sm btn-group',
             icon : 'fa fa-plus',
-            text : 'New',
+            text : 'app.nuovo',
             execute  :function () {
                 var url = this.$crud.application.useRouter?'#':'';
                 url += "/insert/" + this.modelName + "/new";
@@ -109,10 +117,10 @@ const crud = {
         },
         'action-save' : {
             type : 'collection',
-            title : 'save',
+            title : 'app.salva',
             css: 'btn btn-primary btn-sm',
             icon : 'fa fa-save',
-            text : 'Save',
+            text : 'app.salva',
             execute : function () {
                 var that = this;
                 console.log('action save',this);
@@ -150,26 +158,26 @@ const crud = {
                         //alert(json.msg);
                         return ;
                     }
-                    that.$crud.popover('Ok')
+                    that.$crud.popoverSuccess('app.salvataggio-ok')
                 })
             }
         },
         'action-back' : {
             type : 'collection',
-            title : 'Back',
+            title : 'app.indietro',
             css: 'btn btn-secondary btn-sm',
             icon : 'fa fa-backward',
-            text : 'Back',
+            text : 'app.indietro',
             execute : function () {
                 window.history.back();
             }
         },
         'action-search' : {
             type : 'collection',
-            title : 'Search',
+            title : 'app.cerca',
             css: 'btn btn-primary btn-sm btn-group',
             icon : 'fa fa-search',
-            text : 'Search',
+            text : 'app.cerca',
             execute : function () {
                 //console.log('action-search',this.view,this.view.targetId);
                 if (this.view && this.view.targetRef) {
@@ -198,12 +206,12 @@ const crud = {
                     //this.view.setCRouteCo .cRouteConf = routeConf;
                 } else
                     console.warn('routeConf non definita')
-                console.log('SEARCH',this.view,this.cRouteConf);
+                //console.log('SEARCH',this.view,this.cRouteConf);
             }
         },
         'action-order' : {
             type : 'collection',
-            title : 'Order',
+            title : 'app.order',
             css: 'btn btn-default btn-sm',
             iconUp : 'fa fa-caret-up',
             iconDown : 'fa fa-caret-down',
@@ -220,7 +228,7 @@ const crud = {
         },
         'action-delete-selected' : {
             type : 'collection',
-            title : 'Cancella selezionati',
+            title : 'app.cancella-selezionati',
             css: 'btn btn-outline-danger btn-sm',
             icon : 'fa fa-trash',
             text : '',

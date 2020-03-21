@@ -106,7 +106,7 @@ crud.components.views.vList = Vue.component('v-list', {
         getOrderConf : function (key) {
             var that = this;
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = 'Order by ' + key;
+            conf.title = that.$crud.translate('app.ordina') + ' ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)

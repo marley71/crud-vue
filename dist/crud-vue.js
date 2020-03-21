@@ -80,16 +80,27 @@
 // }
 const crud = {
     lang : {
-        'app.add' : 'Aggiungi',
-        'app.conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
+        'app.annulla' : 'Annulla',
+        'app.nuovo' : 'Nuovo',
+        'app.modifica' : 'Modifica',
+        'app.vista' : 'Vista',
+        'app.cancella' : 'Cancella elemento',
+        'app.cancella-selezionati' : 'Cancella elementi selezionati',
+        'app.salva' : 'Salva',
+        'app.indietro' : 'Indietro',
+        'app.cerca' : 'Cerca',
+        'app.ordina' : 'Ordina',
+        'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
+        'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
         'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
         'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
-        'app.actions' : 'azioni',
-        'model.foto' : 'foto',
-        'model.attachment' : 'allegato',
-        'name' : 'nome1',
-        'user.name' : 'nome2',
-        'user.email' : 'email'
+        'app.actions' : 'Azioni',
+        'app.nessun-elemento' : 'Nessun elemento trovato',
+        'model.foto' : 'Foto',
+        'model.attachment' : 'Allegato',
+        'name' : 'Nome1',
+        'user.name' : 'Nome2',
+        'user.email' : 'Email'
     },
     application : {
         useRouter : false,
@@ -110,7 +121,7 @@ const crud = {
     recordActions : {
         'action-edit' : {
             type : 'record',
-            title : 'edit',
+            title : 'app.modifica',
             css: 'btn btn-outline-secondary btn-sm ',
             text : '',
             icon : 'fa fa-edit',
@@ -122,9 +133,9 @@ const crud = {
         },
         'action-view' : {
             type : 'record',
-            title : 'view',
+            title : 'app.vista',
             css: 'btn btn-outline-secondary btn-sm ',
-            icon : 'fa fa-list',
+            icon : 'fa fa-eye',
             text : '',
             execute : function () {
                 var url = this.$crud.application.useRouter?'#':'';
@@ -134,7 +145,7 @@ const crud = {
         },
         'action-delete' : {
             type : 'record',
-            title : 'delete record',
+            title : 'app.cancella',
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
             text : '',
@@ -149,11 +160,8 @@ const crud = {
                             modelName: that.view.cModel,
                             pk : that.modelData.id
                         };
-                        //self.app.waitStart();
                         Server.route(r,function (json) {
                             that.view.reload();
-                            //self.app.waitEnd();
-                            //self.callback(json);
                         });
                     }
                 });
@@ -166,10 +174,10 @@ const crud = {
             type : 'collection',
             visible : true,
             enabled : true,
-            title : 'New',
+            title : 'app.nuovo',
             css: 'btn btn-outline-primary btn-sm btn-group',
             icon : 'fa fa-plus',
-            text : 'New',
+            text : 'app.nuovo',
             execute  :function () {
                 var url = this.$crud.application.useRouter?'#':'';
                 url += "/insert/" + this.modelName + "/new";
@@ -178,10 +186,10 @@ const crud = {
         },
         'action-save' : {
             type : 'collection',
-            title : 'save',
+            title : 'app.salva',
             css: 'btn btn-primary btn-sm',
             icon : 'fa fa-save',
-            text : 'Save',
+            text : 'app.salva',
             execute : function () {
                 var that = this;
                 console.log('action save',this);
@@ -219,26 +227,26 @@ const crud = {
                         //alert(json.msg);
                         return ;
                     }
-                    that.$crud.popover('Ok')
+                    that.$crud.popoverSuccess('app.salvataggio-ok')
                 })
             }
         },
         'action-back' : {
             type : 'collection',
-            title : 'Back',
+            title : 'app.indietro',
             css: 'btn btn-secondary btn-sm',
             icon : 'fa fa-backward',
-            text : 'Back',
+            text : 'app.indietro',
             execute : function () {
                 window.history.back();
             }
         },
         'action-search' : {
             type : 'collection',
-            title : 'Search',
+            title : 'app.cerca',
             css: 'btn btn-primary btn-sm btn-group',
             icon : 'fa fa-search',
-            text : 'Search',
+            text : 'app.cerca',
             execute : function () {
                 //console.log('action-search',this.view,this.view.targetId);
                 if (this.view && this.view.targetRef) {
@@ -267,12 +275,12 @@ const crud = {
                     //this.view.setCRouteCo .cRouteConf = routeConf;
                 } else
                     console.warn('routeConf non definita')
-                console.log('SEARCH',this.view,this.cRouteConf);
+                //console.log('SEARCH',this.view,this.cRouteConf);
             }
         },
         'action-order' : {
             type : 'collection',
-            title : 'Order',
+            title : 'app.order',
             css: 'btn btn-default btn-sm',
             iconUp : 'fa fa-caret-up',
             iconDown : 'fa fa-caret-down',
@@ -289,7 +297,7 @@ const crud = {
         },
         'action-delete-selected' : {
             type : 'collection',
-            title : 'Cancella selezionati',
+            title : 'app.cancella-selezionati',
             css: 'btn btn-outline-danger btn-sm',
             icon : 'fa fa-trash',
             text : '',
@@ -575,15 +583,24 @@ dialogs_interface = {
             jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
         },
-        
-        popover : function (message) {
-            jQuery('body').append('<div id="c-pop">'+ message +'</div>');
-            jQuery('#c-pop').popover({
-                container : 'body',
-                delay : 500
-            })
-        }
 
+
+        popover : function (message,classes,time) {
+            dialogs_interface._popover(message,classes,time);
+        },
+
+        popoverSuccess : function (message,time) {
+            dialogs_interface._popover(message,'alert alert-success',time);
+        },
+        popoverError : function (message,time) {
+            dialogs_interface._popover(message,'alert alert-danger',time);
+        },
+        popoverInfo : function (message,time) {
+            dialogs_interface._popover(message,'alert alert-info',time);
+        },
+        popoverWarning : function (message,time) {
+            dialogs_interface._popover(message,'alert alert-warning',time);
+        }
 // var _progressDialog = null;
 // App.progressDialog = function (content,callbacks) {
 //     var self = this;
@@ -595,8 +612,29 @@ dialogs_interface = {
 //     _progressDialog.show(content,callbacks);
 //     return _progressDialog;
 // }
+    },
+    _popover : function (message,classes,time) {
+        var id= 'pop' + (new Date().getTime());
+        _cls = 'alert alert-primary ' + (classes?classes:'');
+        var content = crud.translate(message);
+        var _t = 2000;
+        if( time === 0 ){
+            content += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                '    <span aria-hidden="true">&times;</span>\n' +
+                '  </button>';
+        } else if (time) {
+            _t = time;
+        }
+        var top  = window.pageYOffset || document.documentElement.scrollTop;
+        var style = 'position:absolute;z-index:100000;width:50%;left:25%;top:'+top+'px';
+        jQuery('body').prepend('<div id="'+id+'" class="' + _cls +'" style="' + style + '">' + content +'</div>');
+        if (time !== 0) {
+            setTimeout(function() {
+                jQuery('#'+id).remove();
+            }, _t);
+        }
+        jQuery('#'+id).popover('show');
     }
-
 
 };
 core_interface = {
@@ -4001,24 +4039,28 @@ crud.components.views.vBase = Vue.component('v-base', {
             return route;
         },
         /**
-         * ritorna la configurazione minimale di un render rispettando le priorita' tra le configurazioni
-         * @param key
+         * ritorna la configurazione minimale di base di un render rispettando le priorita' tra le configurazioni
+         * @param key : nome del campo di cui vogliamo la configurazione
+         * @param confiName : nome variabile configurazione nell'oggetto conf. opzionale
          * @returns {{type: *}}
          * @private
          */
-        _defaultRenderConfig : function(key) {
+        _defaultRenderConfig : function(key,configName) {
             var that = this;
             var c = {
                 type:that.defaultRenderType,
                 value : null,
                 operator : null,
             };
-            if (that.conf.fieldsConfig[key]) {
+            configName = configName?configName:'fieldsConfig';
+            var conf = (that.conf[configName] && that.conf[configName][key])?that.conf[configName][name]:null;
+
+            if (conf) {
                 // in caso di stringa lo considero come il type del render
-                if (typeof that.conf.fieldsConfig[key] === 'string' || that.conf.fieldsConfig[key] instanceof String) {
-                    c.type = that.conf.fieldsConfig[key];
+                if (typeof conf === 'string' || conf instanceof String) {
+                    c.type = conf;
                 } else {
-                    c = Utility.merge(c,that.conf.fieldsConfig[key]);
+                    c = Utility.merge(c,conf);
                 }
             }
 
@@ -4191,7 +4233,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var recordActions = that.recordActions;
             var recordActionsName = that.recordActionsName;
             var data = that.data;
-            var conf = that.conf;
             var keys = that.keys;
             console.log('keys',keys);
             for (var i in data.value) {
@@ -4418,7 +4459,7 @@ crud.components.views.vList = Vue.component('v-list', {
         getOrderConf : function (key) {
             var that = this;
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = 'Order by ' + key;
+            conf.title = that.$crud.translate('app.ordina') + ' ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)
@@ -4475,17 +4516,6 @@ Vue.component('v-list-edit', {
     conf : {},
     props : ['cConf','cModel'],
 
-    // mounted : function() {
-    //     var that = this;
-    //     VLISTEDIT = this;
-    //     that.route = that._getRoute(that.routeConf.values);
-    //     this.fetchData(that.route,function (json) {
-    //         that.fillData(that.route,json);
-    //         that.keys = that.getKeys();
-    //         that.draw();
-    //         that.loading = false;
-    //     });
-    // },
     data :  function () {
         var that = this;
 
@@ -4542,21 +4572,22 @@ Vue.component('v-list-edit', {
             that.editMode = new Array(that.data.value.length).fill(false);
             that.createActions();
             that.createRenders();
-            var rendersEdit = [];
-            for (var row in that.renders) {
-                rendersEdit.push({});
-                for (var key in that.renders[row]) {
-                    rendersEdit[row][key] = Utility.cloneObj(that.renders[row][key])
-                    rendersEdit[row][key].type = 'r-input';
-                    rendersEdit[row][key].cRef = that.$crud.getRefId(that._uid,'redit',row,key);
-                }
-            }
-            // var rowRenders = that.renders[0];
-            // for (var k in rowRenders) {
-            //     that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
-            //     that.rendersEdit[k].type = 'r-input';
+            that.createRendersEdit();
+            // var rendersEdit = [];
+            // for (var row in that.renders) {
+            //     rendersEdit.push({});
+            //     for (var key in that.renders[row]) {
+            //         rendersEdit[row][key] = Utility.cloneObj(that.renders[row][key])
+            //         rendersEdit[row][key].type = 'r-input';
+            //         rendersEdit[row][key].cRef = that.$crud.getRefId(that._uid,'redit',row,key);
+            //     }
             // }
-            that.rendersEdit = rendersEdit;
+            // // var rowRenders = that.renders[0];
+            // // for (var k in rowRenders) {
+            // //     that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
+            // //     that.rendersEdit[k].type = 'r-input';
+            // // }
+            // that.rendersEdit = rendersEdit;
             that.createCollectionActions();
             console.log('rendersEdit',that.rendersEdit);
             console.log('renders',that.renders,'recordActions',that.recordActions);
@@ -4564,65 +4595,37 @@ Vue.component('v-list-edit', {
             console.log('editMode',that.editMode)
         },
 
-        // fillData : function(route, json) {
-        //     var that = this;
-        //     var data = {};
-        //     if (!route) {
-        //         console.log('dati manuali',that.conf.data);
-        //         if (that.conf.data) {
-        //             data = that.conf.data;
-        //             that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
-        //         }
-        //     } else {
-        //
-        //         var protocol = Protocol.factory(route.protocol);
-        //         protocol.jsonToData(json);
-        //         var prop = Object.getOwnPropertyNames(protocol);
-        //         //console.log(prop);
-        //         var data = {};
-        //
-        //         for (var i in prop) {
-        //             //console.log(k,k,prop[k]);
-        //             data[prop[i]] = protocol[prop[i]];
-        //         }
-        //         var data = data;
-        //         //this.maxPage = data.pagination.last_page;
-        //         that.pagination = data.pagination;
-        //     }
-        //     that.data = data;
-        //
-        // },
-
-
-        // createRecordActions : function(row) {
-        //     //console.log('row',row);
-        //     var that = this;
-        //     var recordActionsName = that.recordActionsName;
-        //     var recordActions = that.recordActions;
-        //     var data = that.data;
-        //
-        //     for(var k in recordActionsName) {
-        //         var aName = recordActionsName[k];
-        //         var aConf = that.getActionConfig(aName,'record');
-        //         //var a = jQuery.extend(true,{},aConf);
-        //         //a.id = data.value[i].id;
-        //         aConf.modelData = Utility.cloneObj(data.value[row]);
-        //         aConf.modelName = that.cModel;
-        //         aConf.cIndex = row;
-        //         if (['action-view-mode','action-save-row'].indexOf(aName) >= 0) {
-        //             aConf.visible = false;
-        //             //console.log('nazoscond')
-        //         }
-        //         console.log('ACTION RECORD INDEX',aConf.cIndex)
-        //         recordActions[row][aName] = aConf;
-        //     }
-        // },
+        createRendersEdit : function () {
+            var that = this;
+            //console.log('Vlist-create renders',that.data);
+            var rendersEdit = [];
+            var data = that.data;
+            var keys = that.keys;
+            for (var i in data.value) {
+                rendersEdit.push({});
+                for (var k in that.keys) {
+                    var key = keys[k];
+                    var dconf = that._defaultRenderConfig(key,'fieldsConfigEditMode');
+                    // se non c'e' la configurazione in modalità edit lo forzo ad essere un r-input
+                    if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
+                        dconf.type = 'r-input';
+                    dconf.cRef = that.$crud.getRefId(that._uid,'redit',i,key);
+                    dconf.modelData = data.value[i];
+                    if (! ('value' in dconf))
+                        dconf.value = null;
+                    if (data.value[i][key])
+                        dconf.value = data.value[i][key];
+                    dconf.name = that.getFieldName(key);
+                    rendersEdit[i][key] = dconf;
+                }
+            }
+            that.rendersEdit = rendersEdit;
+        },
 
         getOrderConf : function (key) {
             var that = this;
-            console.log('GETORDERCONF CALLED');
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = 'Order by ' + key;
+            conf.title = 'app.ordina ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             if (that.data.order_field)
@@ -4653,7 +4656,7 @@ Vue.component('v-list-edit', {
                     sel.push(that.data.value[index].id);
                 }
             });
-            console.log('select3ed',sel);
+
             return sel;
         },
         setEditMode : function (index) {
@@ -4680,23 +4683,14 @@ Vue.component('v-list-edit', {
         },
         hideRA : function (index,name) {
             var that = this;
-            //var n = 'ra-'+index+'-'+name;
-
             var n = that.$crud.getRefId(that._uid,'ra',index,name);
-            console.log('HIDE',n);
             this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var that = this;
-            //var n = 'ra-'+index+'-'+name;
-
             var n = that.$crud.getRefId(that._uid,'ra',index,name);
-            console.log('SHOW',n);
             this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
         },
-        // getRef : function (prefix,index,key) {
-        //     var s =  prefix + '-' + index + '-' + key;
-        // }
     },
     watch : {
         routeConf : {

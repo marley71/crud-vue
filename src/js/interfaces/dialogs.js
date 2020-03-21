@@ -86,15 +86,24 @@ dialogs_interface = {
             jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
         },
-        
-        popover : function (message) {
-            jQuery('body').append('<div id="c-pop">'+ message +'</div>');
-            jQuery('#c-pop').popover({
-                container : 'body',
-                delay : 500
-            })
-        }
 
+
+        popover : function (message,classes,time) {
+            dialogs_interface._popover(message,classes,time);
+        },
+
+        popoverSuccess : function (message,time) {
+            dialogs_interface._popover(message,'alert alert-success',time);
+        },
+        popoverError : function (message,time) {
+            dialogs_interface._popover(message,'alert alert-danger',time);
+        },
+        popoverInfo : function (message,time) {
+            dialogs_interface._popover(message,'alert alert-info',time);
+        },
+        popoverWarning : function (message,time) {
+            dialogs_interface._popover(message,'alert alert-warning',time);
+        }
 // var _progressDialog = null;
 // App.progressDialog = function (content,callbacks) {
 //     var self = this;
@@ -106,7 +115,28 @@ dialogs_interface = {
 //     _progressDialog.show(content,callbacks);
 //     return _progressDialog;
 // }
+    },
+    _popover : function (message,classes,time) {
+        var id= 'pop' + (new Date().getTime());
+        _cls = 'alert alert-primary ' + (classes?classes:'');
+        var content = crud.translate(message);
+        var _t = 2000;
+        if( time === 0 ){
+            content += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                '    <span aria-hidden="true">&times;</span>\n' +
+                '  </button>';
+        } else if (time) {
+            _t = time;
+        }
+        var top  = window.pageYOffset || document.documentElement.scrollTop;
+        var style = 'position:absolute;z-index:100000;width:50%;left:25%;top:'+top+'px';
+        jQuery('body').prepend('<div id="'+id+'" class="' + _cls +'" style="' + style + '">' + content +'</div>');
+        if (time !== 0) {
+            setTimeout(function() {
+                jQuery('#'+id).remove();
+            }, _t);
+        }
+        jQuery('#'+id).popover('show');
     }
-
 
 };
