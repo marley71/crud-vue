@@ -96,11 +96,6 @@ const crud = {
         'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
         'app.actions' : 'Azioni',
         'app.nessun-elemento' : 'Nessun elemento trovato',
-        'model.foto' : 'Foto',
-        'model.attachment' : 'Allegato',
-        'name' : 'Nome1',
-        'user.name' : 'Nome2',
-        'user.email' : 'Email'
     },
     application : {
         useRouter : false,
@@ -3989,9 +3984,9 @@ crud.components.views.vBase = Vue.component('v-base', {
                 else
                     conf = this.cConf;
             } else {
-                console.log('Check exist default conf '+ 'Model'+Utility.upperCaseFirst(modelName));
-                if (window['Model'+Utility.upperCaseFirst(modelName)]) {
-                    var cm = window['Model'+Utility.upperCaseFirst(modelName)];
+                console.log('Check exist default conf '+ 'Model'+Utility.pascalCase(modelName));
+                if (window['Model'+Utility.pascalCase(modelName)]) {
+                    var cm = window['Model'+Utility.pascalCase(modelName)];
                     if (cm[type])
                         conf = cm[type];
                     else {
@@ -4011,7 +4006,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 throw "Nessuna configurazione trovata per questa view";
 
             var finalConf = Utility.confMerge(defaltConf,conf);
-            console.log('viewConf',finalConf,defaltConf,conf);
+            console.log('getConf',finalConf);
             return finalConf;
         },
 
@@ -4053,8 +4048,8 @@ crud.components.views.vBase = Vue.component('v-base', {
                 operator : null,
             };
             configName = configName?configName:'fieldsConfig';
-            var conf = (that.conf[configName] && that.conf[configName][key])?that.conf[configName][name]:null;
-
+            var conf = (that.conf[configName] && that.conf[configName][key])?that.conf[configName][key]:null;
+            //console.log('CONF',key,conf,configName,that.conf[configName]);
             if (conf) {
                 // in caso di stringa lo considero come il type del render
                 if (typeof conf === 'string' || conf instanceof String) {
@@ -4076,6 +4071,7 @@ crud.components.views.vBase = Vue.component('v-base', {
     },
     template : '<div>view base</div>'
 });
+
 crud.components.views.vRecord = Vue.component('v-record', {
     extends : crud.components.views.vBase,
     props : ['cModel','cPk'],
@@ -4527,7 +4523,7 @@ Vue.component('v-list-edit', {
         if (this.$route && this.$route.query)
             routeConf.params = that.$route.query;
 
-        var conf = that.getConf(that.cModel,Utility.camelCase('list-edit'));
+        var conf = that.getConf(that.cModel,'listEdit');
         // conf.customActions['action-edit'] = {
         //     execute : function () {
         //         var thatA = this;

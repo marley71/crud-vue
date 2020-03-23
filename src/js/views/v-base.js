@@ -184,9 +184,9 @@ crud.components.views.vBase = Vue.component('v-base', {
                 else
                     conf = this.cConf;
             } else {
-                console.log('Check exist default conf '+ 'Model'+Utility.upperCaseFirst(modelName));
-                if (window['Model'+Utility.upperCaseFirst(modelName)]) {
-                    var cm = window['Model'+Utility.upperCaseFirst(modelName)];
+                console.log('Check exist default conf '+ 'Model'+Utility.pascalCase(modelName));
+                if (window['Model'+Utility.pascalCase(modelName)]) {
+                    var cm = window['Model'+Utility.pascalCase(modelName)];
                     if (cm[type])
                         conf = cm[type];
                     else {
@@ -206,7 +206,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 throw "Nessuna configurazione trovata per questa view";
 
             var finalConf = Utility.confMerge(defaltConf,conf);
-            console.log('viewConf',finalConf,defaltConf,conf);
+            console.log('getConf',finalConf);
             return finalConf;
         },
 
@@ -248,8 +248,8 @@ crud.components.views.vBase = Vue.component('v-base', {
                 operator : null,
             };
             configName = configName?configName:'fieldsConfig';
-            var conf = (that.conf[configName] && that.conf[configName][key])?that.conf[configName][name]:null;
-
+            var conf = (that.conf[configName] && that.conf[configName][key])?that.conf[configName][key]:null;
+            //console.log('CONF',key,conf,configName,that.conf[configName]);
             if (conf) {
                 // in caso di stringa lo considero come il type del render
                 if (typeof conf === 'string' || conf instanceof String) {

@@ -15,7 +15,7 @@ Vue.component('v-list-edit', {
         if (this.$route && this.$route.query)
             routeConf.params = that.$route.query;
 
-        var conf = that.getConf(that.cModel,Utility.camelCase('list-edit'));
+        var conf = that.getConf(that.cModel,'listEdit');
         // conf.customActions['action-edit'] = {
         //     execute : function () {
         //         var thatA = this;

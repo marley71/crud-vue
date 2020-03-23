@@ -27,11 +27,6 @@ const crud = {
         'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
         'app.actions' : 'Azioni',
         'app.nessun-elemento' : 'Nessun elemento trovato',
-        'model.foto' : 'Foto',
-        'model.attachment' : 'Allegato',
-        'name' : 'Nome1',
-        'user.name' : 'Nome2',
-        'user.email' : 'Email'
     },
     application : {
         useRouter : false,
