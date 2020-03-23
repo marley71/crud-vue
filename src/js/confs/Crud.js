@@ -344,7 +344,7 @@ const crud = {
         },
         insert : {
             method      : "get",
-            url         :'/foorm/{modelName}/insert',
+            url         :'/foorm/{modelName}/new',
             resultType  : 'record',
             protocol    : 'record',
             type : 'create',
