@@ -19,7 +19,7 @@
                     <tr>
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>{{"app.actions" | translate }}</span>
+                            <span>{{"app.azioni" | translate }}</span>
                         </th>
                         <th v-for="key in keys">
                             <span v-show="!conf.orderFields[key]">{{key}}</span>

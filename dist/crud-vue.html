@@ -337,7 +337,7 @@
                             {{  'app.limite-raggiunto' | translate }}
                         </div>
                         <button v-else v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
-                            <span >{{ 'app.add' | translate }}</span>&nbsp;
+                            <span >{{ 'app.aggiungi' | translate }}</span>&nbsp;
 <!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
                         </button>
                     </div>
@@ -346,6 +346,7 @@
         </div>
     </div>
 </template>
+
 <script type="text/x-template" id="r-hasmany-view-template">
     <div crud-render_element>
         <div class="list-unstyled" crud-render_list >
@@ -403,7 +404,7 @@
                             {{'app.limite-raggiunto' | translate }}
                         </div>
                         <button v-on:click="addItem" type="button" class="btn btn-primary btn-sm">
-                            <span >{{'app.add' | translate}}</span>&nbsp;
+                            <span >{{'app.aggiungi' | translate}}</span>&nbsp;
 <!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
                         </button>
                     </div>
@@ -412,6 +413,7 @@
         </div>
     </div>
 </template>
+
 <template id="r-b2-select2-template">
     <div>
         <select c-select2 class="form-control m-select2"
@@ -435,7 +437,7 @@
 <template id="r-upload-template">
     <div>
         <div v-show="extensions">
-            <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
+            <span crud-label="app.accepted-extensions">{{'app.estensioni-accettate' | translate}} </span>
             <span v-show="extensions">{{extensions.join(',')}}</span>
         </div>
         <div v-show="maxFileSize">
@@ -447,6 +449,7 @@
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
+
 <script type="text/x-template" id="r-upload-ajax-template">
     <div class="row">
         <div class="col-8">
@@ -504,7 +507,7 @@
                     <tr v-if="renders.length > 0">
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>{{"app.actions" | translate }}</span>
+                            <span>{{"app.azioni" | translate }}</span>
                         </th>
                         <th v-for="key in keys">
                             <action-order v-if="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
@@ -576,7 +579,7 @@
                     <tr>
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>{{"app.actions" | translate }}</span>
+                            <span>{{"app.azioni" | translate }}</span>
                         </th>
                         <th v-for="key in keys">
                             <span v-show="!conf.orderFields[key]">{{key}}</span>

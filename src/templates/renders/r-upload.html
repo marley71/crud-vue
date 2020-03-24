@@ -1,7 +1,7 @@
 <template id="r-upload-template">
     <div>
         <div v-show="extensions">
-            <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
+            <span crud-label="app.accepted-extensions">{{'app.estensioni-accettate' | translate}} </span>
             <span v-show="extensions">{{extensions.join(',')}}</span>
         </div>
         <div v-show="maxFileSize">

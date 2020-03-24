@@ -61,21 +61,6 @@ Vue.component('v-list-edit', {
             that.createActions();
             that.createRenders();
             that.createRendersEdit();
-            // var rendersEdit = [];
-            // for (var row in that.renders) {
-            //     rendersEdit.push({});
-            //     for (var key in that.renders[row]) {
-            //         rendersEdit[row][key] = Utility.cloneObj(that.renders[row][key])
-            //         rendersEdit[row][key].type = 'r-input';
-            //         rendersEdit[row][key].cRef = that.$crud.getRefId(that._uid,'redit',row,key);
-            //     }
-            // }
-            // // var rowRenders = that.renders[0];
-            // // for (var k in rowRenders) {
-            // //     that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
-            // //     that.rendersEdit[k].type = 'r-input';
-            // // }
-            // that.rendersEdit = rendersEdit;
             that.createCollectionActions();
             console.log('rendersEdit',that.rendersEdit);
             console.log('renders',that.renders,'recordActions',that.recordActions);
@@ -110,16 +95,16 @@ Vue.component('v-list-edit', {
             that.rendersEdit = rendersEdit;
         },
 
-        getOrderConf : function (key) {
-            var that = this;
-            var conf = that.getActionConfig('action-order','collection');
-            conf.title = 'app.ordina ' + key;
-            conf.text = key;
-            conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
-            if (that.data.order_field)
-                conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
-            return conf;
-        },
+        // getOrderConf : function (key) {
+        //     var that = this;
+        //     var conf = that.getActionConfig('action-order','collection');
+        //     conf.title = 'app.ordina ' + key;
+        //     conf.text = key;
+        //     conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
+        //     if (that.data.order_field)
+        //         conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
+        //     return conf;
+        // },
         // reload : function () {
         //     var that = this;
         //     var route = Route.factory('list',that.routeConf);

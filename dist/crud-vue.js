@@ -80,22 +80,24 @@
 // }
 const crud = {
     lang : {
+        'app.aggiungi' : 'Aggiungi',
         'app.annulla' : 'Annulla',
-        'app.nuovo' : 'Nuovo',
-        'app.modifica' : 'Modifica',
-        'app.vista' : 'Vista',
+        'app.azioni' : 'Azioni',
         'app.cancella' : 'Cancella elemento',
         'app.cancella-selezionati' : 'Cancella elementi selezionati',
-        'app.salva' : 'Salva',
-        'app.indietro' : 'Indietro',
         'app.cerca' : 'Cerca',
-        'app.ordina' : 'Ordina',
-        'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
         'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
         'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
+        'app.estensioni-accettate' : 'Estensioni accettate:',
+        'app.indietro' : 'Indietro',
         'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
-        'app.actions' : 'Azioni',
+        'app.modifica' : 'Modifica',
         'app.nessun-elemento' : 'Nessun elemento trovato',
+        'app.nuovo' : 'Nuovo',
+        'app.ordina' : 'Ordina',
+        'app.salva' : 'Salva',
+        'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
+        'app.vista' : 'Vista',
     },
     application : {
         useRouter : false,
@@ -105,6 +107,7 @@ const crud = {
             "default"   : 'fa fa-file-o',
             "application/xls"       : 'fa fa-file-excel-o',
             "xlsx"      : 'fa fa-file-excel-o',
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : 'fa fa-file-excel-o',
             "zip"       : 'fa fa-file-archive-o',
             "mp3"       : 'fa fa-audio-o',
             "image/jpeg"       : "fa fa-image-o",
@@ -2809,6 +2812,8 @@ Vue.component('r-swap', {
         var that = this;
         //SWAP = that;
         var d = this.defaultData();
+        if (!("routeName" in d))
+            d.routeName = 'set';
         d.iconClass = 'fa fa-circle';
         d.title = "swap";
         d.swapType = d.swapType?d.swapType:'icon';
@@ -2823,7 +2828,7 @@ Vue.component('r-swap', {
             }
         }
         var dV = (d.domainValues)? d.domainValues:defaultDomainValues[d.swapType];
-        console.log('dV',dV);
+        //console.log('dV',dV);
         var keys = Object.keys(dV).map(String);
         if (keys.indexOf(""+d.value) >= 0) {
             d.slot = dV[""+d.value];
@@ -2844,29 +2849,28 @@ Vue.component('r-swap', {
             var that = this;
             var dV = that.getDV();
             var keys = Object.keys(dV);
-            //var labels = Object.values(dV);
             var value = that.value?that.value:keys[0];
-
-            //console.log('dV',dV);
             var vs = keys.map(String);
             var index = vs.indexOf(""+value);
             index = (index + 1) % vs.length;
-            console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
-
+            //console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
             that._swap(keys[index]);
         },
-        _swap : function (key) {
+        _getRoute : function(key) {
             var that = this;
-            var r = Route.factory('set');
-            var dV = that.getDV();
-            //var viewConf = self._viewConfig[viewKey];
+            var r = Route.factory(that.routeName);
             r.values = {
                 modelName: that.conf.model,
                 field : that.name, //that.conf.key?that.conf.key:that.cKey,
                 value : key
             };
-
             r.params = {id:that.conf.modelData.id};
+            return r;
+        },
+        _swap : function (key) {
+            var that = this;
+            var r = that._getRoute(key);
+            var dV = that.getDV();
             Server.route(r,function (json) {
                 if (json.error) {
                     that.$crud.errorDialog(json.msg);
@@ -2876,9 +2880,6 @@ Vue.component('r-swap', {
                 that.slot = dV[key];
                 that.change();
             })
-        },
-        getDomainValues : function () {
-
         }
     }
 });
@@ -3360,7 +3361,7 @@ Vue.component('r-upload-ajax',{
 
 
                 //that.$set(that,'previewConf', {value : data.result});
-                that.lastUpload = this.$crud.cloneObj(data.result);
+                that.lastUpload = that.$crud.cloneObj(data.result);
 
                 //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));
@@ -3411,6 +3412,40 @@ Vue.component('r-preview',{
             var that = this;
             if (!that.value.mimetype)
                 return null;
+
+
+            var docTypes = [
+                "application/xls",
+                "xlsx",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "zip",
+                "mp3",
+                "application/pdf",
+                "txt"
+            ];
+            var imageTypes = [
+                "image/jpeg","image/png"
+            ];
+
+            if (docTypes.indexOf(that.value.mimetype) >= 0) {
+                that.icon=true;
+                that.iconClass = that.$crud.icons.mimetypes['default'];
+                if (that.$crud.icons.mimetypes[that.value.mimetype])
+                    that.iconClass = that.$crud.icons.mimetypes[that.value.mimetype];
+                return 'doc';
+            }
+
+            if (imageTypes.indexOf(that.value.mimetype) >= 0) {
+                return 'image';
+            }
+
+            console.warn('mimetype invalid ' + that.value.mimetype)
+            return null;
+
+
+
+
+
             switch (that.value.mimetype) {
                 case 'image/jpeg':
                 case 'image/png':
@@ -3428,6 +3463,7 @@ Vue.component('r-preview',{
         }
     }
 })
+
 Vue.component('v-action', {
     extends : crud.components.cComponent,
     props : ['cName','cAction'],
@@ -4201,21 +4237,6 @@ Vue.component('v-list-edit', {
             that.createActions();
             that.createRenders();
             that.createRendersEdit();
-            // var rendersEdit = [];
-            // for (var row in that.renders) {
-            //     rendersEdit.push({});
-            //     for (var key in that.renders[row]) {
-            //         rendersEdit[row][key] = Utility.cloneObj(that.renders[row][key])
-            //         rendersEdit[row][key].type = 'r-input';
-            //         rendersEdit[row][key].cRef = that.$crud.getRefId(that._uid,'redit',row,key);
-            //     }
-            // }
-            // // var rowRenders = that.renders[0];
-            // // for (var k in rowRenders) {
-            // //     that.rendersEdit[k] = Utility.cloneObj(rowRenders[k]);
-            // //     that.rendersEdit[k].type = 'r-input';
-            // // }
-            // that.rendersEdit = rendersEdit;
             that.createCollectionActions();
             console.log('rendersEdit',that.rendersEdit);
             console.log('renders',that.renders,'recordActions',that.recordActions);
@@ -4250,16 +4271,16 @@ Vue.component('v-list-edit', {
             that.rendersEdit = rendersEdit;
         },
 
-        getOrderConf : function (key) {
-            var that = this;
-            var conf = that.getActionConfig('action-order','collection');
-            conf.title = 'app.ordina ' + key;
-            conf.text = key;
-            conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
-            if (that.data.order_field)
-                conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
-            return conf;
-        },
+        // getOrderConf : function (key) {
+        //     var that = this;
+        //     var conf = that.getActionConfig('action-order','collection');
+        //     conf.title = 'app.ordina ' + key;
+        //     conf.text = key;
+        //     conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
+        //     if (that.data.order_field)
+        //         conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
+        //     return conf;
+        // },
         // reload : function () {
         //     var that = this;
         //     var route = Route.factory('list',that.routeConf);
