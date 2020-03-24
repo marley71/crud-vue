@@ -25,7 +25,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
             var that = this;
             var hmConf = that.cConf.hasmanyConf || {};
 
-            hmConf = Utility.confMerge({
+            hmConf = this.$crud.confMerge({
                 fields : [],
                 fieldsConfig : {},
                 data :  {

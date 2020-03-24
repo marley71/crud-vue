@@ -31,7 +31,7 @@ crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
                 if (this.value && this.value.length > 0) {
                     if (!hmConf.fields || !hmConf.fields.length) {
                         hmConf.fields = Object.keys(this.value[0]);
-                        hmConf.data.value = Utility.cloneObj(this.value[0]);
+                        hmConf.data.value = this.$crud.cloneObj(this.value[0]);
                     }
                 }
             }

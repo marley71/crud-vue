@@ -26,7 +26,7 @@ var Protocol = Class.extend({
 })
 
 Protocol.factory = function (type) {
-    var className = "Protocol" + Utility.pascalCase(type);
+    var className = "Protocol" + crud.pascalCase(type);
     try {
         return new window[className]();
     } catch (e) {

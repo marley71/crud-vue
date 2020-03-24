@@ -35,7 +35,7 @@ Vue.component('v-view', {
             viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-text',
         }
-        return Utility.merge(d,dView);
+        return this.$crud.merge(d,dView);
 
     },
 

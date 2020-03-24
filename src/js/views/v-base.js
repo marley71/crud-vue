@@ -150,19 +150,19 @@ crud.components.views.vBase = Vue.component('v-base', {
                 } else {
                     aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.collectionActions[name]?this.$crud.collectionActions[name]:{})
                 }
-                aConf = Utility.merge(aConf,this.conf.customActions[name]);
+                aConf = this.$crud.merge(aConf,this.conf.customActions[name]);
                 //console.log('CUSTOM',name,aConf);
                 return aConf;
             }
             if (type == 'record') {
                 if (this.$crud.recordActions[name]) {
-                    return Utility.cloneObj(this.$crud.recordActions[name]);
+                    return this.$crud.cloneObj(this.$crud.recordActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
             }
             if (type == 'collection') {
                 if (this.$crud.collectionActions[name]) {
-                    return Utility.cloneObj(this.$crud.collectionActions[name]);
+                    return this.$crud.cloneObj(this.$crud.collectionActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo collection non trovata nelle azioni generali";
             }
@@ -184,9 +184,9 @@ crud.components.views.vBase = Vue.component('v-base', {
                 else
                     conf = this.cConf;
             } else {
-                console.log('Check exist default conf '+ 'Model'+Utility.pascalCase(modelName));
-                if (window['Model'+Utility.pascalCase(modelName)]) {
-                    var cm = window['Model'+Utility.pascalCase(modelName)];
+                console.log('Check exist default conf '+ 'Model'+this.$crud.pascalCase(modelName));
+                if (window['Model'+this.$crud.pascalCase(modelName)]) {
+                    var cm = window['Model'+this.$crud.pascalCase(modelName)];
                     if (cm[type])
                         conf = cm[type];
                     else {
@@ -205,7 +205,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!conf)
                 throw "Nessuna configurazione trovata per questa view";
 
-            var finalConf = Utility.confMerge(defaltConf,conf);
+            var finalConf = this.$crud.confMerge(defaltConf,conf);
             console.log('getConf',finalConf);
             return finalConf;
         },
@@ -255,13 +255,13 @@ crud.components.views.vBase = Vue.component('v-base', {
                 if (typeof conf === 'string' || conf instanceof String) {
                     c.type = conf;
                 } else {
-                    c = Utility.merge(c,conf);
+                    c = this.$crud.merge(c,conf);
                 }
             }
 
             if (!c.template)
                 c.template = that.conf.renderTemplate;
-            c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
+            c.metadata = this.$crud.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
 
             return c;
         },

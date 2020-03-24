@@ -34,7 +34,7 @@ Vue.component('v-edit', {
             viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
         }
-        return Utility.merge(d,dEdit);
+        return this.$crud.merge(d,dEdit);
 
     },
     methods : {

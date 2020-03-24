@@ -32,7 +32,7 @@ Vue.component('v-insert', {
             conf : that.conf,
             defaultRenderType : 'r-input',
         }
-        return Utility.merge(d,dInsert);
+        return this.$crud.merge(d,dInsert);
 
     },
     template : '#v-insert-template'

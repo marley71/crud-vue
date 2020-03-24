@@ -7,7 +7,7 @@ Vue.component('v-list-edit', {
     data :  function () {
         var that = this;
 
-        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
+        var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }

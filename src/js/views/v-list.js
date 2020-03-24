@@ -21,7 +21,7 @@ crud.components.views.vList = Vue.component('v-list', {
         var that = this;
         //console.log('DATA CALLED');
         //console.log('CRUDCONF',that.$Crud);
-        var routeConf =  Utility.cloneObj(that.$crud.routes.list);
+        var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
         routeConf.values = {
             modelName: this.cModel
         }

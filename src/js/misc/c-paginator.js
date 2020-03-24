@@ -15,7 +15,7 @@ Vue.component('c-paginator',{
             total : 0,
             pagination_steps : {}
         }
-        return Utility.merge(d,pagination);
+        return this.$crud.merge(d,pagination);
     },
     methods : {
         firstPage : function () {

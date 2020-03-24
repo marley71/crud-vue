@@ -77,7 +77,7 @@ const crud = {
             text : '',
             execute : function () {
                 var that = this;
-                that.$crud.confirmDialog(that.$crud.lang['app.conferma-delete'] ,{
+                that.$crud.confirmDialog(that.$crud.lang['app.conferma-cancellazione'] ,{
                     ok : function () {
 
                         var r = that.$crud.routeFactory('delete');
@@ -146,7 +146,7 @@ const crud = {
                 }
                 r.values = values;
                 //r.params = this.$crud.getFormData(jQuery(this.rootElement).find('form'));
-                r.params = Utility.getFormData(this.view.jQe('form'));
+                r.params = this.$crud.getFormData(this.view.jQe('form'));
                 Server.route(r, function (json) {
                     if (json.error) {
                         that.$crud.errorDialog(json.msg)
@@ -193,9 +193,9 @@ const crud = {
                 }
 
                 if (this.view.cRouteConf) {
-                    var routeConf = Utility.cloneObj(this.view.cRouteConf);
+                    var routeConf = this.$crud.cloneObj(this.view.cRouteConf);
                     var form = jQuery(this.view.$el).find('form');
-                    var formData = Utility.getFormData(form);
+                    var formData = this.$crud.getFormData(form);
                     console.log('formData',formData);
                     this.view.doSearch(formData)
                     //this.view.setCRouteCo .cRouteConf = routeConf;
@@ -214,7 +214,7 @@ const crud = {
             text : '',
             execute : function () {
                 console.log('order execute',this);
-                var params = Utility.cloneObj(this.view.routeConf.params);
+                var params = this.$crud.cloneObj(this.view.routeConf.params);
                 params.order_field = this.orderField;
                 //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
                 params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';

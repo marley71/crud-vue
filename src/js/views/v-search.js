@@ -34,12 +34,12 @@ Vue.component('v-search', {
             defaultRenderType : 'r-input',
             targetRef : that.cTargetRef,
         }
-        return Utility.merge(d,dSearch);
+        return this.$crud.merge(d,dSearch);
     },
     methods : {
         doSearch : function (params) {
             var that = this;
-            var oldP = Utility.cloneObj(this.cRouteConf.params);
+            var oldP = this.$crud.cloneObj(this.cRouteConf.params);
 
             for (var k in params) {
                 oldP[k] = params[k];

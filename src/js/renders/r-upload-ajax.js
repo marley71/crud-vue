@@ -123,7 +123,7 @@ Vue.component('r-upload-ajax',{
 
 
                 //that.$set(that,'previewConf', {value : data.result});
-                that.lastUpload = Utility.cloneObj(data.result);
+                that.lastUpload = this.$crud.cloneObj(data.result);
 
                 //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));

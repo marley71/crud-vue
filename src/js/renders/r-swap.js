@@ -3,7 +3,7 @@ Vue.component('r-swap', {
     template: '#r-swap-template',
     data : function () {
         var that = this;
-        SWAP = that;
+        //SWAP = that;
         var d = this.defaultData();
         d.iconClass = 'fa fa-circle';
         d.title = "swap";

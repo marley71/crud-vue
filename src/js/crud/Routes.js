@@ -103,7 +103,7 @@ var Route = Class.extend({
 });
 
 Route.factory = function (type,attrs) {
-    var className = "Route" + Utility.pascalCase(type);
+    var className = "Route" + crud.pascalCase(type);
     if (!window[className])
         throw "Impossibile trovare la definizione della route " + className;
     var _a = attrs?attrs:{};
