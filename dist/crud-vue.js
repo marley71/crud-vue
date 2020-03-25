@@ -3727,8 +3727,8 @@ crud.components.views.vBase = Vue.component('v-base', {
 
             if (!c.template)
                 c.template = that.conf.renderTemplate;
-            c.metadata = this.$crud.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
-
+            //c.metadata = this.$crud.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
+            c = this.$crud.merge( c ,(that.data.metadata[key] || {}));
             return c;
         },
         getFieldName : function (key) {
