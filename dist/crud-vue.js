@@ -2793,9 +2793,6 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
 Vue.component('r-hasmany-view', {
     extends : crud.components.rHasmany,
     template: '#r-hasmany-view-template',
-    beforeCreated : function() {
-        this.$options.template  = '#r-hasmany-view-template1';
-    },
     data : function () {
         console.log('HASMNAYVIEW',this.value);
         var d = this.defaultData();
@@ -2805,6 +2802,7 @@ Vue.component('r-hasmany-view', {
         return d;
     }
 });
+
 Vue.component('r-swap', {
     extends : crud.components.renders.rBase,
     template: '#r-swap-template',
