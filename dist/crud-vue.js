@@ -3823,6 +3823,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             }
 
             that.data = data;
+            that.json = json;
         },
         defaultData : function () {
             return {
@@ -3861,6 +3862,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             d.conf.modelName = this.cModel;
         if (this.cPk)
             d.conf.pk = this.cPk;
+        d.json = {};
         return d;
     },
     template : '<div>view record base</div>'
@@ -4070,7 +4072,8 @@ crud.components.views.vList = Vue.component('v-list', {
             pagination : {},
             viewTitle : '',
             defaultRenderType : 'r-text',
-            langContext : that.cModel
+            langContext : that.cModel,
+            json : {},
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
@@ -4115,7 +4118,7 @@ crud.components.views.vList = Vue.component('v-list', {
                 that.pagination = data.pagination;
             }
             that.data = data;
-
+            that.json = json;
         },
 
         getOrderConf : function (key) {

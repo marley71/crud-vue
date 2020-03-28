@@ -85,6 +85,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             }
 
             that.data = data;
+            that.json = json;
         },
         defaultData : function () {
             return {
@@ -123,6 +124,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             d.conf.modelName = this.cModel;
         if (this.cPk)
             d.conf.pk = this.cPk;
+        d.json = {};
         return d;
     },
     template : '<div>view record base</div>'

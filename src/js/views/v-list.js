@@ -55,7 +55,8 @@ crud.components.views.vList = Vue.component('v-list', {
             pagination : {},
             viewTitle : '',
             defaultRenderType : 'r-text',
-            langContext : that.cModel
+            langContext : that.cModel,
+            json : {},
         };
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
@@ -100,7 +101,7 @@ crud.components.views.vList = Vue.component('v-list', {
                 that.pagination = data.pagination;
             }
             that.data = data;
-
+            that.json = json;
         },
 
         getOrderConf : function (key) {
