@@ -1,12 +1,16 @@
 Vue.component('v-search', {
     extends : crud.components.views.vRecord,
-    props : ['cConf','cModel','cRouteConf','cTargetRef'],
+    props : ['cConf','cRouteConf','cTargetRef'],
     mounted : function() {
         var that = this;
-        var route = that._getRoute({
-            modelName: this.cModel,
-        });
-        that.route = route;
+        // var route = that._getRoute({
+        //     modelName: this.cModel,
+        // });
+        // that.route = route;
+
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+        that.route = that._getRoute();
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);

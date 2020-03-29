@@ -175,8 +175,8 @@ crud.components.views.vBase = Vue.component('v-base', {
          */
         getConf : function (modelName,type) {
             var conf = null;
-            var defaltConf = this.$crud.conf[type];
-
+            var defaultConf = this.$crud.conf[type];
+            //console.log('cConf',this.cConf);
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String)
@@ -198,15 +198,15 @@ crud.components.views.vBase = Vue.component('v-base', {
                     }
 
                 } else {
-                    console.log('get default crud conf ',type)
+                    //onsole.log('get default crud conf ',type)
                     conf = this.$crud.conf[type];
                 }
             }
             if (!conf)
                 throw "Nessuna configurazione trovata per questa view";
-
-            var finalConf = this.$crud.confMerge(defaltConf,conf);
-            console.log('getConf',finalConf);
+            //console.log('merge confs',defaultConf,conf);
+            var finalConf = this.$crud.confMerge(defaultConf,conf);
+            console.log('finalConf',finalConf);
             return finalConf;
         },
 

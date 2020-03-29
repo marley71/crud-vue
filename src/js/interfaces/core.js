@@ -147,6 +147,7 @@ core_interface = {
             var specialsKey = ['fields','fieldsConfig','customActions'];
             var c1 = this.$crud.cloneObj(obj1);
             var c2 = this.$crud.cloneObj(obj2);
+            console.log('c1',c1,'c2',c2);
 
             c1.fields = c1.fields?c1.fields:[];
             c1.fieldsConfig = c1.fieldsConfig?c1.fieldsConfig:{};

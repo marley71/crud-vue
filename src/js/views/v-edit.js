@@ -4,11 +4,16 @@ Vue.component('v-edit', {
 
     mounted : function() {
         var that = this;
-        var route = that._getRoute({
-            modelName: this.cModel,
-            pk: this.cPk
-        });
-        that.route = route;
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+        if (that.cPk)
+            that.conf.pk = that.cPk;
+
+        // var route = that._getRoute({
+        //     modelName: this.cModel,
+        //     pk: this.cPk
+        // });
+        that.route = that._getRoute();
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);

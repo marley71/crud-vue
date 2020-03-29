@@ -784,6 +784,7 @@ core_interface = {
             var specialsKey = ['fields','fieldsConfig','customActions'];
             var c1 = this.$crud.cloneObj(obj1);
             var c2 = this.$crud.cloneObj(obj2);
+            console.log('c1',c1,'c2',c2);
 
             c1.fields = c1.fields?c1.fields:[];
             c1.fieldsConfig = c1.fieldsConfig?c1.fieldsConfig:{};
@@ -3639,8 +3640,8 @@ crud.components.views.vBase = Vue.component('v-base', {
          */
         getConf : function (modelName,type) {
             var conf = null;
-            var defaltConf = this.$crud.conf[type];
-
+            var defaultConf = this.$crud.conf[type];
+            //console.log('cConf',this.cConf);
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String)
@@ -3662,15 +3663,15 @@ crud.components.views.vBase = Vue.component('v-base', {
                     }
 
                 } else {
-                    console.log('get default crud conf ',type)
+                    //onsole.log('get default crud conf ',type)
                     conf = this.$crud.conf[type];
                 }
             }
             if (!conf)
                 throw "Nessuna configurazione trovata per questa view";
-
-            var finalConf = this.$crud.confMerge(defaltConf,conf);
-            console.log('getConf',finalConf);
+            //console.log('merge confs',defaultConf,conf);
+            var finalConf = this.$crud.confMerge(defaultConf,conf);
+            console.log('finalConf',finalConf);
             return finalConf;
         },
 
@@ -4360,11 +4361,16 @@ Vue.component('v-edit', {
 
     mounted : function() {
         var that = this;
-        var route = that._getRoute({
-            modelName: this.cModel,
-            pk: this.cPk
-        });
-        that.route = route;
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+        if (that.cPk)
+            that.conf.pk = that.cPk;
+
+        // var route = that._getRoute({
+        //     modelName: this.cModel,
+        //     pk: this.cPk
+        // });
+        that.route = that._getRoute();
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
@@ -4408,11 +4414,17 @@ Vue.component('v-view', {
     mounted : function() {
         var that = this;
         //console.log('view route param',this.cModel,this.cPk);
-        var route = that._getRoute({
-            modelName: this.cModel,
-            pk: this.cPk
-        });
-        that.route = route;
+        // var route = that._getRoute({
+        //     modelName: this.cModel,
+        //     pk: this.cPk
+        // });
+        // that.route = route;
+
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+        if (that.cPk)
+            that.conf.pk = that.cPk;
+        that.route = that._getRoute();
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
@@ -4488,13 +4500,17 @@ Vue.component('v-insert', {
 
 Vue.component('v-search', {
     extends : crud.components.views.vRecord,
-    props : ['cConf','cModel','cRouteConf','cTargetRef'],
+    props : ['cConf','cRouteConf','cTargetRef'],
     mounted : function() {
         var that = this;
-        var route = that._getRoute({
-            modelName: this.cModel,
-        });
-        that.route = route;
+        // var route = that._getRoute({
+        //     modelName: this.cModel,
+        // });
+        // that.route = route;
+
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+        that.route = that._getRoute();
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);

@@ -5,11 +5,17 @@ Vue.component('v-view', {
     mounted : function() {
         var that = this;
         //console.log('view route param',this.cModel,this.cPk);
-        var route = that._getRoute({
-            modelName: this.cModel,
-            pk: this.cPk
-        });
-        that.route = route;
+        // var route = that._getRoute({
+        //     modelName: this.cModel,
+        //     pk: this.cPk
+        // });
+        // that.route = route;
+
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+        if (that.cPk)
+            that.conf.pk = that.cPk;
+        that.route = that._getRoute();
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
