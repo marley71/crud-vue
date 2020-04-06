@@ -1,6 +1,15 @@
 core_interface = {
     methods : {
-
+        /**
+         * istanzia una nuova route a partire dalla configurazione trovata in crud
+         * @param routeName : nome della configurazione della route
+         */
+        createRoute : function(routeName) {
+            var routeConf = this.$crud.routes[routeName];
+            if (!routeConf)
+                throw "Impossibile trovare la route " + routeName;
+            return new Route(routeConf);
+        },
         getFormData : function (form) {
             var that = this;
 
@@ -147,7 +156,7 @@ core_interface = {
             var specialsKey = ['fields','fieldsConfig','customActions'];
             var c1 = this.$crud.cloneObj(obj1);
             var c2 = this.$crud.cloneObj(obj2);
-            console.log('c1',c1,'c2',c2);
+            //console.log('c1',c1,'c2',c2);
 
             c1.fields = c1.fields?c1.fields:[];
             c1.fieldsConfig = c1.fieldsConfig?c1.fieldsConfig:{};
@@ -182,13 +191,13 @@ core_interface = {
             return jQuery.extend(true,{},obj1,obj2);
         },
 
-        routeFactory : function(routeName) {
-            var that = this;
-            if (! that.$crud.routes[routeName])
-                throw "routeName " + routeName + ' not found';
-            var r = new Route(that.$crud.routes[routeName]);
-            return r;
-        },
+        // routeFactory : function(routeName) {
+        //     var that = this;
+        //     if (! that.$crud.routes[routeName])
+        //         throw "routeName " + routeName + ' not found';
+        //     var r = new Route(that.$crud.routes[routeName]);
+        //     return r;
+        // },
         /**
          * ritorna i parametri sotto forma di vettore associativo di un url altrimenti di location.search
          * @param url

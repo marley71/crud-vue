@@ -9,7 +9,8 @@ crud.components.views.vList = Vue.component('v-list', {
         var that = this;
         //VLIST = this;
         //console.log('MOUNTED CALLED');
-        that.route = that._getRoute(that.routeConf.values);
+        that.route = that._getRoute();
+        that.setRouteValues(that.route);
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.keys = that.getKeys();
@@ -31,6 +32,9 @@ crud.components.views.vList = Vue.component('v-list', {
 
         // var route = that._getRoute(routeConf.values);
         var conf = that.getConf(that.cModel,'list');
+        if (that.cModel)
+            conf.modelName = that.cModel;
+
         console.log('v-list conf',conf);
 
         //var route = Route.factory('list',routeConf);
@@ -85,8 +89,8 @@ crud.components.views.vList = Vue.component('v-list', {
                     that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
                 }
             } else {
-
-                var protocol = Protocol.factory(route.protocol);
+                console.log('protocol',route.getProtocol());
+                var protocol = Protocol.factory(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);
@@ -144,6 +148,15 @@ crud.components.views.vList = Vue.component('v-list', {
             });
             //console.log('select3ed',sel);
             return sel;
+        },
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName
+                });
+            }
+            return route;
         }
     },
     watch : {

@@ -84,10 +84,15 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
             return selValue.length>0?selValue[0]['id']:null;
 
         },
-
+        setRouteValues : function(route) {
+            route.setValues({modelName:this.model});
+            return route;
+        },
         _createUrl : function () {
             var that = this;
-            var r = Route.factory(that.routeName,{values : {modelName:that.model} });
+            var r = that.$crud.createRoute(that.routeName);
+            that.setRouteValues(r);
+
 
             //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
             var url = that.url?that.url:r.getUrl();

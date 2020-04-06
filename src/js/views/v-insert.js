@@ -4,11 +4,9 @@ Vue.component('v-insert', {
 
     mounted : function() {
         var that = this;
-        var route = that._getRoute({
-            modelName: this.cModel,
-        });
+        that.route = that._getRoute();
+        that.setRouteValues(that.route);
 
-        that.route = route;
         that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.createActions();
@@ -34,6 +32,17 @@ Vue.component('v-insert', {
         }
         return this.$crud.merge(d,dInsert);
 
+    },
+    methods : {
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName
+                });
+            }
+            return route;
+        }
     },
     template : '#v-insert-template'
 

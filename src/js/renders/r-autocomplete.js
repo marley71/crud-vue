@@ -1,6 +1,5 @@
 Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
-    template: '#r-autocomplete-template',
     mounted : function() {
         this._getLabel();
     },
@@ -48,7 +47,9 @@ Vue.component('r-autocomplete', {
         },
         _createUrl : function () {
             var that = this;
-            var r = Route.factory(that.conf.routeName,{values : {modelName:that.conf.model} });
+            var r = that.$crud.createRoute(that.conf.routeName);
+            r.setValues({modelName:that.conf.model});
+            //var r = new Route(routeConf);
 
             //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
             var url = that.url?that.url:r.getUrl();
@@ -83,8 +84,12 @@ Vue.component('r-autocomplete', {
 
             var that = this;
             var r = new Route(that.$crud.routes.view);
-            r.values.modelName = that.conf.model;
-            r.values.pk = that.value;
+            r.setValues({
+                modelName : that.conf.model,
+                pk : that.value
+            })
+            // r.values.modelName = that.conf.model;
+            // r.values.pk = that.value;
             var lb = '';
             Server.route(r,function (json) {
                 if (json.error) {
@@ -102,6 +107,6 @@ Vue.component('r-autocomplete', {
             }
             return s
         }
-    }
-
+    },
+    template: "#r-autocomplete-template",
 });

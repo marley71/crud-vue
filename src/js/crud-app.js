@@ -18,7 +18,7 @@ const CrudApp = Vue.extend({
                     }
                 }
                 for (var m in methods) {
-                    console.log('....method',m)
+                    //console.log('....method',m)
                     __call(k,m);
                 }
             }
@@ -47,7 +47,7 @@ const CrudApp = Vue.extend({
     },
     methods : {
         onChangeViewConf : function (view) {
-            
+
         },
 
     }

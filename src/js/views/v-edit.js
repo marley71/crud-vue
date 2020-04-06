@@ -14,6 +14,7 @@ Vue.component('v-edit', {
         //     pk: this.cPk
         // });
         that.route = that._getRoute();
+        that.setRouteValues(that.route);
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
@@ -43,9 +44,19 @@ Vue.component('v-edit', {
 
     },
     methods : {
-       getFormData : function () {
+        getFormData : function () {
 
-       }
+        },
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName,
+                    pk :that.conf.pk,
+                });
+            }
+            return route;
+        }
     },
     template : '#v-edit-template'
 });

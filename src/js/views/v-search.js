@@ -11,6 +11,7 @@ Vue.component('v-search', {
         if (that.cModel)
             that.conf.modelName = that.cModel;
         that.route = that._getRoute();
+        that.setRouteValues(that.route);
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
@@ -79,23 +80,15 @@ Vue.component('v-search', {
             that.renders = renders;
         },
 
-        // createRenders : function() {
-        //     var that = this;
-        //     var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
-        //     var renders = {};
-        //     for (var k in keys) {
-        //         var key = keys[k];
-        //         renders[key] = that._defaultRenderConfig(key);
-        //         if (that.data.value && that.data.value[key])
-        //             renders[key].value = that.data.value[key];
-        //         if (!renders[key].operator) {
-        //             renders[key].operator = '=';
-        //         }
-        //     }
-        //
-        //     console.log('v-search.renders',renders);
-        //     that.renders = renders;
-        // },
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName
+                });
+            }
+            return route;
+        }
     },
     template : '#v-search-template'
 });

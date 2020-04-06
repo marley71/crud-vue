@@ -78,7 +78,7 @@
 //         attachment : 'allegato'
 //     }
 // }
-const crud = {
+crud = {
     lang : {
         'app.aggiungi' : 'Aggiungi',
         'app.annulla' : 'Annulla',
@@ -147,17 +147,20 @@ const crud = {
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
             text : '',
+            setRouteValues : function(route) {
+                var that = this;
+                route.setValues({
+                    modelName: that.view.cModel,
+                    pk : that.modelData[that.view.conf.primaryKey]
+                });
+                return route;
+            },
             execute : function () {
                 var that = this;
                 that.$crud.confirmDialog(that.$crud.lang['app.conferma-cancellazione'] ,{
                     ok : function () {
-
-                        var r = that.$crud.routeFactory('delete');
-                        //r.setValues(that.view);
-                        r.values = {
-                            modelName: that.view.cModel,
-                            pk : that.modelData.id
-                        };
+                        var r = that.$crud.createRoute('delete');
+                        that.setRouteValues(r);
                         Server.route(r,function (json) {
                             that.view.reload();
                         });
@@ -392,16 +395,17 @@ const crud = {
             url         : '/foorm/{modelName}',
             resultType  : 'list',
             protocol    : 'list',
-            extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
         },
         uploadfile : {
             method      : 'post',
-            url         : '/api/json/{modelName}/uploadfile',
+            //url         : '/api/json/{modelName}/uploadfile',
+            url         : '/uploadfile',
             resultType  : 'record',
             protocol    : 'record',
-            extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
         },
@@ -410,7 +414,7 @@ const crud = {
             url         : '/upload',
             resultType  : 'record',
             protocol    : 'record',
-            extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
         },
@@ -427,7 +431,7 @@ const crud = {
             resultType  : 'record',
             protocol    : 'record',
             type : 'update',
-            extraParams : {_method:'PUT'}
+            commonParams : {_method:'PUT'}
         },
         create : {
             method      : "post",
@@ -435,7 +439,7 @@ const crud = {
             resultType  : 'record',
             protocol    : 'record',
             type : 'create',
-            extraParams : {_method:'POST'}
+            commonParams : {_method:'POST'}
         },
         edit : {
             method      : "get",
@@ -466,7 +470,14 @@ const crud = {
             resultType  : 'record',
             protocol    : 'record',
             type : 'delete',
-            extraParams : {_method:'DELETE'}
+            commonParams : {_method:'DELETE'}
+        },
+        autocomplete : {
+            method      : "get",
+            url         : '/api/json/{modelName}/autocomplete',
+            resultType  : 'list',
+            protocol    : 'list'
+
         },
     },
     cRefs : {},
@@ -490,7 +501,8 @@ const crud = {
     },
     interfaces : {
         //js : 'vue-app/js/'
-    }
+    },
+    cRefs : {},
 }
 
 dialogs_interface = {
@@ -637,7 +649,16 @@ dialogs_interface = {
 };
 core_interface = {
     methods : {
-
+        /**
+         * istanzia una nuova route a partire dalla configurazione trovata in crud
+         * @param routeName : nome della configurazione della route
+         */
+        createRoute : function(routeName) {
+            var routeConf = this.$crud.routes[routeName];
+            if (!routeConf)
+                throw "Impossibile trovare la route " + routeName;
+            return new Route(routeConf);
+        },
         getFormData : function (form) {
             var that = this;
 
@@ -784,7 +805,7 @@ core_interface = {
             var specialsKey = ['fields','fieldsConfig','customActions'];
             var c1 = this.$crud.cloneObj(obj1);
             var c2 = this.$crud.cloneObj(obj2);
-            console.log('c1',c1,'c2',c2);
+            //console.log('c1',c1,'c2',c2);
 
             c1.fields = c1.fields?c1.fields:[];
             c1.fieldsConfig = c1.fieldsConfig?c1.fieldsConfig:{};
@@ -819,13 +840,13 @@ core_interface = {
             return jQuery.extend(true,{},obj1,obj2);
         },
 
-        routeFactory : function(routeName) {
-            var that = this;
-            if (! that.$crud.routes[routeName])
-                throw "routeName " + routeName + ' not found';
-            var r = new Route(that.$crud.routes[routeName]);
-            return r;
-        },
+        // routeFactory : function(routeName) {
+        //     var that = this;
+        //     if (! that.$crud.routes[routeName])
+        //         throw "routeName " + routeName + ' not found';
+        //     var r = new Route(that.$crud.routes[routeName]);
+        //     return r;
+        // },
         /**
          * ritorna i parametri sotto forma di vettore associativo di un url altrimenti di location.search
          * @param url
@@ -1281,55 +1302,42 @@ var ProtocolDummyList = Protocol.extend({
  * Classe per la gestione delle route verso il server.
  */
 
-var Route = Class.extend({
-    className         : "Route",
-    method       : null,
-    url          : null,
-    resultType   : null,
-    protocol     : null,
-    extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
-    values : {}, // vettore associativo dei parametri per la costruzione dell'url
-    params :{},
+function Route(conf) {
 
-    init : function (attrs) {
-        var self = this;
-        self.params = {};
-        //self.extraParams = {};
-        self.values = {};
-        if (attrs) {
-            for (var k in attrs) {
-                self[k] = attrs[k];
-            }
-        }
-    },
-    /**
-     * riempe i valori parametri della route prendendoli dalle proprietà dell'oggetto
-     * @param obj
-     */
-    fillValues : function(obj) {
-        var self = this;
-        var keys = self.getKeys();
-        console.log('fillValues',keys,obj);
-        for (var k in keys) {
-            var key = keys[k];
-            if (obj[key])
-                self.values[key] = obj[key]
-        }
-    },
-    /**
-     * setta i valori dei values necessari per le keys che formano l'url della route.
-     * @param values
-     */
-    setValues : function(values) {
-        var self = this;
-        var opt = values?values:{};
-        var keys = self.getKeys();
-        for (var i in keys) {
-            var key = keys[i];
-            self.values[key] = values[key];
-        }
-    },
+    const defaultConf =  {
+        method : 'get',
+        url : '',
+        params : {},          //  parametri da inviare alla route
+        commonParams : {},    //  parametri statici da aggiungere sempre alla chiamata
+        values : {},          //  vettore associativo per sostituire i parametri per la costruzione dell'url racchiusi da {}
+        protocol : null,      // tipo di protocollo da usare
+        resultType : null,      // tipo di risultato, 'record' o 'list'
+    };
 
+    var _c = conf || {};
+    var routeConf = {};
+    Object.assign(routeConf,defaultConf);
+    Object.assign(routeConf,_c);
+    console.log(':::::C',_c);
+    for (var k in _c) {
+        routeConf[k] = _c[k];
+    }
+
+    /**
+     * ritorna il metodo utilizzato per la richiesta al server, get o post
+     * @return string
+     */
+    this.getMethod = function() {
+        return routeConf.method;
+    };
+
+    /**
+     * ritorna il metodo utilizzato per la richiesta al server, get o post
+     * @return string
+     */
+    this.getProtocol = function() {
+        return routeConf.protocol;
+    };
     /**
      * ritorna url esatto valorizzando le variabili parametriche tra {} presenti nella
      * stringa url.
@@ -1337,10 +1345,10 @@ var Route = Class.extend({
      * i valori presenti in this.values
      * @returns string url con variabili valorizzate
      */
-    getUrl : function (values) {
-        var self = this;
-        var finalUrl = self.url;
-        var v = values?values:self.values;
+    this.getUrl = function (values) {
+        var that = this;
+        var finalUrl = routeConf.url;
+        var v = values?values:routeConf.values;
 
         for (var key in v) {
             var find = '\{'+key+'\}';
@@ -1348,22 +1356,43 @@ var Route = Class.extend({
             finalUrl = finalUrl.replace(re,v[key]);
         }
         return finalUrl;
-    },
+    };
+
     /**
      * ritorna tutti parametri passati in get o post in base al tipo di metodo della route
      * mergiando i parametri presenti in params e extra_params
      * @returns {*}
      */
-    getParams : function() {
-        var self = this;
-        return jQuery.extend(self.params,self.extraParams);
-    },
+    this.getParams = function() {
+        var that = this;
+        return jQuery.extend(routeConf.params,routeConf.commonParams);
+    };
+
+    /**
+     * setta  parametri passati in get o post in base al tipo di metodo della route
+     * @params : vettore associativo di parametri da passare
+     * @returns {*}
+     */
+    this.setParams = function(params) {
+        for (var k in params) {
+            routeConf.params[k] = params[k];
+        }
+    };
+
+    this.getValues  = function() {
+        return routeConf.values;
+    }
+    this.setValues = function(values) {
+        for (var k in values) {
+            routeConf.values[k] = values[k];
+        }
+    }
     /**
      * ritorna le key dei parametri che devono essere valorizzati per ritornare l'url esatto
      * per esempio se url e' fatto come /pippo/{param1}/{param2} ritorna ['param1','param2']
      * return array
      */
-    getKeys : function () {
+    this.getKeys = function () {
         var self = this;
         var r = /\{\w+\}+/g;
         var keys = [];
@@ -1378,228 +1407,252 @@ var Route = Class.extend({
         } while(tmp)
         return keys;
     }
-});
 
-Route.factory = function (type,attrs) {
-    var className = "Route" + crud.pascalCase(type);
-    if (!window[className])
-        throw "Impossibile trovare la definizione della route " + className;
-    var _a = attrs?attrs:{};
-    _a.className = className;
-    return new window[className](_a);
+    this.getConf = function () {
+        return routeConf;
+    }
+    //return new Route();
 }
 
-// var RouteList = Route.extend({
-//     method      : 'get',
-//     url         : '/api/json/{modelName}',
-//     resultType  : 'list',
-//     protocol    : 'list'
+// var Routed = Class.extend({
+//     className         : "Route",
+//     method       : null,
+//     url          : null,
+//     resultType   : null,
+//     protocol     : null,
+//     commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+//     values : {}, // vettore associativo dei parametri per la costruzione dell'url
+//     params :{},
+//
+//     init : function (attrs) {
+//         var self = this;
+//         self.params = {};
+//         //self.commonParams = {};
+//         self.values = {};
+//         if (attrs) {
+//             for (var k in attrs) {
+//                 self[k] = attrs[k];
+//             }
+//         }
+//     },
+//     /**
+//      * riempe i valori parametri della route prendendoli dalle proprietà dell'oggetto
+//      * @param obj
+//      */
+//     fillValues : function(obj) {
+//         var self = this;
+//         var keys = self.getKeys();
+//         console.log('fillValues',keys,obj);
+//         for (var k in keys) {
+//             var key = keys[k];
+//             if (obj[key])
+//                 self.values[key] = obj[key]
+//         }
+//     },
+//     /**
+//      * setta i valori dei values necessari per le keys che formano l'url della route.
+//      * @param values
+//      */
+//     setValues : function(values) {
+//         var self = this;
+//         var opt = values?values:{};
+//         var keys = self.getKeys();
+//         for (var i in keys) {
+//             var key = keys[i];
+//             self.values[key] = values[key];
+//         }
+//     },
+//
+//     /**
+//      * ritorna url esatto valorizzando le variabili parametriche tra {} presenti nella
+//      * stringa url.
+//      * @param values: valori attuali per valorizzare le variabili se non viene passato prende
+//      * i valori presenti in this.values
+//      * @returns string url con variabili valorizzate
+//      */
+//     getUrl : function (values) {
+//         var self = this;
+//         var finalUrl = self.url;
+//         var v = values?values:self.values;
+//
+//         for (var key in v) {
+//             var find = '\{'+key+'\}';
+//             var re = new RegExp(find, 'g');
+//             finalUrl = finalUrl.replace(re,v[key]);
+//         }
+//         return finalUrl;
+//     },
+//     /**
+//      * ritorna tutti parametri passati in get o post in base al tipo di metodo della route
+//      * mergiando i parametri presenti in params e extra_params
+//      * @returns {*}
+//      */
+//     getParams : function() {
+//         var self = this;
+//         return jQuery.extend(self.params,self.commonParams);
+//     },
+//     /**
+//      * ritorna le key dei parametri che devono essere valorizzati per ritornare l'url esatto
+//      * per esempio se url e' fatto come /pippo/{param1}/{param2} ritorna ['param1','param2']
+//      * return array
+//      */
+//     getKeys : function () {
+//         var self = this;
+//         var r = /\{\w+\}+/g;
+//         var keys = [];
+//         var tmp = false;
+//         do {
+//             tmp = r.exec(self.url);
+//             if (tmp) {
+//                 var removeBrackets = tmp[0].substr(1);
+//                 removeBrackets = removeBrackets.substr(0,removeBrackets.length-1);
+//                 keys.push(removeBrackets);
+//             }
+//         } while(tmp)
+//         return keys;
+//     }
 // });
-
-// var RouteListConstraint = RouteList.extend({
-//     url         : '/api/json/{modelName}/{constraintKey}/{constraintValue}',
-// });
-
-// var RouteEdit = Route.extend({
+//
+// Routed.factory = function (type,attrs) {
+//     var className = "Route" + crud.pascalCase(type);
+//     if (!window[className])
+//         throw "Impossibile trovare la definizione della route " + className;
+//     var _a = attrs?attrs:{};
+//     _a.className = className;
+//     return new window[className](_a);
+// }
+//
+//
+//
+// var RouteInsertHasmany = Route.extend({
 //     method      : "get",
-//     url         :'/api/json/{modelName}/{pk}/edit',
+//     url         :'/api/json/{modelName}/create_has_many',
 //     resultType  : 'record',
 //     protocol    : 'record'
 // });
-
-// var RouteEditConstraint = RouteEdit.extend({
-//     url         :'/api/json/{modelName}/{pk}/edit/{constraintKey}/{constraintValue}',
+//
+// var RouteInsertHasmanyConstraint = RouteInsertHasmany.extend({
+//     url         :'/api/json/{modelName}/create_has_many/{constraintKey}/{constraintValue}',
 // });
-
-// var RouteSearch = Route.extend({
+//
+// var RouteView = Route.extend({
 //     method      : "get",
-//     url         :'/api/json/{modelName}/search',
+//     url         : '/api/json/{modelName}/{pk}',
 //     resultType  : 'record',
 //     protocol    : 'record'
 // });
-
-// var RouteSearchConstraint = RouteSearch.extend({
-//     url         :'/api/json/{modelName}/search/{constraintKey}/{constraintValue}',
+//
+// var RouteViewConstraint = RouteView.extend({
+//     url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
 // });
-
-
-// var RouteInsert = Route.extend({
-//     method      : "get",
-//     url         :'/api/json/{modelName}/create',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-
-// var RouteInsertConstraint = RouteInsert.extend({
-//     url         :'/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-// });
-
-
-var RouteInsertHasmany = Route.extend({
-    method      : "get",
-    url         :'/api/json/{modelName}/create_has_many',
-    resultType  : 'record',
-    protocol    : 'record'
-});
-
-var RouteInsertHasmanyConstraint = RouteInsertHasmany.extend({
-    url         :'/api/json/{modelName}/create_has_many/{constraintKey}/{constraintValue}',
-});
-
-// var RouteSave = Route.extend({
-//     method      : "post",
-//     url         : '/api/json/{modelName}/create',
-//     resultType  : 'record',
-//     protocol    : 'record',
-//     extraParams : {_method:'POST'}
-// });
-
-// var RouteSaveConstraint = RouteSave.extend({
-//     url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
-// });
-
-// var RouteUpdate = Route.extend({
+//
+// RouteDelete = Route.extend({
 //     method      : "post",
 //     url         : '/api/json/{modelName}/{pk}',
 //     resultType  : 'record',
 //     protocol    : 'record',
-//     extraParams : {_method:'PUT'}
-// });
+//     commonParams : {'_method': 'DELETE'}
+// })
 //
-// var RouteUpdateConstraint = RouteUpdate.extend({
-//     url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
-// });
-
-// var RouteCreate = Route.extend({
+// RouteMultiDelete = Route.extend({
 //     method      : "post",
-//     url         : '/api/json/{modelName}/create',
+//     url         :  '/api/json/{modelName}/multi-delete',
 //     resultType  : 'record',
 //     protocol    : 'record'
 // });
-
-
-// var RouteCreateConstraint = RouteCreate.extend({
-//     url         : '/api/json/{modelName}/create/{constraintKey}/{constraintValue}',
+//
+// RouteSet = Route.extend({
+//     method      : "post",
+//     url         : '/api/json/set/{modelName}/{field}/{value}',
+//     resultType  : 'record',
+//     protocol    : 'record'
 // });
-
-var RouteView = Route.extend({
-    method      : "get",
-    url         : '/api/json/{modelName}/{pk}',
-    resultType  : 'record',
-    protocol    : 'record'
-});
-
-var RouteViewConstraint = RouteView.extend({
-    url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
-});
-
-RouteDelete = Route.extend({
-    method      : "post",
-    url         : '/api/json/{modelName}/{pk}',
-    resultType  : 'record',
-    protocol    : 'record',
-    extraParams : {'_method': 'DELETE'}
-})
-
-RouteMultiDelete = Route.extend({
-    method      : "post",
-    url         :  '/api/json/{modelName}/multi-delete',
-    resultType  : 'record',
-    protocol    : 'record'
-});
-
-RouteSet = Route.extend({
-    method      : "post",
-    url         : '/api/json/set/{modelName}/{field}/{value}',
-    resultType  : 'record',
-    protocol    : 'record'
-});
-
-RouteAutocomplete = Route.extend({
-    method      : "get",
-    url         : '/api/json/{modelName}/autocomplete',
-    resultType  : 'list',
-    protocol    : 'list'
-
-})
-
-RouteCalendar = Route.extend({});
-
-
-RouteCaptcha = Route.extend({
-    method      : 'get',
-    url         : '/captchajs_img',
-    resultType  : 'record',
-    protocol    : 'record'
-})
-
-RouteUploadfile = Route.extend({
-    method      : 'post',
-    url         : '/uploadfile',
-    resultType  : 'record',
-    protocol    : 'record'
-});
-
-RouteUpload = Route.extend({
-    method      : 'post',
-    url         : '/upload',
-    resultType  : 'record',
-    protocol    : 'record'
-});
-
-RouteViewimage = Route.extend({
-    method      : 'get',
-    url         : '/viewimage/{filename}/upload/{template}',
-    resultType  : 'record',
-    protocol    : 'record'
-});
-
-RouteDownload = Route.extend({
-    method      : 'get',
-    url         : '/download/{filename}',
-    resultType  : 'record',
-    protocol    : 'record'
-});
-
-RoutePageEdit = Route.extend({
-    method      : 'get',
-    url         : '/edit/{modelName}/{pk}'
-});
-
-RoutePageEditConstraint = Route.extend({
-    method      : 'get',
-    url         : '/edit/{modelName}/{pk}/{constraintKey}/{constraintValue}'
-});
-
-RoutePageInsert = Route.extend({
-    method      : 'get',
-    url         : '/insert/{modelName}'
-});
-
-RoutePageInsertConstraint = Route.extend({
-    method      : 'get',
-    url         : '/insert/{modelName}/{constraintKey}/{constraintValue}'
-});
-
-RoutePageView = Route.extend({
-    method      : 'get',
-    url         : '/view/{modelName}/{pk}'
-});
-
-RoutePageViewConstraint = Route.extend({
-    method      : 'get',
-    url         : '/view/{modelName}/{pk}/{constraintKey}/{constraintValue}'
-});
-
-RoutePageList = Route.extend({
-    method      : 'get',
-    url         : '/list/{modelName}/{pk}'
-});
-
-RoutePageListConstraint = Route.extend({
-    method      : 'get',
-    url         : '/list/{modelName}/{pk}/{constraintKey}/{constraintValue}'
-});
+//
+// RouteAutocomplete = Route.extend({
+//     method      : "get",
+//     url         : '/api/json/{modelName}/autocomplete',
+//     resultType  : 'list',
+//     protocol    : 'list'
+//
+// })
+//
+// RouteCalendar = Route.extend({});
+//
+//
+// RouteCaptcha = Route.extend({
+//     method      : 'get',
+//     url         : '/captchajs_img',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// })
+//
+// RouteUploadfile = Route.extend({
+//     method      : 'post',
+//     url         : '/uploadfile',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
+//
+// RouteUpload = Route.extend({
+//     method      : 'post',
+//     url         : '/upload',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
+//
+// RouteViewimage = Route.extend({
+//     method      : 'get',
+//     url         : '/viewimage/{filename}/upload/{template}',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
+//
+// RouteDownload = Route.extend({
+//     method      : 'get',
+//     url         : '/download/{filename}',
+//     resultType  : 'record',
+//     protocol    : 'record'
+// });
+//
+// RoutePageEdit = Route.extend({
+//     method      : 'get',
+//     url         : '/edit/{modelName}/{pk}'
+// });
+//
+// RoutePageEditConstraint = Route.extend({
+//     method      : 'get',
+//     url         : '/edit/{modelName}/{pk}/{constraintKey}/{constraintValue}'
+// });
+//
+// RoutePageInsert = Route.extend({
+//     method      : 'get',
+//     url         : '/insert/{modelName}'
+// });
+//
+// RoutePageInsertConstraint = Route.extend({
+//     method      : 'get',
+//     url         : '/insert/{modelName}/{constraintKey}/{constraintValue}'
+// });
+//
+// RoutePageView = Route.extend({
+//     method      : 'get',
+//     url         : '/view/{modelName}/{pk}'
+// });
+//
+// RoutePageViewConstraint = Route.extend({
+//     method      : 'get',
+//     url         : '/view/{modelName}/{pk}/{constraintKey}/{constraintValue}'
+// });
+//
+// RoutePageList = Route.extend({
+//     method      : 'get',
+//     url         : '/list/{modelName}/{pk}'
+// });
+//
+// RoutePageListConstraint = Route.extend({
+//     method      : 'get',
+//     url         : '/list/{modelName}/{pk}/{constraintKey}/{constraintValue}'
+// });
 
 /**
  * Created by pier on 20/12/17.
@@ -1696,7 +1749,7 @@ Server.route = function(route,callback) {
     var __cb = callback?callback:function (json) {log.debug(route.className,json)};
     var realUrl = Server.getUrl(route.getUrl());
     var params = route.getParams();
-    Server[route.method](realUrl,params,function (json) {
+    Server[route.getMethod()](realUrl,params,function (json) {
         __cb(json);
     })
 };
@@ -1781,7 +1834,7 @@ Vue.component('c-tpl-no', {
     extends : crud.components.cTplBase,
     template : '#c-tpl-no-template'
 });
-const actionBase = Vue.component('action-base', {
+var actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
 
@@ -1965,6 +2018,7 @@ Vue.component('action-dialog', {
 
     }
 })
+
 Vue.component('c-paginator',{
     props : ['c-route-conf','c-route','c-pagination'],
     template : '#c-paginator-template',
@@ -2399,7 +2453,6 @@ Vue.component('r-checkbox',{
 
 Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
-    template: '#r-autocomplete-template',
     mounted : function() {
         this._getLabel();
     },
@@ -2447,7 +2500,9 @@ Vue.component('r-autocomplete', {
         },
         _createUrl : function () {
             var that = this;
-            var r = Route.factory(that.conf.routeName,{values : {modelName:that.conf.model} });
+            var r = that.$crud.createRoute(that.conf.routeName);
+            r.setValues({modelName:that.conf.model});
+            //var r = new Route(routeConf);
 
             //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
             var url = that.url?that.url:r.getUrl();
@@ -2482,8 +2537,12 @@ Vue.component('r-autocomplete', {
 
             var that = this;
             var r = new Route(that.$crud.routes.view);
-            r.values.modelName = that.conf.model;
-            r.values.pk = that.value;
+            r.setValues({
+                modelName : that.conf.model,
+                pk : that.value
+            })
+            // r.values.modelName = that.conf.model;
+            // r.values.pk = that.value;
             var lb = '';
             Server.route(r,function (json) {
                 if (json.error) {
@@ -2501,9 +2560,10 @@ Vue.component('r-autocomplete', {
             }
             return s
         }
-    }
-
+    },
+    template: "#r-autocomplete-template",
 });
+
 Vue.component('r-belongsto', {
     extends : crud.components.renders.rBase,
     template: '#r-belongsto-template',
@@ -3018,10 +3078,15 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
             return selValue.length>0?selValue[0]['id']:null;
 
         },
-
+        setRouteValues : function(route) {
+            route.setValues({modelName:this.model});
+            return route;
+        },
         _createUrl : function () {
             var that = this;
-            var r = Route.factory(that.routeName,{values : {modelName:that.model} });
+            var r = that.$crud.createRoute(that.routeName);
+            that.setRouteValues(r);
+
 
             //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
             var url = that.url?that.url:r.getUrl();
@@ -3047,6 +3112,7 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
     }
 
 });
+
 Vue.component('r-b2m-select2', {
     extends : crud.components.renders.rB2Select2,
     template: '#r-b2m-select2-template',
@@ -3245,6 +3311,9 @@ Vue.component('r-upload-ajax',{
         d.extensions = d.extensions?d.extensions:[];
         d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
         d.uploadConf = d.conf;
+        if (! ("routeName" in d) )
+            d.routeName = 'uploadfile';
+
         var value = d.value || {};
         d.previewConf = {
             value : value,
@@ -3264,6 +3333,12 @@ Vue.component('r-upload-ajax',{
     },
 
     methods : {
+        setRouteValues: function(route) {
+            route.setValues({
+                modelName : this.modelName
+            })
+            return route;
+        },
         getValue : function () {
             var that = this;
             console.log('filedesc',jQuery(that.$el).find('[c-file]').prop('files'));
@@ -3303,13 +3378,18 @@ Vue.component('r-upload-ajax',{
             //var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
             //var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
-            var route = Route.factory('uploadfile');
-            route.fillValues(that);
+            var route = that.$crud.createRoute(that.routeName);
 
+            //var routeConf = that.$crud.routes[that.conf.routeName];
+            //var route = Route.factory('uploadfile');
+            //route.fillValues(that);
+            that.setRouteValues(route);
+            ROUTE = route;
             that.error = false;
             that.complete = false;
 
             var realUrl = Server.getUrl(route.getUrl());
+            console.log('realurl',route.getUrl())
             var fdata = new FormData();
             //data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
             fdata.append('file',fDesc)
@@ -3590,7 +3670,7 @@ crud.components.views.vBase = Vue.component('v-base', {
 
         fetchData: function (route,callback) {
             var that = this;
-            console.log('fetchData',route);
+            console.log('fetchData',route.getConf());
             if (!route) {
                 callback({});
                 return;
@@ -3674,8 +3754,16 @@ crud.components.views.vBase = Vue.component('v-base', {
             console.log('finalConf',finalConf);
             return finalConf;
         },
+        /**
+         * setta la configurazione della route secondo le proprie esigenze.
+         * @param route
+         * @returns {*}
+         */
+        setRouteValues : function(route) {
+            return route;
+        },
 
-        _getRoute : function (values) {
+        _getRoute : function () {
             var that = this;
             var route = null;
             console.log('_getRoute',that.conf);
@@ -3685,12 +3773,14 @@ crud.components.views.vBase = Vue.component('v-base', {
                 return null;
             if (!that.route) {
                 if (crud.routes[that.conf.routeName]) {
+                    console.log('route conf',crud.routes[that.conf.routeName])
                     route =  new Route(crud.routes[that.conf.routeName]);
-                } else {
-                    route = Route.factory(that.conf.routeName);
                 }
-                route.fillValues(that.conf);
-                console.log('ROUTEN ',route.values);
+                // else {
+                //     route = Route.factory(that.conf.routeName);
+                // }
+                // route.fillValues(that.conf);
+                // console.log('ROUTEN ',route.values);
                 //route.values = values;
             }
             // if (!that.route)
@@ -3811,7 +3901,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     data = that.conf.data;
                 }
             } else {
-                var protocol = Protocol.factory(route.protocol);
+                var protocol = Protocol.factory(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);
@@ -3898,11 +3988,11 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var recordActionsName = that.recordActionsName;
             var data = that.data;
             var keys = that.keys;
-            console.log('keys',keys);
+            console.log('keys',keys,data.value);
             for (var i in data.value) {
                 renders.push({});
                 recordActions.push({});
-                for (var k in that.keys) {
+                for (var k in keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
                     dconf.cRef = that.$crud.getRefId(that._uid,'r',i,key);
@@ -3912,7 +4002,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
                     dconf.name = that.getFieldName(key);
-
+                    //console.log(i,renders,renders[i],key,dconf),
                     renders[i][key] = dconf;
 
                 }
@@ -4027,7 +4117,8 @@ crud.components.views.vList = Vue.component('v-list', {
         var that = this;
         //VLIST = this;
         //console.log('MOUNTED CALLED');
-        that.route = that._getRoute(that.routeConf.values);
+        that.route = that._getRoute();
+        that.setRouteValues(that.route);
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.keys = that.getKeys();
@@ -4049,6 +4140,9 @@ crud.components.views.vList = Vue.component('v-list', {
 
         // var route = that._getRoute(routeConf.values);
         var conf = that.getConf(that.cModel,'list');
+        if (that.cModel)
+            conf.modelName = that.cModel;
+
         console.log('v-list conf',conf);
 
         //var route = Route.factory('list',routeConf);
@@ -4103,8 +4197,8 @@ crud.components.views.vList = Vue.component('v-list', {
                     that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
                 }
             } else {
-
-                var protocol = Protocol.factory(route.protocol);
+                console.log('protocol',route.getProtocol());
+                var protocol = Protocol.factory(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);
@@ -4162,6 +4256,15 @@ crud.components.views.vList = Vue.component('v-list', {
             });
             //console.log('select3ed',sel);
             return sel;
+        },
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName
+                });
+            }
+            return route;
         }
     },
     watch : {
@@ -4371,6 +4474,7 @@ Vue.component('v-edit', {
         //     pk: this.cPk
         // });
         that.route = that._getRoute();
+        that.setRouteValues(that.route);
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
@@ -4400,9 +4504,19 @@ Vue.component('v-edit', {
 
     },
     methods : {
-       getFormData : function () {
+        getFormData : function () {
 
-       }
+        },
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName,
+                    pk :that.conf.pk,
+                });
+            }
+            return route;
+        }
     },
     template : '#v-edit-template'
 });
@@ -4425,6 +4539,7 @@ Vue.component('v-view', {
         if (that.cPk)
             that.conf.pk = that.cPk;
         that.route = that._getRoute();
+        that.setRouteValues(that.route);
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
@@ -4454,6 +4569,18 @@ Vue.component('v-view', {
 
     },
 
+    methods : {
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName,
+                    pk :that.conf.pk,
+                });
+            }
+            return route;
+        }
+    },
     template : '#v-view-template'
 });
 
@@ -4463,11 +4590,9 @@ Vue.component('v-insert', {
 
     mounted : function() {
         var that = this;
-        var route = that._getRoute({
-            modelName: this.cModel,
-        });
+        that.route = that._getRoute();
+        that.setRouteValues(that.route);
 
-        that.route = route;
         that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.createActions();
@@ -4494,6 +4619,17 @@ Vue.component('v-insert', {
         return this.$crud.merge(d,dInsert);
 
     },
+    methods : {
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName
+                });
+            }
+            return route;
+        }
+    },
     template : '#v-insert-template'
 
 });
@@ -4511,6 +4647,7 @@ Vue.component('v-search', {
         if (that.cModel)
             that.conf.modelName = that.cModel;
         that.route = that._getRoute();
+        that.setRouteValues(that.route);
 
         this.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
@@ -4579,23 +4716,15 @@ Vue.component('v-search', {
             that.renders = renders;
         },
 
-        // createRenders : function() {
-        //     var that = this;
-        //     var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
-        //     var renders = {};
-        //     for (var k in keys) {
-        //         var key = keys[k];
-        //         renders[key] = that._defaultRenderConfig(key);
-        //         if (that.data.value && that.data.value[key])
-        //             renders[key].value = that.data.value[key];
-        //         if (!renders[key].operator) {
-        //             renders[key].operator = '=';
-        //         }
-        //     }
-        //
-        //     console.log('v-search.renders',renders);
-        //     that.renders = renders;
-        // },
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.conf.modelName
+                });
+            }
+            return route;
+        }
     },
     template : '#v-search-template'
 });
@@ -4708,7 +4837,7 @@ const CrudApp = Vue.extend({
                     }
                 }
                 for (var m in methods) {
-                    console.log('....method',m)
+                    //console.log('....method',m)
                     __call(k,m);
                 }
             }
@@ -4737,7 +4866,7 @@ const CrudApp = Vue.extend({
     },
     methods : {
         onChangeViewConf : function (view) {
-            
+
         },
 
     }

@@ -8,6 +8,9 @@ Vue.component('r-upload-ajax',{
         d.extensions = d.extensions?d.extensions:[];
         d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
         d.uploadConf = d.conf;
+        if (! ("routeName" in d) )
+            d.routeName = 'uploadfile';
+
         var value = d.value || {};
         d.previewConf = {
             value : value,
@@ -27,6 +30,12 @@ Vue.component('r-upload-ajax',{
     },
 
     methods : {
+        setRouteValues: function(route) {
+            route.setValues({
+                modelName : this.modelName
+            })
+            return route;
+        },
         getValue : function () {
             var that = this;
             console.log('filedesc',jQuery(that.$el).find('[c-file]').prop('files'));
@@ -66,13 +75,18 @@ Vue.component('r-upload-ajax',{
             //var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
             //var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
-            var route = Route.factory('uploadfile');
-            route.fillValues(that);
+            var route = that.$crud.createRoute(that.routeName);
 
+            //var routeConf = that.$crud.routes[that.conf.routeName];
+            //var route = Route.factory('uploadfile');
+            //route.fillValues(that);
+            that.setRouteValues(route);
+            ROUTE = route;
             that.error = false;
             that.complete = false;
 
             var realUrl = Server.getUrl(route.getUrl());
+            console.log('realurl',route.getUrl())
             var fdata = new FormData();
             //data.append('file',jQuery(that.$el).find('[c-image-file]').prop('files')[0]);
             fdata.append('file',fDesc)

@@ -27,11 +27,11 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var recordActionsName = that.recordActionsName;
             var data = that.data;
             var keys = that.keys;
-            console.log('keys',keys);
+            console.log('keys',keys,data.value);
             for (var i in data.value) {
                 renders.push({});
                 recordActions.push({});
-                for (var k in that.keys) {
+                for (var k in keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
                     dconf.cRef = that.$crud.getRefId(that._uid,'r',i,key);
@@ -41,7 +41,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
                     dconf.name = that.getFieldName(key);
-
+                    //console.log(i,renders,renders[i],key,dconf),
                     renders[i][key] = dconf;
 
                 }

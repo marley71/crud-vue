@@ -1,4 +1,4 @@
-const actionBase = Vue.component('action-base', {
+var actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
 

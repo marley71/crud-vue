@@ -9,7 +9,7 @@
 //         attachment : 'allegato'
 //     }
 // }
-const crud = {
+crud = {
     lang : {
         'app.aggiungi' : 'Aggiungi',
         'app.annulla' : 'Annulla',
@@ -78,17 +78,20 @@ const crud = {
             css: 'btn btn-outline-danger btn-sm ',
             icon : 'fa fa-times',
             text : '',
+            setRouteValues : function(route) {
+                var that = this;
+                route.setValues({
+                    modelName: that.view.cModel,
+                    pk : that.modelData[that.view.conf.primaryKey]
+                });
+                return route;
+            },
             execute : function () {
                 var that = this;
                 that.$crud.confirmDialog(that.$crud.lang['app.conferma-cancellazione'] ,{
                     ok : function () {
-
-                        var r = that.$crud.routeFactory('delete');
-                        //r.setValues(that.view);
-                        r.values = {
-                            modelName: that.view.cModel,
-                            pk : that.modelData.id
-                        };
+                        var r = that.$crud.createRoute('delete');
+                        that.setRouteValues(r);
                         Server.route(r,function (json) {
                             that.view.reload();
                         });
@@ -323,16 +326,17 @@ const crud = {
             url         : '/foorm/{modelName}',
             resultType  : 'list',
             protocol    : 'list',
-            extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
         },
         uploadfile : {
             method      : 'post',
-            url         : '/api/json/{modelName}/uploadfile',
+            //url         : '/api/json/{modelName}/uploadfile',
+            url         : '/uploadfile',
             resultType  : 'record',
             protocol    : 'record',
-            extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
         },
@@ -341,7 +345,7 @@ const crud = {
             url         : '/upload',
             resultType  : 'record',
             protocol    : 'record',
-            extraParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
             values : {}, // vettore associativo dei parametri per la costruzione dell'url
             params :{},
         },
@@ -358,7 +362,7 @@ const crud = {
             resultType  : 'record',
             protocol    : 'record',
             type : 'update',
-            extraParams : {_method:'PUT'}
+            commonParams : {_method:'PUT'}
         },
         create : {
             method      : "post",
@@ -366,7 +370,7 @@ const crud = {
             resultType  : 'record',
             protocol    : 'record',
             type : 'create',
-            extraParams : {_method:'POST'}
+            commonParams : {_method:'POST'}
         },
         edit : {
             method      : "get",
@@ -397,7 +401,14 @@ const crud = {
             resultType  : 'record',
             protocol    : 'record',
             type : 'delete',
-            extraParams : {_method:'DELETE'}
+            commonParams : {_method:'DELETE'}
+        },
+        autocomplete : {
+            method      : "get",
+            url         : '/api/json/{modelName}/autocomplete',
+            resultType  : 'list',
+            protocol    : 'list'
+
         },
     },
     cRefs : {},
@@ -421,5 +432,6 @@ const crud = {
     },
     interfaces : {
         //js : 'vue-app/js/'
-    }
+    },
+    cRefs : {},
 }

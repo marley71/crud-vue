@@ -125,7 +125,7 @@ crud.components.views.vBase = Vue.component('v-base', {
 
         fetchData: function (route,callback) {
             var that = this;
-            console.log('fetchData',route);
+            console.log('fetchData',route.getConf());
             if (!route) {
                 callback({});
                 return;
@@ -209,8 +209,16 @@ crud.components.views.vBase = Vue.component('v-base', {
             console.log('finalConf',finalConf);
             return finalConf;
         },
+        /**
+         * setta la configurazione della route secondo le proprie esigenze.
+         * @param route
+         * @returns {*}
+         */
+        setRouteValues : function(route) {
+            return route;
+        },
 
-        _getRoute : function (values) {
+        _getRoute : function () {
             var that = this;
             var route = null;
             console.log('_getRoute',that.conf);
@@ -220,12 +228,14 @@ crud.components.views.vBase = Vue.component('v-base', {
                 return null;
             if (!that.route) {
                 if (crud.routes[that.conf.routeName]) {
+                    console.log('route conf',crud.routes[that.conf.routeName])
                     route =  new Route(crud.routes[that.conf.routeName]);
-                } else {
-                    route = Route.factory(that.conf.routeName);
                 }
-                route.fillValues(that.conf);
-                console.log('ROUTEN ',route.values);
+                // else {
+                //     route = Route.factory(that.conf.routeName);
+                // }
+                // route.fillValues(that.conf);
+                // console.log('ROUTEN ',route.values);
                 //route.values = values;
             }
             // if (!that.route)
