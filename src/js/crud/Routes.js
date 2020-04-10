@@ -15,11 +15,10 @@ function Route(conf) {
         resultType : null,      // tipo di risultato, 'record' o 'list'
     };
 
-    var _c = conf || {};
-    var routeConf = {};
-    Object.assign(routeConf,defaultConf);
-    Object.assign(routeConf,_c);
-    console.log(':::::C',_c);
+    var _c = crud.cloneObj(conf || {});
+    var routeConf = crud.cloneObj(defaultConf);
+    //Object.assign(routeConf,defaultConf);
+    //Object.assign(routeConf,_c);
     for (var k in _c) {
         routeConf[k] = _c[k];
     }
@@ -59,6 +58,9 @@ function Route(conf) {
         return finalUrl;
     };
 
+    this.setUrl = function (url) {
+        routeConf.url = url;
+    }
     /**
      * ritorna tutti parametri passati in get o post in base al tipo di metodo della route
      * mergiando i parametri presenti in params e extra_params

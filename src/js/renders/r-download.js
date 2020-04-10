@@ -15,7 +15,7 @@ Vue.component('r-download',{
         xhttp.send();
     },
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.icon = 'fa fa-file-o';
         return d;
     }

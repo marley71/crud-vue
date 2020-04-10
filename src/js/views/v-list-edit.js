@@ -1,58 +1,63 @@
-
-Vue.component('v-list-edit', {
+crud.components.views.vListEdit = Vue.component('v-list-edit', {
     extends : crud.components.views.vList,
-    conf : {},
-    props : ['cConf','cModel'],
 
-    data :  function () {
+    data : function() {
         var that = this;
-
-        var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
-        routeConf.values = {
-            modelName: this.cModel
-        }
-
-        if (this.$route && this.$route.query)
-            routeConf.params = that.$route.query;
-
-        var conf = that.getConf(that.cModel,'listEdit');
-        // conf.customActions['action-edit'] = {
-        //     execute : function () {
-        //         var thatA = this;
-        //         that.$set(that.editMode,thatA.cIndex, true);
-        //     }
-        // };
-        console.log('v-list-edit conf',conf)
-
-        var d = {
-            loading : true,
-            renders : {},
+        var d = that._loadConf(that.cModel,'listEdit');
+        var dListEdit = {
             rendersEdit : {},
-            keys : [],
-            recordActionsName : [],
-            recordActions: [],
-            collectionActions : {},
-            collectionActionsName : [],
-            routeConf : routeConf,
-            route : null,
-            data : [],
-            maxPage : 0,
-            conf : conf,
-            needSelection : true,
-            pagination : {},
-            viewTitle : '',
-            defaultRenderType : 'r-text',
-            editMode : [],
-
+            editMode : []
         };
-        if (d.conf.viewTitle) {
-            d.viewTitle = d.conf.viewTitle;
-        }
-        return d;
+        return this.$crud.merge(dListEdit,d);
     },
-    _existsActions : function(name) {
-        alert(name)
-    },
+
+    // data :  function () {
+    //     var that = this;
+    //
+    //     var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
+    //     routeConf.values = {
+    //         modelName: this.cModel
+    //     }
+    //
+    //     if (this.$route && this.$route.query)
+    //         routeConf.params = that.$route.query;
+    //
+    //     var conf = that.getConf(that.cModel,'listEdit');
+    //     // conf.customActions['action-edit'] = {
+    //     //     execute : function () {
+    //     //         var thatA = this;
+    //     //         that.$set(that.editMode,thatA.cIndex, true);
+    //     //     }
+    //     // };
+    //     console.log('v-list-edit conf',conf)
+    //
+    //     var d = {
+    //         loading : true,
+    //         renders : {},
+    //         rendersEdit : {},
+    //         keys : [],
+    //         recordActionsName : [],
+    //         recordActions: [],
+    //         collectionActions : {},
+    //         collectionActionsName : [],
+    //         routeConf : routeConf,
+    //         route : null,
+    //         data : [],
+    //         maxPage : 0,
+    //         conf : conf,
+    //         needSelection : true,
+    //         pagination : {},
+    //         viewTitle : '',
+    //         defaultRenderType : 'r-text',
+    //         editMode : [],
+    //
+    //     };
+    //     if (d.conf.viewTitle) {
+    //         d.viewTitle = d.conf.viewTitle;
+    //     }
+    //     return d;
+    // },
+
     methods: {
 
         draw : function() {
@@ -62,10 +67,10 @@ Vue.component('v-list-edit', {
             that.createRenders();
             that.createRendersEdit();
             that.createCollectionActions();
-            console.log('rendersEdit',that.rendersEdit);
-            console.log('renders',that.renders,'recordActions',that.recordActions);
-            console.log('collectionActions',that.collectionActions);
-            console.log('editMode',that.editMode)
+            // console.log('rendersEdit',that.rendersEdit);
+            // console.log('renders',that.renders,'recordActions',that.recordActions);
+            // console.log('collectionActions',that.collectionActions);
+            // console.log('editMode',that.editMode)
         },
 
         createRendersEdit : function () {
@@ -95,43 +100,6 @@ Vue.component('v-list-edit', {
             that.rendersEdit = rendersEdit;
         },
 
-        // getOrderConf : function (key) {
-        //     var that = this;
-        //     var conf = that.getActionConfig('action-order','collection');
-        //     conf.title = 'app.ordina ' + key;
-        //     conf.text = key;
-        //     conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
-        //     if (that.data.order_field)
-        //         conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
-        //     return conf;
-        // },
-        // reload : function () {
-        //     var that = this;
-        //     var route = Route.factory('list',that.routeConf);
-        //     that.loading = true;
-        //     that.fetchData(route,function (json) {
-        //         that.fillData(route,json);
-        //         that.draw();
-        //         that.loading = false;
-        //     });
-        // },
-        selectAllRows : function () {
-            var that = this;
-            var sel = that.jQe('[c-row-check-all]').prop('checked');
-            that.jQe('[c-row-check]').prop('checked',sel);
-        },
-        selectedRows : function () {
-            var that = this;
-            var sel = [];
-            that.jQe('[c-row-check]').each(function () {
-                if (jQuery(this).prop('checked')) {
-                    var index = jQuery(this).closest('tr').index();
-                    sel.push(that.data.value[index].id);
-                }
-            });
-
-            return sel;
-        },
         setEditMode : function (index) {
             var that = this;
             that.hideRA(index,'action-delete');

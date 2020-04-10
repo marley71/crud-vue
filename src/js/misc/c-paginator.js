@@ -1,5 +1,5 @@
 Vue.component('c-paginator',{
-    props : ['c-route-conf','c-route','c-pagination'],
+    props : ['c-pagination'],
     template : '#c-paginator-template',
     data : function () {
         var that = this;
@@ -50,9 +50,16 @@ Vue.component('c-paginator',{
         },
         setPage : function(page) {
             var that = this;
-            var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
+            var route = that.$parent.route;
+
+            var params = route.getParams();
             params['page'] = parseInt(page);
-            that.$parent.routeConf.params = params;
+            route.setParams(params);
+            that.$parent.reload();
+
+            // var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
+            // params['page'] = parseInt(page);
+            // that.$parent.routeConf.params = params;
             //that.cRouteConf.params = params;
 
         },

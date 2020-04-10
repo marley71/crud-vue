@@ -29,37 +29,30 @@ var actionBase = Vue.component('action-base', {
         }
     },
     methods : {
-        defaultData : function () {
-            var that = this;
-            var adata = {
-                type : 'collection',
-                visible : true,
-                enabled : true,
-                title : '',
-                css: 'btn btn-outline-secondary',
-                icon : 'fa fa-help',
-                text : '',
-                controlType : 'button',
-                href : '',
-            };
-            for (var c in this.cConf) {
-                // if (c ===  'execute') {
-                //     var f = this.cConf[c];
-                //     adata[c] = function () {
-                //         f.apply(that);
-                //     }
-                // } else
-                //if (jQuery.inArray(c,['execute','beforeExecute','afterExecute','enabled','visible']) < 0)
-                    adata[c] = this.cConf[c];
-            }
-            if (!('view' in adata) )
-                adata.view = that.$parent;
-            // if (! ('langContext' in adata) ){
-            //     adata.langContext = adata.view?adata.view.langContext:null;
-            // }
-            //console.log('action ',adata);
-            return adata;
-        },
+        // defaultData : function () {
+        //     var that = this;
+        //     var adata = {
+        //         type : 'collection',
+        //         visible : true,
+        //         enabled : true,
+        //         title : '',
+        //         css: 'btn btn-outline-secondary',
+        //         icon : 'fa fa-help',
+        //         text : '',
+        //         controlType : 'button',
+        //         href : '',
+        //     };
+        //     for (var c in this.cConf) {
+        //             adata[c] = this.cConf[c];
+        //     }
+        //     if (!('view' in adata) )
+        //         adata.view = that.$parent;
+        //     // if (! ('langContext' in adata) ){
+        //     //     adata.langContext = adata.view?adata.view.langContext:null;
+        //     // }
+        //     //console.log('action ',adata);
+        //     return adata;
+        // },
         _beforeExecute : function (callback) {
             var that =this;
             if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
@@ -104,7 +97,23 @@ var actionBase = Vue.component('action-base', {
         }
     },
     data :  function () {
-        return this.defaultData();
+        var that = this;
+        console.log('action-base')
+        var d =  that._loadConf();
+        var adata = {
+            type : 'collection',
+            visible : true,
+            enabled : true,
+            title : '',
+            css: 'btn btn-outline-secondary',
+            icon : 'fa fa-help',
+            text : '',
+            controlType : 'button',
+            href : '',
+        };
+        if (!('view' in adata) )
+            adata.view = that.$parent;
+        return that.$crud.merge(adata,d);
     },
     template: '#action-template'
 });

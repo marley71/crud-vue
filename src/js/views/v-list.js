@@ -1,48 +1,40 @@
-
 crud.components.views.vList = Vue.component('v-list', {
     extends : crud.components.views.vCollection,
-    conf : {},
-    // beforeCreate : function() {
-    //     this.template = '#v-view-template';
-    // },
+
     mounted : function() {
         var that = this;
-        //VLIST = this;
-        //console.log('MOUNTED CALLED');
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
         that.route = that._getRoute();
         that.setRouteValues(that.route);
-        this.fetchData(that.route,function (json) {
+
+        that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.keys = that.getKeys();
             that.draw();
             that.loading = false;
         });
     },
+
     data :  function () {
         var that = this;
-        //console.log('DATA CALLED');
-        //console.log('CRUDCONF',that.$Crud);
-        var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
-        routeConf.values = {
-            modelName: this.cModel
-        }
+        var d = this._loadConf(that.cModel,'list');
+        // var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
+        // routeConf.values = {
+        //     modelName: this.cModel
+        // }
+        //
+        // if (this.$route && this.$route.query)
+        //     routeConf.params = that.$route.query;
+        //
+        // // var route = that._getRoute(routeConf.values);
+        // var conf = that.getConf(that.cModel,'list');
+        // if (that.cModel)
+        //     conf.modelName = that.cModel;
+        //
+        // console.log('v-list conf',conf);
 
-        if (this.$route && this.$route.query)
-            routeConf.params = that.$route.query;
-
-        // var route = that._getRoute(routeConf.values);
-        var conf = that.getConf(that.cModel,'list');
-        if (that.cModel)
-            conf.modelName = that.cModel;
-
-        console.log('v-list conf',conf);
-
-        //var route = Route.factory('list',routeConf);
-        //that.route = route;
-        //that.conf = ModelTest.list;
-
-        //this.loading = true;
-        var d = {
+        var dList = {
             loading : true,
             renders : {},
             keys : [],
@@ -50,11 +42,11 @@ crud.components.views.vList = Vue.component('v-list', {
             recordActions: [],
             collectionActions : {},
             collectionActionsName : [],
-            routeConf : routeConf,
+            //routeConf : routeConf,
             route : null,
             data : [],
             maxPage : 0,
-            conf : conf,
+            //conf : conf,
             needSelection : true,
             pagination : {},
             viewTitle : '',
@@ -65,11 +57,9 @@ crud.components.views.vList = Vue.component('v-list', {
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
         }
-        return d;
+        return this.$crud.merge(dList,d);
     },
-    _existsActions : function(name) {
-        alert(name)
-    },
+
     methods: {
 
         draw : function() {
@@ -124,7 +114,7 @@ crud.components.views.vList = Vue.component('v-list', {
             var that = this;
             //that.route = that._getRoute(that.routeConf.values);
             //var route = Route.factory('list',that.routeConf);
-            that.route = new Route(that.routeConf);
+            //that.route = new Route(that.routeConf);
             that.loading = true;
             that.fetchData(that.route,function (json) {
                 that.fillData(that.route,json);

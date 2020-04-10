@@ -7,18 +7,11 @@ Vue.component('r-preview',{
     // },
     data : function () {
         var that = this;
-        var d = that.defaultData();
+        var d = that._loadConf();
         if (!d.value)
             d.value = {};
-        //d.url = null;
-        //d.mimetype = null;
         d.icon = false;
         d.iconClass = '';
-        // var value = d.value || {};
-        // for (var k in value) {
-        //     d[k] = value[k];
-        // }
-        //d.type = that.getType()
         return d;
     },
     methods : {

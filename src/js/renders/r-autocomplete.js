@@ -1,11 +1,11 @@
 Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
     mounted : function() {
-        this._getLabel();
+        //this._getLabel();
     },
     data : function() {
         var that = this;
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
@@ -22,7 +22,9 @@ Vue.component('r-autocomplete', {
             var that = this;
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
                 source : function(term,suggest) {
-                    jQuery.getJSON(that._createUrl(),{term:term},function (json) {
+                    var r = that._getRoute(that.conf.routeName);
+                    that.setRouteValue(r,term);
+                    Server.route(r,function (json) {
                         var suggestions = [];
                         //that.suggestValues = {};
                         for (var i in json.result) {
@@ -36,6 +38,20 @@ Vue.component('r-autocomplete', {
                         }
                         return suggest(suggestions)
                     })
+                    // jQuery.getJSON(that._createUrl(),{term:term},function (json) {
+                    //     var suggestions = [];
+                    //     //that.suggestValues = {};
+                    //     for (var i in json.result) {
+                    //         // var s = "";
+                    //         // for (var k in that.metadata.fields) {
+                    //         //     s += (s?' ':'') + json.result[i][that.metadata.fields[k]];
+                    //         // }
+                    //         var s = that._getSuggestion(json.result[i]);
+                    //         suggestions.push(s);
+                    //         that.suggestValues[s] = json.result[i]['id'];
+                    //     }
+                    //     return suggest(suggestions)
+                    // })
                 },
                 onSelect: function(e, term, item){
                     console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
@@ -44,16 +60,17 @@ Vue.component('r-autocomplete', {
                     that.change();
                 }
             });
+            that._getLabel();
         },
-        _createUrl : function () {
+        setRouteValue : function (route,term) {
             var that = this;
-            var r = that.$crud.createRoute(that.conf.routeName);
-            r.setValues({modelName:that.conf.model});
+            //var r = that.$crud.createRoute(that.conf.routeName);
+            route.setValues({modelName:that.conf.modelName});
             //var r = new Route(routeConf);
 
             //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
-            var url = that.url?that.url:r.getUrl();
-            url+= '?';
+            var url = that.url?that.url:route.getUrl();
+            url+= '?term='+term+'&';
 
             if (that.conf.fields) {
                 for(var f in that.conf.fields) {
@@ -70,7 +87,9 @@ Vue.component('r-autocomplete', {
             url += that.conf.separator ? '&separator=' + that.conf.separator : '';
             url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
             url += that.conf.method ? '&method=' + that.conf.method: '';
-            return url;
+            route.setUrl(url);
+            return route;
+            //return url;
         },
 
         clear : function () {
@@ -84,10 +103,11 @@ Vue.component('r-autocomplete', {
 
             var that = this;
             var r = new Route(that.$crud.routes.view);
+            console.log('r-autocomplete getLabel',that.conf);
             r.setValues({
-                modelName : that.conf.model,
+                modelName : that.conf.modelName,
                 pk : that.value
-            })
+            });
             // r.values.modelName = that.conf.model;
             // r.values.pk = that.value;
             var lb = '';

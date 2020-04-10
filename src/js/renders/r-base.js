@@ -4,17 +4,18 @@ crud.components.renders.rBase = Vue.component('r-base', {
 
     mounted : function() {
         var that = this;
+        console.log('r-base.mounted');
         var _conf = that.cConf || {};
         if (!_conf.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
         }
-        var that =this;
-        for (var k in _conf.methods) {
-            //console.log('r-base implements methods',k);
-            that[k] = function () {
-                return _conf.methods[k].apply(that,this.arguments);
-            }
-        }
+        // var that =this;
+        // for (var k in _conf.methods) {
+        //     //console.log('r-base implements methods',k);
+        //     that[k] = function () {
+        //         return _conf.methods[k].apply(that,this.arguments);
+        //     }
+        // }
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             //that.resourcesLoaded = false;
@@ -32,7 +33,7 @@ crud.components.renders.rBase = Vue.component('r-base', {
         }
     },
     data :  function () {
-        var d  = this.defaultData();
+        var d  = this._loadConf();
         if (! ('value' in d))
             d.value = null;
         if (! ('operator' in d))
@@ -41,6 +42,7 @@ crud.components.renders.rBase = Vue.component('r-base', {
         return d;
     },
     methods : {
+
         getFieldName: function () {
             var that = this;
             //console.log('GET FIELD NAME',this.cKey);

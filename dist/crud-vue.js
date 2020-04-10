@@ -67,443 +67,550 @@
     };
 })();
 
-// lang = {
-//     app : {
-//         'add' : "Aggiungi",
-//         'conferma-delete' : 'Sicuro di voler cancellare l\'elemento?',
-//         'conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?'
-//     },
-//     model : {
-//         foto : 'foto',
-//         attachment : 'allegato'
-//     }
-// }
-crud = {
-    lang : {
-        'app.aggiungi' : 'Aggiungi',
-        'app.annulla' : 'Annulla',
-        'app.azioni' : 'Azioni',
-        'app.cancella' : 'Cancella elemento',
-        'app.cancella-selezionati' : 'Cancella elementi selezionati',
-        'app.cerca' : 'Cerca',
-        'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
-        'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
-        'app.estensioni-accettate' : 'Estensioni accettate:',
-        'app.indietro' : 'Indietro',
-        'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
-        'app.modifica' : 'Modifica',
-        'app.nessun-elemento' : 'Nessun elemento trovato',
-        'app.nuovo' : 'Nuovo',
-        'app.ordina' : 'Ordina',
-        'app.salva' : 'Salva',
-        'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
-        'app.vista' : 'Vista',
-    },
-    application : {
-        useRouter : false,
-    },
-    icons : {
-        mimetypes : {
-            "default"   : 'fa fa-file-o',
-            "application/xls"       : 'fa fa-file-excel-o',
-            "xlsx"      : 'fa fa-file-excel-o',
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : 'fa fa-file-excel-o',
-            "zip"       : 'fa fa-file-archive-o',
-            "mp3"       : 'fa fa-audio-o',
-            "image/jpeg"       : "fa fa-image-o",
-            "application/pdf"       : "fa fa-file-pdf-o",
-            "txt"       : "fa fa-file-text-o",
-        }
+const crud = {};
+crud.lang = {
+    'app.aggiungi' : 'Aggiungi',
+    'app.annulla' : 'Annulla',
+    'app.azioni' : 'Azioni',
+    'app.cancella' : 'Cancella elemento',
+    'app.cancella-selezionati' : 'Cancella elementi selezionati',
+    'app.cerca' : 'Cerca',
+    'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
+    'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
+    'app.estensioni-accettate' : 'Estensioni accettate:',
+    'app.indietro' : 'Indietro',
+    'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
+    'app.modifica' : 'Modifica',
+    'app.nessun-elemento' : 'Nessun elemento trovato',
+    'app.nuovo' : 'Nuovo',
+    'app.ordina' : 'Ordina',
+    'app.salva' : 'Salva',
+    'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
+    'app.vista' : 'Vista',
+};
 
+crud.icons = {
+    mimetypes: {
+        "default": 'fa fa-file-o',
+        "application/xls": 'fa fa-file-excel-o',
+        "xlsx": 'fa fa-file-excel-o',
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": 'fa fa-file-excel-o',
+        "zip": 'fa fa-file-archive-o',
+        "mp3": 'fa fa-audio-o',
+        "image/jpeg": "fa fa-image-o",
+        "application/pdf": "fa fa-file-pdf-o",
+        "txt": "fa fa-file-text-o",
+    }
+};
+
+crud.recordActions = {
+    'action-edit' : {
+        type : 'record',
+        title : 'app.modifica',
+        css: 'btn btn-outline-secondary btn-sm ',
+        text : '',
+        icon : 'fa fa-edit',
+        execute : function () {
+            var url = "/edit/" + this.modelName + "/" + this.modelData[this.view.primaryKey];
+            document.location.href=url
+        }
     },
-    recordActions : {
-        'action-edit' : {
-            type : 'record',
-            title : 'app.modifica',
-            css: 'btn btn-outline-secondary btn-sm ',
-            text : '',
-            icon : 'fa fa-edit',
-            execute : function () {
-                var url = this.$crud.application.useRouter?'#':'';
-                url += "/edit/" + this.modelName + "/" + this.modelData.id;
-                document.location.href=url
-            }
+    'action-view' : {
+        type : 'record',
+        title : 'app.vista',
+        css: 'btn btn-outline-secondary btn-sm ',
+        icon : 'fa fa-eye',
+        text : '',
+        execute : function () {
+            var url = this.$crud.application.useRouter?'#':'';
+            url += "/view/" + this.modelName + "/" + this.modelData.id;
+            document.location.href=url;
+        }
+    },
+    'action-delete' : {
+        type : 'record',
+        title : 'app.cancella',
+        css: 'btn btn-outline-danger btn-sm ',
+        icon : 'fa fa-times',
+        text : '',
+        setRouteValues : function(route) {
+            var that = this;
+            route.setValues({
+                modelName: that.view.cModel,
+                pk : that.modelData[that.view.conf.primaryKey]
+            });
+            return route;
         },
-        'action-view' : {
-            type : 'record',
-            title : 'app.vista',
-            css: 'btn btn-outline-secondary btn-sm ',
-            icon : 'fa fa-eye',
-            text : '',
-            execute : function () {
-                var url = this.$crud.application.useRouter?'#':'';
-                url += "/view/" + this.modelName + "/" + this.modelData.id;
-                document.location.href=url;
-            }
+        execute : function () {
+            var that = this;
+            that.$crud.confirmDialog(that.$crud.lang['app.conferma-cancellazione'] ,{
+                ok : function () {
+                    var r = that.$crud.createRoute('delete');
+                    that.setRouteValues(r);
+                    Server.route(r,function (json) {
+                        that.view.reload();
+                    });
+                }
+            });
+        }
+    },
+    'action-save-row' : {
+        type: 'record',
+        title: 'app.salva',
+        css: 'btn btn-outline-success btn-sm ',
+        text: '',
+        icon: 'fa fa-save',
+        visible: false,
+        setRouteValues : function(route) {
+            var that = this;
+            route.setValues({
+                modelName: that.view.cModel,
+                pk : that.modelData[that.view.conf.primaryKey]
+            });
+            return route;
         },
-        'action-delete' : {
-            type : 'record',
-            title : 'app.cancella',
-            css: 'btn btn-outline-danger btn-sm ',
-            icon : 'fa fa-times',
-            text : '',
-            setRouteValues : function(route) {
-                var that = this;
+        execute: function () {
+            var that = this;
+            var values = {};
+            for (var k in that.view.rendersEdit[that.index]) {
+                //console.log('edit r',that.view.rendersEdit[that.index][k])
+                var sref = that.view.rendersEdit[that.index][k].cRef; //  're-' + that.index + '-' +  k;
+                if (crud.cRefs[sref])
+                    values[k] = crud.cRefs[sref].getValue();
+            }
+            var id = that.view.data.value[that.index][that.view.conf.primaryKey];
+            var r = that.$crud.createRoute('update');
+            that.setRouteValues(r);
+            r.setParams(values);
+            Server.route(r, function (json) {
+                if (json.error) {
+                    that.$crud.errorDialog(json.msg);
+                    return;
+                }
+                that.$crud.popoverSuccess(that.$crud.translate('app.salvataggio-ok'))
+                that.view.reload();
+            })
+            console.log('values', values);
+        }
+    },
+    'action-edit-mode':  {
+        type : 'record',
+        title : 'app.modifica',
+        css: 'btn btn-outline-secondary btn-sm ',
+        text : '',
+        icon : 'fa fa-edit',
+        execute : function () {
+            var that = this;
+            that.view.setEditMode(that.index);
+        }
+    },
+    'action-view-mode' : {
+        type : 'record',
+        title : 'app.annulla',
+        css: 'btn btn-outline-secondary btn-sm ',
+        //text : 'back',
+        icon : 'fa fa-arrow-left',
+        visible : false,
+        execute : function () {
+            var that = this;
+            that.view.setViewMode(that.index);
+        }
+    }
+};
+
+crud.collectionActions = {
+
+    'action-insert' : {
+        type : 'collection',
+        visible : true,
+        enabled : true,
+        title : 'app.nuovo',
+        css: 'btn btn-outline-primary btn-sm btn-group',
+        icon : 'fa fa-plus',
+        text : 'app.nuovo',
+        execute  :function () {
+            var url = this.$crud.application.useRouter?'#':'';
+            url += "/insert/" + this.modelName + "/new";
+            document.location.href=url;
+        }
+    },
+    'action-save' : {
+        type : 'collection',
+        title : 'app.salva',
+        css: 'btn btn-primary btn-sm',
+        icon : 'fa fa-save',
+        text : 'app.salva',
+        setRouteValues : function(route) {
+            var that = this;
+            if (that.view.cPk) {
                 route.setValues({
                     modelName: that.view.cModel,
-                    pk : that.modelData[that.view.conf.primaryKey]
+                    pk : this.view.cPk
                 });
-                return route;
-            },
-            execute : function () {
-                var that = this;
-                that.$crud.confirmDialog(that.$crud.lang['app.conferma-cancellazione'] ,{
-                    ok : function () {
-                        var r = that.$crud.createRoute('delete');
-                        that.setRouteValues(r);
-                        Server.route(r,function (json) {
-                            that.view.reload();
-                        });
-                    }
+            } else {
+                route.setValues({
+                    modelName: that.view.cModel,
                 });
             }
+            route.setParams(this.$crud.getFormData(this.view.jQe('form')));
+            return route;
         },
-    },
-    collectionActions : {
+        execute : function () {
+            var that = this;
+            console.log('action save',this);
+            var rName = 'create';
+            if (that.view.cPk)
+                rName = 'update';
+            var r = that._getRoute(rName);
+            that.setRouteValues(r);
 
-        'action-insert' : {
-            type : 'collection',
-            visible : true,
-            enabled : true,
-            title : 'app.nuovo',
-            css: 'btn btn-outline-primary btn-sm btn-group',
-            icon : 'fa fa-plus',
-            text : 'app.nuovo',
-            execute  :function () {
-                var url = this.$crud.application.useRouter?'#':'';
-                url += "/insert/" + this.modelName + "/new";
-                document.location.href=url;
-            }
-        },
-        'action-save' : {
-            type : 'collection',
-            title : 'app.salva',
-            css: 'btn btn-primary btn-sm',
-            icon : 'fa fa-save',
-            text : 'app.salva',
-            execute : function () {
-                var that = this;
-                console.log('action save',this);
-                var rName = 'create';
-                var values = {};
-                if (this.view.route.type == 'update') {
-                    rName = 'update';
-
-                    // var r = Route.factory('update',{
-                        values =  {
-                            modelName : this.modelName,
-                            pk : this.view.cPk
-                        }
-                    // })
-                } else {
-                    rName = 'create'
-                    // var r = Route.factory('save',{
-                        values =  {
-                            modelName : this.modelName,
-                        }
-                    // })
-                }
-                var r = null;
-                if (crud.routes[rName]) {
-                    r =  new Route(crud.routes[rName]);
-                } else {
-                    r = Route.factory(rName);
-                }
-                r.values = values;
-                //r.params = this.$crud.getFormData(jQuery(this.rootElement).find('form'));
-                r.params = this.$crud.getFormData(this.view.jQe('form'));
-                Server.route(r, function (json) {
-                    if (json.error) {
-                        that.$crud.errorDialog(json.msg)
-                        //alert(json.msg);
-                        return ;
-                    }
-                    that.$crud.popoverSuccess('app.salvataggio-ok')
-                })
-            }
-        },
-        'action-back' : {
-            type : 'collection',
-            title : 'app.indietro',
-            css: 'btn btn-secondary btn-sm',
-            icon : 'fa fa-backward',
-            text : 'app.indietro',
-            execute : function () {
-                window.history.back();
-            }
-        },
-        'action-search' : {
-            type : 'collection',
-            title : 'app.cerca',
-            css: 'btn btn-primary btn-sm btn-group',
-            icon : 'fa fa-search',
-            text : 'app.cerca',
-            execute : function () {
-                //console.log('action-search',this.view,this.view.targetId);
-                if (this.view && this.view.targetRef) {
-                    console.log('target ref',this.view.targetRef);
-                    var ref = this.$crud.cRefs[this.view.targetRef];
-
-                    // var ref = this.view.$parent.$refs[this.view.targetRef];
-                    // if (!ref) {
-                    //     console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
-                    //     throw "errore";
-                    // }
-                    var formData = this.view.getFormData();
-
-                    //var form = jQuery(this.view.$el).find('form');
-                    //var formData = Utility.getFormData(form);
-                    ref.routeConf.params = formData;
-                    return ;
-                }
-
-                if (this.view.cRouteConf) {
-                    var routeConf = this.$crud.cloneObj(this.view.cRouteConf);
-                    var form = jQuery(this.view.$el).find('form');
-                    var formData = this.$crud.getFormData(form);
-                    console.log('formData',formData);
-                    this.view.doSearch(formData)
-                    //this.view.setCRouteCo .cRouteConf = routeConf;
-                } else
-                    console.warn('routeConf non definita')
-                //console.log('SEARCH',this.view,this.cRouteConf);
-            }
-        },
-        'action-order' : {
-            type : 'collection',
-            title : 'app.order',
-            css: 'btn btn-default btn-sm',
-            iconUp : 'fa fa-caret-up',
-            iconDown : 'fa fa-caret-down',
-            icon : null,
-            text : '',
-            execute : function () {
-                console.log('order execute',this);
-                var params = this.$crud.cloneObj(this.view.routeConf.params);
-                params.order_field = this.orderField;
-                //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
-                params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
-                this.view.routeConf.params = params;
-            }
-        },
-        'action-delete-selected' : {
-            type : 'collection',
-            title : 'app.cancella-selezionati',
-            css: 'btn btn-outline-danger btn-sm',
-            icon : 'fa fa-trash',
-            text : '',
-            execute : function () {
-                var that = this;
-                var checked = that.view.selectedRows();
-                var num = checked.length;
-                if (num === 0)
-                    return ;
-                that.$crud.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
-                    ok : function () {
-                        console.log('VIEW',that.view);
-                        var r = Route.factory('multi_delete');
-                        r.values = {
-                            modelName: that.modelName
-                        };
-                        that.$crud.waitStart();
-                        r.params = {'ids': checked};
-                        //console.log('MULTIDELETE',checked);
-                        Server.route(r,function (json) {
-                            that.$crud.waitEnd();
-                            that.view.reload();
-                            //that.callback(json);
-                        })
-                    }
-                });
-                console.log('selected',that.view.selectedRows())
-            }
-        }
-    },
-    conf : {
-        view : {
-            primaryKey : 'id',
-            routeName : 'view',
-            fieldsConfig : {},
-            actions : ['action-back'],
-            customActions: {},
-            renderTemplate : 'c-tpl-record2',
-        },
-        edit : {
-            primaryKey : 'id',
-            routeName : 'edit',
-            customActions : {},
-            fieldsConfig : {
-                id : 'r-hidden'
-            },
-            fields : [],
-            renderTemplate : 'c-tpl-record',
-            actions : ['action-save','action-back']
-        },
-        list : {
-            primaryKey : 'id',
-            routeName : 'list',
-            customActions: {},
-            fieldsConfig : {},
-            orderFields: {},
-            renderTemplate : 'c-tpl-list',
-            actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
-        },
-        search : {
-            primaryKey : 'id',
-            routeName : 'search',
-            actions : ['action-search'],
-            fieldsConfig : {},
-            customActions: {},
-            renderTemplate : 'c-tpl-record',
-        },
-        insert : {
-            primaryKey : 'id',
-            routeName : 'insert',
-            renderTemplate : 'c-tpl-record',
-            actions : ['action-save','action-back'],
-            fieldsConfig : {
-                id : 'r-hidden'
-            },
-            actions : ['action-save','action-back']
-        },
-        uploadFile : {
-            routeName : null,
-            fields : ['nome','descrizione','modelName'],
-            fieldsConfig : {
-                modelName : {
-                    type : 'r-hidden'
-                },
-                descrizione : {
-                    type : 'r-textarea'
-                }
-            }
-        }
-    },
-    routes : {
-        list : {
-            method      : 'get',
-            url         : '/foorm/{modelName}',
-            resultType  : 'list',
-            protocol    : 'list',
-            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
-            values : {}, // vettore associativo dei parametri per la costruzione dell'url
-            params :{},
-        },
-        uploadfile : {
-            method      : 'post',
-            //url         : '/api/json/{modelName}/uploadfile',
-            url         : '/uploadfile',
-            resultType  : 'record',
-            protocol    : 'record',
-            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
-            values : {}, // vettore associativo dei parametri per la costruzione dell'url
-            params :{},
-        },
-        upload : {
-            method      : 'post',
-            url         : '/upload',
-            resultType  : 'record',
-            protocol    : 'record',
-            commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
-            values : {}, // vettore associativo dei parametri per la costruzione dell'url
-            params :{},
-        },
-        insert : {
-            method      : "get",
-            url         :'/foorm/{modelName}/new',
-            resultType  : 'record',
-            protocol    : 'record',
-            type : 'create',
-        },
-        update : {
-            method      : "post",
-            url         :'/foorm/{modelName}/{pk}',
-            resultType  : 'record',
-            protocol    : 'record',
-            type : 'update',
-            commonParams : {_method:'PUT'}
-        },
-        create : {
-            method      : "post",
-            url         :'/foorm/{modelName}',
-            resultType  : 'record',
-            protocol    : 'record',
-            type : 'create',
-            commonParams : {_method:'POST'}
-        },
-        edit : {
-            method      : "get",
-            url         :'/foorm/{modelName}/{pk}/edit',
-            //url         :'/foorm/{modelName}/{pk}/edit',
-            resultType  : 'record',
-            protocol    : 'record',
-            type : 'update',
-        },
-        search : {
-            method      : "get",
-            url         :'/foorm/{modelName}/search',
-            //url         :'/foorm/{modelName}/{pk}/edit',
-            resultType  : 'record',
-            protocol    : 'record'
-        },
-        view : {
-            method      : "get",
-            url         :'/foorm/{modelName}/{pk}/view',
-            //url         :'/foorm/{modelName}/{pk}/edit',
-            resultType  : 'record',
-            protocol    : 'record',
-            type : 'read',
-        },
-        delete : {
-            method      : "post",
-            url         :'/foorm/{modelName}/{pk}',
-            resultType  : 'record',
-            protocol    : 'record',
-            type : 'delete',
-            commonParams : {_method:'DELETE'}
-        },
-        autocomplete : {
-            method      : "get",
-            url         : '/api/json/{modelName}/autocomplete',
-            resultType  : 'list',
-            protocol    : 'list'
-
-        },
-    },
-    cRefs : {},
-    components : {
-        renders : {
-
-        },
-        views : {
-
-        },
-        libs :  {
-            // 'r-hasmany-through2' : {
-            //     js : '/vue-app/js/r-hasmany-through2.js',
-            //     tpl : '/vue-app/templates/r-hasmany-through2-template.html'
-            // },
-            // 'dashboard-csv' : {
-            //     js : '/vue-app/js/dashboard-csv.js',
-            //     tpl : '/vue-app/templates/dashboard-csv-template.html'
+            // var values = {};
+            // if (this.view.route.type == 'update') {
+            //     rName = 'update';
+            //
+            //     // var r = Route.factory('update',{
+            //         values =  {
+            //             modelName : this.modelName,
+            //             pk : this.view.cPk
+            //         }
+            //     // })
+            // } else {
+            //     rName = 'create'
+            //     // var r = Route.factory('save',{
+            //         values =  {
+            //             modelName : this.modelName,
+            //         }
+            //     // })
             // }
+            // var r = null;
+            // if (crud.routes[rName]) {
+            //     r =  new Route(crud.routes[rName]);
+            // } else {
+            //     r = Route.factory(rName);
+            // }
+            // r.values = values;
+            // //r.params = this.$crud.getFormData(jQuery(this.rootElement).find('form'));
+            // r.params = this.$crud.getFormData(this.view.jQe('form'));
+            Server.route(r, function (json) {
+                if (json.error) {
+                    that.$crud.errorDialog(json.msg)
+                    //alert(json.msg);
+                    return ;
+                }
+                that.$crud.popoverSuccess('app.salvataggio-ok')
+            })
         }
     },
-    interfaces : {
-        //js : 'vue-app/js/'
+    'action-back' : {
+        type : 'collection',
+        title : 'app.indietro',
+        css: 'btn btn-secondary btn-sm',
+        icon : 'fa fa-backward',
+        text : 'app.indietro',
+        execute : function () {
+            window.history.back();
+        }
     },
-    cRefs : {},
-}
+    'action-search' : {
+        type : 'collection',
+        title : 'app.cerca',
+        css: 'btn btn-primary btn-sm btn-group',
+        icon : 'fa fa-search',
+        text : 'app.cerca',
+        execute : function () {
+            //console.log('action-search',this.view,this.view.targetId);
+            if (this.view && this.view.targetRef) {
+                console.log('target ref',this.view.targetRef);
+                var targetView = this.$crud.cRefs[this.view.targetRef];
+
+                // var ref = this.view.$parent.$refs[this.view.targetRef];
+                // if (!ref) {
+                //     console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
+                //     throw "errore";
+                // }
+                var formData = this.view.getFormData();
+
+                //var form = jQuery(this.view.$el).find('form');
+                //var formData = Utility.getFormData(form);
+
+                targetView.route.setParams(formData);
+                targetView.reload();
+                return ;
+            }
+            // TODO in caso di mancanza di una targetView modificare l'url con i parametri di search
+            // if (this.view.cRouteConf) {
+            //     var routeConf = this.$crud.cloneObj(this.view.cRouteConf);
+            //     var form = jQuery(this.view.$el).find('form');
+            //     var formData = this.$crud.getFormData(form);
+            //     console.log('formData',formData);
+            //     this.view.doSearch(formData)
+            //     //this.view.setCRouteCo .cRouteConf = routeConf;
+            // } else
+            //     console.warn('routeConf non definita')
+            //console.log('SEARCH',this.view,this.cRouteConf);
+        }
+    },
+    'action-order' : {
+        type : 'collection',
+        title : 'app.order',
+        css: 'btn btn-default btn-sm',
+        iconUp : 'fa fa-caret-up',
+        iconDown : 'fa fa-caret-down',
+        icon : null,
+        text : '',
+        execute : function () {
+            console.log('order execute',this);
+            var params = this.$crud.cloneObj(this.view.routeConf.params);
+            params.order_field = this.orderField;
+            //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+            params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
+            this.view.routeConf.params = params;
+        }
+    },
+    'action-delete-selected' : {
+        type : 'collection',
+        title : 'app.cancella-selezionati',
+        css: 'btn btn-outline-danger btn-sm',
+        icon : 'fa fa-trash',
+        text : '',
+        setRouteValues : function(route) {
+            var that = this;
+            route.setValues({
+                modelName: that.view.cModel,
+            });
+            return route;
+        },
+        execute : function () {
+            var that = this;
+            var checked = that.view.selectedRows();
+            var num = checked.length;
+            if (num === 0)
+                return ;
+            that.$crud.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
+                ok : function () {
+                    var r = that.$crud.createRoute('multi-delete');
+                    that.setRouteValues(r);
+                    r.setParams({'ids': checked});
+
+
+                    // var r = Route.factory('multi_delete');
+                    // r.values = {
+                    //     modelName: that.modelName
+                    // };
+                    that.$crud.waitStart();
+                    Server.route(r,function (json) {
+                        that.$crud.waitEnd();
+                        that.view.reload();
+                        //that.callback(json);
+                    })
+                }
+            });
+            console.log('selected',that.view.selectedRows())
+        }
+    }
+};
+
+crud.conf = {
+    view : {
+        primaryKey : 'id',
+        routeName : 'view',
+        fieldsConfig : {},
+        //actions : ['action-back'],
+        actions : [],
+        customActions: {},
+        renderTemplate : 'c-tpl-record2',
+    },
+    edit : {
+        primaryKey : 'id',
+        routeName : 'edit',
+        customActions : {},
+        fieldsConfig : {
+            id : 'r-hidden'
+        },
+        fields : [],
+        renderTemplate : 'c-tpl-record',
+        actions : ['action-save','action-back']
+    },
+    list : {
+        primaryKey : 'id',
+        routeName : 'list',
+        customActions: {},
+        fieldsConfig : {},
+        orderFields: {},
+        renderTemplate : 'c-tpl-list',
+        actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
+    },
+    listEdit : {
+        routeName : 'list',
+        primaryKey : 'id',
+        customActions: {},
+        fieldsConfig : {},
+        orderFields: {},
+        renderTemplate : 'c-tpl-list',
+        actions : [
+            'action-insert',
+            'action-delete-selected',
+            'action-view',
+            'action-edit-mode',
+            'action-delete',
+            'action-save-row',
+            'action-view-mode'
+        ]
+    },
+    search : {
+        primaryKey : 'id',
+        routeName : 'search',
+        actions : ['action-search'],
+        fieldsConfig : {},
+        customActions: {},
+        renderTemplate : 'c-tpl-record',
+    },
+    insert : {
+        primaryKey : 'id',
+        routeName : 'insert',
+        renderTemplate : 'c-tpl-record',
+        actions : ['action-save','action-back'],
+        fieldsConfig : {
+            id : 'r-hidden'
+        },
+        actions : ['action-save','action-back']
+    },
+    uploadFile : {
+        routeName : null,
+        fields : ['nome','descrizione','modelName'],
+        fieldsConfig : {
+            modelName : {
+                type : 'r-hidden'
+            },
+            descrizione : {
+                type : 'r-textarea'
+            }
+        }
+    }
+};
+
+crud.routes =  {
+    list : {
+        method      : 'get',
+        url         : '/foorm/{modelName}',
+        resultType  : 'list',
+        protocol    : 'list',
+        commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+        values : {}, // vettore associativo dei parametri per la costruzione dell'url
+        params :{},
+    },
+    uploadfile : {
+        method      : 'post',
+        //url         : '/api/json/{modelName}/uploadfile',
+        url         : '/uploadfile',
+        resultType  : 'record',
+        protocol    : 'record',
+        commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+        values : {}, // vettore associativo dei parametri per la costruzione dell'url
+        params :{},
+    },
+    upload : {
+        method      : 'post',
+        url         : '/upload',
+        resultType  : 'record',
+        protocol    : 'record',
+        commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
+        values : {}, // vettore associativo dei parametri per la costruzione dell'url
+        params :{},
+    },
+    insert : {
+        method      : "get",
+        url         :'/foorm/{modelName}/new',
+        resultType  : 'record',
+        protocol    : 'record',
+        type : 'create',
+    },
+    update : {
+        method      : "post",
+        url         :'/foorm/{modelName}/{pk}',
+        resultType  : 'record',
+        protocol    : 'record',
+        type : 'update',
+        commonParams : {_method:'PUT'}
+    },
+    create : {
+        method      : "post",
+        url         :'/foorm/{modelName}',
+        resultType  : 'record',
+        protocol    : 'record',
+        type : 'create',
+        commonParams : {_method:'POST'}
+    },
+    edit : {
+        method      : "get",
+        url         :'/foorm/{modelName}/{pk}/edit',
+        //url         :'/foorm/{modelName}/{pk}/edit',
+        resultType  : 'record',
+        protocol    : 'record',
+        type : 'update',
+    },
+    search : {
+        method      : "get",
+        url         :'/foorm/{modelName}/search',
+        //url         :'/foorm/{modelName}/{pk}/edit',
+        resultType  : 'record',
+        protocol    : 'record'
+    },
+    view : {
+        method      : "get",
+        url         :'/foorm/{modelName}/{pk}/view',
+        resultType  : 'record',
+        protocol    : 'record',
+        type : 'read',
+    },
+    delete : {
+        method      : "post",
+        url         :'/foorm/{modelName}/{pk}',
+        resultType  : 'record',
+        protocol    : 'record',
+        type : 'delete',
+        commonParams : {_method:'DELETE'}
+    },
+    'multi-delete' : {
+        method      : "post",
+        url         :'/foorm/{modelName}/multi-delete',
+        resultType  : 'record',
+        protocol    : 'record',
+        type : 'delete'
+    },
+    autocomplete : {
+        method      : "get",
+        url         : '/api/json/{modelName}/autocomplete',
+        resultType  : 'list',
+        protocol    : 'list'
+
+    },
+    set : {
+        method      : "post",
+        url         : '/api/json/set/{modelName}/{field}/{value}',
+        resultType  : 'record',
+        protocol    : 'record'
+    }
+};
+
+crud.cRefs = {};
+
+crud.components = {
+    renders : {
+
+    },
+    views : {
+
+    },
+    libs :  {
+
+    }
+};
+
+crud.interfaces = {
+
+};
+
 
 dialogs_interface = {
     methods  : {
@@ -659,6 +766,13 @@ core_interface = {
                 throw "Impossibile trovare la route " + routeName;
             return new Route(routeConf);
         },
+
+        getDescendantProp : function(obj, desc) {
+            var arr = desc.split(".");
+            while(arr.length && (obj = obj[arr.shift()]));
+            return obj;
+        },
+
         getFormData : function (form) {
             var that = this;
 
@@ -1314,11 +1428,10 @@ function Route(conf) {
         resultType : null,      // tipo di risultato, 'record' o 'list'
     };
 
-    var _c = conf || {};
-    var routeConf = {};
-    Object.assign(routeConf,defaultConf);
-    Object.assign(routeConf,_c);
-    console.log(':::::C',_c);
+    var _c = crud.cloneObj(conf || {});
+    var routeConf = crud.cloneObj(defaultConf);
+    //Object.assign(routeConf,defaultConf);
+    //Object.assign(routeConf,_c);
     for (var k in _c) {
         routeConf[k] = _c[k];
     }
@@ -1358,6 +1471,9 @@ function Route(conf) {
         return finalUrl;
     };
 
+    this.setUrl = function (url) {
+        routeConf.url = url;
+    }
     /**
      * ritorna tutti parametri passati in get o post in base al tipo di metodo della route
      * mergiando i parametri presenti in params e extra_params
@@ -1768,22 +1884,41 @@ crud.components.cComponent = Vue.component('c-component',{
     //     }
     // },
     props : ['cConf'],
+    // mounted : function() {
+    //     //     //console.log(this.$options.name + ' cref ',this.cRef)
+    //     //     if (this.cConf && this.cConf.cRef) {
+    //     //         this.$crud.cRefs[this.cConf.cRef] = this;
+    //     //     }
+    //     // },
+
     mounted : function() {
-        //console.log(this.$options.name + ' cref ',this.cRef)
-        if (this.cConf && this.cConf.cRef) {
-            this.$crud.cRefs[this.cConf.cRef] = this;
+        var that = this;
+        console.log('c-component.mounted');
+        if (that.cConf && that.cConf.cRef) {
+            that.$crud.cRefs[that.cConf.cRef] = this;
+        }
+        if (that.conf) {
+            var __call = function (lk) {
+                that[lk] = function () {
+                    var localk = new String(lk);
+                    //var arguments = this.arguments;
+                    //console.log(localk,'arguments',arguments);
+                    return that.conf.methods[localk].apply(that,arguments);
+                }
+            }
+            for (var k in that.conf.methods) {
+                __call(k);
+            }
+
+            if ( that.conf.mounted ) {
+                that.conf.mounted.apply(that);
+            }
         }
 
-        // else  {
-        //     var _conf = this.conf || {};
-        //     if ( _conf.cRef) {
-        //         this.$crud.cRefs[_conf.cRef] = this;
-        //     }
-        // }
     },
-    data : function() {
-        return this.defaultData();
-    },
+    // data : function() {
+    //     return this._loadConf();
+    // },
     methods : {
         jQe : function (selector) {
             var that = this;
@@ -1792,7 +1927,7 @@ crud.components.cComponent = Vue.component('c-component',{
             }
             return jQuery(that.$el);
         },
-        defaultData : function () {
+        _loadConf : function() {
             var _c = this.cConf || {};
             var d = {};
             for (var k in _c) {
@@ -1801,11 +1936,60 @@ crud.components.cComponent = Vue.component('c-component',{
                 d[k] = _c[k];
             }
             d.conf = _c;
-            //console.log('c-component::defaultData',d);
             return d;
+        },
+        // defaultData : function () {
+        //     var _c = this.cConf || {};
+        //     var d = {};
+        //     for (var k in _c) {
+        //         if (k == 'methods')
+        //             continue;
+        //         d[k] = _c[k];
+        //     }
+        //     d.conf = _c;
+        //     return d;
+        // },
+        /**
+         * setta la configurazione della route secondo le proprie esigenze.
+         * @param route
+         * @returns {*}
+         */
+        // setRouteValues : function(route) {
+        //     return route;
+        // },
+        /**
+         * istanzia l'oggetto route definito da routeName nella configurazione altrimenti ritorna null
+         * @param routeName : nome della route se null la prende dalla proprieta routeName del componente
+         * @return {null}
+         * @private
+         */
+        _getRoute : function (routeName) {
+            var that = this;
+            if (that.route)
+                return that.route;
+            var rn = routeName?routeName:that.routeName;
+            if (!rn)
+                return new Route();
+            if (!that.$crud.routes[rn])
+                throw "Impossibile trovare la route " + rn;
+            console.log('routeName',rn,that.$crud.routes[rn])
+            return new Route(that.$crud.routes[rn]);
+
+            // console.log('_getRoute',that.conf);
+            // if (!that.conf)
+            //     return route;
+            // if (that.routeName == null)
+            //     return route;
+            // if (!that.route) {
+            //     if (crud.routes[that.conf.routeName]) {
+            //         route =  new Route(crud.routes[that.conf.routeName]);
+            //     }
+            // }
+            // return route;
         },
     }
 });
+
 Vue.component('c-loading',{
     template : '<span>Carico ...</span>'
 })
@@ -1865,37 +2049,30 @@ var actionBase = Vue.component('action-base', {
         }
     },
     methods : {
-        defaultData : function () {
-            var that = this;
-            var adata = {
-                type : 'collection',
-                visible : true,
-                enabled : true,
-                title : '',
-                css: 'btn btn-outline-secondary',
-                icon : 'fa fa-help',
-                text : '',
-                controlType : 'button',
-                href : '',
-            };
-            for (var c in this.cConf) {
-                // if (c ===  'execute') {
-                //     var f = this.cConf[c];
-                //     adata[c] = function () {
-                //         f.apply(that);
-                //     }
-                // } else
-                //if (jQuery.inArray(c,['execute','beforeExecute','afterExecute','enabled','visible']) < 0)
-                    adata[c] = this.cConf[c];
-            }
-            if (!('view' in adata) )
-                adata.view = that.$parent;
-            // if (! ('langContext' in adata) ){
-            //     adata.langContext = adata.view?adata.view.langContext:null;
-            // }
-            //console.log('action ',adata);
-            return adata;
-        },
+        // defaultData : function () {
+        //     var that = this;
+        //     var adata = {
+        //         type : 'collection',
+        //         visible : true,
+        //         enabled : true,
+        //         title : '',
+        //         css: 'btn btn-outline-secondary',
+        //         icon : 'fa fa-help',
+        //         text : '',
+        //         controlType : 'button',
+        //         href : '',
+        //     };
+        //     for (var c in this.cConf) {
+        //             adata[c] = this.cConf[c];
+        //     }
+        //     if (!('view' in adata) )
+        //         adata.view = that.$parent;
+        //     // if (! ('langContext' in adata) ){
+        //     //     adata.langContext = adata.view?adata.view.langContext:null;
+        //     // }
+        //     //console.log('action ',adata);
+        //     return adata;
+        // },
         _beforeExecute : function (callback) {
             var that =this;
             if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
@@ -1940,7 +2117,23 @@ var actionBase = Vue.component('action-base', {
         }
     },
     data :  function () {
-        return this.defaultData();
+        var that = this;
+        console.log('action-base')
+        var d =  that._loadConf();
+        var adata = {
+            type : 'collection',
+            visible : true,
+            enabled : true,
+            title : '',
+            css: 'btn btn-outline-secondary',
+            icon : 'fa fa-help',
+            text : '',
+            controlType : 'button',
+            href : '',
+        };
+        if (!('view' in adata) )
+            adata.view = that.$parent;
+        return that.$crud.merge(adata,d);
     },
     template: '#action-template'
 });
@@ -2020,7 +2213,7 @@ Vue.component('action-dialog', {
 })
 
 Vue.component('c-paginator',{
-    props : ['c-route-conf','c-route','c-pagination'],
+    props : ['c-pagination'],
     template : '#c-paginator-template',
     data : function () {
         var that = this;
@@ -2071,9 +2264,16 @@ Vue.component('c-paginator',{
         },
         setPage : function(page) {
             var that = this;
-            var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
+            var route = that.$parent.route;
+
+            var params = route.getParams();
             params['page'] = parseInt(page);
-            that.$parent.routeConf.params = params;
+            route.setParams(params);
+            that.$parent.reload();
+
+            // var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
+            // params['page'] = parseInt(page);
+            // that.$parent.routeConf.params = params;
             //that.cRouteConf.params = params;
 
         },
@@ -2224,17 +2424,18 @@ crud.components.renders.rBase = Vue.component('r-base', {
 
     mounted : function() {
         var that = this;
+        console.log('r-base.mounted');
         var _conf = that.cConf || {};
         if (!_conf.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
         }
-        var that =this;
-        for (var k in _conf.methods) {
-            //console.log('r-base implements methods',k);
-            that[k] = function () {
-                return _conf.methods[k].apply(that,this.arguments);
-            }
-        }
+        // var that =this;
+        // for (var k in _conf.methods) {
+        //     //console.log('r-base implements methods',k);
+        //     that[k] = function () {
+        //         return _conf.methods[k].apply(that,this.arguments);
+        //     }
+        // }
         if (_conf.resources && _conf.resources.length) {
             that.beforeLoadResources();
             //that.resourcesLoaded = false;
@@ -2252,7 +2453,7 @@ crud.components.renders.rBase = Vue.component('r-base', {
         }
     },
     data :  function () {
-        var d  = this.defaultData();
+        var d  = this._loadConf();
         if (! ('value' in d))
             d.value = null;
         if (! ('operator' in d))
@@ -2261,6 +2462,7 @@ crud.components.renders.rBase = Vue.component('r-base', {
         return d;
     },
     methods : {
+
         getFieldName: function () {
             var that = this;
             //console.log('GET FIELD NAME',this.cKey);
@@ -2331,11 +2533,12 @@ Vue.component('r-input', {
     extends : crud.components.renders.rBase,
     template: '#r-input-template',
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.inputType = d.inputType?d.inputType:'text';
         return d;
     }
 });
+
 Vue.component('r-input-helped', {
     extends : crud.components.renders.rBase,
     template: '#r-input-helped-template',
@@ -2380,11 +2583,12 @@ Vue.component('r-download',{
         xhttp.send();
     },
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.icon = 'fa fa-file-o';
         return d;
     }
 });
+
 Vue.component('r-textarea', {
     extends : crud.components.renders.rBase,
     template: '#r-textarea-template'
@@ -2393,16 +2597,10 @@ Vue.component('r-select',{
     extends : crud.components.renders.rBase,
     template: '#r-select-template',
     data :  function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.domainValues = d.domainValues || {};
         d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(d.domainValues);
         return d;
-        // return {
-        //     name : this.cConf.name,
-        //     value: this.cConf.value,
-        //     domainValues : dV,
-        //     domainValuesOrder : dVO
-        // }
     },
 });
 
@@ -2410,7 +2608,7 @@ Vue.component('r-select',{
 Vue.component('r-radio',{
     extends : crud.components.renders.rBase,
     data : function() {
-        var d = this.defaultData();
+        var d = this._loadConf();
         var dV = d.domainValues || {};
         d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
         return d;
@@ -2434,7 +2632,7 @@ Vue.component('r-checkbox',{
     extends : crud.components.renders.rBase,
     data :  function () {
         var that = this;
-        var d = that.defaultData();
+        var d = that._loadConf();
         var dV = d.domainValues;
         var dVO = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
         d.value = Array.isArray(d.value)?d.value:[d.value];
@@ -2454,11 +2652,11 @@ Vue.component('r-checkbox',{
 Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
     mounted : function() {
-        this._getLabel();
+        //this._getLabel();
     },
     data : function() {
         var that = this;
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
@@ -2475,7 +2673,9 @@ Vue.component('r-autocomplete', {
             var that = this;
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
                 source : function(term,suggest) {
-                    jQuery.getJSON(that._createUrl(),{term:term},function (json) {
+                    var r = that._getRoute(that.conf.routeName);
+                    that.setRouteValue(r,term);
+                    Server.route(r,function (json) {
                         var suggestions = [];
                         //that.suggestValues = {};
                         for (var i in json.result) {
@@ -2489,6 +2689,20 @@ Vue.component('r-autocomplete', {
                         }
                         return suggest(suggestions)
                     })
+                    // jQuery.getJSON(that._createUrl(),{term:term},function (json) {
+                    //     var suggestions = [];
+                    //     //that.suggestValues = {};
+                    //     for (var i in json.result) {
+                    //         // var s = "";
+                    //         // for (var k in that.metadata.fields) {
+                    //         //     s += (s?' ':'') + json.result[i][that.metadata.fields[k]];
+                    //         // }
+                    //         var s = that._getSuggestion(json.result[i]);
+                    //         suggestions.push(s);
+                    //         that.suggestValues[s] = json.result[i]['id'];
+                    //     }
+                    //     return suggest(suggestions)
+                    // })
                 },
                 onSelect: function(e, term, item){
                     console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
@@ -2497,16 +2711,17 @@ Vue.component('r-autocomplete', {
                     that.change();
                 }
             });
+            that._getLabel();
         },
-        _createUrl : function () {
+        setRouteValue : function (route,term) {
             var that = this;
-            var r = that.$crud.createRoute(that.conf.routeName);
-            r.setValues({modelName:that.conf.model});
+            //var r = that.$crud.createRoute(that.conf.routeName);
+            route.setValues({modelName:that.conf.modelName});
             //var r = new Route(routeConf);
 
             //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
-            var url = that.url?that.url:r.getUrl();
-            url+= '?';
+            var url = that.url?that.url:route.getUrl();
+            url+= '?term='+term+'&';
 
             if (that.conf.fields) {
                 for(var f in that.conf.fields) {
@@ -2523,7 +2738,9 @@ Vue.component('r-autocomplete', {
             url += that.conf.separator ? '&separator=' + that.conf.separator : '';
             url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
             url += that.conf.method ? '&method=' + that.conf.method: '';
-            return url;
+            route.setUrl(url);
+            return route;
+            //return url;
         },
 
         clear : function () {
@@ -2537,10 +2754,11 @@ Vue.component('r-autocomplete', {
 
             var that = this;
             var r = new Route(that.$crud.routes.view);
+            console.log('r-autocomplete getLabel',that.conf);
             r.setValues({
-                modelName : that.conf.model,
+                modelName : that.conf.modelName,
                 pk : that.value
-            })
+            });
             // r.values.modelName = that.conf.model;
             // r.values.pk = that.value;
             var lb = '';
@@ -2572,7 +2790,7 @@ Vue.component('r-date-select', {
     extends : crud.components.renders.rBase,
     template: '#r-date-select-template',
     data : function() {
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
@@ -2660,11 +2878,12 @@ Vue.component('r-date-select', {
         }
     }
 });
+
 Vue.component('r-date-picker', {
     extends : crud.components.renders.rBase,
     template: '#r-date-picker-template',
     data : function() {
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
@@ -2690,11 +2909,12 @@ Vue.component('r-date-picker', {
         }
     }
 });
+
 Vue.component('r-texthtml',{
     extends : crud.components.renders.rBase,
     template: '#r-texthtml-template',
     data : function() {
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
                 //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
@@ -2738,7 +2958,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
     },
     data : function () {
         var that = this;
-        var d = that.defaultData();
+        var d = that._loadConf();
         d.confViews = [];
         if (!("limit" in d) )
             d.limit = 1000;
@@ -2855,8 +3075,7 @@ Vue.component('r-hasmany-view', {
     extends : crud.components.rHasmany,
     template: '#r-hasmany-view-template',
     data : function () {
-        console.log('HASMNAYVIEW',this.value);
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.inputType = 'text';
         if (this.cConf.inputType)
             d.inputType = this.cConf.inputType;
@@ -2864,13 +3083,12 @@ Vue.component('r-hasmany-view', {
     }
 });
 
-Vue.component('r-swap', {
+crud.components.renders.rSwap = Vue.component('r-swap', {
     extends : crud.components.renders.rBase,
     template: '#r-swap-template',
     data : function () {
         var that = this;
-        //SWAP = that;
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!("routeName" in d))
             d.routeName = 'set';
         d.iconClass = 'fa fa-circle';
@@ -2904,6 +3122,23 @@ Vue.component('r-swap', {
             return (that.domainValues)? that.domainValues:that.domainValues[that.swapType];
 
         },
+        setRouteValues : function(route) {
+            var that = this;
+            var dV = that.getDV();
+            var keys = Object.keys(dV);
+            var value = that.value?that.value:keys[0];
+            var vs = keys.map(String);
+            var index = vs.indexOf(""+value);
+            index = (index + 1) % vs.length;
+
+            route.setValues({
+                modelName: that.conf.model,
+                field : that.name, //that.conf.key?that.conf.key:that.cKey,
+                value : keys[index]
+            });
+            route.setParams({id:that.conf.modelData.id});
+            return route;
+        },
         swap : function () {
             var that = this;
             var dV = that.getDV();
@@ -2915,20 +3150,21 @@ Vue.component('r-swap', {
             //console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
             that._swap(keys[index]);
         },
-        _getRoute : function(key) {
-            var that = this;
-            var r = Route.factory(that.routeName);
-            r.values = {
-                modelName: that.conf.model,
-                field : that.name, //that.conf.key?that.conf.key:that.cKey,
-                value : key
-            };
-            r.params = {id:that.conf.modelData.id};
-            return r;
-        },
+        // _getRoute : function(key) {
+        //     var that = this;
+        //     var r = Route.factory(that.routeName);
+        //     r.values = {
+        //         modelName: that.conf.model,
+        //         field : that.name, //that.conf.key?that.conf.key:that.cKey,
+        //         value : key
+        //     };
+        //     r.params = {id:that.conf.modelData.id};
+        //     return r;
+        // },
         _swap : function (key) {
             var that = this;
-            var r = that._getRoute(key);
+            var r = that._getRoute();
+            that.setRouteValues(r);
             var dV = that.getDV();
             Server.route(r,function (json) {
                 if (json.error) {
@@ -2947,7 +3183,7 @@ crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
     extends : crud.components.renders.rBase,
     template: '#r-hasmany-through-template',
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.inputType = 'text';
         if (this.cConf.inputType)
             d.inputType = this.cConf.inputType;
@@ -2996,7 +3232,7 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
     extends : crud.components.renders.rBase,
     template: '#r-b2-select2-template',
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
@@ -3228,7 +3464,7 @@ crud.components.renders.rUpload = Vue.component('r-upload',{
     extends : crud.components.renders.rBase,
     template : '#r-upload-template',
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.conf = this.cConf;
         console.log('r-upload data',d);
         d.extensions = d.conf.extensions?d.conf.extensions:'';
@@ -3301,13 +3537,12 @@ crud.components.renders.rUpload = Vue.component('r-upload',{
         }
     }
 })
+
 Vue.component('r-upload-ajax',{
     extends : crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {
-        var d = this.defaultData();
-        //d.conf = this.cConf || {};
-        //var metadata = d.conf.metadata || {};
+        var d = this._loadConf();
         d.extensions = d.extensions?d.extensions:[];
         d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
         d.uploadConf = d.conf;
@@ -3378,7 +3613,8 @@ Vue.component('r-upload-ajax',{
             //var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
             //var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
-            var route = that.$crud.createRoute(that.routeName);
+            var route = that._getRoute();
+            //that.setRouteValues(route);
 
             //var routeConf = that.$crud.routes[that.conf.routeName];
             //var route = Route.factory('uploadfile');
@@ -3472,18 +3708,11 @@ Vue.component('r-preview',{
     // },
     data : function () {
         var that = this;
-        var d = that.defaultData();
+        var d = that._loadConf();
         if (!d.value)
             d.value = {};
-        //d.url = null;
-        //d.mimetype = null;
         d.icon = false;
         d.iconClass = '';
-        // var value = d.value || {};
-        // for (var k in value) {
-        //     d[k] = value[k];
-        // }
-        //d.type = that.getType()
         return d;
     },
     methods : {
@@ -3609,7 +3838,7 @@ Vue.component('v-render', {
 })
 
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cConf','cFields'],
+    props : ['cFields'],
     extends : crud.components.cComponent,
     // created : function() {
     //     var that = this;
@@ -3624,57 +3853,50 @@ crud.components.views.vBase = Vue.component('v-base', {
     //     }
     // },
     data : function () {
-        return this.defaultData();
+        //var d = this._loadConf();
+        return {
+            viewTitle : '',
+            langContext : '',
+        }
+        // d.viewTitle = '';
+        // d.langContext = null;
+        // return d;
     },
-    mounted : function() {
-        var that = this;
-        //var methods = that.conf?that.conf.methods:{};
-        // for (var k in methods) {
-        //     console.log('v-base implements methods',k);
-        //     that.methods[k] = function () {
-        //         methods.apply(that,this.arguments);
-        //     }
-        // }
-        var __call = function (lk) {
-            that[lk] = function () {
-                var localk = new String(lk);
-                //var arguments = this.arguments;
-                console.log(localk,'arguments',arguments);
-                return that.conf.methods[localk].apply(that,arguments);
-            }
-        }
-        for (var k in that.conf.methods) {
-            //console.log('v-base implements methods',k);
-            __call(k);
-            // that[k] = function () {
-            //     var localk = new String(k);
-            //     //var arguments = this.arguments;
-            //     console.log(localk,'arguments',arguments);
-            //     return that.conf.methods[k].apply(that,arguments);
-            // }
-        }
-
-        if ( that.conf.mounted ) {
-            that.conf.mounted.apply(that);
-        }
-    },
+    // mounted : function() {
+    //     var that = this;
+    //     var __call = function (lk) {
+    //         that[lk] = function () {
+    //             var localk = new String(lk);
+    //             //var arguments = this.arguments;
+    //             console.log(localk,'arguments',arguments);
+    //             return that.conf.methods[localk].apply(that,arguments);
+    //         }
+    //     }
+    //     for (var k in that.conf.methods) {
+    //         __call(k);
+    //     }
+    //
+    //     if ( that.conf.mounted ) {
+    //         that.conf.mounted.apply(that);
+    //     }
+    // },
     methods : {
-        defaultData : function () {
-            var _c = this.cConf || {};
-            return {
-                viewTitle : '',
-                conf : _c,
-                langContext : null,
-            }
-        },
+        // defaultData : function () {
+        //     var _c = this.cConf || {};
+        //     return {
+        //         viewTitle : '',
+        //         conf : _c,
+        //         langContext : null,
+        //     }
+        // },
 
         fetchData: function (route,callback) {
             var that = this;
-            console.log('fetchData',route.getConf());
             if (!route) {
                 callback({});
                 return;
             }
+            console.log('fetchData',route.getConf());
             Server.route(route,function (json) {
                 if (json.error) {
                     that.$crud.errorDialog(json.msg);
@@ -3718,14 +3940,56 @@ crud.components.views.vBase = Vue.component('v-base', {
          * @param modelName
          * @param type
          */
-        getConf : function (modelName,type) {
+        // getConf : function (modelName,type) {
+        //     var conf = null;
+        //     var defaultConf = this.$crud.conf[type];
+        //     //console.log('cConf',this.cConf);
+        //
+        //     if (this.cConf) {
+        //         if (typeof this.cConf === 'string' || this.cConf instanceof String)
+        //             conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
+        //         else
+        //             conf = this.cConf;
+        //     } else {
+        //         console.log('Check exist default conf '+ 'Model'+this.$crud.pascalCase(modelName));
+        //         if (window['Model'+this.$crud.pascalCase(modelName)]) {
+        //             var cm = window['Model'+this.$crud.pascalCase(modelName)];
+        //             if (cm[type])
+        //                 conf = cm[type];
+        //             else {
+        //                 if (type == 'insert' && cm['edit'])
+        //                     conf = cm['edit'];
+        //                 else {
+        //                     conf = this.$crud.conf[type];
+        //                 }
+        //             }
+        //
+        //         } else {
+        //             //onsole.log('get default crud conf ',type)
+        //             conf = this.$crud.conf[type];
+        //         }
+        //     }
+        //     if (!conf)
+        //         throw "Nessuna configurazione trovata per questa view";
+        //     //console.log('merge confs',defaultConf,conf);
+        //     var finalConf = this.$crud.confMerge(defaultConf,conf);
+        //     console.log('finalConf',finalConf);
+        //     return finalConf;
+        // },
+
+        _loadConf : function(modelName,type) {
             var conf = null;
+            var d = {};
             var defaultConf = this.$crud.conf[type];
-            //console.log('cConf',this.cConf);
+            console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
             if (this.cConf) {
-                if (typeof this.cConf === 'string' || this.cConf instanceof String)
-                    conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
+                if (typeof this.cConf === 'string' || this.cConf instanceof String) {
+                    var conf = this.$crud.getDescendantProp(window, this.cConf);
+                    if (!conf) {
+                        conf = this.$crud.getDescendantProp(this.$crud.conf, this.cConf);
+                    }
+                }
                 else
                     conf = this.cConf;
             } else {
@@ -3751,43 +4015,54 @@ crud.components.views.vBase = Vue.component('v-base', {
                 throw "Nessuna configurazione trovata per questa view";
             //console.log('merge confs',defaultConf,conf);
             var finalConf = this.$crud.confMerge(defaultConf,conf);
+
+            for (var k in finalConf) {
+                if (k == 'methods')
+                    continue;
+                d[k] = finalConf[k];
+            }
+            d.conf = finalConf;
             console.log('finalConf',finalConf);
-            return finalConf;
-        },
-        /**
-         * setta la configurazione della route secondo le proprie esigenze.
-         * @param route
-         * @returns {*}
-         */
-        setRouteValues : function(route) {
-            return route;
+            return d;
+
+            // var _c = this.cConf || {};
+            // var d = {};
+            // for (var k in _c) {
+            //     if (k == 'methods')
+            //         continue;
+            //     d[k] = _c[k];
+            // }
+            // d.conf = _c;
+            // return d;
         },
 
-        _getRoute : function () {
-            var that = this;
-            var route = null;
-            console.log('_getRoute',that.conf);
-            if (!that.conf)
-                return null;
-            if (that.conf.routeName == null)
-                return null;
-            if (!that.route) {
-                if (crud.routes[that.conf.routeName]) {
-                    console.log('route conf',crud.routes[that.conf.routeName])
-                    route =  new Route(crud.routes[that.conf.routeName]);
-                }
-                // else {
-                //     route = Route.factory(that.conf.routeName);
-                // }
-                // route.fillValues(that.conf);
-                // console.log('ROUTEN ',route.values);
-                //route.values = values;
-            }
-            // if (!that.route)
-            //     route = Route.factory(that.conf.routeName);
-            // route.values = values;
-            return route;
-        },
+
+
+
+        // /**
+        //  * setta la configurazione della route secondo le proprie esigenze.
+        //  * @param route
+        //  * @returns {*}
+        //  */
+        // setRouteValues : function(route) {
+        //     return route;
+        // },
+
+        // _getRoute : function () {
+        //     var that = this;
+        //     var route = null;
+        //     console.log('_getRoute',that.conf);
+        //     if (!that.conf)
+        //         return route;
+        //     if (that.conf.routeName == null)
+        //         return route;
+        //     if (!that.route) {
+        //         if (crud.routes[that.conf.routeName]) {
+        //             route =  new Route(crud.routes[that.conf.routeName]);
+        //         }
+        //     }
+        //     return route;
+        // },
         /**
          * ritorna la configurazione minimale di base di un render rispettando le priorita' tra le configurazioni
          * @param key : nome del campo di cui vogliamo la configurazione
@@ -3916,18 +4191,18 @@ crud.components.views.vRecord = Vue.component('v-record', {
             that.data = data;
             that.json = json;
         },
-        defaultData : function () {
-            return {
-                viewTitle : '',
-                loading : true,
-                renders : {},
-                actionsName : [],
-                actions : {},
-                vueRefs:{},
-                conf : this.cConf || {},
-                langContext : this.cModel
-            }
-        },
+        // defaultData : function () {
+        //     return {
+        //         viewTitle : '',
+        //         loading : true,
+        //         renders : {},
+        //         actionsName : [],
+        //         actions : {},
+        //         vueRefs:{},
+        //         conf : this.cConf || {},
+        //         langContext : this.cModel
+        //     }
+        // },
         getFormData : function () {
             var that = this;
             var data = {};
@@ -3947,15 +4222,15 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return this.$crud.cRefs[rConf.cRef];
         }
     },
-    data : function() {
-        var d =  this.defaultData();
-        if (this.cModel)
-            d.conf.modelName = this.cModel;
-        if (this.cPk)
-            d.conf.pk = this.cPk;
-        d.json = {};
-        return d;
-    },
+    // data : function() {
+    //     var d =  this._loadConf(this.cModel,);
+    //     if (this.cModel)
+    //         d.conf.modelName = this.cModel;
+    //     if (this.cPk)
+    //         d.conf.pk = this.cPk;
+    //     d.json = {};
+    //     return d;
+    // },
     template : '<div>view record base</div>'
 });
 
@@ -3970,16 +4245,16 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             }
             that.renders[row][key].setValue(value);
         },
-        defaultData : function () {
-            return {
-                viewTitle : '',
-                loading : true,
-                renders : {},
-                actionsName : [],
-                actions : {},
-                conf : this.cConf || {},
-            }
-        },
+        // defaultData : function () {
+        //     return {
+        //         viewTitle : '',
+        //         loading : true,
+        //         renders : {},
+        //         actionsName : [],
+        //         actions : {},
+        //         conf : this.cConf || {},
+        //     }
+        // },
         createRenders : function () {
             var that = this;
             //console.log('Vlist-create renders',that.data);
@@ -4097,60 +4372,52 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.collectionActions = collectionActions;
         },
     },
-    data : function () {
-        var d =  this.defaultData();
-        if (this.cModel)
-           d.conf.modelName = this.cModel;
-        return d;
-    },
+    // data : function () {
+    //     var d =  this._loadConf();
+    //     if (this.cModel)
+    //        d.conf.modelName = this.cModel;
+    //     return d;
+    // },
     template : '<div>view collection base</div>'
 });
 
-
 crud.components.views.vList = Vue.component('v-list', {
     extends : crud.components.views.vCollection,
-    conf : {},
-    // beforeCreate : function() {
-    //     this.template = '#v-view-template';
-    // },
+
     mounted : function() {
         var that = this;
-        //VLIST = this;
-        //console.log('MOUNTED CALLED');
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
         that.route = that._getRoute();
         that.setRouteValues(that.route);
-        this.fetchData(that.route,function (json) {
+
+        that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.keys = that.getKeys();
             that.draw();
             that.loading = false;
         });
     },
+
     data :  function () {
         var that = this;
-        //console.log('DATA CALLED');
-        //console.log('CRUDCONF',that.$Crud);
-        var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
-        routeConf.values = {
-            modelName: this.cModel
-        }
+        var d = this._loadConf(that.cModel,'list');
+        // var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
+        // routeConf.values = {
+        //     modelName: this.cModel
+        // }
+        //
+        // if (this.$route && this.$route.query)
+        //     routeConf.params = that.$route.query;
+        //
+        // // var route = that._getRoute(routeConf.values);
+        // var conf = that.getConf(that.cModel,'list');
+        // if (that.cModel)
+        //     conf.modelName = that.cModel;
+        //
+        // console.log('v-list conf',conf);
 
-        if (this.$route && this.$route.query)
-            routeConf.params = that.$route.query;
-
-        // var route = that._getRoute(routeConf.values);
-        var conf = that.getConf(that.cModel,'list');
-        if (that.cModel)
-            conf.modelName = that.cModel;
-
-        console.log('v-list conf',conf);
-
-        //var route = Route.factory('list',routeConf);
-        //that.route = route;
-        //that.conf = ModelTest.list;
-
-        //this.loading = true;
-        var d = {
+        var dList = {
             loading : true,
             renders : {},
             keys : [],
@@ -4158,11 +4425,11 @@ crud.components.views.vList = Vue.component('v-list', {
             recordActions: [],
             collectionActions : {},
             collectionActionsName : [],
-            routeConf : routeConf,
+            //routeConf : routeConf,
             route : null,
             data : [],
             maxPage : 0,
-            conf : conf,
+            //conf : conf,
             needSelection : true,
             pagination : {},
             viewTitle : '',
@@ -4173,11 +4440,9 @@ crud.components.views.vList = Vue.component('v-list', {
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
         }
-        return d;
+        return this.$crud.merge(dList,d);
     },
-    _existsActions : function(name) {
-        alert(name)
-    },
+
     methods: {
 
         draw : function() {
@@ -4232,7 +4497,7 @@ crud.components.views.vList = Vue.component('v-list', {
             var that = this;
             //that.route = that._getRoute(that.routeConf.values);
             //var route = Route.factory('list',that.routeConf);
-            that.route = new Route(that.routeConf);
+            //that.route = new Route(that.routeConf);
             that.loading = true;
             that.fetchData(that.route,function (json) {
                 that.fillData(that.route,json);
@@ -4279,61 +4544,66 @@ crud.components.views.vList = Vue.component('v-list', {
     template : '#v-list-template'
 });
 
-
-Vue.component('v-list-edit', {
+crud.components.views.vListEdit = Vue.component('v-list-edit', {
     extends : crud.components.views.vList,
-    conf : {},
-    props : ['cConf','cModel'],
 
-    data :  function () {
+    data : function() {
         var that = this;
-
-        var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
-        routeConf.values = {
-            modelName: this.cModel
-        }
-
-        if (this.$route && this.$route.query)
-            routeConf.params = that.$route.query;
-
-        var conf = that.getConf(that.cModel,'listEdit');
-        // conf.customActions['action-edit'] = {
-        //     execute : function () {
-        //         var thatA = this;
-        //         that.$set(that.editMode,thatA.cIndex, true);
-        //     }
-        // };
-        console.log('v-list-edit conf',conf)
-
-        var d = {
-            loading : true,
-            renders : {},
+        var d = that._loadConf(that.cModel,'listEdit');
+        var dListEdit = {
             rendersEdit : {},
-            keys : [],
-            recordActionsName : [],
-            recordActions: [],
-            collectionActions : {},
-            collectionActionsName : [],
-            routeConf : routeConf,
-            route : null,
-            data : [],
-            maxPage : 0,
-            conf : conf,
-            needSelection : true,
-            pagination : {},
-            viewTitle : '',
-            defaultRenderType : 'r-text',
-            editMode : [],
-
+            editMode : []
         };
-        if (d.conf.viewTitle) {
-            d.viewTitle = d.conf.viewTitle;
-        }
-        return d;
+        return this.$crud.merge(dListEdit,d);
     },
-    _existsActions : function(name) {
-        alert(name)
-    },
+
+    // data :  function () {
+    //     var that = this;
+    //
+    //     var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
+    //     routeConf.values = {
+    //         modelName: this.cModel
+    //     }
+    //
+    //     if (this.$route && this.$route.query)
+    //         routeConf.params = that.$route.query;
+    //
+    //     var conf = that.getConf(that.cModel,'listEdit');
+    //     // conf.customActions['action-edit'] = {
+    //     //     execute : function () {
+    //     //         var thatA = this;
+    //     //         that.$set(that.editMode,thatA.cIndex, true);
+    //     //     }
+    //     // };
+    //     console.log('v-list-edit conf',conf)
+    //
+    //     var d = {
+    //         loading : true,
+    //         renders : {},
+    //         rendersEdit : {},
+    //         keys : [],
+    //         recordActionsName : [],
+    //         recordActions: [],
+    //         collectionActions : {},
+    //         collectionActionsName : [],
+    //         routeConf : routeConf,
+    //         route : null,
+    //         data : [],
+    //         maxPage : 0,
+    //         conf : conf,
+    //         needSelection : true,
+    //         pagination : {},
+    //         viewTitle : '',
+    //         defaultRenderType : 'r-text',
+    //         editMode : [],
+    //
+    //     };
+    //     if (d.conf.viewTitle) {
+    //         d.viewTitle = d.conf.viewTitle;
+    //     }
+    //     return d;
+    // },
+
     methods: {
 
         draw : function() {
@@ -4343,10 +4613,10 @@ Vue.component('v-list-edit', {
             that.createRenders();
             that.createRendersEdit();
             that.createCollectionActions();
-            console.log('rendersEdit',that.rendersEdit);
-            console.log('renders',that.renders,'recordActions',that.recordActions);
-            console.log('collectionActions',that.collectionActions);
-            console.log('editMode',that.editMode)
+            // console.log('rendersEdit',that.rendersEdit);
+            // console.log('renders',that.renders,'recordActions',that.recordActions);
+            // console.log('collectionActions',that.collectionActions);
+            // console.log('editMode',that.editMode)
         },
 
         createRendersEdit : function () {
@@ -4376,43 +4646,6 @@ Vue.component('v-list-edit', {
             that.rendersEdit = rendersEdit;
         },
 
-        // getOrderConf : function (key) {
-        //     var that = this;
-        //     var conf = that.getActionConfig('action-order','collection');
-        //     conf.title = 'app.ordina ' + key;
-        //     conf.text = key;
-        //     conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
-        //     if (that.data.order_field)
-        //         conf.orderDirection = (that.data.metadata.order.order_field == conf.orderField)?that.data.metadata.order.order_direction:null;
-        //     return conf;
-        // },
-        // reload : function () {
-        //     var that = this;
-        //     var route = Route.factory('list',that.routeConf);
-        //     that.loading = true;
-        //     that.fetchData(route,function (json) {
-        //         that.fillData(route,json);
-        //         that.draw();
-        //         that.loading = false;
-        //     });
-        // },
-        selectAllRows : function () {
-            var that = this;
-            var sel = that.jQe('[c-row-check-all]').prop('checked');
-            that.jQe('[c-row-check]').prop('checked',sel);
-        },
-        selectedRows : function () {
-            var that = this;
-            var sel = [];
-            that.jQe('[c-row-check]').each(function () {
-                if (jQuery(this).prop('checked')) {
-                    var index = jQuery(this).closest('tr').index();
-                    sel.push(that.data.value[index].id);
-                }
-            });
-
-            return sel;
-        },
         setEditMode : function (index) {
             var that = this;
             that.hideRA(index,'action-delete');
@@ -4469,14 +4702,10 @@ Vue.component('v-edit', {
         if (that.cPk)
             that.conf.pk = that.cPk;
 
-        // var route = that._getRoute({
-        //     modelName: this.cModel,
-        //     pk: this.cPk
-        // });
         that.route = that._getRoute();
         that.setRouteValues(that.route);
 
-        this.fetchData(that.route,function (json) {
+        that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
@@ -4484,11 +4713,11 @@ Vue.component('v-edit', {
             that.loading = false;
         });
     },
+
     data :  function () {
         var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'edit');
-
+        var d = this._loadConf(that.cModel,'edit');
+        //d.conf = that.getConf(that.cModel,'edit');
 
         var dEdit = {
             loading : true,
@@ -4497,16 +4726,14 @@ Vue.component('v-edit', {
             actions : {},
             data : {},
             route : null,
-            viewTitle : d.conf.viewTitle,
+            //viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
         }
-        return this.$crud.merge(d,dEdit);
+        return that.$crud.merge(dEdit,d);
 
     },
-    methods : {
-        getFormData : function () {
 
-        },
+    methods : {
         setRouteValues : function (route) {
             var that  = this;
             if (route) {
@@ -4527,13 +4754,6 @@ Vue.component('v-view', {
 
     mounted : function() {
         var that = this;
-        //console.log('view route param',this.cModel,this.cPk);
-        // var route = that._getRoute({
-        //     modelName: this.cModel,
-        //     pk: this.cPk
-        // });
-        // that.route = route;
-
         if (that.cModel)
             that.conf.modelName = that.cModel;
         if (that.cPk)
@@ -4541,7 +4761,7 @@ Vue.component('v-view', {
         that.route = that._getRoute();
         that.setRouteValues(that.route);
 
-        this.fetchData(that.route,function (json) {
+        that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
@@ -4551,9 +4771,9 @@ Vue.component('v-view', {
     },
     data :  function () {
         var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'view');
-
+        console.log('v-view');
+        var d = this._loadConf(that.cModel,'view');
+        //d.conf = that.getConf(that.cModel,'view');
 
         var dView = {
             loading : true,
@@ -4562,16 +4782,17 @@ Vue.component('v-view', {
             actions : {},
             data : {},
             route : null,
-            viewTitle : d.conf.viewTitle,
+            //viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-text',
         }
-        return this.$crud.merge(d,dView);
+        return this.$crud.merge(dView,d);
 
     },
 
     methods : {
         setRouteValues : function (route) {
             var that  = this;
+            console.log('v-view.setRouteValues',that.conf)
             if (route) {
                 route.setValues({
                     modelName : that.conf.modelName,
@@ -4586,10 +4807,13 @@ Vue.component('v-view', {
 
 Vue.component('v-insert', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf','c-model'],
+    //props : ['c-conf','c-model'],
 
     mounted : function() {
         var that = this;
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+
         that.route = that._getRoute();
         that.setRouteValues(that.route);
 
@@ -4604,8 +4828,8 @@ Vue.component('v-insert', {
 
     data :  function () {
         var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'insert');
+        var d = this._loadConf(that.cModel,'insert');
+        //d.conf = that.getConf(that.cModel,'insert');
 
         var dInsert = {
             loading : true,
@@ -4613,10 +4837,10 @@ Vue.component('v-insert', {
             actionsClass : [],
             actions : {},
             data : {},
-            conf : that.conf,
+            //conf : that.conf,
             defaultRenderType : 'r-input',
         }
-        return this.$crud.merge(d,dInsert);
+        return this.$crud.merge(dInsert,d);
 
     },
     methods : {
@@ -4660,9 +4884,9 @@ Vue.component('v-search', {
 
     data :  function () {
         var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'search');
-
+        //var d = this.defaultData();
+        //d.conf = that.getConf(that.cModel,'search');
+        var d = this._loadConf(that.cModel,'search');
 
         var dSearch = {
             loading : true,
@@ -4671,11 +4895,16 @@ Vue.component('v-search', {
             actions : {},
             data : {},
             route : null,
-            viewTitle : d.conf.viewTitle,
+            //viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
             targetRef : that.cTargetRef,
         }
-        return this.$crud.merge(d,dSearch);
+        if (!("langContext" in d)){
+            d.langContext = that.cModel;
+        }
+        d =  this.$crud.merge(dSearch,d);
+        console.log('conf Search',d)
+        return d;
     },
     methods : {
         doSearch : function (params) {
@@ -4731,10 +4960,11 @@ Vue.component('v-search', {
 
 Vue.component('v-hasmany', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf'],
+    //props : ['c-conf'],
     data :  function () {
         var that = this;
-        var conf = that.getConf(that.cModel,'edit');
+        console.log('v-hasmany');
+        var conf = that._loadConf(that.cModel,'edit');
         return {
             loading : true,
             renders : {},

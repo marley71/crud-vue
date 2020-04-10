@@ -4,13 +4,6 @@ Vue.component('v-view', {
 
     mounted : function() {
         var that = this;
-        //console.log('view route param',this.cModel,this.cPk);
-        // var route = that._getRoute({
-        //     modelName: this.cModel,
-        //     pk: this.cPk
-        // });
-        // that.route = route;
-
         if (that.cModel)
             that.conf.modelName = that.cModel;
         if (that.cPk)
@@ -18,7 +11,7 @@ Vue.component('v-view', {
         that.route = that._getRoute();
         that.setRouteValues(that.route);
 
-        this.fetchData(that.route,function (json) {
+        that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
@@ -28,9 +21,9 @@ Vue.component('v-view', {
     },
     data :  function () {
         var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'view');
-
+        console.log('v-view');
+        var d = this._loadConf(that.cModel,'view');
+        //d.conf = that.getConf(that.cModel,'view');
 
         var dView = {
             loading : true,
@@ -39,16 +32,17 @@ Vue.component('v-view', {
             actions : {},
             data : {},
             route : null,
-            viewTitle : d.conf.viewTitle,
+            //viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-text',
         }
-        return this.$crud.merge(d,dView);
+        return this.$crud.merge(dView,d);
 
     },
 
     methods : {
         setRouteValues : function (route) {
             var that  = this;
+            console.log('v-view.setRouteValues',that.conf)
             if (route) {
                 route.setValues({
                     modelName : that.conf.modelName,

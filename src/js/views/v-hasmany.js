@@ -1,9 +1,10 @@
 Vue.component('v-hasmany', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf'],
+    //props : ['c-conf'],
     data :  function () {
         var that = this;
-        var conf = that.getConf(that.cModel,'edit');
+        console.log('v-hasmany');
+        var conf = that._loadConf(that.cModel,'edit');
         return {
             loading : true,
             renders : {},

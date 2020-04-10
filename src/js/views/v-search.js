@@ -24,9 +24,9 @@ Vue.component('v-search', {
 
     data :  function () {
         var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'search');
-
+        //var d = this.defaultData();
+        //d.conf = that.getConf(that.cModel,'search');
+        var d = this._loadConf(that.cModel,'search');
 
         var dSearch = {
             loading : true,
@@ -35,11 +35,16 @@ Vue.component('v-search', {
             actions : {},
             data : {},
             route : null,
-            viewTitle : d.conf.viewTitle,
+            //viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
             targetRef : that.cTargetRef,
         }
-        return this.$crud.merge(d,dSearch);
+        if (!("langContext" in d)){
+            d.langContext = that.cModel;
+        }
+        d =  this.$crud.merge(dSearch,d);
+        console.log('conf Search',d)
+        return d;
     },
     methods : {
         doSearch : function (params) {

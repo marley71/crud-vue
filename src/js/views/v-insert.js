@@ -1,9 +1,12 @@
 Vue.component('v-insert', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf','c-model'],
+    //props : ['c-conf','c-model'],
 
     mounted : function() {
         var that = this;
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+
         that.route = that._getRoute();
         that.setRouteValues(that.route);
 
@@ -18,8 +21,8 @@ Vue.component('v-insert', {
 
     data :  function () {
         var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'insert');
+        var d = this._loadConf(that.cModel,'insert');
+        //d.conf = that.getConf(that.cModel,'insert');
 
         var dInsert = {
             loading : true,
@@ -27,10 +30,10 @@ Vue.component('v-insert', {
             actionsClass : [],
             actions : {},
             data : {},
-            conf : that.conf,
+            //conf : that.conf,
             defaultRenderType : 'r-input',
         }
-        return this.$crud.merge(d,dInsert);
+        return this.$crud.merge(dInsert,d);
 
     },
     methods : {

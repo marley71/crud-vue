@@ -2,9 +2,7 @@ Vue.component('r-upload-ajax',{
     extends : crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {
-        var d = this.defaultData();
-        //d.conf = this.cConf || {};
-        //var metadata = d.conf.metadata || {};
+        var d = this._loadConf();
         d.extensions = d.extensions?d.extensions:[];
         d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
         d.uploadConf = d.conf;
@@ -75,7 +73,8 @@ Vue.component('r-upload-ajax',{
             //var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
 
             //var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
-            var route = that.$crud.createRoute(that.routeName);
+            var route = that._getRoute();
+            //that.setRouteValues(route);
 
             //var routeConf = that.$crud.routes[that.conf.routeName];
             //var route = Route.factory('uploadfile');

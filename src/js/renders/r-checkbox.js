@@ -2,7 +2,7 @@ Vue.component('r-checkbox',{
     extends : crud.components.renders.rBase,
     data :  function () {
         var that = this;
-        var d = that.defaultData();
+        var d = that._loadConf();
         var dV = d.domainValues;
         var dVO = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
         d.value = Array.isArray(d.value)?d.value:[d.value];

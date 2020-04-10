@@ -9,14 +9,10 @@ Vue.component('v-edit', {
         if (that.cPk)
             that.conf.pk = that.cPk;
 
-        // var route = that._getRoute({
-        //     modelName: this.cModel,
-        //     pk: this.cPk
-        // });
         that.route = that._getRoute();
         that.setRouteValues(that.route);
 
-        this.fetchData(that.route,function (json) {
+        that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
@@ -24,11 +20,11 @@ Vue.component('v-edit', {
             that.loading = false;
         });
     },
+
     data :  function () {
         var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'edit');
-
+        var d = this._loadConf(that.cModel,'edit');
+        //d.conf = that.getConf(that.cModel,'edit');
 
         var dEdit = {
             loading : true,
@@ -37,16 +33,14 @@ Vue.component('v-edit', {
             actions : {},
             data : {},
             route : null,
-            viewTitle : d.conf.viewTitle,
+            //viewTitle : d.conf.viewTitle,
             defaultRenderType : 'r-input',
         }
-        return this.$crud.merge(d,dEdit);
+        return that.$crud.merge(dEdit,d);
 
     },
-    methods : {
-        getFormData : function () {
 
-        },
+    methods : {
         setRouteValues : function (route) {
             var that  = this;
             if (route) {

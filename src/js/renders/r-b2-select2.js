@@ -2,7 +2,7 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
     extends : crud.components.renders.rBase,
     template: '#r-b2-select2-template',
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',

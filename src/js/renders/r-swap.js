@@ -1,10 +1,9 @@
-Vue.component('r-swap', {
+crud.components.renders.rSwap = Vue.component('r-swap', {
     extends : crud.components.renders.rBase,
     template: '#r-swap-template',
     data : function () {
         var that = this;
-        //SWAP = that;
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!("routeName" in d))
             d.routeName = 'set';
         d.iconClass = 'fa fa-circle';
@@ -38,6 +37,23 @@ Vue.component('r-swap', {
             return (that.domainValues)? that.domainValues:that.domainValues[that.swapType];
 
         },
+        setRouteValues : function(route) {
+            var that = this;
+            var dV = that.getDV();
+            var keys = Object.keys(dV);
+            var value = that.value?that.value:keys[0];
+            var vs = keys.map(String);
+            var index = vs.indexOf(""+value);
+            index = (index + 1) % vs.length;
+
+            route.setValues({
+                modelName: that.conf.model,
+                field : that.name, //that.conf.key?that.conf.key:that.cKey,
+                value : keys[index]
+            });
+            route.setParams({id:that.conf.modelData.id});
+            return route;
+        },
         swap : function () {
             var that = this;
             var dV = that.getDV();
@@ -49,20 +65,21 @@ Vue.component('r-swap', {
             //console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
             that._swap(keys[index]);
         },
-        _getRoute : function(key) {
-            var that = this;
-            var r = Route.factory(that.routeName);
-            r.values = {
-                modelName: that.conf.model,
-                field : that.name, //that.conf.key?that.conf.key:that.cKey,
-                value : key
-            };
-            r.params = {id:that.conf.modelData.id};
-            return r;
-        },
+        // _getRoute : function(key) {
+        //     var that = this;
+        //     var r = Route.factory(that.routeName);
+        //     r.values = {
+        //         modelName: that.conf.model,
+        //         field : that.name, //that.conf.key?that.conf.key:that.cKey,
+        //         value : key
+        //     };
+        //     r.params = {id:that.conf.modelData.id};
+        //     return r;
+        // },
         _swap : function (key) {
             var that = this;
-            var r = that._getRoute(key);
+            var r = that._getRoute();
+            that.setRouteValues(r);
             var dV = that.getDV();
             Server.route(r,function (json) {
                 if (json.error) {

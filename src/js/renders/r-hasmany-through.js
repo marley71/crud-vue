@@ -2,7 +2,7 @@ crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
     extends : crud.components.renders.rBase,
     template: '#r-hasmany-through-template',
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.inputType = 'text';
         if (this.cConf.inputType)
             d.inputType = this.cConf.inputType;

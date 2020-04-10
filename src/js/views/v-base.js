@@ -64,7 +64,7 @@ Vue.component('v-render', {
 })
 
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cConf','cFields'],
+    props : ['cFields'],
     extends : crud.components.cComponent,
     // created : function() {
     //     var that = this;
@@ -79,57 +79,50 @@ crud.components.views.vBase = Vue.component('v-base', {
     //     }
     // },
     data : function () {
-        return this.defaultData();
+        //var d = this._loadConf();
+        return {
+            viewTitle : '',
+            langContext : '',
+        }
+        // d.viewTitle = '';
+        // d.langContext = null;
+        // return d;
     },
-    mounted : function() {
-        var that = this;
-        //var methods = that.conf?that.conf.methods:{};
-        // for (var k in methods) {
-        //     console.log('v-base implements methods',k);
-        //     that.methods[k] = function () {
-        //         methods.apply(that,this.arguments);
-        //     }
-        // }
-        var __call = function (lk) {
-            that[lk] = function () {
-                var localk = new String(lk);
-                //var arguments = this.arguments;
-                console.log(localk,'arguments',arguments);
-                return that.conf.methods[localk].apply(that,arguments);
-            }
-        }
-        for (var k in that.conf.methods) {
-            //console.log('v-base implements methods',k);
-            __call(k);
-            // that[k] = function () {
-            //     var localk = new String(k);
-            //     //var arguments = this.arguments;
-            //     console.log(localk,'arguments',arguments);
-            //     return that.conf.methods[k].apply(that,arguments);
-            // }
-        }
-
-        if ( that.conf.mounted ) {
-            that.conf.mounted.apply(that);
-        }
-    },
+    // mounted : function() {
+    //     var that = this;
+    //     var __call = function (lk) {
+    //         that[lk] = function () {
+    //             var localk = new String(lk);
+    //             //var arguments = this.arguments;
+    //             console.log(localk,'arguments',arguments);
+    //             return that.conf.methods[localk].apply(that,arguments);
+    //         }
+    //     }
+    //     for (var k in that.conf.methods) {
+    //         __call(k);
+    //     }
+    //
+    //     if ( that.conf.mounted ) {
+    //         that.conf.mounted.apply(that);
+    //     }
+    // },
     methods : {
-        defaultData : function () {
-            var _c = this.cConf || {};
-            return {
-                viewTitle : '',
-                conf : _c,
-                langContext : null,
-            }
-        },
+        // defaultData : function () {
+        //     var _c = this.cConf || {};
+        //     return {
+        //         viewTitle : '',
+        //         conf : _c,
+        //         langContext : null,
+        //     }
+        // },
 
         fetchData: function (route,callback) {
             var that = this;
-            console.log('fetchData',route.getConf());
             if (!route) {
                 callback({});
                 return;
             }
+            console.log('fetchData',route.getConf());
             Server.route(route,function (json) {
                 if (json.error) {
                     that.$crud.errorDialog(json.msg);
@@ -173,14 +166,56 @@ crud.components.views.vBase = Vue.component('v-base', {
          * @param modelName
          * @param type
          */
-        getConf : function (modelName,type) {
+        // getConf : function (modelName,type) {
+        //     var conf = null;
+        //     var defaultConf = this.$crud.conf[type];
+        //     //console.log('cConf',this.cConf);
+        //
+        //     if (this.cConf) {
+        //         if (typeof this.cConf === 'string' || this.cConf instanceof String)
+        //             conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
+        //         else
+        //             conf = this.cConf;
+        //     } else {
+        //         console.log('Check exist default conf '+ 'Model'+this.$crud.pascalCase(modelName));
+        //         if (window['Model'+this.$crud.pascalCase(modelName)]) {
+        //             var cm = window['Model'+this.$crud.pascalCase(modelName)];
+        //             if (cm[type])
+        //                 conf = cm[type];
+        //             else {
+        //                 if (type == 'insert' && cm['edit'])
+        //                     conf = cm['edit'];
+        //                 else {
+        //                     conf = this.$crud.conf[type];
+        //                 }
+        //             }
+        //
+        //         } else {
+        //             //onsole.log('get default crud conf ',type)
+        //             conf = this.$crud.conf[type];
+        //         }
+        //     }
+        //     if (!conf)
+        //         throw "Nessuna configurazione trovata per questa view";
+        //     //console.log('merge confs',defaultConf,conf);
+        //     var finalConf = this.$crud.confMerge(defaultConf,conf);
+        //     console.log('finalConf',finalConf);
+        //     return finalConf;
+        // },
+
+        _loadConf : function(modelName,type) {
             var conf = null;
+            var d = {};
             var defaultConf = this.$crud.conf[type];
-            //console.log('cConf',this.cConf);
+            console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
             if (this.cConf) {
-                if (typeof this.cConf === 'string' || this.cConf instanceof String)
-                    conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
+                if (typeof this.cConf === 'string' || this.cConf instanceof String) {
+                    var conf = this.$crud.getDescendantProp(window, this.cConf);
+                    if (!conf) {
+                        conf = this.$crud.getDescendantProp(this.$crud.conf, this.cConf);
+                    }
+                }
                 else
                     conf = this.cConf;
             } else {
@@ -206,43 +241,54 @@ crud.components.views.vBase = Vue.component('v-base', {
                 throw "Nessuna configurazione trovata per questa view";
             //console.log('merge confs',defaultConf,conf);
             var finalConf = this.$crud.confMerge(defaultConf,conf);
+
+            for (var k in finalConf) {
+                if (k == 'methods')
+                    continue;
+                d[k] = finalConf[k];
+            }
+            d.conf = finalConf;
             console.log('finalConf',finalConf);
-            return finalConf;
-        },
-        /**
-         * setta la configurazione della route secondo le proprie esigenze.
-         * @param route
-         * @returns {*}
-         */
-        setRouteValues : function(route) {
-            return route;
+            return d;
+
+            // var _c = this.cConf || {};
+            // var d = {};
+            // for (var k in _c) {
+            //     if (k == 'methods')
+            //         continue;
+            //     d[k] = _c[k];
+            // }
+            // d.conf = _c;
+            // return d;
         },
 
-        _getRoute : function () {
-            var that = this;
-            var route = null;
-            console.log('_getRoute',that.conf);
-            if (!that.conf)
-                return null;
-            if (that.conf.routeName == null)
-                return null;
-            if (!that.route) {
-                if (crud.routes[that.conf.routeName]) {
-                    console.log('route conf',crud.routes[that.conf.routeName])
-                    route =  new Route(crud.routes[that.conf.routeName]);
-                }
-                // else {
-                //     route = Route.factory(that.conf.routeName);
-                // }
-                // route.fillValues(that.conf);
-                // console.log('ROUTEN ',route.values);
-                //route.values = values;
-            }
-            // if (!that.route)
-            //     route = Route.factory(that.conf.routeName);
-            // route.values = values;
-            return route;
-        },
+
+
+
+        // /**
+        //  * setta la configurazione della route secondo le proprie esigenze.
+        //  * @param route
+        //  * @returns {*}
+        //  */
+        // setRouteValues : function(route) {
+        //     return route;
+        // },
+
+        // _getRoute : function () {
+        //     var that = this;
+        //     var route = null;
+        //     console.log('_getRoute',that.conf);
+        //     if (!that.conf)
+        //         return route;
+        //     if (that.conf.routeName == null)
+        //         return route;
+        //     if (!that.route) {
+        //         if (crud.routes[that.conf.routeName]) {
+        //             route =  new Route(crud.routes[that.conf.routeName]);
+        //         }
+        //     }
+        //     return route;
+        // },
         /**
          * ritorna la configurazione minimale di base di un render rispettando le priorita' tra le configurazioni
          * @param key : nome del campo di cui vogliamo la configurazione

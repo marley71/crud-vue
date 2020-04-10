@@ -1,7 +1,7 @@
 Vue.component('r-radio',{
     extends : crud.components.renders.rBase,
     data : function() {
-        var d = this.defaultData();
+        var d = this._loadConf();
         var dV = d.domainValues || {};
         d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
         return d;

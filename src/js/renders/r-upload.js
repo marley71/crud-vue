@@ -2,7 +2,7 @@ crud.components.renders.rUpload = Vue.component('r-upload',{
     extends : crud.components.renders.rBase,
     template : '#r-upload-template',
     data : function () {
-        var d = this.defaultData();
+        var d = this._loadConf();
         d.conf = this.cConf;
         console.log('r-upload data',d);
         d.extensions = d.conf.extensions?d.conf.extensions:'';

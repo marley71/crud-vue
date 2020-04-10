@@ -10,6 +10,13 @@ core_interface = {
                 throw "Impossibile trovare la route " + routeName;
             return new Route(routeConf);
         },
+
+        getDescendantProp : function(obj, desc) {
+            var arr = desc.split(".");
+            while(arr.length && (obj = obj[arr.shift()]));
+            return obj;
+        },
+
         getFormData : function (form) {
             var that = this;
 

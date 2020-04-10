@@ -2,7 +2,7 @@ Vue.component('r-date-select', {
     extends : crud.components.renders.rBase,
     template: '#r-date-select-template',
     data : function() {
-        var d = this.defaultData();
+        var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
             d.conf.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
