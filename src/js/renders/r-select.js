@@ -1,4 +1,4 @@
-Vue.component('r-select',{
+crud.components.renders.rSelect = Vue.component('r-select',{
     extends : crud.components.renders.rBase,
     template: '#r-select-template',
     data :  function () {

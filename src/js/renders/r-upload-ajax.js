@@ -1,4 +1,4 @@
-Vue.component('r-upload-ajax',{
+crud.components.renders.rUploadAjax = Vue.component('r-upload-ajax',{
     extends : crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {

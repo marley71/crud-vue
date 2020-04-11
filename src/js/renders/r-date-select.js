@@ -1,4 +1,4 @@
-Vue.component('r-date-select', {
+crud.components.renders.rDateSelect = Vue.component('r-date-select', {
     extends : crud.components.renders.rBase,
     template: '#r-date-select-template',
     data : function() {

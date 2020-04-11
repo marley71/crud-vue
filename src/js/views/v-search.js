@@ -1,4 +1,4 @@
-Vue.component('v-search', {
+crud.components.views.vSearch = Vue.component('v-search', {
     extends : crud.components.views.vRecord,
     props : ['cConf','cRouteConf','cTargetRef'],
     mounted : function() {

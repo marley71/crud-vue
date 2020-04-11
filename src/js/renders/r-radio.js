@@ -1,4 +1,4 @@
-Vue.component('r-radio',{
+crud.components.renders.rRadio = Vue.component('r-radio',{
     extends : crud.components.renders.rBase,
     data : function() {
         var d = this._loadConf();

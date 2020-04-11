@@ -19,7 +19,7 @@ crud.components.cComponent = Vue.component('c-component',{
 
     mounted : function() {
         var that = this;
-        console.log('c-component.mounted');
+        console.log('c-component.mounted',that.$options.name);
         if (that.cConf && that.cConf.cRef) {
             that.$crud.cRefs[that.cConf.cRef] = this;
         }

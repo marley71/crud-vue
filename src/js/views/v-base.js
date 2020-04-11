@@ -1,4 +1,4 @@
-Vue.component('v-action', {
+crud.components.views.vAction = Vue.component('v-action', {
     extends : crud.components.cComponent,
     props : ['cName','cAction'],
     data : function () {
@@ -24,7 +24,7 @@ Vue.component('v-action', {
     template : '<component :is="name" :c-conf="conf"></component>'
 })
 
-Vue.component('v-render', {
+crud.components.views.vRender =  Vue.component('v-render', {
     extends : crud.components.cComponent,
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
@@ -47,10 +47,19 @@ Vue.component('v-render', {
         }
 
         if (this.cRender) {
-            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            var conf = null;
+            if (typeof this.cRender === 'string' || this.cRender instanceof String) {
+                conf = this.$crud.getDescendantProp(window, this.cRender);
+                if (!conf) {
+                    conf = this.$crud.getDescendantProp(this.$crud.conf, this.cRender);
+                }
+            } else
+                conf = this.cRender;
+
+            console.log('V-RENDER2 ',conf,this.$parent.renders);
             return {
-                type : this.cRender.type,
-                conf : this.cRender
+                type : conf.type,
+                conf : conf
             }
         }
         console.warn('configurazione non valida',this.cKey,this.cRender);
@@ -211,7 +220,7 @@ crud.components.views.vBase = Vue.component('v-base', {
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String) {
-                    var conf = this.$crud.getDescendantProp(window, this.cConf);
+                    conf = this.$crud.getDescendantProp(window, this.cConf);
                     if (!conf) {
                         conf = this.$crud.getDescendantProp(this.$crud.conf, this.cConf);
                     }

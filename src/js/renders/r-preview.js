@@ -1,4 +1,4 @@
-Vue.component('r-preview',{
+crud.components.renders.rPreview = Vue.component('r-preview',{
     extends : crud.components.renders.rBase,
     template : '#r-preview-template',
     // mounted : function() {

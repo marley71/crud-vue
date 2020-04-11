@@ -1,4 +1,4 @@
-Vue.component('r-texthtml',{
+crud.components.renders.rTexthtml = Vue.component('r-texthtml',{
     extends : crud.components.renders.rBase,
     template: '#r-texthtml-template',
     data : function() {

@@ -1893,7 +1893,7 @@ crud.components.cComponent = Vue.component('c-component',{
 
     mounted : function() {
         var that = this;
-        console.log('c-component.mounted');
+        console.log('c-component.mounted',that.$options.name);
         if (that.cConf && that.cConf.cRef) {
             that.$crud.cRefs[that.cConf.cRef] = this;
         }
@@ -2525,11 +2525,12 @@ crud.components.renders.rCustom = Vue.component('r-custom', {
     template: '#r-custom-template',
 });
 
-Vue.component('r-render', {
+crud.components.renders.rRender = Vue.component('r-render', {
     extends : crud.components.renders.rBase,
     template: '#r-render-template',
 });
-Vue.component('r-input', {
+
+crud.components.renders.rInput = Vue.component('r-input', {
     extends : crud.components.renders.rBase,
     template: '#r-input-template',
     data : function () {
@@ -2539,34 +2540,27 @@ Vue.component('r-input', {
     }
 });
 
-Vue.component('r-input-helped', {
+crud.components.renders.rInputHelped =  Vue.component('r-input-helped', {
     extends : crud.components.renders.rBase,
     template: '#r-input-helped-template',
-    // data : function () {
-    //     var d = this.defaultData();
-    //     return d;
-    // },
-
-    // methods : {
-    //     setValue : function (key) {
-    //         this.value = key;
-    //     }
-    // }
-
 });
-Vue.component('r-hidden', {
+
+crud.components.renders.rHidden = Vue.component('r-hidden', {
     extends : crud.components.renders.rBase,
     template: '#r-hidden-template'
 });
-Vue.component('r-text',{
+
+crud.components.renders.rText = Vue.component('r-text',{
     extends : crud.components.renders.rBase,
     template: '#r-text-template'
 });
-Vue.component('r-image',{
+
+crud.components.renders.rImage = Vue.component('r-image',{
     extends : crud.components.renders.rBase,
     template: '#r-image-template'
 });
-Vue.component('r-download',{
+
+crud.components.renders.rDownload = Vue.component('r-download',{
     extends : crud.components.renders.rBase,
     template: '#r-download-template',
     mounted : function() {
@@ -2589,11 +2583,12 @@ Vue.component('r-download',{
     }
 });
 
-Vue.component('r-textarea', {
+crud.components.renders.rTextarea = Vue.component('r-textarea', {
     extends : crud.components.renders.rBase,
     template: '#r-textarea-template'
 });
-Vue.component('r-select',{
+
+crud.components.renders.rSelect = Vue.component('r-select',{
     extends : crud.components.renders.rBase,
     template: '#r-select-template',
     data :  function () {
@@ -2605,7 +2600,7 @@ Vue.component('r-select',{
 });
 
 
-Vue.component('r-radio',{
+crud.components.renders.rRadio = Vue.component('r-radio',{
     extends : crud.components.renders.rBase,
     data : function() {
         var d = this._loadConf();
@@ -2628,7 +2623,7 @@ Vue.component('r-radio',{
 });
 
 
-Vue.component('r-checkbox',{
+crud.components.renders.rCheckbox = Vue.component('r-checkbox',{
     extends : crud.components.renders.rBase,
     data :  function () {
         var that = this;
@@ -2649,7 +2644,7 @@ Vue.component('r-checkbox',{
 });
 
 
-Vue.component('r-autocomplete', {
+crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
     mounted : function() {
         //this._getLabel();
@@ -2674,7 +2669,7 @@ Vue.component('r-autocomplete', {
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
                 source : function(term,suggest) {
                     var r = that._getRoute(that.conf.routeName);
-                    that.setRouteValue(r,term);
+                    that.setRouteValues(r,term);
                     Server.route(r,function (json) {
                         var suggestions = [];
                         //that.suggestValues = {};
@@ -2713,7 +2708,7 @@ Vue.component('r-autocomplete', {
             });
             that._getLabel();
         },
-        setRouteValue : function (route,term) {
+        setRouteValues : function (route,term) {
             var that = this;
             //var r = that.$crud.createRoute(that.conf.routeName);
             route.setValues({modelName:that.conf.modelName});
@@ -2782,11 +2777,12 @@ Vue.component('r-autocomplete', {
     template: "#r-autocomplete-template",
 });
 
-Vue.component('r-belongsto', {
+crud.components.renders.rBelongsto = Vue.component('r-belongsto', {
     extends : crud.components.renders.rBase,
     template: '#r-belongsto-template',
 });
-Vue.component('r-date-select', {
+
+crud.components.renders.rDateSelect = Vue.component('r-date-select', {
     extends : crud.components.renders.rBase,
     template: '#r-date-select-template',
     data : function() {
@@ -2879,7 +2875,7 @@ Vue.component('r-date-select', {
     }
 });
 
-Vue.component('r-date-picker', {
+crud.components.renders.rDatePicker = Vue.component('r-date-picker', {
     extends : crud.components.renders.rBase,
     template: '#r-date-picker-template',
     data : function() {
@@ -2910,7 +2906,7 @@ Vue.component('r-date-picker', {
     }
 });
 
-Vue.component('r-texthtml',{
+crud.components.renders.rTexthtml = Vue.component('r-texthtml',{
     extends : crud.components.renders.rBase,
     template: '#r-texthtml-template',
     data : function() {
@@ -3071,7 +3067,7 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
     }
 });
 
-Vue.component('r-hasmany-view', {
+crud.components.renders.rHasmanyView = Vue.component('r-hasmany-view', {
     extends : crud.components.rHasmany,
     template: '#r-hasmany-view-template',
     data : function () {
@@ -3349,7 +3345,7 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
 
 });
 
-Vue.component('r-b2m-select2', {
+crud.components.renders.rB2mSelect2 = Vue.component('r-b2m-select2', {
     extends : crud.components.renders.rB2Select2,
     template: '#r-b2m-select2-template',
     // data : function () {
@@ -3460,6 +3456,7 @@ Vue.component('r-b2m-select2', {
     }
 
 });
+
 crud.components.renders.rUpload = Vue.component('r-upload',{
     extends : crud.components.renders.rBase,
     template : '#r-upload-template',
@@ -3538,7 +3535,7 @@ crud.components.renders.rUpload = Vue.component('r-upload',{
     }
 })
 
-Vue.component('r-upload-ajax',{
+crud.components.renders.rUploadAjax = Vue.component('r-upload-ajax',{
     extends : crud.components.renders.rBase,
     template : '#r-upload-ajax-template',
     data : function () {
@@ -3699,7 +3696,7 @@ Vue.component('r-upload-ajax',{
     }
 })
 
-Vue.component('r-preview',{
+crud.components.renders.rPreview = Vue.component('r-preview',{
     extends : crud.components.renders.rBase,
     template : '#r-preview-template',
     // mounted : function() {
@@ -3772,7 +3769,7 @@ Vue.component('r-preview',{
     }
 })
 
-Vue.component('v-action', {
+crud.components.views.vAction = Vue.component('v-action', {
     extends : crud.components.cComponent,
     props : ['cName','cAction'],
     data : function () {
@@ -3798,7 +3795,7 @@ Vue.component('v-action', {
     template : '<component :is="name" :c-conf="conf"></component>'
 })
 
-Vue.component('v-render', {
+crud.components.views.vRender =  Vue.component('v-render', {
     extends : crud.components.cComponent,
     props : ['cKey','cRender'],
     // When the bound element is inserted into the DOM...
@@ -3821,10 +3818,19 @@ Vue.component('v-render', {
         }
 
         if (this.cRender) {
-            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            var conf = null;
+            if (typeof this.cRender === 'string' || this.cRender instanceof String) {
+                conf = this.$crud.getDescendantProp(window, this.cRender);
+                if (!conf) {
+                    conf = this.$crud.getDescendantProp(this.$crud.conf, this.cRender);
+                }
+            } else
+                conf = this.cRender;
+
+            console.log('V-RENDER2 ',conf,this.$parent.renders);
             return {
-                type : this.cRender.type,
-                conf : this.cRender
+                type : conf.type,
+                conf : conf
             }
         }
         console.warn('configurazione non valida',this.cKey,this.cRender);
@@ -3985,7 +3991,7 @@ crud.components.views.vBase = Vue.component('v-base', {
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String) {
-                    var conf = this.$crud.getDescendantProp(window, this.cConf);
+                    conf = this.$crud.getDescendantProp(window, this.cConf);
                     if (!conf) {
                         conf = this.$crud.getDescendantProp(this.$crud.conf, this.cConf);
                     }
@@ -4691,7 +4697,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
     template : '#v-list-edit-template'
 });
 
-Vue.component('v-edit', {
+crud.components.views.vEdit = Vue.component('v-edit', {
     extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
 
@@ -4748,7 +4754,7 @@ Vue.component('v-edit', {
     template : '#v-edit-template'
 });
 
-Vue.component('v-view', {
+crud.components.views.vView = Vue.component('v-view', {
     extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
 
@@ -4805,7 +4811,7 @@ Vue.component('v-view', {
     template : '#v-view-template'
 });
 
-Vue.component('v-insert', {
+crud.components.views.vInsert = Vue.component('v-insert', {
     extends : crud.components.views.vRecord,
     //props : ['c-conf','c-model'],
 
@@ -4858,7 +4864,7 @@ Vue.component('v-insert', {
 
 });
 
-Vue.component('v-search', {
+crud.components.views.vSearch = Vue.component('v-search', {
     extends : crud.components.views.vRecord,
     props : ['cConf','cRouteConf','cTargetRef'],
     mounted : function() {
@@ -4958,23 +4964,22 @@ Vue.component('v-search', {
     template : '#v-search-template'
 });
 
-Vue.component('v-hasmany', {
+crud.components.views.vHasmany = Vue.component('v-hasmany', {
     extends : crud.components.views.vRecord,
     //props : ['c-conf'],
     data :  function () {
         var that = this;
-        console.log('v-hasmany');
-        var conf = that._loadConf(that.cModel,'edit');
-        return {
+        var d = that._loadConf(that.cModel,'edit');
+        var dHasmany =  {
             loading : true,
             renders : {},
             actionsClass : [],
             actions : {},
             data : {},
-            conf : conf,//jQuery.extend(true,{},ModelTest.edit),
+            //conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'r-input',
         }
-
+        return this.$crud.merge(dHasmany,d);
     },
     methods : {
         fillData : function () {
@@ -5003,26 +5008,26 @@ Vue.component('v-hasmany', {
     template : '#v-hasmany-template'
 });
 
-Vue.component('v-hasmany-view', {
+crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
     extends : crud.components.views.vRecord,
     props : ['c-conf'],
     data :  function () {
         var that = this;
-        that.conf = that.getConf(that.cModel,'edit');
+        var d  = that._loadConf(that.cModel,'view');
         //that.createActions();
 
         //that.loading = true;
 
-        return {
+        var dHasmany = {
             loading : true,
             renders : {},
             actionsClass : [],
             actions : {},
             data : {},
-            conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
+            //conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'r-text',
         }
-
+        return this.$crud.merge(dHasmany,d);
     },
     methods : {
         fillData : function () {
@@ -5076,23 +5081,34 @@ const CrudApp = Vue.extend({
 
 
         that.$crud.instance = that;
-        that.$crud.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
-        var resources = [];
-        resources.push(this.templatesFile);
-        for (var k in this.$crud.components.libs) {
-            if (that.$crud.components.libs[k].tpl)
-                resources.push(that.$crud.components.libs[k].tpl);
-            if (that.$crud.components.libs[k].js)
-                resources.push(that.$crud.components.libs[k].js);
+        that.$crud.pluginsPath = that.pluginsPath?that.pluginsPath:'/';
+
+
+        var __loadResources = function () {
+            var resources = [];
+            resources.push(that.templatesFile);
+            for (var k in that.$crud.components.libs) {
+                if (that.$crud.components.libs[k].tpl)
+                    resources.push(that.$crud.components.libs[k].tpl);
+                if (that.$crud.components.libs[k].js)
+                    resources.push(that.$crud.components.libs[k].js);
+            }
+            console.log('resources',resources)
+            that.$crud.loadResources(resources,function () {
+                console.log('monto app');
+
+                that.$mount(that.el);
+                console.log('mounted');
+            })
         }
-        console.log('resources',resources)
-        that.$crud.loadResources(resources,function () {
-            console.log('monto app');
 
-            that.$mount(that.el);
-            console.log('mounted');
-        })
-
+        console.log('appConfig',that.appConfig);
+        if (that.appConfig) {
+            that.$crud.loadResource(that.appConfig, function () {
+                __loadResources();
+            })
+        } else
+            __loadResources();
     },
     methods : {
         onChangeViewConf : function (view) {

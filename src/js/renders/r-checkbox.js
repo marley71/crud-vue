@@ -1,4 +1,4 @@
-Vue.component('r-checkbox',{
+crud.components.renders.rCheckbox = Vue.component('r-checkbox',{
     extends : crud.components.renders.rBase,
     data :  function () {
         var that = this;

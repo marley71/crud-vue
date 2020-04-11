@@ -1,4 +1,4 @@
-Vue.component('v-edit', {
+crud.components.views.vEdit = Vue.component('v-edit', {
     extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
 

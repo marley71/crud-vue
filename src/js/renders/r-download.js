@@ -1,4 +1,4 @@
-Vue.component('r-download',{
+crud.components.renders.rDownload = Vue.component('r-download',{
     extends : crud.components.renders.rBase,
     template: '#r-download-template',
     mounted : function() {

@@ -27,23 +27,34 @@ const CrudApp = Vue.extend({
 
 
         that.$crud.instance = that;
-        that.$crud.pluginsPath = this.pluginsPath?this.pluginsPath:'/';
-        var resources = [];
-        resources.push(this.templatesFile);
-        for (var k in this.$crud.components.libs) {
-            if (that.$crud.components.libs[k].tpl)
-                resources.push(that.$crud.components.libs[k].tpl);
-            if (that.$crud.components.libs[k].js)
-                resources.push(that.$crud.components.libs[k].js);
+        that.$crud.pluginsPath = that.pluginsPath?that.pluginsPath:'/';
+
+
+        var __loadResources = function () {
+            var resources = [];
+            resources.push(that.templatesFile);
+            for (var k in that.$crud.components.libs) {
+                if (that.$crud.components.libs[k].tpl)
+                    resources.push(that.$crud.components.libs[k].tpl);
+                if (that.$crud.components.libs[k].js)
+                    resources.push(that.$crud.components.libs[k].js);
+            }
+            console.log('resources',resources)
+            that.$crud.loadResources(resources,function () {
+                console.log('monto app');
+
+                that.$mount(that.el);
+                console.log('mounted');
+            })
         }
-        console.log('resources',resources)
-        that.$crud.loadResources(resources,function () {
-            console.log('monto app');
 
-            that.$mount(that.el);
-            console.log('mounted');
-        })
-
+        console.log('appConfig',that.appConfig);
+        if (that.appConfig) {
+            that.$crud.loadResource(that.appConfig, function () {
+                __loadResources();
+            })
+        } else
+            __loadResources();
     },
     methods : {
         onChangeViewConf : function (view) {

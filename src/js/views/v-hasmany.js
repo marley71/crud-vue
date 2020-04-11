@@ -1,20 +1,19 @@
-Vue.component('v-hasmany', {
+crud.components.views.vHasmany = Vue.component('v-hasmany', {
     extends : crud.components.views.vRecord,
     //props : ['c-conf'],
     data :  function () {
         var that = this;
-        console.log('v-hasmany');
-        var conf = that._loadConf(that.cModel,'edit');
-        return {
+        var d = that._loadConf(that.cModel,'edit');
+        var dHasmany =  {
             loading : true,
             renders : {},
             actionsClass : [],
             actions : {},
             data : {},
-            conf : conf,//jQuery.extend(true,{},ModelTest.edit),
+            //conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'r-input',
         }
-
+        return this.$crud.merge(dHasmany,d);
     },
     methods : {
         fillData : function () {

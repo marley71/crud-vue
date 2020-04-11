@@ -1,4 +1,4 @@
-Vue.component('r-autocomplete', {
+crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
     extends : crud.components.renders.rBase,
     mounted : function() {
         //this._getLabel();
@@ -23,7 +23,7 @@ Vue.component('r-autocomplete', {
             jQuery(that.$el).find('[c-autocomplete]').autoComplete({
                 source : function(term,suggest) {
                     var r = that._getRoute(that.conf.routeName);
-                    that.setRouteValue(r,term);
+                    that.setRouteValues(r,term);
                     Server.route(r,function (json) {
                         var suggestions = [];
                         //that.suggestValues = {};
@@ -62,7 +62,7 @@ Vue.component('r-autocomplete', {
             });
             that._getLabel();
         },
-        setRouteValue : function (route,term) {
+        setRouteValues : function (route,term) {
             var that = this;
             //var r = that.$crud.createRoute(that.conf.routeName);
             route.setValues({modelName:that.conf.modelName});

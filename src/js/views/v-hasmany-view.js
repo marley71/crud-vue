@@ -1,23 +1,23 @@
-Vue.component('v-hasmany-view', {
+crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
     extends : crud.components.views.vRecord,
     props : ['c-conf'],
     data :  function () {
         var that = this;
-        that.conf = that.getConf(that.cModel,'edit');
+        var d  = that._loadConf(that.cModel,'view');
         //that.createActions();
 
         //that.loading = true;
 
-        return {
+        var dHasmany = {
             loading : true,
             renders : {},
             actionsClass : [],
             actions : {},
             data : {},
-            conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
+            //conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'r-text',
         }
-
+        return this.$crud.merge(dHasmany,d);
     },
     methods : {
         fillData : function () {

@@ -1,4 +1,4 @@
-Vue.component('v-view', {
+crud.components.views.vView = Vue.component('v-view', {
     extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
 

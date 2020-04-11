@@ -1,4 +1,4 @@
-Vue.component('r-b2m-select2', {
+crud.components.renders.rB2mSelect2 = Vue.component('r-b2m-select2', {
     extends : crud.components.renders.rB2Select2,
     template: '#r-b2m-select2-template',
     // data : function () {

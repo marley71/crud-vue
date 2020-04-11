@@ -1,4 +1,4 @@
-Vue.component('v-insert', {
+crud.components.views.vInsert = Vue.component('v-insert', {
     extends : crud.components.views.vRecord,
     //props : ['c-conf','c-model'],
 
