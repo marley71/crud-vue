@@ -79,8 +79,9 @@ crud.components.views.vList = Vue.component('v-list', {
                     that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
                 }
             } else {
-                console.log('protocol',route.getProtocol());
-                var protocol = Protocol.factory(route.getProtocol());
+                //console.log('protocol',route.getProtocol());
+                //var protocol = Protocol.factory(route.getProtocol());
+                var protocol = that.$crud.createProtocol(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);

@@ -1,6 +1,6 @@
 
 var crudJsFiles = [
-    'src/js/crud/OOP.js',
+    //'src/js/crud/OOP.js',
     'src/js/confs/Crud.js',
 
     'src/js/interfaces/dialogs.js',

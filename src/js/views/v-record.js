@@ -72,7 +72,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     data = that.conf.data;
                 }
             } else {
-                var protocol = Protocol.factory(route.getProtocol());
+                var protocol = that.$crud.createProtocol(route.getProtocol());
+
+
+                //var protocol = Protocol.factory(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);

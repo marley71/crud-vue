@@ -26,6 +26,10 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
                     that.setRouteValues(r,term);
                     Server.route(r,function (json) {
                         var suggestions = [];
+                        if (json.error) {
+                            that.$crud.errorDialog(json.msg);
+                            return suggest(suggestions)
+                        }
                         //that.suggestValues = {};
                         for (var i in json.result) {
                             // var s = "";

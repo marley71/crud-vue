@@ -291,11 +291,17 @@ crud.collectionActions = {
         text : '',
         execute : function () {
             console.log('order execute',this);
-            var params = this.$crud.cloneObj(this.view.routeConf.params);
+            var params = this.view.route.getParams();
             params.order_field = this.orderField;
-            //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
             params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
-            this.view.routeConf.params = params;
+            this.view.route.setParams(params);
+            this.view.reload();
+
+            // var params = this.$crud.cloneObj(this.view.routeConf.params);
+            // params.order_field = this.orderField;
+            // //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+            // params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
+            // this.view.routeConf.params = params;
         }
     },
     'action-delete-selected' : {

@@ -1,72 +1,3 @@
-/*
- *Simple JavaScript Inheritance
- * By John Resig http://ejohn.org/
- * MIT Licensed.
- */
-// Inspired by base2 and Prototype
-// provina
-(function() {
-    var initializing = false, fnTest = /xyz/.test(function() {
-        xyz;
-    }) ? /\b_super\b/ : /.*/;
-
-    // The base Class implementation (does nothing)
-    this.Class = function() {
-    };
-
-    // Create a new Class that inherits from this class
-    Class.extend = function(prop) {
-        var _super = this.prototype;
-
-        // Instantiate a base class (but only create the instance,
-        // don't run the init constructor)
-        initializing = true;
-        var prototype = new this();
-        initializing = false;
-
-        // Copy the properties over onto the new prototype
-        for ( var name in prop) {
-            // Check if we're overwriting an existing function
-            prototype[name] = typeof prop[name] == "function"
-                    && typeof _super[name] == "function"
-                    && fnTest.test(prop[name]) ? (function(name, fn) {
-                return function() {
-                    var tmp = this._super;
-
-                    // Add a new ._super() method that is the same method
-                    // but on the super-class
-                    this._super = _super[name];
-
-                    // The method only need to be bound temporarily, so we
-                    // remove it when we're done executing
-                    var ret = fn.apply(this, arguments);
-                    this._super = tmp;
-
-                    return ret;
-                };
-            })(name, prop[name]) : prop[name];
-        }
-
-        // The dummy class constructor
-        function Class() {
-            // All construction is actually done in the init method
-            if (!initializing && this.init)
-                this.init.apply(this, arguments);
-        }
-
-        // Populate our constructed prototype object
-        Class.prototype = prototype;
-
-        // Enforce the constructor to be what we expect
-        Class.prototype.constructor = Class;
-
-        // And make this class extendable
-        Class.extend = arguments.callee;
-
-        return Class;
-    };
-})();
-
 const crud = {};
 crud.lang = {
     'app.aggiungi' : 'Aggiungi',
@@ -360,11 +291,17 @@ crud.collectionActions = {
         text : '',
         execute : function () {
             console.log('order execute',this);
-            var params = this.$crud.cloneObj(this.view.routeConf.params);
+            var params = this.view.route.getParams();
             params.order_field = this.orderField;
-            //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
             params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
-            this.view.routeConf.params = params;
+            this.view.route.setParams(params);
+            this.view.reload();
+
+            // var params = this.$crud.cloneObj(this.view.routeConf.params);
+            // params.order_field = this.orderField;
+            // //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
+            // params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
+            // this.view.routeConf.params = params;
         }
     },
     'action-delete-selected' : {
@@ -765,6 +702,21 @@ core_interface = {
             if (!routeConf)
                 throw "Impossibile trovare la route " + routeName;
             return new Route(routeConf);
+        },
+        /**
+         * cerca e crea la classe protocol utilizzando come naming
+         * Protocol+pascalCase(name)
+         * @param name : nome su cui viene applicata la funzione pascalCase e aggiunt il prefisso Protocol.
+         * esempio se passiamo come nome mio_prot cerchera' di istanziare la class ProtocolMioProt.
+         */
+        createProtocol : function(name) {
+            var className = "Protocol" + crud.pascalCase(name);
+            try {
+                //return new window[className]();
+                return eval('new ' + className + '()');
+            } catch (e) {
+                console.error('failed to create ' + className,e);
+            }
         },
 
         getDescendantProp : function(obj, desc) {
@@ -1276,49 +1228,39 @@ wait_interface = {
 };
 /**
  * definizione protocollo tra json che arriva dal server e le strutture
- * dati interne alla libreria javascript
+ * dati interne delle views alla libreria javascript
  * In caso di server con formato di dati diverso aggiungere un protocollo e definire
  * le trasformazioni in caso di record o di lista
- *
+ * vanno definiti due metodi:
+ * - jsonToData chiamato per riempire le strutture dati interne
+ *              utilizzando i dati arrivati in json
+ * - getData che viene chiamato per prendersi i dati valorizzati dal metodo jsonToData
  */
 
-var Protocol = Class.extend({
-    value : null,
-    metadata : {},
-    resultParams : {},
-    validationRules : {},
-    jsonToData : function (json) {
-        throw "override jsonToData function ";
-    },
-    getData : function () {
+
+class Protocol {
+    constructor() {
+
+    }
+    getData() {
         var prop = Object.getOwnPropertyNames(this);
         var data = {}
         for (var i in prop) {
-            //console.log(k,k,prop[k]);
             data[prop[i]] = this[prop[i]];
         }
         return data;
     }
-})
-
-Protocol.factory = function (type) {
-    var className = "Protocol" + crud.pascalCase(type);
-    try {
-        return new window[className]();
-    } catch (e) {
-        log.error('failed to create ' + className,e);
-    }
-
 }
 
-
-var ProtocolRecord = Protocol.extend({
-    jsonToData : function (json) {
+class ProtocolRecord extends Protocol {
+    constructor() {
+        super();
+        this.value = {};
+        this.metadata = {};
+    }
+    jsonToData(json) {
         this.value = json.result;
         this.metadata = json.metadata?json.metadata:{};
-        this.resultParams = json.resultParams?json.resultParams:{};
-        this.validationRules = json.validationRules?json.validationRules:{};
-        this.backParams = json.backParams;
         var fieldsMetadata = json.metadata?(json.metadata.fields || {}):{};
         for (var field in fieldsMetadata) {
             this.metadata[field] = {};
@@ -1336,18 +1278,19 @@ var ProtocolRecord = Protocol.extend({
                 this.metadata[field].domainValues = relationsMetadata[field].options;
             if (relationsMetadata[field].options_order)
                 this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
-            //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
-            //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
         }
     }
-});
+}
 
-var ProtocolList = Protocol.extend({
-    pagination :{},
-    has_errors : false,
-    backParams : {},
-    summary : {},
-    jsonToData : function (json) {
+class ProtocolList extends Protocol {
+    constructor() {
+        super();
+        this.value = [];
+        this.metadata = {};
+        this.pagination = {}
+    }
+
+    jsonToData(json) {
         this.value = json.result.data;
         this.metadata = json.metadata || {};
         this.pagination = {
@@ -1359,57 +1302,15 @@ var ProtocolList = Protocol.extend({
             to : json.result.to,
             total : json.result.total,
 
-        } //_.omit(json.result, ['data','has_errors']);
-        this.resultParams = json.resultParams;
-        this.summary = json.summary;
-        this.validationRules = json.validationRules;
-        this.backParams = json.backParams;
-        this.has_errors = (json.result.has_errors == true);
-        this.list_header = json.data_header;
-
+        }
         for (var field in json.metadata) {
             if (json.metadata[field].options)
                 this.metadata[field].domainValues = json.metadata[field].options;
             if (json.metadata[field].options_order)
                 this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
-
-            //json.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
-            //json.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
-
         }
     }
-});
-
-
-
-var ProtocolDummyRecord = Protocol.extend({
-    jsonToData : function () {
-        this.value = {};
-        this.metadata = {};
-        this.resultParams = {};
-        this.validationRules = {};
-        this.backParams = {};
-    }
-});
-
-var ProtocolDummyList = Protocol.extend({
-    pagination :{},
-    has_errors : false,
-    backParams : {},
-    summary : {},
-    translations : {},
-    jsonToData : function () {
-        this.value = [];
-        this.metadata = {};
-        this.pagination = {};
-        this.resultParams = {};
-        this.summary = {};
-        this.validationRules = {};
-        this.backParams = {};
-        this.has_errors = false;
-        this.list_header = "";
-    }
-});
+}
 
 /**
  * VERSIONE LIBRERIA 4
@@ -1430,8 +1331,7 @@ function Route(conf) {
 
     var _c = crud.cloneObj(conf || {});
     var routeConf = crud.cloneObj(defaultConf);
-    //Object.assign(routeConf,defaultConf);
-    //Object.assign(routeConf,_c);
+
     for (var k in _c) {
         routeConf[k] = _c[k];
     }
@@ -1527,248 +1427,7 @@ function Route(conf) {
     this.getConf = function () {
         return routeConf;
     }
-    //return new Route();
 }
-
-// var Routed = Class.extend({
-//     className         : "Route",
-//     method       : null,
-//     url          : null,
-//     resultType   : null,
-//     protocol     : null,
-//     commonParams  : {},  //parametri statici da aggiungere sempre alla chiamata
-//     values : {}, // vettore associativo dei parametri per la costruzione dell'url
-//     params :{},
-//
-//     init : function (attrs) {
-//         var self = this;
-//         self.params = {};
-//         //self.commonParams = {};
-//         self.values = {};
-//         if (attrs) {
-//             for (var k in attrs) {
-//                 self[k] = attrs[k];
-//             }
-//         }
-//     },
-//     /**
-//      * riempe i valori parametri della route prendendoli dalle proprietà dell'oggetto
-//      * @param obj
-//      */
-//     fillValues : function(obj) {
-//         var self = this;
-//         var keys = self.getKeys();
-//         console.log('fillValues',keys,obj);
-//         for (var k in keys) {
-//             var key = keys[k];
-//             if (obj[key])
-//                 self.values[key] = obj[key]
-//         }
-//     },
-//     /**
-//      * setta i valori dei values necessari per le keys che formano l'url della route.
-//      * @param values
-//      */
-//     setValues : function(values) {
-//         var self = this;
-//         var opt = values?values:{};
-//         var keys = self.getKeys();
-//         for (var i in keys) {
-//             var key = keys[i];
-//             self.values[key] = values[key];
-//         }
-//     },
-//
-//     /**
-//      * ritorna url esatto valorizzando le variabili parametriche tra {} presenti nella
-//      * stringa url.
-//      * @param values: valori attuali per valorizzare le variabili se non viene passato prende
-//      * i valori presenti in this.values
-//      * @returns string url con variabili valorizzate
-//      */
-//     getUrl : function (values) {
-//         var self = this;
-//         var finalUrl = self.url;
-//         var v = values?values:self.values;
-//
-//         for (var key in v) {
-//             var find = '\{'+key+'\}';
-//             var re = new RegExp(find, 'g');
-//             finalUrl = finalUrl.replace(re,v[key]);
-//         }
-//         return finalUrl;
-//     },
-//     /**
-//      * ritorna tutti parametri passati in get o post in base al tipo di metodo della route
-//      * mergiando i parametri presenti in params e extra_params
-//      * @returns {*}
-//      */
-//     getParams : function() {
-//         var self = this;
-//         return jQuery.extend(self.params,self.commonParams);
-//     },
-//     /**
-//      * ritorna le key dei parametri che devono essere valorizzati per ritornare l'url esatto
-//      * per esempio se url e' fatto come /pippo/{param1}/{param2} ritorna ['param1','param2']
-//      * return array
-//      */
-//     getKeys : function () {
-//         var self = this;
-//         var r = /\{\w+\}+/g;
-//         var keys = [];
-//         var tmp = false;
-//         do {
-//             tmp = r.exec(self.url);
-//             if (tmp) {
-//                 var removeBrackets = tmp[0].substr(1);
-//                 removeBrackets = removeBrackets.substr(0,removeBrackets.length-1);
-//                 keys.push(removeBrackets);
-//             }
-//         } while(tmp)
-//         return keys;
-//     }
-// });
-//
-// Routed.factory = function (type,attrs) {
-//     var className = "Route" + crud.pascalCase(type);
-//     if (!window[className])
-//         throw "Impossibile trovare la definizione della route " + className;
-//     var _a = attrs?attrs:{};
-//     _a.className = className;
-//     return new window[className](_a);
-// }
-//
-//
-//
-// var RouteInsertHasmany = Route.extend({
-//     method      : "get",
-//     url         :'/api/json/{modelName}/create_has_many',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-//
-// var RouteInsertHasmanyConstraint = RouteInsertHasmany.extend({
-//     url         :'/api/json/{modelName}/create_has_many/{constraintKey}/{constraintValue}',
-// });
-//
-// var RouteView = Route.extend({
-//     method      : "get",
-//     url         : '/api/json/{modelName}/{pk}',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-//
-// var RouteViewConstraint = RouteView.extend({
-//     url         : '/api/json/{modelName}/{pk}/{constraintKey}/{constraintValue}',
-// });
-//
-// RouteDelete = Route.extend({
-//     method      : "post",
-//     url         : '/api/json/{modelName}/{pk}',
-//     resultType  : 'record',
-//     protocol    : 'record',
-//     commonParams : {'_method': 'DELETE'}
-// })
-//
-// RouteMultiDelete = Route.extend({
-//     method      : "post",
-//     url         :  '/api/json/{modelName}/multi-delete',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-//
-// RouteSet = Route.extend({
-//     method      : "post",
-//     url         : '/api/json/set/{modelName}/{field}/{value}',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-//
-// RouteAutocomplete = Route.extend({
-//     method      : "get",
-//     url         : '/api/json/{modelName}/autocomplete',
-//     resultType  : 'list',
-//     protocol    : 'list'
-//
-// })
-//
-// RouteCalendar = Route.extend({});
-//
-//
-// RouteCaptcha = Route.extend({
-//     method      : 'get',
-//     url         : '/captchajs_img',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// })
-//
-// RouteUploadfile = Route.extend({
-//     method      : 'post',
-//     url         : '/uploadfile',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-//
-// RouteUpload = Route.extend({
-//     method      : 'post',
-//     url         : '/upload',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-//
-// RouteViewimage = Route.extend({
-//     method      : 'get',
-//     url         : '/viewimage/{filename}/upload/{template}',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-//
-// RouteDownload = Route.extend({
-//     method      : 'get',
-//     url         : '/download/{filename}',
-//     resultType  : 'record',
-//     protocol    : 'record'
-// });
-//
-// RoutePageEdit = Route.extend({
-//     method      : 'get',
-//     url         : '/edit/{modelName}/{pk}'
-// });
-//
-// RoutePageEditConstraint = Route.extend({
-//     method      : 'get',
-//     url         : '/edit/{modelName}/{pk}/{constraintKey}/{constraintValue}'
-// });
-//
-// RoutePageInsert = Route.extend({
-//     method      : 'get',
-//     url         : '/insert/{modelName}'
-// });
-//
-// RoutePageInsertConstraint = Route.extend({
-//     method      : 'get',
-//     url         : '/insert/{modelName}/{constraintKey}/{constraintValue}'
-// });
-//
-// RoutePageView = Route.extend({
-//     method      : 'get',
-//     url         : '/view/{modelName}/{pk}'
-// });
-//
-// RoutePageViewConstraint = Route.extend({
-//     method      : 'get',
-//     url         : '/view/{modelName}/{pk}/{constraintKey}/{constraintValue}'
-// });
-//
-// RoutePageList = Route.extend({
-//     method      : 'get',
-//     url         : '/list/{modelName}/{pk}'
-// });
-//
-// RoutePageListConstraint = Route.extend({
-//     method      : 'get',
-//     url         : '/list/{modelName}/{pk}/{constraintKey}/{constraintValue}'
-// });
 
 /**
  * Created by pier on 20/12/17.
@@ -1969,23 +1628,11 @@ crud.components.cComponent = Vue.component('c-component',{
                 return that.route;
             var rn = routeName?routeName:that.routeName;
             if (!rn)
-                return new Route();
+                return null;
             if (!that.$crud.routes[rn])
                 throw "Impossibile trovare la route " + rn;
             console.log('routeName',rn,that.$crud.routes[rn])
             return new Route(that.$crud.routes[rn]);
-
-            // console.log('_getRoute',that.conf);
-            // if (!that.conf)
-            //     return route;
-            // if (that.routeName == null)
-            //     return route;
-            // if (!that.route) {
-            //     if (crud.routes[that.conf.routeName]) {
-            //         route =  new Route(crud.routes[that.conf.routeName]);
-            //     }
-            // }
-            // return route;
         },
     }
 });
@@ -2672,6 +2319,10 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
                     that.setRouteValues(r,term);
                     Server.route(r,function (json) {
                         var suggestions = [];
+                        if (json.error) {
+                            that.$crud.errorDialog(json.msg);
+                            return suggest(suggestions)
+                        }
                         //that.suggestValues = {};
                         for (var i in json.result) {
                             // var s = "";
@@ -4182,7 +3833,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     data = that.conf.data;
                 }
             } else {
-                var protocol = Protocol.factory(route.getProtocol());
+                var protocol = that.$crud.createProtocol(route.getProtocol());
+
+
+                //var protocol = Protocol.factory(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);
@@ -4468,8 +4122,9 @@ crud.components.views.vList = Vue.component('v-list', {
                     that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
                 }
             } else {
-                console.log('protocol',route.getProtocol());
-                var protocol = Protocol.factory(route.getProtocol());
+                //console.log('protocol',route.getProtocol());
+                //var protocol = Protocol.factory(route.getProtocol());
+                var protocol = that.$crud.createProtocol(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);

@@ -2,7 +2,7 @@
     <div class="input-group">
         <span class="input-group-addon">{{label}}</span>
         <input type="search" c-autocomplete class="form-control mdb-autocomplete">
-        <button class="input-group-btn btn btn-default" v-on:click="clear">
+        <button type="button" class="input-group-btn btn btn-default" v-on:click="clear">
             <i class="fa fa-times"></i>
         </button>
         <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">

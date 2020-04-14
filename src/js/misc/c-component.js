@@ -95,23 +95,11 @@ crud.components.cComponent = Vue.component('c-component',{
                 return that.route;
             var rn = routeName?routeName:that.routeName;
             if (!rn)
-                return new Route();
+                return null;
             if (!that.$crud.routes[rn])
                 throw "Impossibile trovare la route " + rn;
             console.log('routeName',rn,that.$crud.routes[rn])
             return new Route(that.$crud.routes[rn]);
-
-            // console.log('_getRoute',that.conf);
-            // if (!that.conf)
-            //     return route;
-            // if (that.routeName == null)
-            //     return route;
-            // if (!that.route) {
-            //     if (crud.routes[that.conf.routeName]) {
-            //         route =  new Route(crud.routes[that.conf.routeName]);
-            //     }
-            // }
-            // return route;
         },
     }
 });

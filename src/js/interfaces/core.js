@@ -10,6 +10,21 @@ core_interface = {
                 throw "Impossibile trovare la route " + routeName;
             return new Route(routeConf);
         },
+        /**
+         * cerca e crea la classe protocol utilizzando come naming
+         * Protocol+pascalCase(name)
+         * @param name : nome su cui viene applicata la funzione pascalCase e aggiunt il prefisso Protocol.
+         * esempio se passiamo come nome mio_prot cerchera' di istanziare la class ProtocolMioProt.
+         */
+        createProtocol : function(name) {
+            var className = "Protocol" + crud.pascalCase(name);
+            try {
+                //return new window[className]();
+                return eval('new ' + className + '()');
+            } catch (e) {
+                console.error('failed to create ' + className,e);
+            }
+        },
 
         getDescendantProp : function(obj, desc) {
             var arr = desc.split(".");
