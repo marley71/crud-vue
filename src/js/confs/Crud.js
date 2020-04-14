@@ -406,18 +406,18 @@ crud.conf = {
         },
         actions : ['action-save','action-back']
     },
-    uploadFile : {
-        routeName : null,
-        fields : ['nome','descrizione','modelName'],
-        fieldsConfig : {
-            modelName : {
-                type : 'r-hidden'
-            },
-            descrizione : {
-                type : 'r-textarea'
-            }
-        }
-    }
+    // uploadFile : {
+    //     routeName : null,
+    //     fields : ['nome','descrizione','modelName'],
+    //     fieldsConfig : {
+    //         modelName : {
+    //             type : 'r-hidden'
+    //         },
+    //         descrizione : {
+    //             type : 'r-textarea'
+    //         }
+    //     }
+    // }
 };
 
 crud.routes =  {
