@@ -3,7 +3,7 @@ crud.components.dBase = Vue.component('d-base',{
     extends : crud.components.cComponent,
     mounted : function () {
         var that = this;
-        console.log('message',this.cMessage,this.message)
+        //console.log('message',this.cMessage,this.message)
         that.jQe(that.selector).modal('show');
         that.jQe(that.selector).on('hidden.bs.modal', function (e) {
             that.jQe(that.selector).remove();
@@ -93,22 +93,7 @@ crud.components.dWarning = Vue.component('d-warning', {
 });
 
 crud.components.dCustom = Vue.component('d-custom', {
-    // mounted : function () {
-    //     var that = this;
-    //     for (var k in that.cCallbacks) {
-    //         console.log('callback',k);
-    //         that.methods[k] = function () {
-    //             that.cCallbacks[k].apply(that);
-    //         }
-    //     }
-    // },
     extends : crud.components.dBase,
-    // methods : {
-    //     cbCall : function (key) {
-    //         var that = this;
-    //         that.cCallbacks[key].execute(that);
-    //     }
-    // },
     props : {
         'c-title': {
             default : ''

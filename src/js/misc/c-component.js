@@ -19,7 +19,7 @@ crud.components.cComponent = Vue.component('c-component',{
 
     mounted : function() {
         var that = this;
-        console.log('c-component.mounted',that.$options.name);
+        //console.log('c-component.mounted',that.$options.name);
         if (that.cConf && that.cConf.cRef) {
             that.$crud.cRefs[that.cConf.cRef] = this;
         }
@@ -64,17 +64,6 @@ crud.components.cComponent = Vue.component('c-component',{
             d.conf = _c;
             return d;
         },
-        // defaultData : function () {
-        //     var _c = this.cConf || {};
-        //     var d = {};
-        //     for (var k in _c) {
-        //         if (k == 'methods')
-        //             continue;
-        //         d[k] = _c[k];
-        //     }
-        //     d.conf = _c;
-        //     return d;
-        // },
         /**
          * setta la configurazione della route secondo le proprie esigenze.
          * @param route

@@ -1552,7 +1552,7 @@ crud.components.cComponent = Vue.component('c-component',{
 
     mounted : function() {
         var that = this;
-        console.log('c-component.mounted',that.$options.name);
+        //console.log('c-component.mounted',that.$options.name);
         if (that.cConf && that.cConf.cRef) {
             that.$crud.cRefs[that.cConf.cRef] = this;
         }
@@ -1597,17 +1597,6 @@ crud.components.cComponent = Vue.component('c-component',{
             d.conf = _c;
             return d;
         },
-        // defaultData : function () {
-        //     var _c = this.cConf || {};
-        //     var d = {};
-        //     for (var k in _c) {
-        //         if (k == 'methods')
-        //             continue;
-        //         d[k] = _c[k];
-        //     }
-        //     d.conf = _c;
-        //     return d;
-        // },
         /**
          * setta la configurazione della route secondo le proprie esigenze.
          * @param route
@@ -1864,8 +1853,7 @@ Vue.component('c-paginator',{
     template : '#c-paginator-template',
     data : function () {
         var that = this;
-        //PAGINATOR = this;
-        console.log('paginator',that.cPagination, that.$parent.pagination )
+        //console.log('paginator',that.cPagination, that.$parent.pagination )
         var pagination = that.cPagination || that.$parent.data.pagination || {};
         var d = {
             current_page : 0,
@@ -1896,18 +1884,6 @@ Vue.component('c-paginator',{
             if (parseInt(that.current_page) >= parseInt(that.last_page))
                 return ;
             that.setPage(parseInt(that.current_page) + 1);
-            // that.cRoute.params.page = (parseInt(that.cRoute.params.page)?parseInt(that.cRoute.params.page):1) + 1;
-            // console.log('ROUTER',that.cRoute.getUrl(),new Object(that.cRoute.getParams()));
-            // router.push({
-            //     path : that.cRoute.getUrl(),
-            //     query : that.cRoute.getParams()
-            // })
-            // router.go();
-            // return ;
-
-            // var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
-            // params['page'] = (parseInt(params['page'])?parseInt(params['page']):1) + 1;
-            // that.cRouteConf.params = params;
         },
         setPage : function(page) {
             var that = this;
@@ -1917,12 +1893,6 @@ Vue.component('c-paginator',{
             params['page'] = parseInt(page);
             route.setParams(params);
             that.$parent.reload();
-
-            // var params = JSON.parse(JSON.stringify(that.cRouteConf.params));
-            // params['page'] = parseInt(page);
-            // that.$parent.routeConf.params = params;
-            //that.cRouteConf.params = params;
-
         },
         lastPage : function () {
             var that = this;
@@ -1938,7 +1908,7 @@ crud.components.dBase = Vue.component('d-base',{
     extends : crud.components.cComponent,
     mounted : function () {
         var that = this;
-        console.log('message',this.cMessage,this.message)
+        //console.log('message',this.cMessage,this.message)
         that.jQe(that.selector).modal('show');
         that.jQe(that.selector).on('hidden.bs.modal', function (e) {
             that.jQe(that.selector).remove();
@@ -2028,22 +1998,7 @@ crud.components.dWarning = Vue.component('d-warning', {
 });
 
 crud.components.dCustom = Vue.component('d-custom', {
-    // mounted : function () {
-    //     var that = this;
-    //     for (var k in that.cCallbacks) {
-    //         console.log('callback',k);
-    //         that.methods[k] = function () {
-    //             that.cCallbacks[k].apply(that);
-    //         }
-    //     }
-    // },
     extends : crud.components.dBase,
-    // methods : {
-    //     cbCall : function (key) {
-    //         var that = this;
-    //         that.cCallbacks[key].execute(that);
-    //     }
-    // },
     props : {
         'c-title': {
             default : ''
@@ -2065,6 +2020,7 @@ crud.components.dCustom = Vue.component('d-custom', {
     },
     template : '#d-custom-template'
 });
+
 crud.components.renders.rBase = Vue.component('r-base', {
     extends : crud.components.cComponent,
     props : ['cMarker'],
