@@ -12,6 +12,8 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
         }
         d.routeName = d.conf.routeName || 'autocomplete';
         d.route = null;
+        if (!('primaryKey' in d)  )
+            d.primaryKey = 'id';
         return d;
     },
     methods : {
@@ -37,11 +39,11 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
                     var items = [];
                     for (var i in json.result) {
                         items.push({
-                            id : json.result[i].id,
+                            id : json.result[i][that.primaryKey],
                             text : that._getLabel(json.result[i])
                         });
                     }
-                    //console.log('items',items);
+                    console.log(that.primaryKey,'items',items);
                     return {
                         results: items
                     };
@@ -82,7 +84,7 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
         getValue : function () {
             var that = this;
             var selValue = jQuery(that.$el).find('[c-select2]').select2('data');
-            return selValue.length>0?selValue[0]['id']:null;
+            return selValue.length>0?selValue[0][that.primaryKey]:null;
 
         },
         setRouteValues : function(route) {

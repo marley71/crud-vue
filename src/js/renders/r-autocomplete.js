@@ -14,9 +14,12 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
             ];
         }
         if (!('routeName' in d))
-            d.routeName = 'autocomplete'
+            d.routeName = 'autocomplete';
+        if (!('primaryKey' in d))
+            d.primaryKey = 'id';
         d.label = '';
         d.suggestValues = {};
+        console.log('CONFF',d);
         return d;
     },
     methods : {
@@ -40,7 +43,7 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
                             // }
                             var s = that._getSuggestion(json.result[i]);
                             suggestions.push(s);
-                            that.suggestValues[s] = json.result[i]['id'];
+                            that.suggestValues[s] = json.result[i][that.primaryKey];
                         }
                         return suggest(suggestions)
                     })
