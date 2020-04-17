@@ -39,7 +39,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
                 render = this.$parent.renders[ckeys[i]];
             }
             //var render = this.$parent.renders[this.cKey];
-            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            //console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
             return {
                 type : render.type,
                 conf : render
@@ -56,7 +56,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
             } else
                 conf = this.cRender;
 
-            console.log('V-RENDER2 ',conf,this.$parent.renders);
+            //console.log('V-RENDER2 ',conf,this.$parent.renders);
             return {
                 type : conf.type,
                 conf : conf

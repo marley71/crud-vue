@@ -34,14 +34,17 @@ Server.getUrl = function (url) {
     return Server.subdomain?Server.subdomain + url:url;
 };
 
+Server.getHearders = function() {
+    return {
+        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+    }
+}
 
 Server.post = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
     jQuery.ajax({
         url: realUrl,
-        headers: {
-            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-        },
+        headers: Server.getHearders(),
         type: 'POST',
         data: params,
         //processData: false,
@@ -66,9 +69,7 @@ Server.get = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
     jQuery.ajax({
         url: realUrl,
-        headers: {
-            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-        },
+        headers: Server.getHearders(),
         type: 'GET',
         data: params,
         //processData: false,

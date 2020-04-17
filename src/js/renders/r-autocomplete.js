@@ -13,6 +13,8 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
 //                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
+        if (!('routeName' in d))
+            d.routeName = 'autocomplete'
         d.label = '';
         d.suggestValues = {};
         return d;
@@ -106,22 +108,27 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
         _getLabel : function () {
 
             var that = this;
-            var r = new Route(that.$crud.routes.view);
-            console.log('r-autocomplete getLabel',that.conf);
-            r.setValues({
-                modelName : that.conf.modelName,
-                pk : that.value
-            });
-            // r.values.modelName = that.conf.model;
-            // r.values.pk = that.value;
-            var lb = '';
-            Server.route(r,function (json) {
-                if (json.error) {
-                    that.label = json.msg;
-                    return ;
-                }
-                that.label = that._getSuggestion(json.result);
-            })
+
+            if (that.modelData) {
+                that.label = that._getSuggestion(that.modelData);
+            }
+
+            // var r = new Route(that.$crud.routes.view);
+            // console.log('r-autocomplete getLabel',that.conf);
+            // r.setValues({
+            //     modelName : that.conf.modelName,
+            //     pk : that.value
+            // });
+            // // r.values.modelName = that.conf.model;
+            // // r.values.pk = that.value;
+            // var lb = '';
+            // Server.route(r,function (json) {
+            //     if (json.error) {
+            //         that.label = json.msg;
+            //         return ;
+            //     }
+            //     that.label = that._getSuggestion(json.result);
+            // })
         },
         _getSuggestion: function(rowData) {
             var that = this;

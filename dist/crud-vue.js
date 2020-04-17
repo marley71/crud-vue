@@ -992,7 +992,7 @@ core_interface = {
             var ext = re.exec(fileName)[1];
             var realPath = fileName;
             if (fileName.indexOf('http') != 0) {
-                realPath = ( (fileName.charAt(0) == '/') || (fileName.indexOf('../') === 0) ) ? fileName : that.pluginsPath + fileName;
+                realPath = ( (fileName.charAt(0) == '/') || (fileName.indexOf('../') === 0) || (fileName.indexOf('./') === 0)) ? fileName : that.pluginsPath + fileName;
             }
             if (ext == 'js') {
                 core_interface._loadScript(realPath,_callback);
@@ -1268,6 +1268,8 @@ class ProtocolRecord extends Protocol {
                 this.metadata[field].domainValues = fieldsMetadata[field].options;
             if (fieldsMetadata[field].options_order)
                 this.metadata[field].domainValuesOrder = fieldsMetadata[field].options_order;
+            if (fieldsMetadata[field].referred_data)
+                this.metadata[field].modelData = fieldsMetadata[field].referred_data
             //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
             //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
         }
@@ -1308,6 +1310,8 @@ class ProtocolList extends Protocol {
                 this.metadata[field].domainValues = json.metadata[field].options;
             if (json.metadata[field].options_order)
                 this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
+            if (this.metadata[field].referred_data)
+                this.metadata[field].modelData = fieldsMetadata[field].referred_data
         }
     }
 }
@@ -1465,14 +1469,17 @@ Server.getUrl = function (url) {
     return Server.subdomain?Server.subdomain + url:url;
 };
 
+Server.getHearders = function() {
+    return {
+        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+    }
+}
 
 Server.post = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
     jQuery.ajax({
         url: realUrl,
-        headers: {
-            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-        },
+        headers: Server.getHearders(),
         type: 'POST',
         data: params,
         //processData: false,
@@ -1497,9 +1504,7 @@ Server.get = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
     jQuery.ajax({
         url: realUrl,
-        headers: {
-            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-        },
+        headers: Server.getHearders(),
         type: 'GET',
         data: params,
         //processData: false,
@@ -2262,6 +2267,8 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
 //                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
+        if (!('routeName' in d))
+            d.routeName = 'autocomplete'
         d.label = '';
         d.suggestValues = {};
         return d;
@@ -2355,22 +2362,27 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
         _getLabel : function () {
 
             var that = this;
-            var r = new Route(that.$crud.routes.view);
-            console.log('r-autocomplete getLabel',that.conf);
-            r.setValues({
-                modelName : that.conf.modelName,
-                pk : that.value
-            });
-            // r.values.modelName = that.conf.model;
-            // r.values.pk = that.value;
-            var lb = '';
-            Server.route(r,function (json) {
-                if (json.error) {
-                    that.label = json.msg;
-                    return ;
-                }
-                that.label = that._getSuggestion(json.result);
-            })
+
+            if (that.modelData) {
+                that.label = that._getSuggestion(that.modelData);
+            }
+
+            // var r = new Route(that.$crud.routes.view);
+            // console.log('r-autocomplete getLabel',that.conf);
+            // r.setValues({
+            //     modelName : that.conf.modelName,
+            //     pk : that.value
+            // });
+            // // r.values.modelName = that.conf.model;
+            // // r.values.pk = that.value;
+            // var lb = '';
+            // Server.route(r,function (json) {
+            //     if (json.error) {
+            //         that.label = json.msg;
+            //         return ;
+            //     }
+            //     that.label = that._getSuggestion(json.result);
+            // })
         },
         _getSuggestion: function(rowData) {
             var that = this;
@@ -2844,18 +2856,46 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
             ];
         }
         d.routeName = d.conf.routeName || 'autocomplete';
+        d.route = null;
         return d;
     },
     methods : {
+        _getAjaxConf : function() {
+            var that = this;
+            that.route = that._getRoute();
+            that.setRouteValues(that.route);
+            var url = that.route.getUrl();
+            var ajax = {
+                url : url,
+                method : that.route.getMethod(),
+                headers: Server.getHearders(),
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        value : params.term,
+                        field : that.name,
+                    }
+                },
+                processResults: function (json) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    var items = [];
+                    for (var i in json.result) {
+                        items.push({
+                            id : json.result[i].id,
+                            text : that._getLabel(json.result[i])
+                        });
+                    }
+                    //console.log('items',items);
+                    return {
+                        results: items
+                    };
+                },
+            };
+            return ajax;
+        },
         afterLoadResources : function () {
             var that = this;
-            console.log('b2 afterloadresources')
-            // var r = Route.factory('autocomplete',{
-            //     values : {
-            //         modelName : that.model
-            //     }
-            // });
-            // r.params['field[]'] = 'email'
             var data = [];
             if (that.value) {
                 data.push({
@@ -2863,38 +2903,11 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
                     selected : true,
                     text : that._getLabel(that.modelData)
                 });
-                // that.value.selected = true;
-                // that.value.text = that._getLabel(that.value);
-                // data.push(that.value);
             }
-
 
             jQuery(that.$el).find('[c-select2]').select2({
                 data : data,
-                ajax : {
-                    url : that._createUrl(),
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            term: params.term, // search term
-                            page: params.page
-                        };
-                    },
-                    processResults: function (json) {
-                        // Tranforms the top-level key of the response object from 'items' to 'results'
-                        var items = [];
-                        for (var i in json.result) {
-                            items.push({
-                                id : json.result[i].id,
-                                text : that._getLabel(json.result[i])
-                            });
-                        }
-                        return {
-                            results: items
-                        };
-                    },
-                },
+                ajax : that._getAjaxConf(),
                 allowClear : that.allowClear,
                 placeholder: that.placeholder?that.placeholder:"Seleziona",
             });
@@ -2906,8 +2919,8 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
         _getLabel : function(value) {
             var that  =this;
             var label = "";
-            for (var i in that.labelFields) {
-                label += value[that.labelFields[i]] + " ";
+            for (var i in that.fields) {
+                label += value[that.fields[i]] + " ";
             }
             return label;
         },
@@ -2918,36 +2931,36 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
 
         },
         setRouteValues : function(route) {
-            route.setValues({modelName:this.model});
+            route.setValues({modelName:this.modelName});
             return route;
         },
-        _createUrl : function () {
-            var that = this;
-            var r = that.$crud.createRoute(that.routeName);
-            that.setRouteValues(r);
-
-
-            //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
-            var url = that.url?that.url:r.getUrl();
-            url+= '?';
-
-            if (that.conf.fields) {
-                for(var f in that.conf.fields) {
-                    url+="field[]="+that.conf.fields[f]+"&";
-                }
-            }
-            /* @TODO se metto la description diventa difficile cambiare la
-             if (that.model_description) {
-             for(var f in that.model_description) {
-             url+="description[]="+that.model_description[f]+"&";
-             }
-             }
-             */
-            url += that.conf.separator ? '&separator=' + that.conf.separator : '';
-            url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
-            url += that.conf.method ? '&method=' + that.conf.method: '';
-            return url;
-        },
+        // _createUrl : function () {
+        //     var that = this;
+        //     var r = that.$crud.createRoute(that.routeName);
+        //     that.route = that.setRouteValues(r);
+        //
+        //
+        //     //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
+        //     var url = that.url?that.url:r.getUrl();
+        //     url+= '?';
+        //
+        //     if (that.conf.fields) {
+        //         for(var f in that.conf.fields) {
+        //             url+="field[]="+that.conf.fields[f]+"&";
+        //         }
+        //     }
+        //     /* @TODO se metto la description diventa difficile cambiare la
+        //      if (that.model_description) {
+        //      for(var f in that.model_description) {
+        //      url+="description[]="+that.model_description[f]+"&";
+        //      }
+        //      }
+        //      */
+        //     url += that.conf.separator ? '&separator=' + that.conf.separator : '';
+        //     url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
+        //     url += that.conf.method ? '&method=' + that.conf.method: '';
+        //     return url;
+        // },
     }
 
 });
@@ -3417,7 +3430,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
                 render = this.$parent.renders[ckeys[i]];
             }
             //var render = this.$parent.renders[this.cKey];
-            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            //console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
             return {
                 type : render.type,
                 conf : render
@@ -3434,7 +3447,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
             } else
                 conf = this.cRender;
 
-            console.log('V-RENDER2 ',conf,this.$parent.renders);
+            //console.log('V-RENDER2 ',conf,this.$parent.renders);
             return {
                 type : conf.type,
                 conf : conf

@@ -29,6 +29,8 @@
     <h1>CRUD <small>framework js based on vue</small></h1>
     <div id="app">
         <!-- crud vue container -->
+        <c-router c-default-command="c-test?cComponent=r-input" c-content-id="#app-content"></c-router>
+        <div id="app-content"></div>
     </div>
 </div>
 <script>
@@ -36,14 +38,18 @@
     jQuery( function() {
         app = new CrudApp({
             data : {
-                // default template  html for crud
+                // default template  html della libreria basato su bootstrap4
                 templatesFile : '../dist/crud-vue.html',
-                //-- path plugins if you use other plugins
+                // -- path plugins se usi qualche particolare plugin
                 //pluginsPath : '/bootstrap4/plugins/',
+                // -- configurazioni personali per ridefinire o aggiungere comportamenti della libreria
+                appConfig : './extras/myconf.js',
                 el : '#app'
             },
         });
     });
 </script>
+<!-- file configurazione componenti d'esempio -->
+<script src="./extras/components-conf.js"></script>
 </body>
 </html>

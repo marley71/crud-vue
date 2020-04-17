@@ -299,7 +299,7 @@ core_interface = {
             var ext = re.exec(fileName)[1];
             var realPath = fileName;
             if (fileName.indexOf('http') != 0) {
-                realPath = ( (fileName.charAt(0) == '/') || (fileName.indexOf('../') === 0) ) ? fileName : that.pluginsPath + fileName;
+                realPath = ( (fileName.charAt(0) == '/') || (fileName.indexOf('../') === 0) || (fileName.indexOf('./') === 0)) ? fileName : that.pluginsPath + fileName;
             }
             if (ext == 'js') {
                 core_interface._loadScript(realPath,_callback);
