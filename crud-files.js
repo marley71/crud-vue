@@ -81,7 +81,7 @@ var crudHtmlFiles = [
     'src/templates/misc/cr-templates.html',
     'src/templates/misc/c-paginator.html',
     'src/templates/misc/dialogs.html',
-    //'src/templates/misc/c-wait.html',
+    'src/templates/misc/c-loading.html',
 
     'src/templates/renders/r-render.html',
     'src/templates/renders/r-custom.html',

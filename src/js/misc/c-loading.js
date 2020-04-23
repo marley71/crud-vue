@@ -1,3 +1,3 @@
 Vue.component('c-loading',{
-    template : '<span>Carico ...</span>'
+    template : '#c-loading-template'
 })

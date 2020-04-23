@@ -5,6 +5,7 @@ crud.lang = {
     'app.azioni' : 'Azioni',
     'app.cancella' : 'Cancella elemento',
     'app.cancella-selezionati' : 'Cancella elementi selezionati',
+    'app.carico' : 'Carico...',
     'app.cerca' : 'Cerca',
     'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
     'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',

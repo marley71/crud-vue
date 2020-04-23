@@ -178,6 +178,12 @@
         </div>
     </div>
 </template>
+<script type="text/x-template" id="c-loading-template">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">{{'app.carico'|translate}}</span>
+    </div>
+</script>
+
 <script type="text/x-template" id="r-render-template">
     <component :is="type" :c-conf="item" :c-key="key"></component>
 </script>
