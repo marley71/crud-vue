@@ -31,7 +31,13 @@
                 "email_verified_at": 0,
                 "banned": 0,
                 "mainrole": "Admin",
-                "fotos": [],
+                "fotos": [
+                    {
+                        "id": "temp_foto_158764716149160.png",
+                        "mimetype": "image/png",
+                        "url": "./mock/image.png"
+                    }
+                ],
                 "attachments": []
             },
             {
