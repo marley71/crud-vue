@@ -1,0 +1,9 @@
+{
+    "error": 0,
+    "msg": "",
+    "result": {
+        "set": true,
+        "field": "activated",
+        "value": "6"
+    }
+}

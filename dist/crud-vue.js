@@ -2151,6 +2151,12 @@ crud.components.renders.rInput = Vue.component('r-input', {
 crud.components.renders.rInputHelped =  Vue.component('r-input-helped', {
     extends : crud.components.renders.rBase,
     template: '#r-input-helped-template',
+    data : function () {
+        var d = {};
+        if (this.cConf.domainValues && !this.cConf.domainValuesOrder)
+            d.domainValuesOrder = Object.keys(this.cConf.domainValues);
+        return d;
+    }
 });
 
 crud.components.renders.rHidden = Vue.component('r-hidden', {
@@ -2987,12 +2993,6 @@ crud.components.renders.rB2mSelect2 = Vue.component('r-b2m-select2', {
     methods : {
         afterLoadResources : function () {
             var that = this;
-            console.log('b2 afterloadresources')
-            // var r = Route.factory('autocomplete',{
-            //     values : {
-            //         modelName : that.conf.metadata.autocompleteModel
-            //     }
-            // });
             var selected = [];
             for (var i in that.value) {
                 selected.push({
@@ -3002,35 +3002,56 @@ crud.components.renders.rB2mSelect2 = Vue.component('r-b2m-select2', {
                 });
             }
 
-
             jQuery(that.$el).find('[c-select2]').select2({
                 data : selected,
-                ajax : {
-                    url : that._createUrl(),
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            term: params.term, // search term
-                            page: params.page
-                        };
-                    },
-                    processResults: function (json) {
-                        // Tranforms the top-level key of the response object from 'items' to 'results'
-                        var items = [];
-                        for (var i in json.result) {
-                            items.push({
-                                id : json.result[i].id,
-                                text : that._getLabel(json.result[i])
-                            });
-                        }
-                        return {
-                            results: items
-                        };
-                    },
+                ajax : that._getAjaxConf(),
+                allowClear : that.allowClear,
+                placeholder: that.placeholder?that.placeholder:"Seleziona",
+                processResults: function (json) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    var items = [];
+                    for (var i in json.result) {
+                        items.push({
+                            id : json.result[i].id,
+                            text : that._getLabel(json.result[i])
+                        });
+                    }
+                    return {
+                        results: items
+                    };
                 },
                 placeholder: that.placeholder?that.placeholder:"Seleziona",
             });
+
+            //
+            // jQuery(that.$el).find('[c-select2]').select2({
+            //     data : selected,
+            //     ajax : {
+            //         url : that._createUrl(),
+            //         dataType: 'json',
+            //         delay: 250,
+            //         data: function(params) {
+            //             return {
+            //                 term: params.term, // search term
+            //                 page: params.page
+            //             };
+            //         },
+            //         processResults: function (json) {
+            //             // Tranforms the top-level key of the response object from 'items' to 'results'
+            //             var items = [];
+            //             for (var i in json.result) {
+            //                 items.push({
+            //                     id : json.result[i].id,
+            //                     text : that._getLabel(json.result[i])
+            //                 });
+            //             }
+            //             return {
+            //                 results: items
+            //             };
+            //         },
+            //     },
+            //     placeholder: that.placeholder?that.placeholder:"Seleziona",
+            // });
             jQuery(that.$el).find('[c-select2]').on('select2:select', function () {
                 that._renderHidden();
             });

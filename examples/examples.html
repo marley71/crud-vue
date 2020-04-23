@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crud on Vue</title>
+    <!-- bootstrap4 css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- minimal crud-vue css -->
+    <link href="../dist/crud-vue.css" rel="stylesheet">
+    <!-- font-awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <!-- bootstrap4 js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Vue js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- crud-vue.js -->
+    <script src="../dist/crud-vue.js"></script>
+    <script src="./extras/edit_area/edit_area_full.js"></script>
+</head>
+<body>
+<div>
+    <h1><a href="./index.html">CRUD</a> <small>framework js based on vue</small></h1>
+    <div id="app">
+        <!-- crud vue container -->
+        <c-router ref="router" c-default-command="c-test?cComponent=r-input" c-content-id="#app-content"></c-router>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="accordion" id="myAccordion">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne">Renders</button>
+                            </h2>
+                        </div>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#myAccordion">
+                            <div class="card-body">
+                                <div>Renders</div>
+                                <ul class="">
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-input&cConf=rInputConf">rInput</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-input&cConf=rPasswordConf">rInput password</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-input-helped&cConf=rInputHelpedConf">rInputHelped</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-autocomplete&cConf=rAutocompleteConf">rAutocomplete</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-belongsto&cConf=rBelongstoConf">rBelongsto</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-radio">rRadio</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-checkbox">rCheckbox</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-select">rSelect</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-textarea">rTextarea</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-text">rText</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-date-select">rDateSelect</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-date-picker">rDatePicker</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-texthtml">rTexthtml</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-hasmany">rHasmany</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-hasmany-view">rHasmanyView</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-swap">rSwap</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-b2-select2">rB2Select2</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-b2m-select2">rB2MSelect2</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-upload">rUpload</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=r-upload-ajax">rUploadAjax</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo">Views</button>
+                            </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#myAccordion">
+                            <div class="card-body">
+                                <div>Views</div>
+                                <ul class="">
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=v-edit&cConf=vCustomConf">Custom Record</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=v-search&cModel=user">Search user</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=v-insert&cModel=user">Insert user</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=v-edit&cModel=user&cPk=4">Edit user 4</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=v-view&cModel=user&cPk=4">View user 4</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=v-list&cConf=vCustomListConf">Custom List</a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=v-list&cModel=user">List user </a></li>
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=v-list-edit&cModel=user">List Edit user </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                                <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree">Dashboards</button>
+                            </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#myAccordion">
+                            <div class="card-body">
+                                <div>Dashboards</div>
+                                <ul class="">
+                                    <li class="nav-item pl-2"><a href="#c-test?cComponent=c-manage&cModel=user">Manage user</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-9">
+                <div id="app-content"></div>
+                <div>Configurazione componente</div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea id="editor" style="height:400px;width:100%"></textarea>
+                        <button onclick="ricarica()">Ricarica</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    var app = null;
+    function ricarica() {
+        app.$set(app.$refs['router'].lastComponent,'conf',null);
+        app.$crud.waitStart();
+        setTimeout( function () {
+            app.$crud.waitEnd();
+            var code = editAreaLoader.getValue('editor');
+            console.log('code',code);
+            eval('var obj = ' + code);
+            console.log('obj',obj);
+            app.$set(app.$refs['router'].lastComponent,'conf',obj);
+        },10);
+
+    };
+    jQuery( function() {
+        jQuery('body').on('set-code',function (event,confName) {
+            console.log('event confName',confName);
+            var code = window[confName+"_f"]?window[confName+"_f"].toString().match(/function[^{]+\{([\s\S]*)\}$/)[1]:"{}";
+            editAreaLoader.setValue('editor',code)
+        });
+        app = new CrudApp({
+            mounted : function() {
+                editAreaLoader.init({
+                    id: "editor"	// id of the textarea to transform
+                    ,start_highlight: true	// if start with highlight
+                    ,allow_resize: "both"
+                    ,allow_toggle: true
+                    ,word_wrap: true
+                    ,language: "en"
+                    ,syntax: "js"
+                });
+
+            },
+            data : function () {
+
+                return {
+                    // default template  html della libreria basato su bootstrap4
+                    templatesFile : '../dist/crud-vue.html',
+                    // -- path plugins se usi qualche particolare plugin
+                    //pluginsPath : '/bootstrap4/plugins/',
+                    // -- configurazioni personali per ridefinire o aggiungere comportamenti della libreria
+                    appConfig : './extras/myconf.js',
+                    el : '#app'
+                };
+            }
+        });
+    });
+</script>
+<!-- file configurazione componenti d'esempio -->
+<script src="./extras/components-conf.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+    "error": 0,
+    "msg": "",
+    "result": {
+        "email": null,
+        "name": null,
+        "roles|id": -1
+    },
+    "metadata": {
+        "fields": {
+            "email": {
+                "operator": "like"
+            },
+            "name": {
+                "operator": "like"
+            },
+            "roles|id": {
+                "options": {
+                    "-1": "Seleziona...",
+                    "2": "Admin",
+                    "4": "Cliente",
+                    "3": "Operatore",
+                    "1": "Superutente"
+                },
+                "options_order": [
+                    -1,
+                    2,
+                    4,
+                    3,
+                    1
+                ]
+            }
+        },
+        "relations": []
+    }
+}
