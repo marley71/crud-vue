@@ -1,0 +1,13 @@
+<script type="text/x-template" id="w-hasmany-view-template">
+    <div crud-render_element>
+        <div class="list-unstyled" crud-render_list >
+            <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
+            <ul class="list-unstyled" v-for="(item,index) in value">
+                <li>
+                    <v-hasmany-view v-bind:c-model="cConf.modelName" v-bind:c-conf="getHasmanyConf(index,item)"></v-hasmany-view>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</script>

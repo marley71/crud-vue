@@ -1,5 +1,5 @@
 <script type="text/x-template" id="v-list-template">
-    <div>
+    <div class="float-end ">
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading"></c-loading>
         <div v-else>
@@ -57,7 +57,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="float-none">
+            <div class="clearfix">
                 <div class="float-left" v-show="collectionActionsName.length">
                     <template v-for="name in collectionActionsName">
                         <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>

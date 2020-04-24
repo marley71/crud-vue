@@ -50,7 +50,7 @@ crud.components.views.vList = Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
-            defaultRenderType : 'r-text',
+            defaultRenderType : 'w-text',
             langContext : that.cModel,
             json : {},
         };

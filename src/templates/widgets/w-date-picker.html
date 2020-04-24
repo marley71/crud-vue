@@ -1,0 +1,7 @@
+<script type="text/x-template" id="w-date-picker-template">
+    <div class="input-group">
+        <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+        <input c-picker >
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+    </div>
+</script>

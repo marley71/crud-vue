@@ -363,7 +363,7 @@ crud.conf = {
         routeName : 'edit',
         customActions : {},
         fieldsConfig : {
-            id : 'r-hidden'
+            id : 'w-hidden'
         },
         fields : [],
         renderTemplate : 'c-tpl-record',
@@ -409,7 +409,7 @@ crud.conf = {
         renderTemplate : 'c-tpl-record',
         actions : ['action-save','action-back'],
         fieldsConfig : {
-            id : 'r-hidden'
+            id : 'w-hidden'
         },
         actions : ['action-save','action-back']
     },
@@ -418,10 +418,10 @@ crud.conf = {
     //     fields : ['nome','descrizione','modelName'],
     //     fieldsConfig : {
     //         modelName : {
-    //             type : 'r-hidden'
+    //             type : 'w-hidden'
     //         },
     //         descrizione : {
-    //             type : 'r-textarea'
+    //             type : 'w-textarea'
     //         }
     //     }
     // }
@@ -534,7 +534,7 @@ crud.routes =  {
 crud.cRefs = {};
 
 crud.components = {
-    renders : {
+    widgets : {
 
     },
     views : {

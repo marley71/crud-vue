@@ -363,7 +363,7 @@ crud.conf = {
         routeName : 'edit',
         customActions : {},
         fieldsConfig : {
-            id : 'r-hidden'
+            id : 'w-hidden'
         },
         fields : [],
         renderTemplate : 'c-tpl-record',
@@ -409,7 +409,7 @@ crud.conf = {
         renderTemplate : 'c-tpl-record',
         actions : ['action-save','action-back'],
         fieldsConfig : {
-            id : 'r-hidden'
+            id : 'w-hidden'
         },
         actions : ['action-save','action-back']
     },
@@ -418,10 +418,10 @@ crud.conf = {
     //     fields : ['nome','descrizione','modelName'],
     //     fieldsConfig : {
     //         modelName : {
-    //             type : 'r-hidden'
+    //             type : 'w-hidden'
     //         },
     //         descrizione : {
-    //             type : 'r-textarea'
+    //             type : 'w-textarea'
     //         }
     //     }
     // }
@@ -534,7 +534,7 @@ crud.routes =  {
 crud.cRefs = {};
 
 crud.components = {
-    renders : {
+    widgets : {
 
     },
     views : {
@@ -2028,20 +2028,20 @@ crud.components.dCustom = Vue.component('d-custom', {
     template : '#d-custom-template'
 });
 
-crud.components.renders.rBase = Vue.component('r-base', {
+crud.components.widgets.wBase = Vue.component('w-base', {
     extends : crud.components.cComponent,
     props : ['cMarker'],
 
     mounted : function() {
         var that = this;
-        console.log('r-base.mounted');
+        console.log('w-base.mounted');
         var _conf = that.cConf || {};
         if (!_conf.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
         }
         // var that =this;
         // for (var k in _conf.methods) {
-        //     //console.log('r-base implements methods',k);
+        //     //console.log('w-base implements methods',k);
         //     that[k] = function () {
         //         return _conf.methods[k].apply(that,this.arguments);
         //     }
@@ -2087,10 +2087,10 @@ crud.components.renders.rBase = Vue.component('r-base', {
         },
 
         beforeLoadResources : function () {
-            console.log('rBase.beforeLoadResources')
+            console.log('wBase.beforeLoadResources')
         },
         afterLoadResources : function () {
-            console.log('rBase.afterLoadResources');
+            console.log('wBase.afterLoadResources');
         },
         getValue : function() {
             return this.value;
@@ -2127,22 +2127,22 @@ crud.components.renders.rBase = Vue.component('r-base', {
     template: '<div>render base</div>'
 });
 
-crud.components.renders.rCustom = Vue.component('r-custom', {
-    extends : crud.components.renders.rBase,
+crud.components.widgets.wCustom = Vue.component('w-custom', {
+    extends : crud.components.widgets.wBase,
     mounted : function() {
         this.value = this.getContent();
     },
-    template: '#r-custom-template',
+    template: '#w-custom-template',
 });
 
-crud.components.renders.rRender = Vue.component('r-render', {
-    extends : crud.components.renders.rBase,
-    template: '#r-render-template',
+crud.components.widgets.wRender = Vue.component('w-render', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-render-template',
 });
 
-crud.components.renders.rInput = Vue.component('r-input', {
-    extends : crud.components.renders.rBase,
-    template: '#r-input-template',
+crud.components.widgets.wInput = Vue.component('w-input', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-input-template',
     data : function () {
         var d = this._loadConf();
         d.inputType = d.inputType?d.inputType:'text';
@@ -2150,35 +2150,37 @@ crud.components.renders.rInput = Vue.component('r-input', {
     }
 });
 
-crud.components.renders.rInputHelped =  Vue.component('r-input-helped', {
-    extends : crud.components.renders.rBase,
-    template: '#r-input-helped-template',
+crud.components.widgets.wInputHelped =  Vue.component('w-input-helped', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-input-helped-template',
     data : function () {
         var d = {};
-        if (this.cConf.domainValues && !this.cConf.domainValuesOrder)
-            d.domainValuesOrder = Object.keys(this.cConf.domainValues);
+        if (!this.cConf.domainValuesOrder)
+            d.domainValuesOrder = Object.keys(this.cConf.domainValues || {});
+        if (!this.cConf.customValue)
+            d.customValue = false;
         return d;
     }
 });
 
-crud.components.renders.rHidden = Vue.component('r-hidden', {
-    extends : crud.components.renders.rBase,
-    template: '#r-hidden-template'
+crud.components.widgets.wHidden = Vue.component('w-hidden', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-hidden-template'
 });
 
-crud.components.renders.rText = Vue.component('r-text',{
-    extends : crud.components.renders.rBase,
-    template: '#r-text-template'
+crud.components.widgets.wText = Vue.component('w-text',{
+    extends : crud.components.widgets.wBase,
+    template: '#w-text-template'
 });
 
-crud.components.renders.rImage = Vue.component('r-image',{
-    extends : crud.components.renders.rBase,
-    template: '#r-image-template'
+crud.components.widgets.wImage = Vue.component('w-image',{
+    extends : crud.components.widgets.wBase,
+    template: '#w-image-template'
 });
 
-crud.components.renders.rDownload = Vue.component('r-download',{
-    extends : crud.components.renders.rBase,
-    template: '#r-download-template',
+crud.components.widgets.wDownload = Vue.component('w-download',{
+    extends : crud.components.widgets.wBase,
+    template: '#w-download-template',
     mounted : function() {
         var that  =this;
         var url = that.value;
@@ -2199,14 +2201,14 @@ crud.components.renders.rDownload = Vue.component('r-download',{
     }
 });
 
-crud.components.renders.rTextarea = Vue.component('r-textarea', {
-    extends : crud.components.renders.rBase,
-    template: '#r-textarea-template'
+crud.components.widgets.wTextarea = Vue.component('w-textarea', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-textarea-template'
 });
 
-crud.components.renders.rSelect = Vue.component('r-select',{
-    extends : crud.components.renders.rBase,
-    template: '#r-select-template',
+crud.components.widgets.wSelect = Vue.component('w-select',{
+    extends : crud.components.widgets.wBase,
+    template: '#w-select-template',
     data :  function () {
         var d = this._loadConf();
         d.domainValues = d.domainValues || {};
@@ -2216,8 +2218,8 @@ crud.components.renders.rSelect = Vue.component('r-select',{
 });
 
 
-crud.components.renders.rRadio = Vue.component('r-radio',{
-    extends : crud.components.renders.rBase,
+crud.components.widgets.wRadio = Vue.component('w-radio',{
+    extends : crud.components.widgets.wBase,
     data : function() {
         var d = this._loadConf();
         var dV = d.domainValues || {};
@@ -2235,12 +2237,12 @@ crud.components.renders.rRadio = Vue.component('r-radio',{
     //         domainValuesOrder : dVO
     //     }
     // },
-    template: '#r-radio-template',
+    template: '#w-radio-template',
 });
 
 
-crud.components.renders.rCheckbox = Vue.component('r-checkbox',{
-    extends : crud.components.renders.rBase,
+crud.components.widgets.wCheckbox = Vue.component('w-checkbox',{
+    extends : crud.components.widgets.wBase,
     data :  function () {
         var that = this;
         var d = that._loadConf();
@@ -2256,12 +2258,12 @@ crud.components.renders.rCheckbox = Vue.component('r-checkbox',{
             return this.cKey + '[]';
         }
     },
-    template: '#r-checkbox-template',
+    template: '#w-checkbox-template',
 });
 
 
-crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
-    extends : crud.components.renders.rBase,
+crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
+    extends : crud.components.widgets.wBase,
     mounted : function() {
         //this._getLabel();
     },
@@ -2379,7 +2381,7 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
             }
 
             // var r = new Route(that.$crud.routes.view);
-            // console.log('r-autocomplete getLabel',that.conf);
+            // console.log('w-autocomplete getLabel',that.conf);
             // r.setValues({
             //     modelName : that.conf.modelName,
             //     pk : that.value
@@ -2404,17 +2406,17 @@ crud.components.renders.rAutocomplete = Vue.component('r-autocomplete', {
             return s
         }
     },
-    template: "#r-autocomplete-template",
+    template: "#w-autocomplete-template",
 });
 
-crud.components.renders.rBelongsto = Vue.component('r-belongsto', {
-    extends : crud.components.renders.rBase,
-    template: '#r-belongsto-template',
+crud.components.widgets.wBelongsto = Vue.component('w-belongsto', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-belongsto-template',
 });
 
-crud.components.renders.rDateSelect = Vue.component('r-date-select', {
-    extends : crud.components.renders.rBase,
-    template: '#r-date-select-template',
+crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-date-select-template',
     data : function() {
         var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
@@ -2505,9 +2507,9 @@ crud.components.renders.rDateSelect = Vue.component('r-date-select', {
     }
 });
 
-crud.components.renders.rDatePicker = Vue.component('r-date-picker', {
-    extends : crud.components.renders.rBase,
-    template: '#r-date-picker-template',
+crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-date-picker-template',
     data : function() {
         var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
@@ -2536,9 +2538,9 @@ crud.components.renders.rDatePicker = Vue.component('r-date-picker', {
     }
 });
 
-crud.components.renders.rTexthtml = Vue.component('r-texthtml',{
-    extends : crud.components.renders.rBase,
-    template: '#r-texthtml-template',
+crud.components.widgets.wTexthtml = Vue.component('w-texthtml',{
+    extends : crud.components.widgets.wBase,
+    template: '#w-texthtml-template',
     data : function() {
         var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
@@ -2572,9 +2574,9 @@ crud.components.renders.rTexthtml = Vue.component('r-texthtml',{
     }
 });
 
-crud.components.rHasmany =Vue.component('r-hasmany', {
-    extends : crud.components.renders.rBase,
-    template: '#r-hasmany-template',
+crud.components.rHasmany =Vue.component('w-hasmany', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-hasmany-template',
     mounted : function() {
          var that = this;
         for (var i in that.value) {
@@ -2697,9 +2699,9 @@ crud.components.rHasmany =Vue.component('r-hasmany', {
     }
 });
 
-crud.components.renders.rHasmanyView = Vue.component('r-hasmany-view', {
+crud.components.widgets.wHasmanyView = Vue.component('w-hasmany-view', {
     extends : crud.components.rHasmany,
-    template: '#r-hasmany-view-template',
+    template: '#w-hasmany-view-template',
     data : function () {
         var d = this._loadConf();
         d.inputType = 'text';
@@ -2709,9 +2711,9 @@ crud.components.renders.rHasmanyView = Vue.component('r-hasmany-view', {
     }
 });
 
-crud.components.renders.rSwap = Vue.component('r-swap', {
-    extends : crud.components.renders.rBase,
-    template: '#r-swap-template',
+crud.components.widgets.wSwap = Vue.component('w-swap', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-swap-template',
     data : function () {
         var that = this;
         var d = this._loadConf();
@@ -2805,9 +2807,9 @@ crud.components.renders.rSwap = Vue.component('r-swap', {
     }
 });
 
-crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
-    extends : crud.components.renders.rBase,
-    template: '#r-hasmany-through-template',
+crud.components.rHasmanyThrough =Vue.component('w-hasmany-through', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-hasmany-through-template',
     data : function () {
         var d = this._loadConf();
         d.inputType = 'text';
@@ -2854,9 +2856,9 @@ crud.components.rHasmanyThrough =Vue.component('r-hasmany-through', {
     }
 });
 
-crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
-    extends : crud.components.renders.rBase,
-    template: '#r-b2-select2-template',
+crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
+    extends : crud.components.widgets.wBase,
+    template: '#w-b2-select2-template',
     data : function () {
         var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
@@ -2978,9 +2980,9 @@ crud.components.renders.rB2Select2 = Vue.component('r-b2-select2', {
 
 });
 
-crud.components.renders.rB2mSelect2 = Vue.component('r-b2m-select2', {
-    extends : crud.components.renders.rB2Select2,
-    template: '#r-b2m-select2-template',
+crud.components.widgets.wB2mSelect2 = Vue.component('w-b2m-select2', {
+    extends : crud.components.widgets.wB2Select2,
+    template: '#w-b2m-select2-template',
     // data : function () {
     //     var d = this.defaultData();
     //     if (!( 'resources' in d.conf) ) {
@@ -3105,13 +3107,13 @@ crud.components.renders.rB2mSelect2 = Vue.component('r-b2m-select2', {
 
 });
 
-crud.components.renders.rUpload = Vue.component('r-upload',{
-    extends : crud.components.renders.rBase,
-    template : '#r-upload-template',
+crud.components.widgets.wUpload = Vue.component('w-upload',{
+    extends : crud.components.widgets.wBase,
+    template : '#w-upload-template',
     data : function () {
         var d = this._loadConf();
         d.conf = this.cConf;
-        console.log('r-upload data',d);
+        console.log('w-upload data',d);
         d.extensions = d.conf.extensions?d.conf.extensions:'';
         d.maxFileSize = d.conf.maxFileSize?d.conf.maxFileSize:'';
         d.error = false;
@@ -3183,9 +3185,9 @@ crud.components.renders.rUpload = Vue.component('r-upload',{
     }
 })
 
-crud.components.renders.rUploadAjax = Vue.component('r-upload-ajax',{
-    extends : crud.components.renders.rBase,
-    template : '#r-upload-ajax-template',
+crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
+    extends : crud.components.widgets.wBase,
+    template : '#w-upload-ajax-template',
     data : function () {
         var d = this._loadConf();
         d.extensions = d.extensions?d.extensions:[];
@@ -3208,7 +3210,7 @@ crud.components.renders.rUploadAjax = Vue.component('r-upload-ajax',{
         // };
         d.error = false;
         d.errorMessage = '';
-        console.log('r-upload data',d);
+        console.log('w-upload data',d);
         return d;
     },
 
@@ -3344,9 +3346,9 @@ crud.components.renders.rUploadAjax = Vue.component('r-upload-ajax',{
     }
 })
 
-crud.components.renders.rPreview = Vue.component('r-preview',{
-    extends : crud.components.renders.rBase,
-    template : '#r-preview-template',
+crud.components.widgets.wPreview = Vue.component('w-preview',{
+    extends : crud.components.widgets.wBase,
+    template : '#w-preview-template',
     // mounted : function() {
     //     var that = this;
     //     this._draw();
@@ -3483,7 +3485,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
         }
         console.warn('configurazione non valida',this.cKey,this.cRender);
         return {
-            type : 'r-text',
+            type : 'w-text',
             conf : {},
         }
 
@@ -4090,7 +4092,7 @@ crud.components.views.vList = Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
-            defaultRenderType : 'r-text',
+            defaultRenderType : 'w-text',
             langContext : that.cModel,
             json : {},
         };
@@ -4252,7 +4254,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
     //         needSelection : true,
     //         pagination : {},
     //         viewTitle : '',
-    //         defaultRenderType : 'r-text',
+    //         defaultRenderType : 'w-text',
     //         editMode : [],
     //
     //     };
@@ -4288,9 +4290,9 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key,'fieldsConfigEditMode');
-                    // se non c'e' la configurazione in modalità edit lo forzo ad essere un r-input
+                    // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
                     if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
-                        dconf.type = 'r-input';
+                        dconf.type = 'w-input';
                     dconf.cRef = that.$crud.getRefId(that._uid,'redit',i,key);
                     dconf.modelData = data.value[i];
                     if (! ('value' in dconf))
@@ -4385,7 +4387,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'r-input',
+            defaultRenderType : 'w-input',
         }
         return that.$crud.merge(dEdit,d);
 
@@ -4441,7 +4443,7 @@ crud.components.views.vView = Vue.component('v-view', {
             data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'r-text',
+            defaultRenderType : 'w-text',
         }
         return this.$crud.merge(dView,d);
 
@@ -4496,7 +4498,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             actions : {},
             data : {},
             //conf : that.conf,
-            defaultRenderType : 'r-input',
+            defaultRenderType : 'w-input',
         }
         return this.$crud.merge(dInsert,d);
 
@@ -4554,7 +4556,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'r-input',
+            defaultRenderType : 'w-input',
             targetRef : that.cTargetRef,
         }
         if (!("langContext" in d)){
@@ -4629,7 +4631,7 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
             actions : {},
             data : {},
             //conf : conf,//jQuery.extend(true,{},ModelTest.edit),
-            defaultRenderType : 'r-input',
+            defaultRenderType : 'w-input',
         }
         return this.$crud.merge(dHasmany,d);
     },
@@ -4677,7 +4679,7 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
             actions : {},
             data : {},
             //conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
-            defaultRenderType : 'r-text',
+            defaultRenderType : 'w-text',
         }
         return this.$crud.merge(dHasmany,d);
     },

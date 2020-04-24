@@ -9,7 +9,7 @@ var ModelUser = {
 
             },
             'roles|id' : {
-                type: 'r-select'
+                type: 'w-select'
 
             }
         }
@@ -20,7 +20,7 @@ var ModelUser = {
         actions : [],
         fieldsConfig : {
             mainrole : {
-                type : 'r-belongsto',
+                type : 'w-belongsto',
                 fields : ['name']
             }
         }
@@ -34,11 +34,11 @@ var ModelUser = {
         },
         fieldsConfig : {
             email_verified_at : {
-                type : 'r-swap',
+                type : 'w-swap',
                 model : 'user',
             },
             banned : {
-                type : 'r-swap',
+                type : 'w-swap',
                 model : 'user',
                 domainValues : {
                     1 : 'fa fa-circle text-danger',
@@ -46,24 +46,24 @@ var ModelUser = {
                 }
             },
             fotos : {
-                type : 'r-hasmany-view',
+                type : 'w-hasmany-view',
                 hasmanyConf : {
                     fields : ['resource'],
                     fieldsConfig : {
                         resource : {
                             template : 'c-tpl-no',
-                            type : 'r-preview'
+                            type : 'w-preview'
                         }
                     }
                 }
             },
             attachments : {
-                type : 'r-hasmany-view',
+                type : 'w-hasmany-view',
                 hasmanyConf : {
                     fields : ['resource'],
                     fieldsConfig : {
                         resource : {
-                            type : 'r-preview',
+                            type : 'w-preview',
                             template : 'c-tpl-no',
                         }
                     }
@@ -79,48 +79,48 @@ var ModelUser = {
             fillData : function (route,json) {
                 var that = this;
                 if (json.metadata.is_auth) {
-                    that.conf.fieldsConfig.mainrole = 'r-hidden';
+                    that.conf.fieldsConfig.mainrole = 'w-hidden';
                 }
                 that.$options.methods.fillData.apply(that,[route,json]);
             }
         },
         fieldsConfig: {
-            mainrole : 'r-select',
-            banned : 'r-radio',
+            mainrole : 'w-select',
+            banned : 'w-radio',
             password : {
-                type:'r-input',
+                type:'w-input',
                 inputType:'password',
             },
             password_confirmation : {
-                type:'r-input',
+                type:'w-input',
                 inputType:'password',
             },
-            //roles : 'r-select',
+            //roles : 'w-select',
             attachments : {
-                type : 'r-hasmany',
+                type : 'w-hasmany',
                 hasmanyConf : {
                     fields : ['id','nome','descrizione','resource','status'],
                     fieldsConfig : {
                         resource : {
-                            type : 'r-upload-ajax',
+                            type : 'w-upload-ajax',
                             extensions : ['csv','xls'],
                             maxFileSize : '2M',
                             ajaxFields : {
                                 field : 'attachments'
                             }
                         },
-                        status : 'r-hidden',
-                        id : 'r-hidden',
+                        status : 'w-hidden',
+                        id : 'w-hidden',
                     },
                 },
             },
             fotos : {
-                type : 'r-hasmany',
+                type : 'w-hasmany',
                 hasmanyConf : {
                     fields : ['status','id','nome','descrizione','resource'],
                     fieldsConfig : {
                         resource : {
-                            type : 'r-upload-ajax',
+                            type : 'w-upload-ajax',
                             extensions : ['jpg','png'],
                             maxFileSize : '2M',
                             ajaxFields : {
@@ -128,8 +128,8 @@ var ModelUser = {
                             },
                             modelName : 'user'
                         },
-                        status : 'r-hidden',
-                        id : 'r-hidden'
+                        status : 'w-hidden',
+                        id : 'w-hidden'
 
                     },
                 }
@@ -153,16 +153,16 @@ var ModelUser = {
     //     fields: ['name','email', 'password', 'password_confirmation', 'banned', 'mainrole', 'fotos', 'attachments'],
     //     fieldsConfig :  {
     //         mainrole :  {
-    //             type : 'r-belongsto',
+    //             type : 'w-belongsto',
     //             fields : ['name']
     //         }
     //     }
     // },
     'listEdit' : {
         fieldsConfigEditMode : {
-            'id' : 'r-text',
-            'email' : 'r-text',
-            'banned' : 'r-text'
+            'id' : 'w-text',
+            'email' : 'w-text',
+            'banned' : 'w-text'
         }
     }
 }

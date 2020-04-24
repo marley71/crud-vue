@@ -1,9 +1,0 @@
-<script type="text/x-template" id="r-date-select-template">
-    <div v-if="resourcesLoaded" class="input-group">
-        <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
-        <r-select ref="day" v-bind:c-conf="cDay" c-marker="day"></r-select>
-        <r-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></r-select>
-        <r-select ref="year" v-bind:c-conf="cYear" c-marker="year"></r-select>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
-    </div>
-</script>

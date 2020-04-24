@@ -1,13 +1,13 @@
 
-function rInputConf_f() {
-    rInputConf = {
+function wInputConf_f() {
+    wInputConf = {
         name: 'field1',
         value: 100
     };
 }
 
-function rPasswordConf_f() {
-    rPasswordConf = {
+function wPasswordConf_f() {
+    wPasswordConf = {
         value: 'mypassword',
         name: 'field1',
         inputType: 'password',
@@ -19,8 +19,8 @@ function rPasswordConf_f() {
     };
 }
 
-function rInputHelpedConf_f() {
-    rInputHelpedConf = {
+function wInputHelpedConf_f() {
+    wInputHelpedConf = {
         value: 15,
         name: 'field1',
         customValue: true,
@@ -37,8 +37,8 @@ function rInputHelpedConf_f() {
     };
 }
 
-function rAutocompleteConf_f() {
-    rAutocompleteConf = {
+function wAutocompleteConf_f() {
+    wAutocompleteConf = {
         value: 4,
         name: 'field1',
         routeName: 'autocomplete',
@@ -53,8 +53,8 @@ function rAutocompleteConf_f() {
     };
 }
 
-function rBelongstoConf_f() {
-    rBelongstoConf = {
+function wBelongstoConf_f() {
+    wBelongstoConf = {
         name: 'field1',
         fields: ['testo'],
         value: {
@@ -64,8 +64,8 @@ function rBelongstoConf_f() {
     };
 }
 
-function rRadioConf_f() {
-    rRadioConf = {
+function wRadioConf_f() {
+    wRadioConf = {
         value: 1,
         name: 'field1',
 
@@ -84,8 +84,8 @@ function rRadioConf_f() {
     };
 }
 
-function rCheckboxConf_f() {
-    rCheckboxConf = {
+function wCheckboxConf_f() {
+    wCheckboxConf = {
         value: [1, 2],
         name: 'field1',
         domainValues: {
@@ -102,8 +102,8 @@ function rCheckboxConf_f() {
     };
 }
 
-function rSelectConf_f() {
-    rSelectConf = {
+function wSelectConf_f() {
+    wSelectConf = {
         value: 20,
         name: 'field1',
         domainValues: {
@@ -119,8 +119,8 @@ function rSelectConf_f() {
     };
 }
 
-function rTextareaConf_f() {
-    rTextareaConf = {
+function wTextareaConf_f() {
+    wTextareaConf = {
         name: 'field1',
         value: "text area edit",
         methods: {
@@ -131,8 +131,8 @@ function rTextareaConf_f() {
     };
 }
 
-function rTextConf_f() {
-    rTextConf = {
+function wTextConf_f() {
+    wTextConf = {
         name: 'field1',
         value: "testo edit",
         methods: {
@@ -143,8 +143,8 @@ function rTextConf_f() {
     };
 }
 
-function rDateSelectConf_f() {
-    rDateSelectConf = {
+function wDateSelectConf_f() {
+    wDateSelectConf = {
         name: 'field1',
         value: "2018-02-04",
         methods: {
@@ -156,8 +156,8 @@ function rDateSelectConf_f() {
 }
 
 
-function rDatePickerConf_f() {
-    rDatePickerConf = {
+function wDatePickerConf_f() {
+    wDatePickerConf = {
         name: 'field1',
         value: "2018-02-04",
         methods: {
@@ -168,8 +168,8 @@ function rDatePickerConf_f() {
     };
 }
 
-function rTexthtmlConf_f() {
-    rTexthtmlConf = {
+function wTexthtmlConf_f() {
+    wTexthtmlConf = {
         name: 'field1',
         value: "text area edit<b>bo</b>",
         methods: {
@@ -180,14 +180,14 @@ function rTexthtmlConf_f() {
     };
 }
 
-function rHasmanyConf_f() {
-    rHasmanyConf = {
+function wHasmanyConf_f() {
+    wHasmanyConf = {
         name: 'field1',
         hasmanyConf: {
             fields: ['nome', 'descrizione', 'resource'],
             fieldsConfig: {
                 resource: {
-                    type: 'r-upload-ajax',
+                    type: 'w-upload-ajax',
                     extensions: ['jpg', 'png'],
                     maxFileSize: '2M',
                     ajaxFields: {
@@ -208,14 +208,14 @@ function rHasmanyConf_f() {
     };
 }
 
-function rHasmanyViewConf_f() {
-    rHasmanyViewConf = {
+function wHasmanyViewConf_f() {
+    wHasmanyViewConf = {
         name: 'field1',
         hasmanyConf: {
             fields: ['nome', 'descrizione', 'resource'],
             fieldsConfig: {
                 resource: {
-                    type: 'r-upload-ajax',
+                    type: 'w-upload-ajax',
                     extensions: ['jpg', 'png'],
                     maxFileSize: '2M',
                     template : 'c-tpl-record'
@@ -240,8 +240,8 @@ function rHasmanyViewConf_f() {
     };
 }
 
-function rSwapConf_f() {
-    rSwapConf = {
+function wSwapConf_f() {
+    wSwapConf = {
         value: 5,
         name: 'activated',
         //swapType : 'text',
@@ -264,8 +264,8 @@ function rSwapConf_f() {
     };
 }
 
-function rB2Select2Conf_f() {
-    rB2Select2Conf = {
+function wB2Select2Conf_f() {
+    wB2Select2Conf = {
         value: null,
         name: 'field1',
         //addNew : true,
@@ -282,8 +282,8 @@ function rB2Select2Conf_f() {
     };
 }
 
-function rB2MSelect2Conf_f() {
-    rB2MSelect2Conf = {
+function wB2MSelect2Conf_f() {
+    wB2MSelect2Conf = {
         value: [],
         name: 'field1',
         //addNew : true,
@@ -300,8 +300,8 @@ function rB2MSelect2Conf_f() {
     };
 }
 
-function rUploadConf_f() {
-    rUploadConf = {
+function wUploadConf_f() {
+    wUploadConf = {
         value: null,
         name: 'field1',
         maxFileSize: "2M",
@@ -314,8 +314,8 @@ function rUploadConf_f() {
     };
 }
 
-function rUploadAjaxCon_f() {
-    rUploadAjaxConf = {
+function wUploadAjaxCon_f() {
+    wUploadAjaxConf = {
         value: null,
         name: 'field1',
         maxFileSize: "2M",
@@ -339,26 +339,26 @@ function vViewConf_f() {
         actions: [],
         fieldsConfig: {
             mainrole: {
-                type: 'r-belongsto',
+                type: 'w-belongsto',
                 fields: ['name']
             }
             // fotos : {
-            //     type : 'r-hasmany',
+            //     type : 'w-hasmany',
             //     hasmanyConf : {
             //         fields : ['id','nome','descrizione','resource','status'],
             //         fieldsConfig : {
-            //             resource : 'r-upload-ajax',
-            //             status : 'r-hidden'
+            //             resource : 'w-upload-ajax',
+            //             status : 'w-hidden'
             //         }
             //     }
             // },
             // attachments : {
-            //     type : 'r-hasmany',
+            //     type : 'w-hasmany',
             //     hasmanyConf : {
             //         fields : ['id','nome','descrizione','resource','status'],
             //         fieldsConfig : {
             //             resource : {
-            //                 type : 'r-upload-ajax',
+            //                 type : 'w-upload-ajax',
             //                 metadata : {
             //                     ajaxFields: {
             //                         resource_type: 'attachment'
@@ -366,8 +366,8 @@ function vViewConf_f() {
             //                 }
             //
             //             },
-            //             status : 'r-hidden',
-            //             id : 'r-hidden'
+            //             status : 'w-hidden',
+            //             id : 'w-hidden'
             //         }
             //     }
             //
@@ -380,22 +380,22 @@ function vEditConf_f() {
     vEditConf = {
         fieldsConfig: {
             fotos: {
-                type: 'r-hasmany',
+                type: 'w-hasmany',
                 hasmanyConf: {
                     fields: ['id', 'nome', 'descrizione', 'resource', 'status'],
                     fieldsConfig: {
-                        resource: 'r-upload-ajax',
-                        status: 'r-hidden'
+                        resource: 'w-upload-ajax',
+                        status: 'w-hidden'
                     }
                 }
             },
             attachments: {
-                type: 'r-hasmany',
+                type: 'w-hasmany',
                 hasmanyConf: {
                     fields: ['id', 'nome', 'descrizione', 'resource', 'status'],
                     fieldsConfig: {
                         resource: {
-                            type: 'r-upload-ajax',
+                            type: 'w-upload-ajax',
                             metadata: {
                                 ajaxFields: {
                                     resource_type: 'attachment'
@@ -403,8 +403,8 @@ function vEditConf_f() {
                             }
 
                         },
-                        status: 'r-hidden',
-                        id: 'r-hidden'
+                        status: 'w-hidden',
+                        id: 'w-hidden'
                     }
                 }
 
@@ -416,7 +416,7 @@ function vEditConf_f() {
 function vSearchConf_f() {
     vSearchConf = {
         fieldsConfig: {
-            'roles|id' : 'r-select'
+            'roles|id' : 'w-select'
         }
     };
 }

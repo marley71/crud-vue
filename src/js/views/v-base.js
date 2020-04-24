@@ -64,7 +64,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
         }
         console.warn('configurazione non valida',this.cKey,this.cRender);
         return {
-            type : 'r-text',
+            type : 'w-text',
             conf : {},
         }
 

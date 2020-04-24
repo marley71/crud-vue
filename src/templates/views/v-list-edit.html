@@ -55,7 +55,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="float-none">
+            <div class="clearfix">
                 <div class="float-left" v-show="collectionActionsName.length">
                     <template v-for="name in collectionActionsName">
                         <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>

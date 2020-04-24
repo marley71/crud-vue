@@ -48,7 +48,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
     //         needSelection : true,
     //         pagination : {},
     //         viewTitle : '',
-    //         defaultRenderType : 'r-text',
+    //         defaultRenderType : 'w-text',
     //         editMode : [],
     //
     //     };
@@ -84,9 +84,9 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key,'fieldsConfigEditMode');
-                    // se non c'e' la configurazione in modalità edit lo forzo ad essere un r-input
+                    // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
                     if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
-                        dconf.type = 'r-input';
+                        dconf.type = 'w-input';
                     dconf.cRef = that.$crud.getRefId(that._uid,'redit',i,key);
                     dconf.modelData = data.value[i];
                     if (! ('value' in dconf))

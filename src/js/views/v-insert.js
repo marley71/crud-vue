@@ -31,7 +31,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             actions : {},
             data : {},
             //conf : that.conf,
-            defaultRenderType : 'r-input',
+            defaultRenderType : 'w-input',
         }
         return this.$crud.merge(dInsert,d);
 

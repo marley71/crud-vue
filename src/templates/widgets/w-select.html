@@ -1,0 +1,10 @@
+<script type="text/x-template" id="w-select-template">
+    <div>
+        <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
+                v-on:change="change">
+            <option v-for="key in domainValuesOrder" :value="key"
+                    >{{domainValues[key]}}</option>
+        </select>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
+    </div>
+</script>

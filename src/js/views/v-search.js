@@ -36,7 +36,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'r-input',
+            defaultRenderType : 'w-input',
             targetRef : that.cTargetRef,
         }
         if (!("langContext" in d)){

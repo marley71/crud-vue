@@ -184,21 +184,24 @@
     </div>
 </script>
 
-<script type="text/x-template" id="r-render-template">
+<script type="text/x-template" id="w-render-template">
     <component :is="type" :c-conf="item" :c-key="key"></component>
 </script>
-<script type="text/x-template" id="r-custom-template">
+
+<script type="text/x-template" id="w-custom-template">
     <div v-html="value">
 
     </div>
 </script>
-<script type="text/x-template" id="r-input-template">
+
+<script type="text/x-template" id="w-input-template">
     <div>
         <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </script>
-<script type="text/x-template" id="r-input-helped-template">
+
+<script type="text/x-template" id="w-input-helped-template">
     <div>
         <div crud-render_element>
             <input v-bind:readonly="!customValue"
@@ -214,22 +217,26 @@
     </div>
 </script>
 
-<script type="text/x-template" id="r-hidden-template">
+<script type="text/x-template" id="w-hidden-template">
     <div>
         <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>
-<script type="text/x-template" id="r-text-template">
+
+<script type="text/x-template" id="w-text-template">
     <div>{{value}}</div>
 </script>
-<script type="text/x-template" id="r-image-template">
+
+<script type="text/x-template" id="w-image-template">
     <img :src="value">
 </script>
-<script type="text/x-template" id="r-download-template">
+
+<script type="text/x-template" id="w-download-template">
     <a :href="value" target="_blank"><i :class="icon"></i></a>
 </script>
-<script type="text/x-template" id="r-textarea-template">
+
+<script type="text/x-template" id="w-textarea-template">
     <div>
         <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
                   v-bind:c-marker="cMarker" v-on:change="change"></textarea>
@@ -237,7 +244,8 @@
     </div>
 
 </script>
-<script type="text/x-template" id="r-select-template">
+
+<script type="text/x-template" id="w-select-template">
     <div>
         <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
                 v-on:change="change">
@@ -247,7 +255,8 @@
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>
-<script type="text/x-template" id="r-radio-template">
+
+<script type="text/x-template" id="w-radio-template">
     <div>
         <div class="form-check-inline"  v-for="key in domainValuesOrder">
             <label class="form-check-label">
@@ -259,7 +268,8 @@
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>
-<script type="text/x-template" id="r-checkbox-template">
+
+<script type="text/x-template" id="w-checkbox-template">
     <div class="form-check-inline">
         <div class="" v-for="key in domainValuesOrder">
             <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
@@ -270,7 +280,8 @@
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>
-<template id="r-autocomplete-template">
+
+<template id="w-autocomplete-template">
     <div class="input-group">
         <span class="input-group-addon">{{label}}</span>
         <input type="search" c-autocomplete class="form-control mdb-autocomplete">
@@ -282,28 +293,31 @@
     </div>
 </template>
 
-<template id="r-belongsto-template">
+<template id="w-belongsto-template">
     <div>
         <span v-for="field in fields">{{value[field]}}&nbsp;</span>
     </div>
 </template>
-<script type="text/x-template" id="r-date-select-template">
+
+<script type="text/x-template" id="w-date-select-template">
     <div v-if="resourcesLoaded" class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
-        <r-select ref="day" v-bind:c-conf="cDay" c-marker="day"></r-select>
-        <r-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></r-select>
-        <r-select ref="year" v-bind:c-conf="cYear" c-marker="year"></r-select>
+        <w-select ref="day" v-bind:c-conf="cDay" c-marker="day"></w-select>
+        <w-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></w-select>
+        <w-select ref="year" v-bind:c-conf="cYear" c-marker="year"></w-select>
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </script>
-<script type="text/x-template" id="r-date-picker-template">
+
+<script type="text/x-template" id="w-date-picker-template">
     <div class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
         <input c-picker >
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </script>
-<script type="text/x-template" id="r-texthtml-template">
+
+<script type="text/x-template" id="w-texthtml-template">
 <!--    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>-->
     <div>
         <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" :c-marker="cMarker" v-on:change="change">
@@ -312,7 +326,8 @@
         </div>
     </div>
 </script>
-<template id="r-hasmany-template">
+
+<template id="w-hasmany-template">
     <div class="card"  >
         <div class="card-body">
             <!--<input type="hidden" :name="cKey + '_exists'" value="1">-->
@@ -355,7 +370,7 @@
     </div>
 </template>
 
-<script type="text/x-template" id="r-hasmany-view-template">
+<script type="text/x-template" id="w-hasmany-view-template">
     <div crud-render_element>
         <div class="list-unstyled" crud-render_list >
             <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
@@ -369,13 +384,14 @@
     </div>
 </script>
 
-<script type="text/x-template" id="r-swap-template">
+<script type="text/x-template" id="w-swap-template">
     <button type="button" class="btn btn-outline-secondary btn-sm" v-bind:title="title" v-on:click="swap">
         <span v-show="swapType=='text'">{{ slot }}</span>
         <i  v-show="swapType=='icon'" v-bind:class="slot"></i>
     </button>
 </script>
-<template id="r-hasmany-through-template">
+
+<template id="w-hasmany-through-template">
     <div class="card"  >
         <div class="card-body">
             <div class="panel panel-warning">
@@ -409,7 +425,7 @@
     </div>
 </template>
 
-<template id="r-b2-select2-template">
+<template id="w-b2-select2-template">
     <div>
         <select c-select2 class="form-control m-select2"
                 v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
@@ -417,7 +433,8 @@
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
-<template id="r-b2m-select2-template">
+
+<template id="w-b2m-select2-template">
     <div>
         <select c-select2 class="form-control m-select2" name="" multiple="true"
                 v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
@@ -429,7 +446,8 @@
         <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
-<template id="r-upload-template">
+
+<template id="w-upload-template">
     <div>
         <div v-show="extensions">
             <span crud-label="app.accepted-extensions">{{'app.estensioni-accettate' | translate}} </span>
@@ -445,7 +463,7 @@
     </div>
 </template>
 
-<script type="text/x-template" id="r-upload-ajax-template">
+<script type="text/x-template" id="w-upload-ajax-template">
     <div class="row">
         <div class="col-8">
             <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
@@ -465,11 +483,12 @@
             </div>
         </div>
         <div class="col-4">
-            <r-preview :c-conf="previewConf"></r-preview>
+            <w-preview :c-conf="previewConf"></w-preview>
         </div>
     </div>
 </script>
-<script type="text/x-template" id="r-preview-template">
+
+<script type="text/x-template" id="w-preview-template">
     <div>
         <img v-if="getType()=='image'" :src="value.url">
         <a v-else-if="getType()=='doc'" :href="value.url">
@@ -482,7 +501,7 @@
 </script>
 
 <script type="text/x-template" id="v-list-template">
-    <div>
+    <div class="float-end ">
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading"></c-loading>
         <div v-else>
@@ -540,7 +559,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="float-none">
+            <div class="clearfix">
                 <div class="float-left" v-show="collectionActionsName.length">
                     <template v-for="name in collectionActionsName">
                         <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
@@ -611,7 +630,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="float-none">
+            <div class="clearfix">
                 <div class="float-left" v-show="collectionActionsName.length">
                     <template v-for="name in collectionActionsName">
                         <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
@@ -631,8 +650,8 @@
         <c-loading v-if="loading"></c-loading>
         <form v-else enctype="multipart/form-data">
             <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
             </div>
         </form>
         <div class="p-3" v-show="actions.length">
@@ -642,13 +661,14 @@
         </div>
     </div>
 </script>
+
 <script type="text/x-template" id="v-view-template">
     <div  class="container-fluid">
         <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <div v-else v-for="(item, key) in renders">
-            <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-            <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+            <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+            <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
         </div>
         <div v-show="actions.length">
             <template v-for="(action,name) in actionsClass">
@@ -664,8 +684,8 @@
         <c-loading v-if="loading"></c-loading>
         <form v-else  enctype="multipart/form-data">
             <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
             </div>
         </form>
         <div class="p-3" v-show="actions.length">
@@ -675,19 +695,20 @@
         </div>
     </div>
 </script>
+
 <script type="text/x-template" id="v-search-template">
     <div class="card-body" v-if="(renders && Object.keys(renders).length > 0)">
         <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <form v-else>
             <!-- campi nascosti -->
-            <component v-for="(item, key) in renders" v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+            <component v-for="(item, key) in renders" v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
 
             <div class="row">
                 <div class="col-10">
                     <div class="row">
                         <div class="col col-6" v-for="(item, key) in renders">
-                            <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                            <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
 
                         </div>
                     </div>
@@ -707,19 +728,21 @@
 
     </div>
 </script>
+
 <script type="text/x-template" id="v-hasmany-template">
     <div>
         <div>&nbsp;</div>
         <c-loading v-if="loading"></c-loading>
         <div v-else>
             <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type"  :c-conf="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='w-hidden'" :is="item.type"  :c-conf="item" :c-key="getFieldName(key)"></component>
 
             </div>
         </div>
     </div>
 </script>
+
 <script type="text/x-template" id="v-hasmany-view-template">
     <div>
         <div>&nbsp;</div>
@@ -729,8 +752,8 @@
         <div v-else>
             <div>pippo</div>
             <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
 <!--                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
             </div>
         </div>

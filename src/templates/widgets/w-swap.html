@@ -1,0 +1,6 @@
+<script type="text/x-template" id="w-swap-template">
+    <button type="button" class="btn btn-outline-secondary btn-sm" v-bind:title="title" v-on:click="swap">
+        <span v-show="swapType=='text'">{{ slot }}</span>
+        <i  v-show="swapType=='icon'" v-bind:class="slot"></i>
+    </button>
+</script>

@@ -47,11 +47,11 @@ gulp.task('watch',function () {
         './src/js/crud/*.js',
         './src/js/misc/*.js',
         './src/js/views/*.js',
-        './src/js/renders/*.js',
+        './src/js/widgets/*.js',
         './src/js/templates/*.js',
 
         './src/templates/misc/*.html',
-        './src/templates/renders/*.html',
+        './src/templates/widgets/*.html',
         './src/templates/views/*.html',
     ], function(done){
         // This function will be called each time a globbed file is changed

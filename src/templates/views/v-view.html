@@ -3,8 +3,8 @@
         <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <div v-else v-for="(item, key) in renders">
-            <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-            <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+            <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+            <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
         </div>
         <div v-show="actions.length">
             <template v-for="(action,name) in actionsClass">

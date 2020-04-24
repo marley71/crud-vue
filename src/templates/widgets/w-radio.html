@@ -1,0 +1,12 @@
+<script type="text/x-template" id="w-radio-template">
+    <div>
+        <div class="form-check-inline"  v-for="key in domainValuesOrder">
+            <label class="form-check-label">
+                <input class="form-control-input" v-bind:name="getFieldName()" type="radio"  :value="key"
+                       v-model="value"
+                       v-bind:c-marker="cMarker" v-on:change="change">&nbsp;&nbsp;{{domainValues[key]}}
+            </label>
+        </div>
+        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
+    </div>
+</script>

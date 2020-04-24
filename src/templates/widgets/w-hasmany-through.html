@@ -1,0 +1,33 @@
+<template id="w-hasmany-through-template">
+    <div class="card"  >
+        <div class="card-body">
+            <div class="panel panel-warning">
+                <div class="panel-heading" crud-hasmany_title>
+                </div>
+                <div class="panel-body">
+                    <p crud-hasmany_title_msg></p>
+                    <ul class="list-group list-group-horizontal"  >
+                        <!--  -- contenitore hasmany -- -->
+                        <li v-for="item in value"  class="list-group-item" >
+                            <v-hasmany v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany>
+                            <hr />
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="panel-footer">
+                    <div >
+                        <div crud-render_limit class="hide">
+                            <!-- Limite massimo raggiunto -->
+                            {{'app.limite-raggiunto' | translate }}
+                        </div>
+                        <button v-on:click="addItem" type="button" class="btn btn-primary btn-sm">
+                            <span >{{'app.aggiungi' | translate}}</span>&nbsp;
+<!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
