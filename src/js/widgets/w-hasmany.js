@@ -10,12 +10,11 @@ crud.components.rHasmany =Vue.component('w-hasmany', {
     },
     data : function () {
         var that = this;
-        var d = that._loadConf();
+        var _conf = that.cConf || {}
+        var d = {};
         d.confViews = [];
-        if (!("limit" in d) )
-            d.limit = 1000;
-
-        //console.log('CONF VIEWS',d.confViews,d.value)
+        if (!("limit" in _conf) )
+            d.limit = 100;
         return d;
     },
 

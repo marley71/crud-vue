@@ -4,41 +4,18 @@ crud.components.widgets.wBase = Vue.component('w-base', {
 
     mounted : function() {
         var that = this;
-        console.log('w-base.mounted');
-        var _conf = that.cConf || {};
-        if (!_conf.operator) {
+        if (!that.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
-        }
-        // var that =this;
-        // for (var k in _conf.methods) {
-        //     //console.log('w-base implements methods',k);
-        //     that[k] = function () {
-        //         return _conf.methods[k].apply(that,this.arguments);
-        //     }
-        // }
-        if (_conf.resources && _conf.resources.length) {
-            that.beforeLoadResources();
-            //that.resourcesLoaded = false;
-            that.$crud.loadResources(_conf.resources,function () {
-                //console.log('resoures loaded callback',that);
-                that.resourcesLoaded = true;
-                that.afterLoadResources();
-            })
-        } else {
-            that.resourcesLoaded = true;
-        }
-
-        if ( _conf.mounted ) {
-            _conf.mounted.apply(that);
         }
     },
     data :  function () {
-        var d  = this._loadConf();
-        if (! ('value' in d))
+        var that = this;
+        var _conf = that.cConf || {};
+        var d  = {};
+        if (! ('value' in _conf))
             d.value = null;
-        if (! ('operator' in d))
+        if (! ('operator' in _conf))
             d.operator = null;
-        d.resourcesLoaded = false;
         return d;
     },
     methods : {
@@ -56,12 +33,6 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             return that.name + "_operator";
         },
 
-        beforeLoadResources : function () {
-            console.log('wBase.beforeLoadResources')
-        },
-        afterLoadResources : function () {
-            console.log('wBase.afterLoadResources');
-        },
         getValue : function() {
             return this.value;
         },

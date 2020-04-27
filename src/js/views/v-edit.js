@@ -16,7 +16,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
         });
     },
@@ -28,7 +28,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
 
         var dEdit = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},

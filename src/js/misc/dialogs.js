@@ -37,7 +37,7 @@ crud.components.dConfirm = Vue.component('d-confirm', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
-            default : 'Richiesta di Conferma'
+            default : 'app.richiesta-conferma'
         }
     },
     data : function() {
@@ -52,7 +52,7 @@ crud.components.dMessage = Vue.component('d-message', {
     extends : crud.components.dBase,
     props : {
         'cTitle': {
-            default : 'Informazione'
+            default : 'app.informazione'
         }
     },
     data : function() {
@@ -67,7 +67,7 @@ crud.components.dError = Vue.component('d-error', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
-            default : 'Errore'
+            default : 'app.errore'
         }
     },
     data : function() {
@@ -81,7 +81,7 @@ crud.components.dWarning = Vue.component('d-warning', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
-            default : 'Attenzione'
+            default : 'app.attenzione'
         }
     },
     data : function() {

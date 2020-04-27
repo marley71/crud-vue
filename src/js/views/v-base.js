@@ -9,7 +9,7 @@ crud.components.views.vAction = Vue.component('v-action', {
             conf: {},
         }
         if (this.cAction) {
-            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
             aConf =  {
                 name : this.cName,
                 conf : this.cAction
@@ -36,10 +36,10 @@ crud.components.views.vRender =  Vue.component('v-render', {
             var ckeys = this.cKey.split(',');
             var render = null;
             for (var i in ckeys) {
-                render = this.$parent.renders[ckeys[i]];
+                render = this.$parent.widgets[ckeys[i]];
             }
-            //var render = this.$parent.renders[this.cKey];
-            //console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            //var render = this.$parent.widgets[this.cKey];
+            //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
             return {
                 type : render.type,
                 conf : render
@@ -56,7 +56,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
             } else
                 conf = this.cRender;
 
-            //console.log('V-RENDER2 ',conf,this.$parent.renders);
+            //console.log('V-RENDER2 ',conf,this.$parent.widgets);
             return {
                 type : conf.type,
                 conf : conf
@@ -75,18 +75,6 @@ crud.components.views.vRender =  Vue.component('v-render', {
 crud.components.views.vBase = Vue.component('v-base', {
     props : ['cFields'],
     extends : crud.components.cComponent,
-    // created : function() {
-    //     var that = this;
-    //     var _conf = that.getConf(that.cConf) || {};
-    //     for (var k in _conf.methods) {
-    //         console.log('v-base implements methods',k);
-    //         that[k] = function () {
-    //             var arguments = this.arguments;
-    //             console.log('arguments');
-    //             _conf.methods[k].apply(that,arguments);
-    //         }
-    //     }
-    // },
     data : function () {
         //var d = this._loadConf();
         return {
@@ -97,34 +85,7 @@ crud.components.views.vBase = Vue.component('v-base', {
         // d.langContext = null;
         // return d;
     },
-    // mounted : function() {
-    //     var that = this;
-    //     var __call = function (lk) {
-    //         that[lk] = function () {
-    //             var localk = new String(lk);
-    //             //var arguments = this.arguments;
-    //             console.log(localk,'arguments',arguments);
-    //             return that.conf.methods[localk].apply(that,arguments);
-    //         }
-    //     }
-    //     for (var k in that.conf.methods) {
-    //         __call(k);
-    //     }
-    //
-    //     if ( that.conf.mounted ) {
-    //         that.conf.mounted.apply(that);
-    //     }
-    // },
     methods : {
-        // defaultData : function () {
-        //     var _c = this.cConf || {};
-        //     return {
-        //         viewTitle : '',
-        //         conf : _c,
-        //         langContext : null,
-        //     }
-        // },
-
         fetchData: function (route,callback) {
             var that = this;
             if (!route) {
@@ -259,45 +220,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             d.conf = finalConf;
             console.log('finalConf',finalConf);
             return d;
-
-            // var _c = this.cConf || {};
-            // var d = {};
-            // for (var k in _c) {
-            //     if (k == 'methods')
-            //         continue;
-            //     d[k] = _c[k];
-            // }
-            // d.conf = _c;
-            // return d;
         },
-
-
-
-
-        // /**
-        //  * setta la configurazione della route secondo le proprie esigenze.
-        //  * @param route
-        //  * @returns {*}
-        //  */
-        // setRouteValues : function(route) {
-        //     return route;
-        // },
-
-        // _getRoute : function () {
-        //     var that = this;
-        //     var route = null;
-        //     console.log('_getRoute',that.conf);
-        //     if (!that.conf)
-        //         return route;
-        //     if (that.conf.routeName == null)
-        //         return route;
-        //     if (!that.route) {
-        //         if (crud.routes[that.conf.routeName]) {
-        //             route =  new Route(crud.routes[that.conf.routeName]);
-        //         }
-        //     }
-        //     return route;
-        // },
         /**
          * ritorna la configurazione minimale di base di un render rispettando le priorita' tra le configurazioni
          * @param key : nome del campo di cui vogliamo la configurazione

@@ -36,7 +36,7 @@ crud.components.views.vList = Vue.component('v-list', {
 
         var dList = {
             loading : true,
-            renders : {},
+            widgets : {},
             keys : [],
             recordActionsName : [],
             recordActions: [],
@@ -65,7 +65,7 @@ crud.components.views.vList = Vue.component('v-list', {
         draw : function() {
             var that = this;
             that.createActions();
-            that.createRenders();
+            that.createWidgets();
             that.createCollectionActions();
         },
 

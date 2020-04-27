@@ -1,12 +1,17 @@
 <script type="text/x-template" id="c-test-template">
     <div id="component-area">
-        <h4>Componente sottoposto a test : {{componentName}}</h4>
-        <component v-if="conf"
-                   :is="componentName"
-                   :c-conf="conf"
-                   :c-model="getModel()"
-                   :c-pk="getPk()"
-                   :c-provider-name="getProviderName()"
-        ></component>
+        <div v-if="conf">
+            <h4>Componente sottoposto a test : {{componentName}}</h4>
+            <component  v-if="conf"
+                       :is="componentName"
+                       :c-conf="conf"
+                       :c-model="getModel()"
+                       :c-pk="getPk()"
+                       :c-provider-name="getProviderName()"
+            ></component>
+        </div>
+        <div v-if="func">
+            Funzione
+        </div>
     </div>
 </script>

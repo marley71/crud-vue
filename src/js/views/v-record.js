@@ -3,36 +3,36 @@ crud.components.views.vRecord = Vue.component('v-record', {
     props : ['cModel','cPk'],
     methods : {
 
-        setFieldValue : function(key,value) {
+        setWidgetValue : function(key,value) {
             var that = this;
-            if (!that.renders[key]) {
+            if (!that.widgets[key]) {
                 throw 'accesso a render con chiave inesistente ' + key;
             }
-            crud.cRefs[that.renders[key].cRef].setValue(value);
+            crud.cRefs[that.widgets[key].cRef].setValue(value);
         },
 
-        createRenders : function() {
+        createWidgets : function() {
             var that = this;
             var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
-            var renders = {};
+            var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
-                renders[key].value = null;
-                renders[key].operator = null;
+                widgets[key] = that._defaultRenderConfig(key);
+                widgets[key].cRef = that.$crud.getRefId(that._uid,'r',key);
+                widgets[key].value = null;
+                widgets[key].operator = null;
                 if (that.data.value && (key in that.data.value) )
-                    renders[key].value = that.data.value[key];
+                    widgets[key].value = that.data.value[key];
 
-                renders[key].name = that.getFieldName(key);
-                if (! ('label' in renders[key]) )
-                    renders[key].label = key;
+                widgets[key].name = that.getFieldName(key);
+                if (! ('label' in widgets[key]) )
+                    widgets[key].label = key;
 
-                renders[key].label = that.$options.filters.translate(renders[key].label,that.langContext);
+                widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
             }
 
-            console.log('v-record.renders',renders);
-            that.renders = renders;
+            console.log('v-record.widgets',widgets);
+            that.widgets = widgets;
         },
         createActions : function() {
             var that = this;
@@ -94,7 +94,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
         //     return {
         //         viewTitle : '',
         //         loading : true,
-        //         renders : {},
+        //         widgets : {},
         //         actionsName : [],
         //         actions : {},
         //         vueRefs:{},
@@ -111,7 +111,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return data;
         },
         getRender : function (key) {
-            var rConf = this.renders[key];
+            var rConf = this.widgets[key];
             console.log('getRenderd',key,rConf);
             return this.$crud.cRefs[rConf.cRef];
         },

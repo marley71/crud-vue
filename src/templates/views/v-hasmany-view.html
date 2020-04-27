@@ -6,7 +6,7 @@
         </div>
         <div v-else>
             <div>pippo</div>
-            <div  v-for="(item, key) in renders">
+            <div  v-for="(item, key) in widgets">
                 <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
                 <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
 <!--                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->

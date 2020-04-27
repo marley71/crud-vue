@@ -15,7 +15,7 @@ crud.components.views.vView = Vue.component('v-view', {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
         });
     },
@@ -27,7 +27,7 @@ crud.components.views.vView = Vue.component('v-view', {
 
         var dView = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},

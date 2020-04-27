@@ -1,17 +1,25 @@
 Vue.component('c-test',{
-    props : ['cComponent','cModel','cPk','cProviderName','cConf'],
+    props : ['cComponent','cModel','cPk','cProviderName','cConf','cFunc'],
     extends : crud.components.cComponent,
 
     data : function () {
         var that = this;
-        var d = {
-            componentName : that.cComponent?that.cComponent:null,
-            conf : that.getConf(),
-            pk : that.cPk ? that.cPk:null,
-            model : that.cModel?that.cModel:null,
-            providerName : that.cProviderName?that.cProviderName:null,
+        var d = {};
+        if (that.cFunc) {
+            d.conf = null;
+            d.func = that.cFunc
+        } else {
+            d = {
+                componentName : that.cComponent?that.cComponent:null,
+                conf : that.getConf(),
+                pk : that.cPk ? that.cPk:null,
+                model : that.cModel?that.cModel:null,
+                providerName : that.cProviderName?that.cProviderName:null,
+                func : null
+            }
         }
-        console.log('data');
+
+        console.log('data',d);
         return d;
     },
     methods : {

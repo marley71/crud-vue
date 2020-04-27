@@ -2,9 +2,11 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
     extends : crud.components.widgets.wBase,
     template: '#w-date-select-template',
     data : function() {
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
+        var that = this;
+        var _conf = that.cConf || {};
+        var d = {};
+        if (!( 'resources' in _conf) ) {
+            d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
             ];
         }
@@ -78,10 +80,7 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
             if (dds.isValid()) {
                 that.value = s;
             }
-
-            //var sR = that.selectRanges();
-            //that.cDay = sR.cDay;
-            //console.log('changed',sR);
+            
             this.$refs.day.updateConf(that.cDay);
             this.$refs.month.updateConf(that.cMonth);
             this.$refs.year.updateConf(that.cYear);

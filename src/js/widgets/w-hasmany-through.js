@@ -1,13 +1,16 @@
 crud.components.rHasmanyThrough =Vue.component('w-hasmany-through', {
     extends : crud.components.widgets.wBase,
     template: '#w-hasmany-through-template',
-    data : function () {
-        var d = this._loadConf();
-        d.inputType = 'text';
-        if (this.cConf.inputType)
-            d.inputType = this.cConf.inputType;
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that.cConf || {};
+    //     var d = {
+    //         inputType : 'text'
+    //     };
+    //     if (_conf.inputType)
+    //         d.inputType = _conf.inputType;
+    //     return d;
+    // },
     methods : {
         getHasmanyConf : function (value) {
             var that = this;

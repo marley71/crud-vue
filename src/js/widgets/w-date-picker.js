@@ -2,9 +2,11 @@ crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
     extends : crud.components.widgets.wBase,
     template: '#w-date-picker-template',
     data : function() {
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
+        var that = this;
+        var _conf = that.cConf || {};
+        var d = {};
+        if (!( 'resources' in _conf) ) {
+            d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
                 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'

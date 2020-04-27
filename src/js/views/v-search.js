@@ -17,7 +17,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
         });
     },
@@ -30,7 +30,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
 
         var dSearch = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},
@@ -59,30 +59,30 @@ crud.components.views.vSearch = Vue.component('v-search', {
         getFieldName : function (key) {
             return 's_' + key;
         },
-        createRenders : function() {
+        createWidgets : function() {
             var that = this;
             var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
-            var renders = {};
+            var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
-                renders[key].value = null;
-                if (! ('label' in renders[key]) )
-                    renders[key].label = key;
-                renders[key].label = that.$options.filters.translate(renders[key].label,that.langContext);
-                //renders[key].operator = null;
+                widgets[key] = that._defaultRenderConfig(key);
+                widgets[key].cRef = that.$crud.getRefId(that._uid,'r',key);
+                widgets[key].value = null;
+                if (! ('label' in widgets[key]) )
+                    widgets[key].label = key;
+                widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
+                //widgets[key].operator = null;
                 if (that.data.value && that.data.value[key])
-                    renders[key].value = that.data.value[key];
+                    widgets[key].value = that.data.value[key];
 
-                renders[key].name = that.getFieldName(key);
-                if (!renders[key].operator) {
-                    renders[key].operator = '=';
+                widgets[key].name = that.getFieldName(key);
+                if (!widgets[key].operator) {
+                    widgets[key].operator = '=';
                 }
             }
 
-            console.log('v-searc.renders',renders);
-            that.renders = renders;
+            console.log('v-searc.widgets',widgets);
+            that.widgets = widgets;
         },
 
         setRouteValues : function (route) {

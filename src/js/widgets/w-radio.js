@@ -1,22 +1,13 @@
 crud.components.widgets.wRadio = Vue.component('w-radio',{
     extends : crud.components.widgets.wBase,
+    template: '#w-radio-template',
     data : function() {
-        var d = this._loadConf();
-        var dV = d.domainValues || {};
-        d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
+        var that = this;
+        var _conf  = that.cConf || {};
+        var d = {};
+        var dV = _conf.domainValues || {};
+        d.domainValuesOrder = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);
         return d;
     },
-
-    // data :  function () {
-    //     var dV = this.conf.domainValues || {};
-    //     var dVO = this.cConf.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
-    //     return {
-    //         name : this.cConf.name,
-    //         value: this.cConf.value,
-    //         domainValues : dV,
-    //         domainValuesOrder : dVO
-    //     }
-    // },
-    template: '#w-radio-template',
 });
 

@@ -2,8 +2,13 @@ crud.components.widgets.wInput = Vue.component('w-input', {
     extends : crud.components.widgets.wBase,
     template: '#w-input-template',
     data : function () {
-        var d = this._loadConf();
-        d.inputType = d.inputType?d.inputType:'text';
+        var that = this;
+        var _conf = that.cConf || {};
+        var d = {
+            inputType : 'text'
+        };
+        if (_conf.inputType)
+            d.inputType = _conf.inputType;
         return d;
     }
 });

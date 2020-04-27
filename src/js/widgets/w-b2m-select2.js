@@ -1,17 +1,6 @@
 crud.components.widgets.wB2mSelect2 = Vue.component('w-b2m-select2', {
     extends : crud.components.widgets.wB2Select2,
     template: '#w-b2m-select2-template',
-    // data : function () {
-    //     var d = this.defaultData();
-    //     if (!( 'resources' in d.conf) ) {
-    //         d.conf.resources = [
-    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
-    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-    //
-    //         ];
-    //     }
-    //     return d;
-    // },
     methods : {
         afterLoadResources : function () {
             var that = this;

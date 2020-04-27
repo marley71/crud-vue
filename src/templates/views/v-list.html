@@ -11,13 +11,13 @@
                 </div>
                 <div class="float-right">
                     <!-- v-bind:c-route-conf="routeConf" -->
-                    <c-paginator v-if="renders.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" >
                     <thead>
-                    <tr v-if="renders.length > 0">
+                    <tr v-if="widgets.length > 0">
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
                             <span>{{"app.azioni" | translate }}</span>
@@ -27,14 +27,14 @@
                             <span v-else>{{key | translate(langContext) }}</span>
                         </th>
                     </tr>
-                    <tr v-if="renders.length == 0">
+                    <tr v-if="widgets.length == 0">
                         <th v-show="recordActionsName.length">
                             {{"app.nessun-elemento" | translate }}
                         </th>
                     </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in renders">
+                    <tr v-for="(row,index) in widgets">
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group btn-group-sm" role="group">
@@ -64,7 +64,7 @@
                     </template>
                 </div>
                 <div class="float-right">
-                    <c-paginator v-if="renders.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
         </div>

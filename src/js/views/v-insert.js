@@ -14,7 +14,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
         });
     },
@@ -26,7 +26,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
 
         var dInsert = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},

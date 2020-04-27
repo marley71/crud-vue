@@ -2,15 +2,16 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
     extends : crud.components.widgets.wBase,
     template: '#w-b2-select2-template',
     data : function () {
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
+        var that = this;
+        var _conf = that.cConf || {};
+        var d = {};
+        if (!( 'resources' in _conf) ) {
+            d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-
             ];
         }
-        d.routeName = d.conf.routeName || 'autocomplete';
+        d.routeName = _conf.routeName || 'autocomplete';
         d.route = null;
         if (!('primaryKey' in d)  )
             d.primaryKey = 'id';

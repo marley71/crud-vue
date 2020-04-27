@@ -75,7 +75,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -84,8 +84,8 @@
                     <div class="alert alert-default">{{message}}</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">Annulla</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{ 'app.ok' | translate}}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">{{'app.annulla' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -106,7 +106,7 @@
                     <div class="alert alert-info">{{message}}</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -118,7 +118,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -127,7 +127,7 @@
                     <div class="alert alert-danger">{{message}}</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -140,7 +140,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -149,7 +149,7 @@
                     <div class="alert alert-warning">{{message}}</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -161,7 +161,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -178,14 +178,11 @@
         </div>
     </div>
 </template>
+
 <script type="text/x-template" id="c-loading-template">
     <div class="spinner-border text-primary" role="status">
         <span class="sr-only">{{'app.carico'|translate}}</span>
     </div>
-</script>
-
-<script type="text/x-template" id="w-render-template">
-    <component :is="type" :c-conf="item" :c-key="key"></component>
 </script>
 
 <script type="text/x-template" id="w-custom-template">
@@ -513,13 +510,13 @@
                 </div>
                 <div class="float-right">
                     <!-- v-bind:c-route-conf="routeConf" -->
-                    <c-paginator v-if="renders.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" >
                     <thead>
-                    <tr v-if="renders.length > 0">
+                    <tr v-if="widgets.length > 0">
                         <th v-show="recordActionsName.length">
                             <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
                             <span>{{"app.azioni" | translate }}</span>
@@ -529,14 +526,14 @@
                             <span v-else>{{key | translate(langContext) }}</span>
                         </th>
                     </tr>
-                    <tr v-if="renders.length == 0">
+                    <tr v-if="widgets.length == 0">
                         <th v-show="recordActionsName.length">
                             {{"app.nessun-elemento" | translate }}
                         </th>
                     </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in renders">
+                    <tr v-for="(row,index) in widgets">
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group btn-group-sm" role="group">
@@ -566,7 +563,7 @@
                     </template>
                 </div>
                 <div class="float-right">
-                    <c-paginator v-if="renders.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
         </div>
@@ -601,14 +598,14 @@
                             <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
                         </th>
                     </tr>
-                    <tr v-if="renders.length == 0">
+                    <tr v-if="widgets.length == 0">
                         <th v-show="recordActionsName.length">
                             {{"app.nessun-elemento" | translate }}
                         </th>
                     </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in renders">
+                    <tr v-for="(row,index) in widgets">
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group" role="group">
@@ -624,7 +621,7 @@
                         </td>
                         <td v-for="(render, key) in row">
                             <component v-if="!editMode[index]" :is="render.type"            :c-conf="render"            :c-key="key" :c-ref="'rv-'+index+'-'+key"></component>
-                            <component v-if="editMode[index]" :is="rendersEdit[index][key].type"  :c-conf="rendersEdit[index][key]"  :c-key="key" :c-ref="'re-'+index+'-'+key"></component>
+                            <component v-if="editMode[index]" :is="widgetsEdit[index][key].type"  :c-conf="widgetsEdit[index][key]"  :c-key="key" :c-ref="'re-'+index+'-'+key"></component>
                         </td>
                     </tr>
                     </tbody>
@@ -649,7 +646,7 @@
         <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <form v-else enctype="multipart/form-data">
-            <div  v-for="(item, key) in renders">
+            <div  v-for="(item, key) in widgets">
                 <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
                 <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
             </div>
@@ -666,7 +663,7 @@
     <div  class="container-fluid">
         <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
-        <div v-else v-for="(item, key) in renders">
+        <div v-else v-for="(item, key) in widgets">
             <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
             <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
         </div>
@@ -683,7 +680,7 @@
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading"></c-loading>
         <form v-else  enctype="multipart/form-data">
-            <div  v-for="(item, key) in renders">
+            <div  v-for="(item, key) in widgets">
                 <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
                 <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
             </div>
@@ -697,17 +694,17 @@
 </script>
 
 <script type="text/x-template" id="v-search-template">
-    <div class="card-body" v-if="(renders && Object.keys(renders).length > 0)">
+    <div class="card-body" v-if="(widgets && Object.keys(widgets).length > 0)">
         <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading"></c-loading>
         <form v-else>
             <!-- campi nascosti -->
-            <component v-for="(item, key) in renders" v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+            <component v-for="(item, key) in widgets" v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
 
             <div class="row">
                 <div class="col-10">
                     <div class="row">
-                        <div class="col col-6" v-for="(item, key) in renders">
+                        <div class="col col-6" v-for="(item, key) in widgets">
                             <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
 
                         </div>
@@ -734,7 +731,7 @@
         <div>&nbsp;</div>
         <c-loading v-if="loading"></c-loading>
         <div v-else>
-            <div  v-for="(item, key) in renders">
+            <div  v-for="(item, key) in widgets">
                 <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
                 <component v-if="item.type=='w-hidden'" :is="item.type"  :c-conf="item" :c-key="getFieldName(key)"></component>
 
@@ -751,7 +748,7 @@
         </div>
         <div v-else>
             <div>pippo</div>
-            <div  v-for="(item, key) in renders">
+            <div  v-for="(item, key) in widgets">
                 <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
                 <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
 <!--                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->

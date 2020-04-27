@@ -42,7 +42,7 @@
                                 <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne">Widgets</button>
                             </h2>
                         </div>
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#myAccordion">
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#myAccordion">
                             <div class="card-body">
                                 <div>Widgets</div>
                                 <ul class="">
@@ -76,7 +76,7 @@
                                 <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo">Views</button>
                             </h2>
                         </div>
-                        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#myAccordion">
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#myAccordion">
                             <div class="card-body">
                                 <div>Views</div>
                                 <ul class="">
@@ -88,6 +88,21 @@
                                     <li class="nav-item pl-2"><a href="#c-test?cComponent=v-list&cConf=vCustomListConf">Custom List</a></li>
                                     <li class="nav-item pl-2"><a href="#c-test?cComponent=v-list&cModel=user">List user </a></li>
                                     <li class="nav-item pl-2"><a href="#c-test?cComponent=v-list-edit&cModel=user">List Edit user </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                                <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree">Dialogs</button>
+                            </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#myAccordion">
+                            <div class="card-body">
+                                <div>Dialogs</div>
+                                <ul class="">
+                                    <li class="nav-item pl-2"><a href="#c-test?cFunc=message-dialog">Manage user</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -112,12 +127,14 @@
             </div>
             <div class="col-9">
                 <div id="app-content"></div>
-                <div >
-                    <div>Configurazione componente</div>
+                <div class="m-3">
+                    <div class="clearfix">
+                        <div class="pull-left">Configurazione componente</div>
+                        <button class="pull-right btn btn-primary btn-sm" onclick="ricarica()">Ricarica</button>
+                    </div>
                     <div >
                         <div >
                             <textarea id="editor" style="height:400px;width:100%"></textarea>
-                            <button onclick="ricarica()">Ricarica</button>
                         </div>
                     </div>
                 </div>

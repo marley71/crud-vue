@@ -3,7 +3,7 @@
         <div>&nbsp;</div>
         <c-loading v-if="loading"></c-loading>
         <div v-else>
-            <div  v-for="(item, key) in renders">
+            <div  v-for="(item, key) in widgets">
                 <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
                 <component v-if="item.type=='w-hidden'" :is="item.type"  :c-conf="item" :c-key="getFieldName(key)"></component>
 

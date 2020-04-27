@@ -5,9 +5,10 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
     },
     data : function() {
         var that = this;
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
+        var _conf = that.cConf || {};
+        var d = {};
+        if (!( 'resources' in _conf) ) {
+            d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
 //                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
@@ -19,7 +20,6 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             d.primaryKey = 'id';
         d.label = '';
         d.suggestValues = {};
-        console.log('CONFF',d);
         return d;
     },
     methods : {

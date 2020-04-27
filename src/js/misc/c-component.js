@@ -10,20 +10,25 @@ crud.components.cComponent = Vue.component('c-component',{
     //     }
     // },
     props : ['cConf'],
-    // mounted : function() {
-    //     //     //console.log(this.$options.name + ' cref ',this.cRef)
-    //     //     if (this.cConf && this.cConf.cRef) {
-    //     //         this.$crud.cRefs[this.cConf.cRef] = this;
-    //     //     }
-    //     // },
 
     mounted : function() {
         var that = this;
         //console.log('c-component.mounted',that.$options.name);
-        if (that.cConf && that.cConf.cRef) {
-            that.$crud.cRefs[that.cConf.cRef] = this;
+        if (that.conf.cRef) {
+            that.$crud.cRefs[that.conf.cRef] = this;
         }
-        if (that.conf) {
+        if (that.resources && that.resources.length) {
+            that.beforeLoadResources();
+            //that.resourcesLoaded = false;
+            that.$crud.loadResources(that.resources,function () {
+                //console.log('resoures loaded callback',that);
+                that.resourcesLoaded = true;
+                that.afterLoadResources();
+            })
+        } else {
+            that.resourcesLoaded = true;
+        }
+        //if (that.conf) {
             var __call = function (lk) {
                 that[lk] = function () {
                     var localk = new String(lk);
@@ -39,12 +44,14 @@ crud.components.cComponent = Vue.component('c-component',{
             if ( that.conf.mounted ) {
                 that.conf.mounted.apply(that);
             }
-        }
+        //}
 
     },
-    // data : function() {
-    //     return this._loadConf();
-    // },
+    data : function() {
+        var d =  this._loadConf();
+        d.resourcesLoaded = false;
+        return d;
+    },
     methods : {
         jQe : function (selector) {
             var that = this;
@@ -90,5 +97,13 @@ crud.components.cComponent = Vue.component('c-component',{
             console.log('routeName',rn,that.$crud.routes[rn])
             return new Route(that.$crud.routes[rn]);
         },
+
+        beforeLoadResources : function () {
+            console.log('cComponent.beforeLoadResources')
+        },
+        afterLoadResources : function () {
+            console.log('cComponent.afterLoadResources');
+        },
+
     }
 });

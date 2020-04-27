@@ -5,7 +5,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
         var that = this;
         var d = that._loadConf(that.cModel,'listEdit');
         var dListEdit = {
-            rendersEdit : {},
+            widgetsEdit : {},
             editMode : []
         };
         return this.$crud.merge(dListEdit,d);
@@ -33,8 +33,8 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
     //
     //     var d = {
     //         loading : true,
-    //         renders : {},
-    //         rendersEdit : {},
+    //         widgets : {},
+    //         widgetsEdit : {},
     //         keys : [],
     //         recordActionsName : [],
     //         recordActions: [],
@@ -64,23 +64,23 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
             var that = this;
             that.editMode = new Array(that.data.value.length).fill(false);
             that.createActions();
-            that.createRenders();
-            that.createRendersEdit();
+            that.createWidgets();
+            that.createWidgetsEdit();
             that.createCollectionActions();
-            // console.log('rendersEdit',that.rendersEdit);
-            // console.log('renders',that.renders,'recordActions',that.recordActions);
+            // console.log('widgetsEdit',that.widgetsEdit);
+            // console.log('widgets',that.widgets,'recordActions',that.recordActions);
             // console.log('collectionActions',that.collectionActions);
             // console.log('editMode',that.editMode)
         },
 
-        createRendersEdit : function () {
+        createWidgetsEdit : function () {
             var that = this;
-            //console.log('Vlist-create renders',that.data);
-            var rendersEdit = [];
+            //console.log('Vlist-create widgets',that.data);
+            var widgetsEdit = [];
             var data = that.data;
             var keys = that.keys;
             for (var i in data.value) {
-                rendersEdit.push({});
+                widgetsEdit.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key,'fieldsConfigEditMode');
@@ -94,10 +94,10 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
                     dconf.name = that.getFieldName(key);
-                    rendersEdit[i][key] = dconf;
+                    widgetsEdit[i][key] = dconf;
                 }
             }
-            that.rendersEdit = rendersEdit;
+            that.widgetsEdit = widgetsEdit;
         },
 
         setEditMode : function (index) {

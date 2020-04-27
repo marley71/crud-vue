@@ -2,34 +2,24 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     extends : crud.components.views.vBase,
     props : ['cModel'],
     methods : {
-        setFieldValue : function(row,key,value) {
+        setWidgetValue : function(row,key,value) {
             var that = this;
-            if (!that.renders[row][key]) {
+            if (!that.widgets[row][key]) {
                 throw 'accesso a render con chiave inesistente '+ row + "," + key;
             }
-            that.renders[row][key].setValue(value);
+            that.widgets[row][key].setValue(value);
         },
-        // defaultData : function () {
-        //     return {
-        //         viewTitle : '',
-        //         loading : true,
-        //         renders : {},
-        //         actionsName : [],
-        //         actions : {},
-        //         conf : this.cConf || {},
-        //     }
-        // },
-        createRenders : function () {
+        createWidgets : function () {
             var that = this;
-            //console.log('Vlist-create renders',that.data);
-            var renders = [];
+            //console.log('Vlist-create widgets',that.data);
+            var widgets = [];
             var recordActions = that.recordActions;
             var recordActionsName = that.recordActionsName;
             var data = that.data;
             var keys = that.keys;
             console.log('keys',keys,data.value);
             for (var i in data.value) {
-                renders.push({});
+                widgets.push({});
                 recordActions.push({});
                 for (var k in keys) {
                     var key = keys[k];
@@ -41,14 +31,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
                     dconf.name = that.getFieldName(key);
-                    //console.log(i,renders,renders[i],key,dconf),
-                    renders[i][key] = dconf;
+                    //console.log(i,widgets,widgets[i],key,dconf),
+                    widgets[i][key] = dconf;
 
                 }
                 that.createRecordActions(i);
             }
 
-            that.renders = renders;
+            that.widgets = widgets;
             that.recordActionsName = recordActionsName;
         },
         getKeys : function () {
@@ -64,7 +54,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             return keys;
         },
         getRender : function (row,key) {
-            return this.renders[row][key];
+            return this.widgets[row][key];
         },
         createActions : function () {
             var that = this;
@@ -136,11 +126,5 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.collectionActions = collectionActions;
         },
     },
-    // data : function () {
-    //     var d =  this._loadConf();
-    //     if (this.cModel)
-    //        d.conf.modelName = this.cModel;
-    //     return d;
-    // },
     template : '<div>view collection base</div>'
 });

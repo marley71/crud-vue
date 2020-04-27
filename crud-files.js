@@ -26,7 +26,6 @@ var crudJsFiles = [
 
     'src/js/widgets/w-base.js',
     'src/js/widgets/w-custom.js',
-    'src/js/widgets/w-render.js',
     'src/js/widgets/w-input.js',
     'src/js/widgets/w-input-helped.js',
     'src/js/widgets/w-hidden.js',
@@ -83,7 +82,6 @@ var crudHtmlFiles = [
     'src/templates/misc/dialogs.html',
     'src/templates/misc/c-loading.html',
 
-    'src/templates/widgets/w-render.html',
     'src/templates/widgets/w-custom.html',
     'src/templates/widgets/w-input.html',
     'src/templates/widgets/w-input-helped.html',

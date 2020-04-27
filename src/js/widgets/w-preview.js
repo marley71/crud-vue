@@ -7,11 +7,13 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
     // },
     data : function () {
         var that = this;
-        var d = that._loadConf();
-        if (!d.value)
+        var _conf = that.cConf || {};
+        var d = {
+            icon : false,
+            iconClass : ''
+        };
+        if (!_conf.value)
             d.value = {};
-        d.icon = false;
-        d.iconClass = '';
         return d;
     },
     methods : {

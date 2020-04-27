@@ -2,6 +2,7 @@ const crud = {};
 crud.lang = {
     'app.aggiungi' : 'Aggiungi',
     'app.annulla' : 'Annulla',
+    'app.attenzione' : 'Attenzione',
     'app.azioni' : 'Azioni',
     'app.cancella' : 'Cancella elemento',
     'app.cancella-selezionati' : 'Cancella elementi selezionati',
@@ -10,12 +11,16 @@ crud.lang = {
     'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
     'app.conferma-multidelete' : 'Sei sicuro di voler cancellare (0) elementi selezionati?',
     'app.estensioni-accettate' : 'Estensioni accettate:',
+    'app.errore' : 'Errore',
     'app.indietro' : 'Indietro',
+    'app.informazione' : 'Informazione',
     'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
     'app.modifica' : 'Modifica',
     'app.nessun-elemento' : 'Nessun elemento trovato',
     'app.nuovo' : 'Nuovo',
+    'app.ok' : 'Ok',
     'app.ordina' : 'Ordina',
+    'app.richiest-conferma' : 'Richiesta di Conferma',
     'app.salva' : 'Salva',
     'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
     'app.vista' : 'Vista',
@@ -1549,20 +1554,25 @@ crud.components.cComponent = Vue.component('c-component',{
     //     }
     // },
     props : ['cConf'],
-    // mounted : function() {
-    //     //     //console.log(this.$options.name + ' cref ',this.cRef)
-    //     //     if (this.cConf && this.cConf.cRef) {
-    //     //         this.$crud.cRefs[this.cConf.cRef] = this;
-    //     //     }
-    //     // },
 
     mounted : function() {
         var that = this;
         //console.log('c-component.mounted',that.$options.name);
-        if (that.cConf && that.cConf.cRef) {
-            that.$crud.cRefs[that.cConf.cRef] = this;
+        if (that.conf.cRef) {
+            that.$crud.cRefs[that.conf.cRef] = this;
         }
-        if (that.conf) {
+        if (that.resources && that.resources.length) {
+            that.beforeLoadResources();
+            //that.resourcesLoaded = false;
+            that.$crud.loadResources(that.resources,function () {
+                //console.log('resoures loaded callback',that);
+                that.resourcesLoaded = true;
+                that.afterLoadResources();
+            })
+        } else {
+            that.resourcesLoaded = true;
+        }
+        //if (that.conf) {
             var __call = function (lk) {
                 that[lk] = function () {
                     var localk = new String(lk);
@@ -1578,12 +1588,14 @@ crud.components.cComponent = Vue.component('c-component',{
             if ( that.conf.mounted ) {
                 that.conf.mounted.apply(that);
             }
-        }
+        //}
 
     },
-    // data : function() {
-    //     return this._loadConf();
-    // },
+    data : function() {
+        var d =  this._loadConf();
+        d.resourcesLoaded = false;
+        return d;
+    },
     methods : {
         jQe : function (selector) {
             var that = this;
@@ -1629,6 +1641,14 @@ crud.components.cComponent = Vue.component('c-component',{
             console.log('routeName',rn,that.$crud.routes[rn])
             return new Route(that.$crud.routes[rn]);
         },
+
+        beforeLoadResources : function () {
+            console.log('cComponent.beforeLoadResources')
+        },
+        afterLoadResources : function () {
+            console.log('cComponent.afterLoadResources');
+        },
+
     }
 });
 
@@ -1949,7 +1969,7 @@ crud.components.dConfirm = Vue.component('d-confirm', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
-            default : 'Richiesta di Conferma'
+            default : 'app.richiesta-conferma'
         }
     },
     data : function() {
@@ -1964,7 +1984,7 @@ crud.components.dMessage = Vue.component('d-message', {
     extends : crud.components.dBase,
     props : {
         'cTitle': {
-            default : 'Informazione'
+            default : 'app.informazione'
         }
     },
     data : function() {
@@ -1979,7 +1999,7 @@ crud.components.dError = Vue.component('d-error', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
-            default : 'Errore'
+            default : 'app.errore'
         }
     },
     data : function() {
@@ -1993,7 +2013,7 @@ crud.components.dWarning = Vue.component('d-warning', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
-            default : 'Attenzione'
+            default : 'app.attenzione'
         }
     },
     data : function() {
@@ -2034,41 +2054,18 @@ crud.components.widgets.wBase = Vue.component('w-base', {
 
     mounted : function() {
         var that = this;
-        console.log('w-base.mounted');
-        var _conf = that.cConf || {};
-        if (!_conf.operator) {
+        if (!that.operator) {
             jQuery(that.$el).find('[c-operator]').remove();
-        }
-        // var that =this;
-        // for (var k in _conf.methods) {
-        //     //console.log('w-base implements methods',k);
-        //     that[k] = function () {
-        //         return _conf.methods[k].apply(that,this.arguments);
-        //     }
-        // }
-        if (_conf.resources && _conf.resources.length) {
-            that.beforeLoadResources();
-            //that.resourcesLoaded = false;
-            that.$crud.loadResources(_conf.resources,function () {
-                //console.log('resoures loaded callback',that);
-                that.resourcesLoaded = true;
-                that.afterLoadResources();
-            })
-        } else {
-            that.resourcesLoaded = true;
-        }
-
-        if ( _conf.mounted ) {
-            _conf.mounted.apply(that);
         }
     },
     data :  function () {
-        var d  = this._loadConf();
-        if (! ('value' in d))
+        var that = this;
+        var _conf = that.cConf || {};
+        var d  = {};
+        if (! ('value' in _conf))
             d.value = null;
-        if (! ('operator' in d))
+        if (! ('operator' in _conf))
             d.operator = null;
-        d.resourcesLoaded = false;
         return d;
     },
     methods : {
@@ -2086,12 +2083,6 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             return that.name + "_operator";
         },
 
-        beforeLoadResources : function () {
-            console.log('wBase.beforeLoadResources')
-        },
-        afterLoadResources : function () {
-            console.log('wBase.afterLoadResources');
-        },
         getValue : function() {
             return this.value;
         },
@@ -2135,17 +2126,17 @@ crud.components.widgets.wCustom = Vue.component('w-custom', {
     template: '#w-custom-template',
 });
 
-crud.components.widgets.wRender = Vue.component('w-render', {
-    extends : crud.components.widgets.wBase,
-    template: '#w-render-template',
-});
-
 crud.components.widgets.wInput = Vue.component('w-input', {
     extends : crud.components.widgets.wBase,
     template: '#w-input-template',
     data : function () {
-        var d = this._loadConf();
-        d.inputType = d.inputType?d.inputType:'text';
+        var that = this;
+        var _conf = that.cConf || {};
+        var d = {
+            inputType : 'text'
+        };
+        if (_conf.inputType)
+            d.inputType = _conf.inputType;
         return d;
     }
 });
@@ -2220,24 +2211,15 @@ crud.components.widgets.wSelect = Vue.component('w-select',{
 
 crud.components.widgets.wRadio = Vue.component('w-radio',{
     extends : crud.components.widgets.wBase,
+    template: '#w-radio-template',
     data : function() {
-        var d = this._loadConf();
-        var dV = d.domainValues || {};
-        d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
+        var that = this;
+        var _conf  = that.cConf || {};
+        var d = {};
+        var dV = _conf.domainValues || {};
+        d.domainValuesOrder = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);
         return d;
     },
-
-    // data :  function () {
-    //     var dV = this.conf.domainValues || {};
-    //     var dVO = this.cConf.domainValuesOrder?metadata.domainValuesOrder:Object.keys(dV);
-    //     return {
-    //         name : this.cConf.name,
-    //         value: this.cConf.value,
-    //         domainValues : dV,
-    //         domainValuesOrder : dVO
-    //     }
-    // },
-    template: '#w-radio-template',
 });
 
 
@@ -2245,17 +2227,21 @@ crud.components.widgets.wCheckbox = Vue.component('w-checkbox',{
     extends : crud.components.widgets.wBase,
     data :  function () {
         var that = this;
-        var d = that._loadConf();
-        var dV = d.domainValues;
-        var dVO = d.domainValuesOrder?d.domainValuesOrder:Object.keys(dV);
-        d.value = Array.isArray(d.value)?d.value:[d.value];
+        var _conf = that.cConf || {};
+        var d = {};
+        var dV = _conf.domainValues || {};
+        var dVO = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);
+        if (_conf.value)
+            d.value = Array.isArray(_conf.value)?_conf.value:[_conf.value];
+        else
+            d.value = [];
         d.domainValues = dV;
         d.domainValuesOrder = dVO;
         return d;
     },
     methods : {
         getFieldName : function () {
-            return this.cKey + '[]';
+            return this.name + '[]';
         }
     },
     template: '#w-checkbox-template',
@@ -2269,9 +2255,10 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
     },
     data : function() {
         var that = this;
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
+        var _conf = that.cConf || {};
+        var d = {};
+        if (!( 'resources' in _conf) ) {
+            d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
 //                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
@@ -2283,7 +2270,6 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             d.primaryKey = 'id';
         d.label = '';
         d.suggestValues = {};
-        console.log('CONFF',d);
         return d;
     },
     methods : {
@@ -2418,9 +2404,11 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
     extends : crud.components.widgets.wBase,
     template: '#w-date-select-template',
     data : function() {
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
+        var that = this;
+        var _conf = that.cConf || {};
+        var d = {};
+        if (!( 'resources' in _conf) ) {
+            d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
             ];
         }
@@ -2494,10 +2482,7 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
             if (dds.isValid()) {
                 that.value = s;
             }
-
-            //var sR = that.selectRanges();
-            //that.cDay = sR.cDay;
-            //console.log('changed',sR);
+            
             this.$refs.day.updateConf(that.cDay);
             this.$refs.month.updateConf(that.cMonth);
             this.$refs.year.updateConf(that.cYear);
@@ -2511,9 +2496,11 @@ crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
     extends : crud.components.widgets.wBase,
     template: '#w-date-picker-template',
     data : function() {
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
+        var that = this;
+        var _conf = that.cConf || {};
+        var d = {};
+        if (!( 'resources' in _conf) ) {
+            d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
                 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
@@ -2586,12 +2573,11 @@ crud.components.rHasmany =Vue.component('w-hasmany', {
     },
     data : function () {
         var that = this;
-        var d = that._loadConf();
+        var _conf = that.cConf || {}
+        var d = {};
         d.confViews = [];
-        if (!("limit" in d) )
-            d.limit = 1000;
-
-        //console.log('CONF VIEWS',d.confViews,d.value)
+        if (!("limit" in _conf) )
+            d.limit = 100;
         return d;
     },
 
@@ -2702,13 +2688,13 @@ crud.components.rHasmany =Vue.component('w-hasmany', {
 crud.components.widgets.wHasmanyView = Vue.component('w-hasmany-view', {
     extends : crud.components.rHasmany,
     template: '#w-hasmany-view-template',
-    data : function () {
-        var d = this._loadConf();
-        d.inputType = 'text';
-        if (this.cConf.inputType)
-            d.inputType = this.cConf.inputType;
-        return d;
-    }
+    // data : function () {
+    //     var d = this._loadConf();
+    //     d.inputType = 'text';
+    //     if (this.cConf.inputType)
+    //         d.inputType = this.cConf.inputType;
+    //     return d;
+    // }
 });
 
 crud.components.widgets.wSwap = Vue.component('w-swap', {
@@ -2810,13 +2796,16 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
 crud.components.rHasmanyThrough =Vue.component('w-hasmany-through', {
     extends : crud.components.widgets.wBase,
     template: '#w-hasmany-through-template',
-    data : function () {
-        var d = this._loadConf();
-        d.inputType = 'text';
-        if (this.cConf.inputType)
-            d.inputType = this.cConf.inputType;
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that.cConf || {};
+    //     var d = {
+    //         inputType : 'text'
+    //     };
+    //     if (_conf.inputType)
+    //         d.inputType = _conf.inputType;
+    //     return d;
+    // },
     methods : {
         getHasmanyConf : function (value) {
             var that = this;
@@ -2860,15 +2849,16 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
     extends : crud.components.widgets.wBase,
     template: '#w-b2-select2-template',
     data : function () {
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
+        var that = this;
+        var _conf = that.cConf || {};
+        var d = {};
+        if (!( 'resources' in _conf) ) {
+            d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-
             ];
         }
-        d.routeName = d.conf.routeName || 'autocomplete';
+        d.routeName = _conf.routeName || 'autocomplete';
         d.route = null;
         if (!('primaryKey' in d)  )
             d.primaryKey = 'id';
@@ -2983,17 +2973,6 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
 crud.components.widgets.wB2mSelect2 = Vue.component('w-b2m-select2', {
     extends : crud.components.widgets.wB2Select2,
     template: '#w-b2m-select2-template',
-    // data : function () {
-    //     var d = this.defaultData();
-    //     if (!( 'resources' in d.conf) ) {
-    //         d.conf.resources = [
-    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
-    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-    //
-    //         ];
-    //     }
-    //     return d;
-    // },
     methods : {
         afterLoadResources : function () {
             var that = this;
@@ -3355,11 +3334,13 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
     // },
     data : function () {
         var that = this;
-        var d = that._loadConf();
-        if (!d.value)
+        var _conf = that.cConf || {};
+        var d = {
+            icon : false,
+            iconClass : ''
+        };
+        if (!_conf.value)
             d.value = {};
-        d.icon = false;
-        d.iconClass = '';
         return d;
     },
     methods : {
@@ -3430,7 +3411,7 @@ crud.components.views.vAction = Vue.component('v-action', {
             conf: {},
         }
         if (this.cAction) {
-            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
+            //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
             aConf =  {
                 name : this.cName,
                 conf : this.cAction
@@ -3457,10 +3438,10 @@ crud.components.views.vRender =  Vue.component('v-render', {
             var ckeys = this.cKey.split(',');
             var render = null;
             for (var i in ckeys) {
-                render = this.$parent.renders[ckeys[i]];
+                render = this.$parent.widgets[ckeys[i]];
             }
-            //var render = this.$parent.renders[this.cKey];
-            //console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
+            //var render = this.$parent.widgets[this.cKey];
+            //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
             return {
                 type : render.type,
                 conf : render
@@ -3477,7 +3458,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
             } else
                 conf = this.cRender;
 
-            //console.log('V-RENDER2 ',conf,this.$parent.renders);
+            //console.log('V-RENDER2 ',conf,this.$parent.widgets);
             return {
                 type : conf.type,
                 conf : conf
@@ -3496,18 +3477,6 @@ crud.components.views.vRender =  Vue.component('v-render', {
 crud.components.views.vBase = Vue.component('v-base', {
     props : ['cFields'],
     extends : crud.components.cComponent,
-    // created : function() {
-    //     var that = this;
-    //     var _conf = that.getConf(that.cConf) || {};
-    //     for (var k in _conf.methods) {
-    //         console.log('v-base implements methods',k);
-    //         that[k] = function () {
-    //             var arguments = this.arguments;
-    //             console.log('arguments');
-    //             _conf.methods[k].apply(that,arguments);
-    //         }
-    //     }
-    // },
     data : function () {
         //var d = this._loadConf();
         return {
@@ -3518,34 +3487,7 @@ crud.components.views.vBase = Vue.component('v-base', {
         // d.langContext = null;
         // return d;
     },
-    // mounted : function() {
-    //     var that = this;
-    //     var __call = function (lk) {
-    //         that[lk] = function () {
-    //             var localk = new String(lk);
-    //             //var arguments = this.arguments;
-    //             console.log(localk,'arguments',arguments);
-    //             return that.conf.methods[localk].apply(that,arguments);
-    //         }
-    //     }
-    //     for (var k in that.conf.methods) {
-    //         __call(k);
-    //     }
-    //
-    //     if ( that.conf.mounted ) {
-    //         that.conf.mounted.apply(that);
-    //     }
-    // },
     methods : {
-        // defaultData : function () {
-        //     var _c = this.cConf || {};
-        //     return {
-        //         viewTitle : '',
-        //         conf : _c,
-        //         langContext : null,
-        //     }
-        // },
-
         fetchData: function (route,callback) {
             var that = this;
             if (!route) {
@@ -3680,45 +3622,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             d.conf = finalConf;
             console.log('finalConf',finalConf);
             return d;
-
-            // var _c = this.cConf || {};
-            // var d = {};
-            // for (var k in _c) {
-            //     if (k == 'methods')
-            //         continue;
-            //     d[k] = _c[k];
-            // }
-            // d.conf = _c;
-            // return d;
         },
-
-
-
-
-        // /**
-        //  * setta la configurazione della route secondo le proprie esigenze.
-        //  * @param route
-        //  * @returns {*}
-        //  */
-        // setRouteValues : function(route) {
-        //     return route;
-        // },
-
-        // _getRoute : function () {
-        //     var that = this;
-        //     var route = null;
-        //     console.log('_getRoute',that.conf);
-        //     if (!that.conf)
-        //         return route;
-        //     if (that.conf.routeName == null)
-        //         return route;
-        //     if (!that.route) {
-        //         if (crud.routes[that.conf.routeName]) {
-        //             route =  new Route(crud.routes[that.conf.routeName]);
-        //         }
-        //     }
-        //     return route;
-        // },
         /**
          * ritorna la configurazione minimale di base di un render rispettando le priorita' tra le configurazioni
          * @param key : nome del campo di cui vogliamo la configurazione
@@ -3763,36 +3667,36 @@ crud.components.views.vRecord = Vue.component('v-record', {
     props : ['cModel','cPk'],
     methods : {
 
-        setFieldValue : function(key,value) {
+        setWidgetValue : function(key,value) {
             var that = this;
-            if (!that.renders[key]) {
+            if (!that.widgets[key]) {
                 throw 'accesso a render con chiave inesistente ' + key;
             }
-            crud.cRefs[that.renders[key].cRef].setValue(value);
+            crud.cRefs[that.widgets[key].cRef].setValue(value);
         },
 
-        createRenders : function() {
+        createWidgets : function() {
             var that = this;
             var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
-            var renders = {};
+            var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
-                renders[key].value = null;
-                renders[key].operator = null;
+                widgets[key] = that._defaultRenderConfig(key);
+                widgets[key].cRef = that.$crud.getRefId(that._uid,'r',key);
+                widgets[key].value = null;
+                widgets[key].operator = null;
                 if (that.data.value && (key in that.data.value) )
-                    renders[key].value = that.data.value[key];
+                    widgets[key].value = that.data.value[key];
 
-                renders[key].name = that.getFieldName(key);
-                if (! ('label' in renders[key]) )
-                    renders[key].label = key;
+                widgets[key].name = that.getFieldName(key);
+                if (! ('label' in widgets[key]) )
+                    widgets[key].label = key;
 
-                renders[key].label = that.$options.filters.translate(renders[key].label,that.langContext);
+                widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
             }
 
-            console.log('v-record.renders',renders);
-            that.renders = renders;
+            console.log('v-record.widgets',widgets);
+            that.widgets = widgets;
         },
         createActions : function() {
             var that = this;
@@ -3854,7 +3758,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
         //     return {
         //         viewTitle : '',
         //         loading : true,
-        //         renders : {},
+        //         widgets : {},
         //         actionsName : [],
         //         actions : {},
         //         vueRefs:{},
@@ -3871,7 +3775,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return data;
         },
         getRender : function (key) {
-            var rConf = this.renders[key];
+            var rConf = this.widgets[key];
             console.log('getRenderd',key,rConf);
             return this.$crud.cRefs[rConf.cRef];
         },
@@ -3897,34 +3801,24 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     extends : crud.components.views.vBase,
     props : ['cModel'],
     methods : {
-        setFieldValue : function(row,key,value) {
+        setWidgetValue : function(row,key,value) {
             var that = this;
-            if (!that.renders[row][key]) {
+            if (!that.widgets[row][key]) {
                 throw 'accesso a render con chiave inesistente '+ row + "," + key;
             }
-            that.renders[row][key].setValue(value);
+            that.widgets[row][key].setValue(value);
         },
-        // defaultData : function () {
-        //     return {
-        //         viewTitle : '',
-        //         loading : true,
-        //         renders : {},
-        //         actionsName : [],
-        //         actions : {},
-        //         conf : this.cConf || {},
-        //     }
-        // },
-        createRenders : function () {
+        createWidgets : function () {
             var that = this;
-            //console.log('Vlist-create renders',that.data);
-            var renders = [];
+            //console.log('Vlist-create widgets',that.data);
+            var widgets = [];
             var recordActions = that.recordActions;
             var recordActionsName = that.recordActionsName;
             var data = that.data;
             var keys = that.keys;
             console.log('keys',keys,data.value);
             for (var i in data.value) {
-                renders.push({});
+                widgets.push({});
                 recordActions.push({});
                 for (var k in keys) {
                     var key = keys[k];
@@ -3936,14 +3830,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
                     dconf.name = that.getFieldName(key);
-                    //console.log(i,renders,renders[i],key,dconf),
-                    renders[i][key] = dconf;
+                    //console.log(i,widgets,widgets[i],key,dconf),
+                    widgets[i][key] = dconf;
 
                 }
                 that.createRecordActions(i);
             }
 
-            that.renders = renders;
+            that.widgets = widgets;
             that.recordActionsName = recordActionsName;
         },
         getKeys : function () {
@@ -3959,7 +3853,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             return keys;
         },
         getRender : function (row,key) {
-            return this.renders[row][key];
+            return this.widgets[row][key];
         },
         createActions : function () {
             var that = this;
@@ -4031,12 +3925,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.collectionActions = collectionActions;
         },
     },
-    // data : function () {
-    //     var d =  this._loadConf();
-    //     if (this.cModel)
-    //        d.conf.modelName = this.cModel;
-    //     return d;
-    // },
     template : '<div>view collection base</div>'
 });
 
@@ -4078,7 +3966,7 @@ crud.components.views.vList = Vue.component('v-list', {
 
         var dList = {
             loading : true,
-            renders : {},
+            widgets : {},
             keys : [],
             recordActionsName : [],
             recordActions: [],
@@ -4107,7 +3995,7 @@ crud.components.views.vList = Vue.component('v-list', {
         draw : function() {
             var that = this;
             that.createActions();
-            that.createRenders();
+            that.createWidgets();
             that.createCollectionActions();
         },
 
@@ -4211,7 +4099,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
         var that = this;
         var d = that._loadConf(that.cModel,'listEdit');
         var dListEdit = {
-            rendersEdit : {},
+            widgetsEdit : {},
             editMode : []
         };
         return this.$crud.merge(dListEdit,d);
@@ -4239,8 +4127,8 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
     //
     //     var d = {
     //         loading : true,
-    //         renders : {},
-    //         rendersEdit : {},
+    //         widgets : {},
+    //         widgetsEdit : {},
     //         keys : [],
     //         recordActionsName : [],
     //         recordActions: [],
@@ -4270,23 +4158,23 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
             var that = this;
             that.editMode = new Array(that.data.value.length).fill(false);
             that.createActions();
-            that.createRenders();
-            that.createRendersEdit();
+            that.createWidgets();
+            that.createWidgetsEdit();
             that.createCollectionActions();
-            // console.log('rendersEdit',that.rendersEdit);
-            // console.log('renders',that.renders,'recordActions',that.recordActions);
+            // console.log('widgetsEdit',that.widgetsEdit);
+            // console.log('widgets',that.widgets,'recordActions',that.recordActions);
             // console.log('collectionActions',that.collectionActions);
             // console.log('editMode',that.editMode)
         },
 
-        createRendersEdit : function () {
+        createWidgetsEdit : function () {
             var that = this;
-            //console.log('Vlist-create renders',that.data);
-            var rendersEdit = [];
+            //console.log('Vlist-create widgets',that.data);
+            var widgetsEdit = [];
             var data = that.data;
             var keys = that.keys;
             for (var i in data.value) {
-                rendersEdit.push({});
+                widgetsEdit.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key,'fieldsConfigEditMode');
@@ -4300,10 +4188,10 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                     if (data.value[i][key])
                         dconf.value = data.value[i][key];
                     dconf.name = that.getFieldName(key);
-                    rendersEdit[i][key] = dconf;
+                    widgetsEdit[i][key] = dconf;
                 }
             }
-            that.rendersEdit = rendersEdit;
+            that.widgetsEdit = widgetsEdit;
         },
 
         setEditMode : function (index) {
@@ -4369,7 +4257,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
         });
     },
@@ -4381,7 +4269,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
 
         var dEdit = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},
@@ -4425,7 +4313,7 @@ crud.components.views.vView = Vue.component('v-view', {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
         });
     },
@@ -4437,7 +4325,7 @@ crud.components.views.vView = Vue.component('v-view', {
 
         var dView = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},
@@ -4481,7 +4369,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
         });
     },
@@ -4493,7 +4381,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
 
         var dInsert = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},
@@ -4537,7 +4425,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             that.fillData(that.route,json);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
         });
     },
@@ -4550,7 +4438,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
 
         var dSearch = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},
@@ -4579,30 +4467,30 @@ crud.components.views.vSearch = Vue.component('v-search', {
         getFieldName : function (key) {
             return 's_' + key;
         },
-        createRenders : function() {
+        createWidgets : function() {
             var that = this;
             var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
-            var renders = {};
+            var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                renders[key] = that._defaultRenderConfig(key);
-                renders[key].cRef = that.$crud.getRefId(that._uid,'r',key);
-                renders[key].value = null;
-                if (! ('label' in renders[key]) )
-                    renders[key].label = key;
-                renders[key].label = that.$options.filters.translate(renders[key].label,that.langContext);
-                //renders[key].operator = null;
+                widgets[key] = that._defaultRenderConfig(key);
+                widgets[key].cRef = that.$crud.getRefId(that._uid,'r',key);
+                widgets[key].value = null;
+                if (! ('label' in widgets[key]) )
+                    widgets[key].label = key;
+                widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
+                //widgets[key].operator = null;
                 if (that.data.value && that.data.value[key])
-                    renders[key].value = that.data.value[key];
+                    widgets[key].value = that.data.value[key];
 
-                renders[key].name = that.getFieldName(key);
-                if (!renders[key].operator) {
-                    renders[key].operator = '=';
+                widgets[key].name = that.getFieldName(key);
+                if (!widgets[key].operator) {
+                    widgets[key].operator = '=';
                 }
             }
 
-            console.log('v-searc.renders',renders);
-            that.renders = renders;
+            console.log('v-searc.widgets',widgets);
+            that.widgets = widgets;
         },
 
         setRouteValues : function (route) {
@@ -4626,7 +4514,7 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
         var d = that._loadConf(that.cModel,'edit');
         var dHasmany =  {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},
@@ -4654,7 +4542,7 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
             that.fillData(null,null);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
             console.log('v-hasmany',that.loading);
         });
@@ -4674,7 +4562,7 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
 
         var dHasmany = {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},
@@ -4698,7 +4586,7 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
             that.fillData(null,null);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
             console.log('v-hasmany',that.loading);
         });

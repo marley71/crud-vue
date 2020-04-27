@@ -6,7 +6,7 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
         var d = that._loadConf(that.cModel,'edit');
         var dHasmany =  {
             loading : true,
-            renders : {},
+            widgets : {},
             actionsClass : [],
             actions : {},
             data : {},
@@ -34,7 +34,7 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
             that.fillData(null,null);
             that.createActions();
             that.createActionsClass();
-            that.createRenders();
+            that.createWidgets();
             that.loading = false;
             console.log('v-hasmany',that.loading);
         });
