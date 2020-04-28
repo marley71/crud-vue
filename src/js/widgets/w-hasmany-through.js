@@ -14,7 +14,7 @@ crud.components.rHasmanyThrough =Vue.component('w-hasmany-through', {
     methods : {
         getHasmanyConf : function (value) {
             var that = this;
-            var hmConf = that.cConf.hasmanyConf?that.cConf.hasmanyConf:{
+            var hmConf = that.hasmanyConf?that.hasmanyConf:{
                 fields : [],
                 fieldsConfig : {},
                 data :  {
@@ -34,7 +34,7 @@ crud.components.rHasmanyThrough =Vue.component('w-hasmany-through', {
                 if (this.value && this.value.length > 0) {
                     if (!hmConf.fields || !hmConf.fields.length) {
                         hmConf.fields = Object.keys(this.value[0]);
-                        hmConf.data.value = this.$crud.cloneObj(this.value[0]);
+                        hmConf.data.value = this.cloneObj(this.value[0]);
                     }
                 }
             }

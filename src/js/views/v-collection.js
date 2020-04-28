@@ -24,7 +24,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in keys) {
                     var key = keys[k];
                     var dconf = that._defaultRenderConfig(key);
-                    dconf.cRef = that.$crud.getRefId(that._uid,'r',i,key);
+                    dconf.cRef = that.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     if (! ('value' in dconf))
                         dconf.value = null;
@@ -99,10 +99,10 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 var aConf = that.getActionConfig(aName,'record');
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
-                aConf.modelData = this.$crud.cloneObj(data.value[row]);
+                aConf.modelData = this.cloneObj(data.value[row]);
                 aConf.modelName = that.cModel;
                 aConf.index = row;
-                aConf.cRef = that.$crud.getRefId(that._uid,'ra',row,aName);
+                aConf.cRef = that.getRefId(that._uid,'ra',row,aName);
                 recordActions[row][aName] = aConf;
             }
         },
@@ -120,7 +120,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 aConf.modelData = jQuery.extend(true,{},data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
-                aConf.cRef = that.$crud.getRefId(that._uid,'ca',aName);
+                aConf.cRef = that.getRefId(that._uid,'ca',aName);
                 collectionActions[aName] = aConf;
             }
             that.collectionActions = collectionActions;

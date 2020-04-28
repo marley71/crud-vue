@@ -13,7 +13,7 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
             //conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultRenderType : 'w-input',
         }
-        return this.$crud.merge(dHasmany,d);
+        return this.merge(dHasmany,d);
     },
     methods : {
         fillData : function () {

@@ -3,7 +3,7 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
     template: '#w-date-select-template',
     data : function() {
         var that = this;
-        var _conf = that.cConf || {};
+        var _conf = that._getConf() || {};
         var d = {};
         if (!( 'resources' in _conf) ) {
             d.resources = [
@@ -64,8 +64,8 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
                     }
                 }
             };
-            var minY = that.cConf.minYear?that.cConf.minYear:d.year()-5;
-            var maxY = that.cConf.maxYear?that.cConf.maxYear:d.year()+5;
+            var minY = that.minYear?that.minYear:d.year()-5;
+            var maxY = that.maxYear?that.maxYear:d.year()+5;
             for (let i=minY;i<=maxY;i++) {
                 cy.domainValues[i] = i;
             }
@@ -80,7 +80,7 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
             if (dds.isValid()) {
                 that.value = s;
             }
-            
+
             this.$refs.day.updateConf(that.cDay);
             this.$refs.month.updateConf(that.cMonth);
             this.$refs.year.updateConf(that.cYear);

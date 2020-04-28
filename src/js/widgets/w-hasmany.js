@@ -10,7 +10,7 @@ crud.components.rHasmany =Vue.component('w-hasmany', {
     },
     data : function () {
         var that = this;
-        var _conf = that.cConf || {}
+        var _conf = that._getConf() || {}
         var d = {};
         d.confViews = [];
         if (!("limit" in _conf) )
@@ -22,9 +22,9 @@ crud.components.rHasmany =Vue.component('w-hasmany', {
 
         getHasmanyConf : function (index,value) {
             var that = this;
-            var hmConf = that.cConf.hasmanyConf || {};
+            var hmConf = that.hasmanyConf || {};
 
-            hmConf = this.$crud.confMerge({
+            hmConf = this.confMerge({
                 fields : [],
                 fieldsConfig : {},
                 data :  {

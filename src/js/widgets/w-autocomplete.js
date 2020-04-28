@@ -1,11 +1,8 @@
 crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
     extends : crud.components.widgets.wBase,
-    mounted : function() {
-        //this._getLabel();
-    },
     data : function() {
         var that = this;
-        var _conf = that.cConf || {};
+        var _conf = that._getConf() || {};
         var d = {};
         if (!( 'resources' in _conf) ) {
             d.resources = [
@@ -32,7 +29,7 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
                     Server.route(r,function (json) {
                         var suggestions = [];
                         if (json.error) {
-                            that.$crud.errorDialog(json.msg);
+                            that.errorDialog(json.msg);
                             return suggest(suggestions)
                         }
                         //that.suggestValues = {};

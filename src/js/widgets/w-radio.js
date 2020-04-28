@@ -3,7 +3,7 @@ crud.components.widgets.wRadio = Vue.component('w-radio',{
     template: '#w-radio-template',
     data : function() {
         var that = this;
-        var _conf  = that.cConf || {};
+        var _conf  = that._getConf() || {};
         var d = {};
         var dV = _conf.domainValues || {};
         d.domainValuesOrder = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);

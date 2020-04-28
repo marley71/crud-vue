@@ -3,7 +3,7 @@ crud.components.widgets.wInput = Vue.component('w-input', {
     template: '#w-input-template',
     data : function () {
         var that = this;
-        var _conf = that.cConf || {};
+        var _conf = that._getConf() || {};
         var d = {
             inputType : 'text'
         };

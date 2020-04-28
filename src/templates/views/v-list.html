@@ -48,10 +48,8 @@
                             </div>
 
                         </td>
-                        <td v-for="(render, key) in row">
-                            <component :is="render.template" :c-type="render.type" :c-render="render" :c-key="key"></component>
-
-<!--                            <component v-bind:is="render.type" v-bind:c-conf="render" v-bind:c-key="key"></component>-->
+                        <td v-for="(widget, key) in row">
+                            <component :is="widget.template" :c-type="widget.type" :c-widget="widget" :c-key="key"></component>
                         </td>
                     </tr>
                     </tbody>

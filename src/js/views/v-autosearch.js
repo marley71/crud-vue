@@ -35,12 +35,12 @@ crud.components.views.vAutosearch = Vue.component('v-autosearch', {
             defaultRenderType : 'w-input',
             targetRef : that.cTargetRef,
         }
-        return this.$crud.merge(d,dSearch);
+        return this.merge(d,dSearch);
     },
     methods : {
         doSearch : function (params) {
             var that = this;
-            var oldP = this.$crud.cloneObj(this.cRouteConf.params);
+            var oldP = this.cloneObj(this.cRouteConf.params);
 
             for (var k in params) {
                 oldP[k] = params[k];
@@ -57,7 +57,7 @@ crud.components.views.vAutosearch = Vue.component('v-autosearch', {
             for (var k in keys) {
                 var key = keys[k];
                 widgets[key] = that._defaultRenderConfig(key);
-                widgets[key].cRef = that.$crud.getRefId(that._uid,'r',key);
+                widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;

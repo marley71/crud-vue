@@ -1,8 +1,18 @@
 const CrudApp = Vue.extend({
+    mixins : [core_mixin,dialogs_mixin],
+    data : function() {
+        var d = {
+            templatesFile : '/crud-vue/crud-vue.html',
+            el : '#app',
+            appConfig : null,
+        }
+        return d;
+    },
     created : function() {
         var that = this;
         Vue.prototype.$crud = crud;
         //Vue.prototype.$lang = lang;
+        //console.log('CrudApp',this.$data._NON_WORD_REGEXP);
         for (var k in window) {
             //console.log('window key ',k);
             if (k.indexOf('_interface') > 0) {
@@ -27,12 +37,12 @@ const CrudApp = Vue.extend({
 
 
         that.$crud.instance = that;
-        that.$crud.pluginsPath = that.pluginsPath?that.pluginsPath:'/';
+        that.$crud.pluginsPath = that.$data.pluginsPath?that.$data.pluginsPath:'/';
 
 
         var __loadResources = function () {
             var resources = [];
-            resources.push(that.templatesFile);
+            resources.push(that.$data.templatesFile);
             for (var k in that.$crud.components.libs) {
                 if (that.$crud.components.libs[k].tpl)
                     resources.push(that.$crud.components.libs[k].tpl);
@@ -40,7 +50,7 @@ const CrudApp = Vue.extend({
                     resources.push(that.$crud.components.libs[k].js);
             }
             console.log('resources',resources)
-            that.$crud.loadResources(resources,function () {
+            that.loadResources(resources,function () {
                 console.log('monto app');
 
                 that.$mount(that.el);
@@ -48,19 +58,13 @@ const CrudApp = Vue.extend({
             })
         }
 
-        console.log('appConfig',that.appConfig);
-        if (that.appConfig) {
-            that.$crud.loadResource(that.appConfig, function () {
+        console.log('appConfig',that.$data.appConfig);
+        if (that.$data.appConfig) {
+            that.loadResource(that.$data.appConfig, function () {
                 __loadResources();
             })
         } else
             __loadResources();
-    },
-    methods : {
-        onChangeViewConf : function (view) {
-
-        },
-
     }
 });
 

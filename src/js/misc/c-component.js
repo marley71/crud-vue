@@ -10,7 +10,7 @@ crud.components.cComponent = Vue.component('c-component',{
     //     }
     // },
     props : ['cConf'],
-
+    mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
         //console.log('c-component.mounted',that.$options.name);
@@ -20,7 +20,7 @@ crud.components.cComponent = Vue.component('c-component',{
         if (that.resources && that.resources.length) {
             that.beforeLoadResources();
             //that.resourcesLoaded = false;
-            that.$crud.loadResources(that.resources,function () {
+            that.loadResources(that.resources,function () {
                 //console.log('resoures loaded callback',that);
                 that.resourcesLoaded = true;
                 that.afterLoadResources();
@@ -61,7 +61,7 @@ crud.components.cComponent = Vue.component('c-component',{
             return jQuery(that.$el);
         },
         _loadConf : function() {
-            var _c = this.cConf || {};
+            var _c = this._getConf() || {};
             var d = {};
             for (var k in _c) {
                 if (k == 'methods')
@@ -70,6 +70,22 @@ crud.components.cComponent = Vue.component('c-component',{
             }
             d.conf = _c;
             return d;
+        },
+
+        _getConf : function() {
+            var that = this;
+            var conf = {};
+            // se e' una stringa controllo prima che non sia una variabile globale
+            if (typeof that.cConf === 'string' || that.cConf instanceof String) {
+                conf = that.getDescendantProp(window, that.cConf);
+                // altrimenti controllo che non sia una configurazione dentro la crud conf
+                if (!conf) {
+                    conf = that.getDescendantProp(that.$crud.conf, that.cConf);
+                }
+            }
+            else
+                conf = that.cConf;
+            return conf;
         },
         /**
          * setta la configurazione della route secondo le proprie esigenze.

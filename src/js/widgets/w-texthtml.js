@@ -21,7 +21,7 @@ crud.components.widgets.wTexthtml = Vue.component('w-texthtml',{
                 content : that.value,
                 //airMode : true
             };
-            options = this.$crud.cloneObj(options);
+            options = this.cloneObj(options);
             that.jQe('.summernote').summernote(options);
             jQuery('.summernote').on('summernote.change', function() {
                 //console.log('Enter/Return key pressed',jQuery('.summernote').summernote('code'));

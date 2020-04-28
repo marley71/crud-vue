@@ -176,8 +176,8 @@ core_interface = {
 
         confMerge : function(obj1,obj2) {
             var specialsKey = ['fields','fieldsConfig','customActions'];
-            var c1 = this.$crud.cloneObj(obj1);
-            var c2 = this.$crud.cloneObj(obj2);
+            var c1 = this.cloneObj(obj1);
+            var c2 = this.cloneObj(obj2);
             //console.log('c1',c1,'c2',c2);
 
             c1.fields = c1.fields?c1.fields:[];

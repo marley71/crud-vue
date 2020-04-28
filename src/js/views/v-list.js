@@ -57,7 +57,7 @@ crud.components.views.vList = Vue.component('v-list', {
         if (d.conf.viewTitle) {
             d.viewTitle = d.conf.viewTitle;
         }
-        return this.$crud.merge(dList,d);
+        return this.merge(dList,d);
     },
 
     methods: {
@@ -81,7 +81,7 @@ crud.components.views.vList = Vue.component('v-list', {
             } else {
                 //console.log('protocol',route.getProtocol());
                 //var protocol = Protocol.factory(route.getProtocol());
-                var protocol = that.$crud.createProtocol(route.getProtocol());
+                var protocol = that.createProtocol(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);

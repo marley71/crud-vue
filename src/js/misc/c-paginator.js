@@ -1,4 +1,5 @@
 Vue.component('c-paginator',{
+    extends : crud.components.cComponent,
     props : ['c-pagination'],
     template : '#c-paginator-template',
     data : function () {
@@ -14,7 +15,7 @@ Vue.component('c-paginator',{
             total : 0,
             pagination_steps : {}
         }
-        return this.$crud.merge(d,pagination);
+        return this.merge(d,pagination);
     },
     methods : {
         firstPage : function () {

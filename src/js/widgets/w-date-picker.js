@@ -3,7 +3,7 @@ crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
     template: '#w-date-picker-template',
     data : function() {
         var that = this;
-        var _conf = that.cConf || {};
+        var _conf = that._getConf() || {};
         var d = {};
         if (!( 'resources' in _conf) ) {
             d.resources = [

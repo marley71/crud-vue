@@ -2,9 +2,11 @@
 var crudJsFiles = [
     //'src/js/crud/OOP.js',
     'src/js/confs/Crud.js',
+    'src/js/confs/dialogs_mixin.js',
+    'src/js/confs/core_mixin.js',
 
-    'src/js/interfaces/dialogs.js',
-    'src/js/interfaces/core.js',
+    //'src/js/interfaces/dialogs.js',
+    //'src/js/interfaces/core.js',
     'src/js/interfaces/translations.js',
     'src/js/interfaces/wait.js',
 

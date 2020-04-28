@@ -424,6 +424,7 @@ function vSearchConf_f() {
 function vCustomConf_f() {
     vCustomConf = {
         routeName: null,
+        actions : [],
         fields: ['campo1', 'campo2'],
         data: {
             value: {

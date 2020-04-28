@@ -18,7 +18,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 widgets[key] = that._defaultRenderConfig(key);
-                widgets[key].cRef = that.$crud.getRefId(that._uid,'r',key);
+                widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
                 widgets[key].operator = null;
                 if (that.data.value && (key in that.data.value) )
@@ -55,10 +55,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName,'collection');
-                aConf.modelData = this.$crud.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
+                aConf.modelData = this.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
-                aConf.cRef = that.$crud.getRefId(that._uid,'a',aName);
+                aConf.cRef = that.getRefId(that._uid,'a',aName);
                 actions[aName] = aConf;
             }
             that.actionsClass = actions;
@@ -72,7 +72,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     data = that.conf.data;
                 }
             } else {
-                var protocol = that.$crud.createProtocol(route.getProtocol());
+                var protocol = that.createProtocol(route.getProtocol());
 
 
                 //var protocol = Protocol.factory(route.getProtocol());
@@ -102,11 +102,11 @@ crud.components.views.vRecord = Vue.component('v-record', {
         //         langContext : this.cModel
         //     }
         // },
-        getFormData : function () {
+        getViewData : function () {
             var that = this;
             var data = {};
             if (that.jQe('form').length) {
-                data = this.$crud.getFormData(that.jQe('form'));
+                data = this.getFormData(that.jQe('form'));
             }
             return data;
         },

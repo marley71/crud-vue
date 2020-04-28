@@ -7,23 +7,23 @@ crud.components.cManage = Vue.component('c-manage',{
     data : function () {
         var thisManage = this;
         var modelName = thisManage.cModel;
-        var modelConf = "Model" + thisManage.$crud.pascalCase(modelName);
+        var modelConf = "Model" + thisManage.pascalCase(modelName);
         var originalConf = window[modelConf]?window[modelConf]:{};
         console.log('modelName',modelName,modelConf,originalConf);
-        var searchConf = thisManage.$crud.confMerge(thisManage.$crud.conf.search,(originalConf.search || {}));
+        var searchConf = thisManage.confMerge(thisManage.$crud.conf.search,(originalConf.search || {}));
         var listConf = null;
         var listEditConf = null;
         if (thisManage.cInlineEdit) {
-            listEditConf = thisManage.$crud.confMerge(thisManage.$crud.conf.listEdit,(originalConf.listEdit || {}));
+            listEditConf = thisManage.confMerge(thisManage.$crud.conf.listEdit,(originalConf.listEdit || {}));
         } else {
-            listConf = thisManage.$crud.confMerge(thisManage.$crud.conf.list,(originalConf.list || {}));
+            listConf = thisManage.confMerge(thisManage.$crud.conf.list,(originalConf.list || {}));
         }
 
-        var editConf = thisManage.$crud.confMerge(thisManage.$crud.conf.edit,(originalConf.edit || {}));
-        var viewConf = thisManage.$crud.confMerge(thisManage.$crud.conf.view,(originalConf.view || {}));
-        var insertConf = thisManage.$crud.confMerge(thisManage.$crud.conf.insert,(originalConf.insert || editConf));
+        var editConf = thisManage.confMerge(thisManage.$crud.conf.edit,(originalConf.edit || {}));
+        var viewConf = thisManage.confMerge(thisManage.$crud.conf.view,(originalConf.view || {}));
+        var insertConf = thisManage.confMerge(thisManage.$crud.conf.insert,(originalConf.insert || editConf));
         insertConf.routeName = 'insert';
-        searchConf = thisManage.$crud.confMerge(searchConf,{
+        searchConf = thisManage.confMerge(searchConf,{
             customActions : {
                 'action-search' : {
                     beforeExecute : function() {
@@ -31,7 +31,7 @@ crud.components.cManage = Vue.component('c-manage',{
                     },
                     execute : function () {
                         var that = this;
-                        var formData = that.view.getFormData();
+                        var formData = that.view.getViewData();
                         thisManage.listComp.route.setParams(formData);
                         thisManage.listComp.reload();
                         return ;
@@ -43,7 +43,7 @@ crud.components.cManage = Vue.component('c-manage',{
             }
         });
 
-        editConf = thisManage.$crud.confMerge(editConf,{
+        editConf = thisManage.confMerge(editConf,{
             customActions : {
                 'action-back' : {
                     beforeExecute : function() {
@@ -66,7 +66,7 @@ crud.components.cManage = Vue.component('c-manage',{
             }
         });
 
-        insertConf = thisManage.$crud.confMerge(insertConf,{
+        insertConf = thisManage.confMerge(insertConf,{
             customActions : {
                 'action-back' : {
                     execute : function () {
@@ -80,7 +80,7 @@ crud.components.cManage = Vue.component('c-manage',{
         })
 
         if (listConf) {
-            listConf = thisManage.$crud.confMerge(listConf,{
+            listConf = thisManage.confMerge(listConf,{
                 customActions : {
                     'action-edit' : {
                         execute : function () {
@@ -186,7 +186,7 @@ crud.components.cManage = Vue.component('c-manage',{
         }
 
         if (listEditConf) {
-            listEditConf = thisManage.$crud.confMerge(listEditConf,{
+            listEditConf = thisManage.confMerge(listEditConf,{
                 customActions : {
                     'action-view' : {
                         execute : function () {

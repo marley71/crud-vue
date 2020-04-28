@@ -25,7 +25,7 @@ Vue.component('c-test',{
     methods : {
         getConf : function () {
             var that = this;
-            var confName = that.cConf || that.$crud.camelCase(this.cComponent+'-conf');
+            var confName = that.cConf || that.camelCase(this.cComponent+'-conf');
             console.log('c-test confName',confName);
             if(window[confName+"_f"]) {
                 eval(confName+"_f()");

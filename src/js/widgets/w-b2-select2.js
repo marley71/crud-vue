@@ -3,7 +3,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
     template: '#w-b2-select2-template',
     data : function () {
         var that = this;
-        var _conf = that.cConf || {};
+        var _conf = that._getConf() || {};
         var d = {};
         if (!( 'resources' in _conf) ) {
             d.resources = [

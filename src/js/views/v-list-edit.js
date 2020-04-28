@@ -8,7 +8,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
             widgetsEdit : {},
             editMode : []
         };
-        return this.$crud.merge(dListEdit,d);
+        return this.merge(dListEdit,d);
     },
 
     // data :  function () {
@@ -87,7 +87,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                     // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
                     if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
                         dconf.type = 'w-input';
-                    dconf.cRef = that.$crud.getRefId(that._uid,'redit',i,key);
+                    dconf.cRef = that.getRefId(that._uid,'redit',i,key);
                     dconf.modelData = data.value[i];
                     if (! ('value' in dconf))
                         dconf.value = null;
@@ -124,12 +124,12 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
         },
         hideRA : function (index,name) {
             var that = this;
-            var n = that.$crud.getRefId(that._uid,'ra',index,name);
+            var n = that.getRefId(that._uid,'ra',index,name);
             this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var that = this;
-            var n = that.$crud.getRefId(that._uid,'ra',index,name);
+            var n = that.getRefId(that._uid,'ra',index,name);
             this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
         },
     },

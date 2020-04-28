@@ -24,9 +24,9 @@ crud.components.views.vAction = Vue.component('v-action', {
     template : '<component :is="name" :c-conf="conf"></component>'
 })
 
-crud.components.views.vRender =  Vue.component('v-render', {
+crud.components.views.vWidget =  Vue.component('v-widget', {
     extends : crud.components.cComponent,
-    props : ['cKey','cRender'],
+    props : ['cKey','cWidget'],
     // When the bound element is inserted into the DOM...
     mounted: function () {
         //console.log('v-render',this.cConf);
@@ -34,27 +34,27 @@ crud.components.views.vRender =  Vue.component('v-render', {
     data : function() {
         if (this.cKey) {
             var ckeys = this.cKey.split(',');
-            var render = null;
+            var widget = null;
             for (var i in ckeys) {
-                render = this.$parent.widgets[ckeys[i]];
+                widget = this.$parent.widgets[ckeys[i]];
             }
             //var render = this.$parent.widgets[this.cKey];
             //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
             return {
-                type : render.type,
-                conf : render
+                type : widget.type,
+                conf : widget
             }
         }
 
-        if (this.cRender) {
+        if (this.cWidget) {
             var conf = null;
-            if (typeof this.cRender === 'string' || this.cRender instanceof String) {
-                conf = this.$crud.getDescendantProp(window, this.cRender);
+            if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
+                conf = this.getDescendantProp(window, this.cWidget);
                 if (!conf) {
-                    conf = this.$crud.getDescendantProp(this.$crud.conf, this.cRender);
+                    conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
                 }
             } else
-                conf = this.cRender;
+                conf = this.cWidget;
 
             //console.log('V-RENDER2 ',conf,this.$parent.widgets);
             return {
@@ -62,7 +62,7 @@ crud.components.views.vRender =  Vue.component('v-render', {
                 conf : conf
             }
         }
-        console.warn('configurazione non valida',this.cKey,this.cRender);
+        console.warn('configurazione non valida',this.cKey,this.cWidget);
         return {
             type : 'w-text',
             conf : {},
@@ -95,7 +95,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             console.log('fetchData',route.getConf());
             Server.route(route,function (json) {
                 if (json.error) {
-                    that.$crud.errorDialog(json.msg);
+                    that.errorDialog(json.msg);
                     return
                 }
                 callback(json);
@@ -113,19 +113,19 @@ crud.components.views.vBase = Vue.component('v-base', {
                 } else {
                     aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.collectionActions[name]?this.$crud.collectionActions[name]:{})
                 }
-                aConf = this.$crud.merge(aConf,this.conf.customActions[name]);
+                aConf = this.merge(aConf,this.conf.customActions[name]);
                 //console.log('CUSTOM',name,aConf);
                 return aConf;
             }
             if (type == 'record') {
                 if (this.$crud.recordActions[name]) {
-                    return this.$crud.cloneObj(this.$crud.recordActions[name]);
+                    return this.cloneObj(this.$crud.recordActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
             }
             if (type == 'collection') {
                 if (this.$crud.collectionActions[name]) {
-                    return this.$crud.cloneObj(this.$crud.collectionActions[name]);
+                    return this.cloneObj(this.$crud.collectionActions[name]);
                 } else
                     throw "Azione " + name +  " di tipo collection non trovata nelle azioni generali";
             }
@@ -189,9 +189,9 @@ crud.components.views.vBase = Vue.component('v-base', {
                 else
                     conf = this.cConf;
             } else {
-                console.log('Check exist default conf '+ 'Model'+this.$crud.pascalCase(modelName));
-                if (window['Model'+this.$crud.pascalCase(modelName)]) {
-                    var cm = window['Model'+this.$crud.pascalCase(modelName)];
+                console.log('Check exist default conf '+ 'Model'+this.pascalCase(modelName));
+                if (window['Model'+this.pascalCase(modelName)]) {
+                    var cm = window['Model'+this.pascalCase(modelName)];
                     if (cm[type])
                         conf = cm[type];
                     else {
@@ -210,7 +210,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!conf)
                 throw "Nessuna configurazione trovata per questa view";
             //console.log('merge confs',defaultConf,conf);
-            var finalConf = this.$crud.confMerge(defaultConf,conf);
+            var finalConf = this.confMerge(defaultConf,conf);
 
             for (var k in finalConf) {
                 if (k == 'methods')
@@ -243,14 +243,14 @@ crud.components.views.vBase = Vue.component('v-base', {
                 if (typeof conf === 'string' || conf instanceof String) {
                     c.type = conf;
                 } else {
-                    c = this.$crud.merge(c,conf);
+                    c = this.merge(c,conf);
                 }
             }
 
             if (!c.template)
                 c.template = that.conf.renderTemplate;
-            //c.metadata = this.$crud.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
-            c = this.$crud.merge( c ,(that.data.metadata[key] || {}));
+            //c.metadata = this.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
+            c = this.merge( c ,(that.data.metadata[key] || {}));
             return c;
         },
         getFieldName : function (key) {

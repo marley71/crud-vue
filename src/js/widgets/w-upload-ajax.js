@@ -136,7 +136,7 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
 
 
                 //that.$set(that,'previewConf', {value : data.result});
-                that.lastUpload = that.$crud.cloneObj(data.result);
+                that.lastUpload = that.cloneObj(data.result);
 
                 //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
                 //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));

@@ -47,8 +47,8 @@
                             </div>
 
                         </td>
-                        <td v-for="(render, key) in row">
-                            <component v-if="!editMode[index]" :is="render.type"            :c-conf="render"            :c-key="key" :c-ref="'rv-'+index+'-'+key"></component>
+                        <td v-for="(widget, key) in row">
+                            <component v-if="!editMode[index]" :is="widget.type"            :c-conf="widget"            :c-key="key" :c-ref="'rv-'+index+'-'+key"></component>
                             <component v-if="editMode[index]" :is="widgetsEdit[index][key].type"  :c-conf="widgetsEdit[index][key]"  :c-key="key" :c-ref="'re-'+index+'-'+key"></component>
                         </td>
                     </tr>

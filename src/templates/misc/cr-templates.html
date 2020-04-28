@@ -1,23 +1,23 @@
 <template id="c-tpl-record-template">
     <div>
-        <label>{{cRender.label | translate}}</label>
-        <v-render :c-render="cRender"></v-render>
+        <label>{{cWidget.label | translate}}</label>
+        <v-widget :c-widget="cWidget"></v-widget>
     </div>
 </template>
 
 <template id="c-tpl-record2-template">
     <div class="row">
-        <div class="col col-sm-6">{{cRender.label | translate}}</div>
+        <div class="col col-sm-6">{{cWidget.label | translate}}</div>
         <div class="col col-sm-6">
-            <v-render :c-render="cRender"></v-render>
+            <v-widget :c-widget="cWidget"></v-widget>
         </div>
     </div>
 </template>
 
 <template id="c-tpl-list-template">
-    <v-render :c-render="cRender"></v-render>
+    <v-widget :c-widget="cWidget"></v-widget>
 </template>
 
 <template id="c-tpl-no-template">
-    <v-render :c-render="cRender"></v-render>
+    <v-widget :c-widget="cWidget"></v-widget>
 </template>

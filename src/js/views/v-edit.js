@@ -36,7 +36,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             //viewTitle : d.conf.viewTitle,
             defaultRenderType : 'w-input',
         }
-        return that.$crud.merge(dEdit,d);
+        return that.merge(dEdit,d);
 
     },
 

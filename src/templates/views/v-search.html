@@ -10,7 +10,7 @@
                 <div class="col-10">
                     <div class="row">
                         <div class="col col-6" v-for="(item, key) in widgets">
-                            <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
+                            <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>
 
                         </div>
                     </div>

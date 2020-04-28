@@ -3,12 +3,13 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
     template: '#w-swap-template',
     data : function () {
         var that = this;
-        var d = this._loadConf();
-        if (!("routeName" in d))
+        var d = {};
+        var _conf = that._getConf() || {};
+        if (!("routeName" in _conf))
             d.routeName = 'set';
         d.iconClass = 'fa fa-circle';
         d.title = "swap";
-        d.swapType = d.swapType?d.swapType:'icon';
+        d.swapType = _conf.swapType?_conf.swapType:'icon';
         var defaultDomainValues = {
             icon : {
                 0 : 'fa fa-circle text-danger',
@@ -19,7 +20,7 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
                 1 : 'Si'
             }
         }
-        var dV = (d.domainValues)? d.domainValues:defaultDomainValues[d.swapType];
+        var dV = (_conf.domainValues)? _conf.domainValues:defaultDomainValues[d.swapType];
         //console.log('dV',dV);
         var keys = Object.keys(dV).map(String);
         if (keys.indexOf(""+d.value) >= 0) {
@@ -83,7 +84,7 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
             var dV = that.getDV();
             Server.route(r,function (json) {
                 if (json.error) {
-                    that.$crud.errorDialog(json.msg);
+                    that.errorDialog(json.msg);
                     return;
                 }
                 that.value = key;

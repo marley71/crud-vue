@@ -2,7 +2,7 @@ crud.components.widgets.wCheckbox = Vue.component('w-checkbox',{
     extends : crud.components.widgets.wBase,
     data :  function () {
         var that = this;
-        var _conf = that.cConf || {};
+        var _conf = that._getConf() || {};
         var d = {};
         var dV = _conf.domainValues || {};
         var dVO = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);

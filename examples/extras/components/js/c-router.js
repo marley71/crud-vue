@@ -61,7 +61,7 @@ crud.components.cRouter = Vue.component('c-router',{
 
             var tmp = command.split('?');
             var componentName = tmp[0];
-            var params = that.$crud.getAllUrlParams(command);
+            var params = that.getAllUrlParams(command);
             console.log('componente',componentName,'params',params);
 
             console.log('that',that);

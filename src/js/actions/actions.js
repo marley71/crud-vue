@@ -1,7 +1,6 @@
 var actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
-
     mounted : function() {
         var that = this;
         if (that.controlType == 'link') {
@@ -113,7 +112,7 @@ var actionBase = Vue.component('action-base', {
         };
         if (!('view' in adata) )
             adata.view = that.$parent;
-        return that.$crud.merge(adata,d);
+        return that.merge(adata,d);
     },
     template: '#action-template'
 });

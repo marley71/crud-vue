@@ -42,14 +42,14 @@ crud.components.views.vSearch = Vue.component('v-search', {
         if (!("langContext" in d)){
             d.langContext = that.cModel;
         }
-        d =  this.$crud.merge(dSearch,d);
+        d =  this.merge(dSearch,d);
         console.log('conf Search',d)
         return d;
     },
     methods : {
         doSearch : function (params) {
             var that = this;
-            var oldP = this.$crud.cloneObj(this.cRouteConf.params);
+            var oldP = this.cloneObj(this.cRouteConf.params);
 
             for (var k in params) {
                 oldP[k] = params[k];
@@ -66,7 +66,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             for (var k in keys) {
                 var key = keys[k];
                 widgets[key] = that._defaultRenderConfig(key);
-                widgets[key].cRef = that.$crud.getRefId(that._uid,'r',key);
+                widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;

@@ -1,5 +1,5 @@
 crud.components.cTplBase = Vue.component('c-tpl-base',{
-    props : ['cRender'],
+    props : ['cWidget'],
     template : '<span>template base</span>'
 });
 

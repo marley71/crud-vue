@@ -10,12 +10,14 @@ crud.components.widgets.wBase = Vue.component('w-base', {
     },
     data :  function () {
         var that = this;
-        var _conf = that.cConf || {};
+        var _conf = that._getConf() || {};
         var d  = {};
         if (! ('value' in _conf))
             d.value = null;
         if (! ('operator' in _conf))
             d.operator = null;
+        // if (! ('name' in _conf))
+        //     d.name = '';
         return d;
     },
     methods : {

@@ -15,8 +15,8 @@ function Route(conf) {
         resultType : null,      // tipo di risultato, 'record' o 'list'
     };
 
-    var _c = crud.cloneObj(conf || {});
-    var routeConf = crud.cloneObj(defaultConf);
+    var _c = crud.instance.cloneObj(conf || {});
+    var routeConf = crud.instance.cloneObj(defaultConf);
 
     for (var k in _c) {
         routeConf[k] = _c[k];
