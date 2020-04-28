@@ -1,4 +1,5 @@
 crud.components.cManage = Vue.component('c-manage',{
+    extends : crud.components.cComponent,
     props : ['cModel','cInlineEdit'],
     mounted : function() {
         this.createList();

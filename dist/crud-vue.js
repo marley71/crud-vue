@@ -5,6 +5,7 @@ const crud = {
     _resources : {},
     _resources_loaded : {},
     pluginsPath : '',
+    _wait_istances : [],
 };
 crud.lang = {
     'app.aggiungi' : 'Aggiungi',
@@ -666,6 +667,85 @@ const dialogs_mixin = {
 
 core_mixin = {
     methods : {
+        waitStart : function (msg,container) {
+            var that = this;
+            var c = container?container:'body';
+            var id = that._createContainer(c);
+
+            var comp = new that.$crud.components.cWait({
+                propsData: {
+                    cMsg : msg,
+                    cGlobal : (container==='body')?true:false,
+                }
+            })
+            comp.$mount('#'+id);
+            that.$crud._wait_istances.push(comp);
+            return comp;
+        },
+        waitEnd : function (component) {
+            var that = this;
+            if (that.$crud._wait_istances.length == 0)
+                return ;
+            if (component) {
+                for (var i in that.$crud._wait_istances) {
+                    var comp =that.$crud._wait_istances[i];
+                    if (comp._uid == component._uid) {
+                        that.$crud._wait_istances.splice(i,1);
+                    }
+                }
+            } else {
+                var comp = that.$crud._wait_istances.pop();
+                comp.$destroy();
+                comp.$el.parentNode.removeChild(comp.$el);
+            }
+        },
+
+        _createContainer : function (container) {
+            var id= 'd' + (new Date().getTime());
+            jQuery(container).append('<div id="'+id+'" ></div>');
+            return id;
+        },
+
+        /**
+         * ritorna la traduzione della chiave passata presente nel vettore $lang altrimenti ritorna al chiave stessa
+         * @param key
+         * @param plural
+         * @param params
+         * @returns {*}
+         */
+        translate : function (key,plural,params) {
+            return this._translate(key,plural,params);
+            //return translations_interface._translate.apply(this,[key,plural,params]);
+        },
+        /**
+         * esegue la traduzione solo se esiste la chiave corrispondente nel vettore $lang
+         * @param key
+         * @param plural
+         * @param params
+         * @returns {string|*}
+         */
+        translateIfExist : function (key,plural,params) {
+            var tmp = key.split('.');
+            var skey = this.$crud.lang;
+            for (var i in tmp) {
+                if (! (tmp[i] in skey))
+                    return "";
+                skey = skey[tmp[i]];
+            }
+            return this.translate(key,plural,params);
+        },
+
+        _translate : function (key,plural,params) {
+            var testo = this.$crud.lang[key];
+            if (!testo)
+                return key;
+            if (params instanceof Array) {
+                for (var i = 0; i < params.length; i++) {
+                    testo= testo.replace("(" + i +")", params[i] );
+                }
+            }
+            return testo;
+        },
         /**
          * istanzia una nuova route a partire dalla configurazione trovata in crud
          * @param routeName : nome della configurazione della route
@@ -1064,132 +1144,6 @@ core_mixin = {
     }
 };
 
-translations_interface = {
-    methods : {
-        /**
-         * ritorna la traduzione della chiave passata presente nel vettore $lang altrimenti ritorna al chiave stessa
-         * @param key
-         * @param plural
-         * @param params
-         * @returns {*}
-         */
-        translate : function (key,plural,params) {
-            return translations_interface._translate2.apply(this,[key,plural,params]);
-            //return translations_interface._translate.apply(this,[key,plural,params]);
-        },
-        /**
-         * esegue la traduzione solo se esiste la chiave corrispondente nel vettore $lang
-         * @param key
-         * @param plural
-         * @param params
-         * @returns {string|*}
-         */
-        translateIfExist : function (key,plural,params) {
-            var tmp = key.split('.');
-            var skey = this.$crud.lang;
-            for (var i in tmp) {
-                if (! (tmp[i] in skey))
-                    return "";
-                skey = skey[tmp[i]];
-            }
-            return this.$crud.translate(key,plural,params);
-        },
-    },
-    _translate : function (key,plural,params) {
-        var tmp = key.split('.');
-        var s = this.$crud.lang[tmp[0]];
-        for (var i=1;i<tmp.length;i++) {
-            s = s[tmp[i]];
-        }
-        //var s = app.$LANG[key];
-        if (!s)
-            return key;
-        var testo = s;
-        if (testo.indexOf('|') >= 0) {
-            if (plural > 0) {
-                var tmp = testo.split("|");
-                testo = tmp.length>plural?tmp[plural]:tmp[0];
-            } else
-                testo = testo.substr(0, testo.indexOf('|'));
-        }
-        if (params instanceof Array) {
-            for (var i = 0; i < params.length; i++) {
-                testo= testo.replace("(" + i +")", params[i] );
-            }
-        }
-        return testo;
-    },
-
-    _translate2 : function (key,plural,params) {
-        var testo = this.$crud.lang[key];
-        if (!testo)
-            return key;
-        if (params instanceof Array) {
-            for (var i = 0; i < params.length; i++) {
-                testo= testo.replace("(" + i +")", params[i] );
-            }
-        }
-        return testo;
-    }
-}
-wait_interface = {
-    methods: {
-        waitStart : function (msg,container) {
-            var c = container?container:'body';
-            var id = wait_interface._createContainer(c);
-            //wait_interface._createWaitComponent();
-
-            var comp = new wait_interface._waitComponent({
-                data : function() {
-                    console.log('grlobal',(container?true:false));
-                    return {
-                        msg : msg,
-                        global : !container?true:false,
-                    }
-                },
-                mounted : function () {
-
-                }
-            })
-            console.log('comp created',comp);
-            comp.$mount('#'+id);
-            wait_interface._istances.push(comp);
-            return comp;
-        },
-        waitEnd : function (component) {
-            var that = this;
-            if (wait_interface._istances.length == 0)
-                return ;
-            if (component) {
-                for (var i in wait_interface._istances) {
-                    var comp = wait_interface._istances[i];
-                    if (comp._uid == component._uid) {
-                        wait_interface._istances.splice(i,1);
-                    }
-
-                }
-            } else {
-                var comp = wait_interface._istances.pop();
-                comp.$destroy();
-                comp.$el.parentNode.removeChild(comp.$el);
-            }
-
-        }
-    },
-    _createContainer : function (container) {
-        var id= 'd' + (new Date().getTime());
-        jQuery(container).append('<div id="'+id+'" ></div>');
-        return id;
-    },
-    _waitComponent : Vue.component('c-wait', {
-                template: '<div c-wait :class="{ \'crud-overlay-body\' : global, \'crud-overlay\' : !global}">' +
-                    '<span class="crud-wait-msg">' +
-                    '{{msg}}' +
-                    '</span>' +
-                    '</div>',
-            }),
-    _istances : [],
-};
 /**
  * definizione protocollo tra json che arriva dal server e le strutture
  * dati interne delle views alla libreria javascript
@@ -2021,6 +1975,18 @@ crud.components.dCustom = Vue.component('d-custom', {
         return d;
     },
     template : '#d-custom-template'
+});
+
+crud.components.cWait = Vue.component('c-wait', {
+    extends : crud.components.cComponent,
+    template: '#c-wait-template',
+    props : ['cMsg','cGlobal'],
+    data : function () {
+        return {
+            msg : this.cMsg?this.cMsg:'...',
+            global : ('cGlobal' in this)?this.cGlobal:true
+        }
+    }
 });
 
 crud.components.widgets.wBase = Vue.component('w-base', {
@@ -4584,26 +4550,26 @@ const CrudApp = Vue.extend({
         Vue.prototype.$crud = crud;
         //Vue.prototype.$lang = lang;
         //console.log('CrudApp',this.$data._NON_WORD_REGEXP);
-        for (var k in window) {
-            //console.log('window key ',k);
-            if (k.indexOf('_interface') > 0) {
-                console.log('found interface ',k)
-                var methods = window[k].methods || {};
-                var __call = function (interface,lk) {
-                    that.$crud[lk] = function () {
-                        var localk = new String(lk);
-                        var int = new String(interface);
-                        //var arguments = this.arguments;
-                        //console.log(localk,'arguments',arguments);
-                        return window[interface].methods[localk].apply(that,arguments);
-                    }
-                }
-                for (var m in methods) {
-                    //console.log('....method',m)
-                    __call(k,m);
-                }
-            }
-        }
+        // for (var k in window) {
+        //     //console.log('window key ',k);
+        //     if (k.indexOf('_interface') > 0) {
+        //         console.log('found interface ',k)
+        //         var methods = window[k].methods || {};
+        //         var __call = function (interface,lk) {
+        //             that.$crud[lk] = function () {
+        //                 var localk = new String(lk);
+        //                 var int = new String(interface);
+        //                 //var arguments = this.arguments;
+        //                 //console.log(localk,'arguments',arguments);
+        //                 return window[interface].methods[localk].apply(that,arguments);
+        //             }
+        //         }
+        //         for (var m in methods) {
+        //             //console.log('....method',m)
+        //             __call(k,m);
+        //         }
+        //     }
+        // }
 
 
 

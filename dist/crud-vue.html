@@ -186,6 +186,14 @@
     </div>
 </script>
 
+<template id="c-wait-template">
+    <div c-wait :class="{'crud-overlay-body': global, 'crud-overlay' : !global}">
+        <span class="crud-wait-msg">
+            {{msg | translate}}
+        </span>
+    </div>
+</template>
+
 <script type="text/x-template" id="w-custom-template">
     <div v-html="value">
 

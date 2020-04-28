@@ -1,5 +1,84 @@
 core_mixin = {
     methods : {
+        waitStart : function (msg,container) {
+            var that = this;
+            var c = container?container:'body';
+            var id = that._createContainer(c);
+
+            var comp = new that.$crud.components.cWait({
+                propsData: {
+                    cMsg : msg,
+                    cGlobal : (container==='body')?true:false,
+                }
+            })
+            comp.$mount('#'+id);
+            that.$crud._wait_istances.push(comp);
+            return comp;
+        },
+        waitEnd : function (component) {
+            var that = this;
+            if (that.$crud._wait_istances.length == 0)
+                return ;
+            if (component) {
+                for (var i in that.$crud._wait_istances) {
+                    var comp =that.$crud._wait_istances[i];
+                    if (comp._uid == component._uid) {
+                        that.$crud._wait_istances.splice(i,1);
+                    }
+                }
+            } else {
+                var comp = that.$crud._wait_istances.pop();
+                comp.$destroy();
+                comp.$el.parentNode.removeChild(comp.$el);
+            }
+        },
+
+        _createContainer : function (container) {
+            var id= 'd' + (new Date().getTime());
+            jQuery(container).append('<div id="'+id+'" ></div>');
+            return id;
+        },
+
+        /**
+         * ritorna la traduzione della chiave passata presente nel vettore $lang altrimenti ritorna al chiave stessa
+         * @param key
+         * @param plural
+         * @param params
+         * @returns {*}
+         */
+        translate : function (key,plural,params) {
+            return this._translate(key,plural,params);
+            //return translations_interface._translate.apply(this,[key,plural,params]);
+        },
+        /**
+         * esegue la traduzione solo se esiste la chiave corrispondente nel vettore $lang
+         * @param key
+         * @param plural
+         * @param params
+         * @returns {string|*}
+         */
+        translateIfExist : function (key,plural,params) {
+            var tmp = key.split('.');
+            var skey = this.$crud.lang;
+            for (var i in tmp) {
+                if (! (tmp[i] in skey))
+                    return "";
+                skey = skey[tmp[i]];
+            }
+            return this.translate(key,plural,params);
+        },
+
+        _translate : function (key,plural,params) {
+            var testo = this.$crud.lang[key];
+            if (!testo)
+                return key;
+            if (params instanceof Array) {
+                for (var i = 0; i < params.length; i++) {
+                    testo= testo.replace("(" + i +")", params[i] );
+                }
+            }
+            return testo;
+        },
         /**
          * istanzia una nuova route a partire dalla configurazione trovata in crud
          * @param routeName : nome della configurazione della route

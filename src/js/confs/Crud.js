@@ -5,6 +5,7 @@ const crud = {
     _resources : {},
     _resources_loaded : {},
     pluginsPath : '',
+    _wait_istances : [],
 };
 crud.lang = {
     'app.aggiungi' : 'Aggiungi',
