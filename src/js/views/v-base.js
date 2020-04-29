@@ -231,7 +231,7 @@ crud.components.views.vBase = Vue.component('v-base', {
         _defaultRenderConfig : function(key,configName) {
             var that = this;
             var c = {
-                type:that.defaultRenderType,
+                type:that.defaultWidgetType,
                 value : null,
                 operator : null,
             };
@@ -248,7 +248,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
 
             if (!c.template)
-                c.template = that.conf.renderTemplate;
+                c.template = that.conf.widgetTemplate;
             //c.metadata = this.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
             c = this.merge( c ,(that.data.metadata[key] || {}));
             return c;

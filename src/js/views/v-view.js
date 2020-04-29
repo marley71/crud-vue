@@ -33,7 +33,7 @@ crud.components.views.vView = Vue.component('v-view', {
             data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'w-text',
+            defaultWidgetType : 'w-text',
         }
         return this.merge(dView,d);
 

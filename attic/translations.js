@@ -26,7 +26,7 @@ translations_interface = {
                     return "";
                 skey = skey[tmp[i]];
             }
-            return this.$crud.translate(key,plural,params);
+            return this.translate(key,plural,params);
         },
     },
     _translate : function (key,plural,params) {

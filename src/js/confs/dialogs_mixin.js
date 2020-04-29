@@ -105,9 +105,10 @@ const dialogs_mixin = {
         },
 
         _popover : function (message,classes,time) {
+            var that = this;
             var id= 'pop' + (new Date().getTime());
             _cls = 'alert alert-primary ' + (classes?classes:'');
-            var content = crud.translate(message);
+            var content = that.translate(message);
             var _t = 2000;
             if( time === 0 ){
                 content += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +

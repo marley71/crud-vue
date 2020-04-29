@@ -11,53 +11,6 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
         return this.merge(dListEdit,d);
     },
 
-    // data :  function () {
-    //     var that = this;
-    //
-    //     var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
-    //     routeConf.values = {
-    //         modelName: this.cModel
-    //     }
-    //
-    //     if (this.$route && this.$route.query)
-    //         routeConf.params = that.$route.query;
-    //
-    //     var conf = that.getConf(that.cModel,'listEdit');
-    //     // conf.customActions['action-edit'] = {
-    //     //     execute : function () {
-    //     //         var thatA = this;
-    //     //         that.$set(that.editMode,thatA.cIndex, true);
-    //     //     }
-    //     // };
-    //     console.log('v-list-edit conf',conf)
-    //
-    //     var d = {
-    //         loading : true,
-    //         widgets : {},
-    //         widgetsEdit : {},
-    //         keys : [],
-    //         recordActionsName : [],
-    //         recordActions: [],
-    //         collectionActions : {},
-    //         collectionActionsName : [],
-    //         routeConf : routeConf,
-    //         route : null,
-    //         data : [],
-    //         maxPage : 0,
-    //         conf : conf,
-    //         needSelection : true,
-    //         pagination : {},
-    //         viewTitle : '',
-    //         defaultRenderType : 'w-text',
-    //         editMode : [],
-    //
-    //     };
-    //     if (d.conf.viewTitle) {
-    //         d.viewTitle = d.conf.viewTitle;
-    //     }
-    //     return d;
-    // },
-
     methods: {
 
         draw : function() {

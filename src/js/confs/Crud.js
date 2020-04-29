@@ -28,7 +28,7 @@ crud.lang = {
     'app.nuovo' : 'Nuovo',
     'app.ok' : 'Ok',
     'app.ordina' : 'Ordina',
-    'app.richiest-conferma' : 'Richiesta di Conferma',
+    'app.richiesta-conferma' : 'Richiesta di Conferma',
     'app.salva' : 'Salva',
     'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
     'app.vista' : 'Vista',
@@ -132,7 +132,7 @@ crud.recordActions = {
                     that.errorDialog(json.msg);
                     return;
                 }
-                that.popoverSuccess(that.$crud.translate('app.salvataggio-ok'))
+                that.popoverSuccess(that.translate('app.salvataggio-ok'))
                 that.view.reload();
             })
             console.log('values', values);
@@ -308,7 +308,7 @@ crud.collectionActions = {
             var num = checked.length;
             if (num === 0)
                 return ;
-            that.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
+            that.confirmDialog(that.translate('app.conferma-multidelete',false,[num]), {
                 ok : function () {
                     var r = that.createRoute('multi-delete');
                     that.setRouteValues(r);
@@ -340,7 +340,7 @@ crud.conf = {
         //actions : ['action-back'],
         actions : [],
         customActions: {},
-        renderTemplate : 'c-tpl-record2',
+        widgetTemplate : 'c-tpl-record2',
     },
     edit : {
         primaryKey : 'id',
@@ -350,7 +350,7 @@ crud.conf = {
             id : 'w-hidden'
         },
         fields : [],
-        renderTemplate : 'c-tpl-record',
+        widgetTemplate : 'c-tpl-record',
         actions : ['action-save','action-back']
     },
     list : {
@@ -359,7 +359,7 @@ crud.conf = {
         customActions: {},
         fieldsConfig : {},
         orderFields: {},
-        renderTemplate : 'c-tpl-list',
+        widgetTemplate : 'c-tpl-list',
         actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
     },
     listEdit : {
@@ -368,7 +368,7 @@ crud.conf = {
         customActions: {},
         fieldsConfig : {},
         orderFields: {},
-        renderTemplate : 'c-tpl-list',
+        widgetTemplate : 'c-tpl-list',
         actions : [
             'action-insert',
             'action-delete-selected',
@@ -385,12 +385,12 @@ crud.conf = {
         actions : ['action-search'],
         fieldsConfig : {},
         customActions: {},
-        renderTemplate : 'c-tpl-record',
+        widgetTemplate : 'c-tpl-record',
     },
     insert : {
         primaryKey : 'id',
         routeName : 'insert',
-        renderTemplate : 'c-tpl-record',
+        widgetTemplate : 'c-tpl-record',
         actions : ['action-save','action-back'],
         fieldsConfig : {
             id : 'w-hidden'

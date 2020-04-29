@@ -50,7 +50,7 @@ crud.components.views.vList = Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
-            defaultRenderType : 'w-text',
+            defaultWidgetType : 'w-text',
             langContext : that.cModel,
             json : {},
         };
@@ -102,7 +102,7 @@ crud.components.views.vList = Vue.component('v-list', {
         getOrderConf : function (key) {
             var that = this;
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = that.$crud.translate('app.ordina') + ' ' + key;
+            conf.title = that.translate('app.ordina') + ' ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)

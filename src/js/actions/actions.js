@@ -161,7 +161,7 @@ Vue.component('action-order', {
             this.icon = null;
         if (this.text) {
             var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
-            this.text = this.$crud.translate(langKey)
+            this.text = this.translate(langKey)
         }
 
         //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);

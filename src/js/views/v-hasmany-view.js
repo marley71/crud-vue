@@ -15,7 +15,7 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
             actions : {},
             data : {},
             //conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
-            defaultRenderType : 'w-text',
+            defaultWidgetType : 'w-text',
         }
         return this.merge(dHasmany,d);
     },

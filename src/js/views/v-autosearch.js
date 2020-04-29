@@ -32,7 +32,7 @@ crud.components.views.vAutosearch = Vue.component('v-autosearch', {
             data : {},
             route : null,
             viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'w-input',
+            defaultWidgetType : 'w-input',
             targetRef : that.cTargetRef,
         }
         return this.merge(d,dSearch);

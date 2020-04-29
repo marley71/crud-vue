@@ -28,7 +28,7 @@ crud.lang = {
     'app.nuovo' : 'Nuovo',
     'app.ok' : 'Ok',
     'app.ordina' : 'Ordina',
-    'app.richiest-conferma' : 'Richiesta di Conferma',
+    'app.richiesta-conferma' : 'Richiesta di Conferma',
     'app.salva' : 'Salva',
     'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
     'app.vista' : 'Vista',
@@ -132,7 +132,7 @@ crud.recordActions = {
                     that.errorDialog(json.msg);
                     return;
                 }
-                that.popoverSuccess(that.$crud.translate('app.salvataggio-ok'))
+                that.popoverSuccess(that.translate('app.salvataggio-ok'))
                 that.view.reload();
             })
             console.log('values', values);
@@ -308,7 +308,7 @@ crud.collectionActions = {
             var num = checked.length;
             if (num === 0)
                 return ;
-            that.confirmDialog(that.$crud.translate('app.conferma-multidelete',false,[num]), {
+            that.confirmDialog(that.translate('app.conferma-multidelete',false,[num]), {
                 ok : function () {
                     var r = that.createRoute('multi-delete');
                     that.setRouteValues(r);
@@ -340,7 +340,7 @@ crud.conf = {
         //actions : ['action-back'],
         actions : [],
         customActions: {},
-        renderTemplate : 'c-tpl-record2',
+        widgetTemplate : 'c-tpl-record2',
     },
     edit : {
         primaryKey : 'id',
@@ -350,7 +350,7 @@ crud.conf = {
             id : 'w-hidden'
         },
         fields : [],
-        renderTemplate : 'c-tpl-record',
+        widgetTemplate : 'c-tpl-record',
         actions : ['action-save','action-back']
     },
     list : {
@@ -359,7 +359,7 @@ crud.conf = {
         customActions: {},
         fieldsConfig : {},
         orderFields: {},
-        renderTemplate : 'c-tpl-list',
+        widgetTemplate : 'c-tpl-list',
         actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
     },
     listEdit : {
@@ -368,7 +368,7 @@ crud.conf = {
         customActions: {},
         fieldsConfig : {},
         orderFields: {},
-        renderTemplate : 'c-tpl-list',
+        widgetTemplate : 'c-tpl-list',
         actions : [
             'action-insert',
             'action-delete-selected',
@@ -385,12 +385,12 @@ crud.conf = {
         actions : ['action-search'],
         fieldsConfig : {},
         customActions: {},
-        renderTemplate : 'c-tpl-record',
+        widgetTemplate : 'c-tpl-record',
     },
     insert : {
         primaryKey : 'id',
         routeName : 'insert',
-        renderTemplate : 'c-tpl-record',
+        widgetTemplate : 'c-tpl-record',
         actions : ['action-save','action-back'],
         fieldsConfig : {
             id : 'w-hidden'
@@ -641,9 +641,10 @@ const dialogs_mixin = {
         },
 
         _popover : function (message,classes,time) {
+            var that = this;
             var id= 'pop' + (new Date().getTime());
             _cls = 'alert alert-primary ' + (classes?classes:'');
-            var content = crud.translate(message);
+            var content = that.translate(message);
             var _t = 2000;
             if( time === 0 ){
                 content += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
@@ -1773,7 +1774,7 @@ Vue.component('action-order', {
             this.icon = null;
         if (this.text) {
             var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
-            this.text = this.$crud.translate(langKey)
+            this.text = this.translate(langKey)
         }
 
         //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);
@@ -3574,7 +3575,7 @@ crud.components.views.vBase = Vue.component('v-base', {
         _defaultRenderConfig : function(key,configName) {
             var that = this;
             var c = {
-                type:that.defaultRenderType,
+                type:that.defaultWidgetType,
                 value : null,
                 operator : null,
             };
@@ -3591,7 +3592,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
 
             if (!c.template)
-                c.template = that.conf.renderTemplate;
+                c.template = that.conf.widgetTemplate;
             //c.metadata = this.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
             c = this.merge( c ,(that.data.metadata[key] || {}));
             return c;
@@ -3921,7 +3922,7 @@ crud.components.views.vList = Vue.component('v-list', {
             needSelection : true,
             pagination : {},
             viewTitle : '',
-            defaultRenderType : 'w-text',
+            defaultWidgetType : 'w-text',
             langContext : that.cModel,
             json : {},
         };
@@ -3973,7 +3974,7 @@ crud.components.views.vList = Vue.component('v-list', {
         getOrderConf : function (key) {
             var that = this;
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = that.$crud.translate('app.ordina') + ' ' + key;
+            conf.title = that.translate('app.ordina') + ' ' + key;
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)
@@ -4045,53 +4046,6 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
         };
         return this.merge(dListEdit,d);
     },
-
-    // data :  function () {
-    //     var that = this;
-    //
-    //     var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
-    //     routeConf.values = {
-    //         modelName: this.cModel
-    //     }
-    //
-    //     if (this.$route && this.$route.query)
-    //         routeConf.params = that.$route.query;
-    //
-    //     var conf = that.getConf(that.cModel,'listEdit');
-    //     // conf.customActions['action-edit'] = {
-    //     //     execute : function () {
-    //     //         var thatA = this;
-    //     //         that.$set(that.editMode,thatA.cIndex, true);
-    //     //     }
-    //     // };
-    //     console.log('v-list-edit conf',conf)
-    //
-    //     var d = {
-    //         loading : true,
-    //         widgets : {},
-    //         widgetsEdit : {},
-    //         keys : [],
-    //         recordActionsName : [],
-    //         recordActions: [],
-    //         collectionActions : {},
-    //         collectionActionsName : [],
-    //         routeConf : routeConf,
-    //         route : null,
-    //         data : [],
-    //         maxPage : 0,
-    //         conf : conf,
-    //         needSelection : true,
-    //         pagination : {},
-    //         viewTitle : '',
-    //         defaultRenderType : 'w-text',
-    //         editMode : [],
-    //
-    //     };
-    //     if (d.conf.viewTitle) {
-    //         d.viewTitle = d.conf.viewTitle;
-    //     }
-    //     return d;
-    // },
 
     methods: {
 
@@ -4216,7 +4170,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'w-input',
+            defaultWidgetType : 'w-input',
         }
         return that.merge(dEdit,d);
 
@@ -4272,7 +4226,7 @@ crud.components.views.vView = Vue.component('v-view', {
             data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'w-text',
+            defaultWidgetType : 'w-text',
         }
         return this.merge(dView,d);
 
@@ -4327,7 +4281,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             actions : {},
             data : {},
             //conf : that.conf,
-            defaultRenderType : 'w-input',
+            defaultWidgetType : 'w-input',
         }
         return this.merge(dInsert,d);
 
@@ -4385,7 +4339,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'w-input',
+            defaultWidgetType : 'w-input',
             targetRef : that.cTargetRef,
         }
         if (!("langContext" in d)){
@@ -4460,7 +4414,7 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
             actions : {},
             data : {},
             //conf : conf,//jQuery.extend(true,{},ModelTest.edit),
-            defaultRenderType : 'w-input',
+            defaultWidgetType : 'w-input',
         }
         return this.merge(dHasmany,d);
     },
@@ -4508,7 +4462,7 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
             actions : {},
             data : {},
             //conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
-            defaultRenderType : 'w-text',
+            defaultWidgetType : 'w-text',
         }
         return this.merge(dHasmany,d);
     },
