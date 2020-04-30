@@ -271,9 +271,10 @@ function wB2Select2Conf_f() {
         //addNew : true,
         fields: ['email'],
         //routeName : 'autocomplete',
-        model: 'user',
-        hiddenFields: ['id'],
-        labelFields: ['email'],
+        modelName: 'user',
+        primaryKey : 'name',
+        //hiddenFields: ['id'],
+        //labelFields: ['email'],
         methods: {
             change: function () {
                 console.log('change ' , this.getValue())
@@ -289,7 +290,7 @@ function wB2MSelect2Conf_f() {
         //addNew : true,
 
         model: 'user',
-        labelFields: ['email'],
+        //labelFields: ['email'],
         hiddenFields: ['id'],
         fields: ['email'],
         methods: {

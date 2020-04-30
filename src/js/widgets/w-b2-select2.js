@@ -13,7 +13,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
         }
         d.routeName = _conf.routeName || 'autocomplete';
         d.route = null;
-        if (!('primaryKey' in d)  )
+        if (!('primaryKey' in _conf)  )
             d.primaryKey = 'id';
         return d;
     },
@@ -71,7 +71,8 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
             });
             jQuery(that.$el).find('[c-select2]').on('select2:select', function (e) {
                 console.log('value',that.getValue())
-                that.$emit('change',e);
+
+                //that.$emit('change',e);
             });
         },
         _getLabel : function(value) {
@@ -85,7 +86,8 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
         getValue : function () {
             var that = this;
             var selValue = jQuery(that.$el).find('[c-select2]').select2('data');
-            return selValue.length>0?selValue[0][that.primaryKey]:null;
+            console.log('selvalue',selValue);
+            return selValue.length>0?selValue[0].id:null;
 
         },
         setRouteValues : function(route) {
