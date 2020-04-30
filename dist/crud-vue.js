@@ -1266,7 +1266,9 @@ function Route(conf) {
     this.getMethod = function() {
         return routeConf.method;
     };
-
+    this.setMethod = function(m) {
+        routeConf.method = m;
+    };
     /**
      * ritorna il metodo utilizzato per la richiesta al server, get o post
      * @return string
@@ -2830,7 +2832,8 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                     for (var i in json.result) {
                         items.push({
                             id : json.result[i][that.primaryKey],
-                            text : that._getLabel(json.result[i])
+                            text : that._getLabel(json.result[i]),
+                            record : json.result[i]
                         });
                     }
                     console.log(that.primaryKey,'items',items);

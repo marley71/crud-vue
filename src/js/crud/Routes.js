@@ -29,7 +29,9 @@ function Route(conf) {
     this.getMethod = function() {
         return routeConf.method;
     };
-
+    this.setMethod = function(m) {
+        routeConf.method = m;
+    };
     /**
      * ritorna il metodo utilizzato per la richiesta al server, get o post
      * @return string

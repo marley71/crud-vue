@@ -41,7 +41,8 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                     for (var i in json.result) {
                         items.push({
                             id : json.result[i][that.primaryKey],
-                            text : that._getLabel(json.result[i])
+                            text : that._getLabel(json.result[i]),
+                            record : json.result[i]
                         });
                     }
                     console.log(that.primaryKey,'items',items);
