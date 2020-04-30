@@ -69,9 +69,9 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                 allowClear : that.allowClear,
                 placeholder: that.placeholder?that.placeholder:"Seleziona",
             });
-            jQuery(that.$el).find('[c-select2]').on('select2:select', function () {
+            jQuery(that.$el).find('[c-select2]').on('select2:select', function (e) {
                 console.log('value',that.getValue())
-                that.$emit('change');
+                that.$emit('change',e);
             });
         },
         _getLabel : function(value) {

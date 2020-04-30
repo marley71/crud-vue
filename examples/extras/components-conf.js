@@ -26,7 +26,7 @@ function wInputHelpedConf_f() {
         customValue: true,
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
         domainValues: {
@@ -46,7 +46,7 @@ function wAutocompleteConf_f() {
         modelName: 'user',
         methods: {
             change: function () {
-                console.log('my conf change ' + this.getValue())
+                console.log('my conf change ' , this.getValue())
             }
         },
 
@@ -78,7 +78,7 @@ function wRadioConf_f() {
         domainValuesOrder: [3, 2, 1, 0],
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ', this.getValue())
             }
         },
     };
@@ -96,7 +96,7 @@ function wCheckboxConf_f() {
         },
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' ,this.getValue())
             }
         },
     };
@@ -113,7 +113,7 @@ function wSelectConf_f() {
         },
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
     };
@@ -125,7 +125,7 @@ function wTextareaConf_f() {
         value: "text area edit",
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
     };
@@ -137,7 +137,7 @@ function wTextConf_f() {
         value: "testo edit",
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
     };
@@ -149,7 +149,7 @@ function wDateSelectConf_f() {
         value: "2018-02-04",
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
     };
@@ -162,7 +162,7 @@ function wDatePickerConf_f() {
         value: "2018-02-04",
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' ,this.getValue())
             }
         },
     };
@@ -174,7 +174,7 @@ function wTexthtmlConf_f() {
         value: "text area edit<b>bo</b>",
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
     };
@@ -202,7 +202,7 @@ function wHasmanyConf_f() {
         limit: 2,
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
     };
@@ -234,7 +234,7 @@ function wHasmanyViewConf_f() {
         limit: 2,
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
     };
@@ -258,7 +258,7 @@ function wSwapConf_f() {
 
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ',this.getValue())
             }
         },
     };
@@ -276,7 +276,7 @@ function wB2Select2Conf_f() {
         labelFields: ['email'],
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' , this.getValue())
             }
         },
     };
@@ -294,7 +294,7 @@ function wB2MSelect2Conf_f() {
         fields: ['email'],
         methods: {
             change: function () {
-                console.log('change ' + this.getValue())
+                console.log('change ' ,this.getValue())
             }
         },
     };

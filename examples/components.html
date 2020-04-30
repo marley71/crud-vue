@@ -148,9 +148,9 @@
     var app = null;
     function ricarica() {
         app.$set(app.$refs['router'].lastComponent,'conf',null);
-        app.$crud.waitStart();
+        app.waitStart();
         setTimeout( function () {
-            app.$crud.waitEnd();
+            app.waitEnd();
             var code = editAreaLoader.getValue('editor');
             console.log('code',code);
             eval('var obj = ' + code);
