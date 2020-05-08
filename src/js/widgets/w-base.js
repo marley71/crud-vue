@@ -1,38 +1,19 @@
 crud.components.widgets.wBase = Vue.component('w-base', {
     extends : crud.components.cComponent,
     props : ['cMarker'],
-
-    mounted : function() {
-        var that = this;
-        if (!that.operator) {
-            jQuery(that.$el).find('[c-operator]').remove();
-        }
-    },
     data :  function () {
         var that = this;
         var _conf = that._getConf() || {};
         var d  = {};
         if (! ('value' in _conf))
             d.value = null;
-        if (! ('operator' in _conf))
-            d.operator = null;
-        // if (! ('name' in _conf))
-        //     d.name = '';
         return d;
     },
     methods : {
 
         getFieldName: function () {
             var that = this;
-            //console.log('GET FIELD NAME',this.cKey);
-            if (that.operator) {
-                return that.name + '[]';
-            }
             return that.name;
-        },
-        getOperatorName : function () {
-            var that = this;
-            return that.name + "_operator";
         },
 
         getValue : function() {

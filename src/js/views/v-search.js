@@ -71,14 +71,10 @@ crud.components.views.vSearch = Vue.component('v-search', {
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
                 widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
-                //widgets[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     widgets[key].value = that.data.value[key];
 
                 widgets[key].name = that.getFieldName(key);
-                if (!widgets[key].operator) {
-                    widgets[key].operator = '=';
-                }
             }
 
             console.log('v-searc.widgets',widgets);

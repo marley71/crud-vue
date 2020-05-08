@@ -61,14 +61,10 @@ crud.components.views.vAutosearch = Vue.component('v-autosearch', {
                 widgets[key].value = null;
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
-                //widgets[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     widgets[key].value = that.data.value[key];
 
                 widgets[key].name = that.getFieldName(key);
-                if (!widgets[key].operator) {
-                    widgets[key].operator = '=';
-                }
             }
 
             console.log('v-searc.widgets',widgets);

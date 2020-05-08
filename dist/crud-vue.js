@@ -1995,38 +1995,19 @@ crud.components.cWait = Vue.component('c-wait', {
 crud.components.widgets.wBase = Vue.component('w-base', {
     extends : crud.components.cComponent,
     props : ['cMarker'],
-
-    mounted : function() {
-        var that = this;
-        if (!that.operator) {
-            jQuery(that.$el).find('[c-operator]').remove();
-        }
-    },
     data :  function () {
         var that = this;
         var _conf = that._getConf() || {};
         var d  = {};
         if (! ('value' in _conf))
             d.value = null;
-        if (! ('operator' in _conf))
-            d.operator = null;
-        // if (! ('name' in _conf))
-        //     d.name = '';
         return d;
     },
     methods : {
 
         getFieldName: function () {
             var that = this;
-            //console.log('GET FIELD NAME',this.cKey);
-            if (that.operator) {
-                return that.name + '[]';
-            }
             return that.name;
-        },
-        getOperatorName : function () {
-            var that = this;
-            return that.name + "_operator";
         },
 
         getValue : function() {
@@ -3525,7 +3506,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             var c = {
                 type:that.defaultWidgetType,
                 value : null,
-                operator : null,
             };
             configName = configName?configName:'fieldsConfig';
             var conf = (that.conf[configName] && that.conf[configName][key])?that.conf[configName][key]:null;
@@ -3574,7 +3554,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 widgets[key] = that._defaultRenderConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
-                widgets[key].operator = null;
                 if (that.data.value && (key in that.data.value) )
                     widgets[key].value = that.data.value[key];
 
@@ -4322,14 +4301,10 @@ crud.components.views.vSearch = Vue.component('v-search', {
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
                 widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
-                //widgets[key].operator = null;
                 if (that.data.value && that.data.value[key])
                     widgets[key].value = that.data.value[key];
 
                 widgets[key].name = that.getFieldName(key);
-                if (!widgets[key].operator) {
-                    widgets[key].operator = '=';
-                }
             }
 
             console.log('v-searc.widgets',widgets);

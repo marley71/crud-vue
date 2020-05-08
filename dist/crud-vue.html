@@ -201,32 +201,25 @@
 </script>
 
 <script type="text/x-template" id="w-input-template">
-    <div>
-        <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
-    </div>
+    <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
 </script>
 
 <script type="text/x-template" id="w-input-helped-template">
-    <div>
-        <div crud-render_element>
-            <input v-bind:readonly="!customValue"
-                   class="form-control" type="text" name="getFieldName()" v-model="value"
-                   v-bind:c-marker="cMarker" v-on:change="change" >
-            <div>
-                <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-for="dVal in domainValuesOrder" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{domainValues[dVal]}}</button>
-                </div>
+    <div >
+        <input v-bind:readonly="!customValue"
+               class="form-control" type="text" name="getFieldName()" v-model="value"
+               v-bind:c-marker="cMarker" v-on:change="change" >
+        <div>
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <button v-for="dVal in domainValuesOrder" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{domainValues[dVal]}}</button>
             </div>
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </script>
 
 <script type="text/x-template" id="w-hidden-template">
     <div>
         <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>
 
@@ -243,23 +236,16 @@
 </script>
 
 <script type="text/x-template" id="w-textarea-template">
-    <div>
-        <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
+    <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
                   v-bind:c-marker="cMarker" v-on:change="change"></textarea>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
-    </div>
-
 </script>
 
 <script type="text/x-template" id="w-select-template">
-    <div>
-        <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
-                v-on:change="change">
-            <option v-for="key in domainValuesOrder" :value="key"
-                    >{{domainValues[key]}}</option>
-        </select>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
-    </div>
+    <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
+            v-on:change="change">
+        <option v-for="key in domainValuesOrder" :value="key"
+                >{{domainValues[key]}}</option>
+    </select>
 </script>
 
 <script type="text/x-template" id="w-radio-template">
@@ -271,7 +257,6 @@
                        v-bind:c-marker="cMarker" v-on:change="change">&nbsp;&nbsp;{{domainValues[key]}}
             </label>
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>
 
@@ -283,7 +268,6 @@
                    v-bind:c-marker="cMarker" v-on:change="change" >
             <label class="form-check-label" >{{domainValues[key]}}&nbsp;&nbsp;&nbsp;</label>
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
 </script>
 
@@ -295,7 +279,6 @@
             <i class="fa fa-times"></i>
         </button>
         <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
 
@@ -311,7 +294,6 @@
         <w-select ref="day" v-bind:c-conf="cDay" c-marker="day"></w-select>
         <w-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></w-select>
         <w-select ref="year" v-bind:c-conf="cYear" c-marker="year"></w-select>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </script>
 
@@ -319,7 +301,6 @@
     <div class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
         <input c-picker >
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </script>
 
@@ -432,12 +413,9 @@
 </template>
 
 <template id="w-b2-select2-template">
-    <div>
-        <select c-select2 class="form-control m-select2"
-                v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
-        </select>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
-    </div>
+    <select c-select2 class="form-control m-select2"
+            v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
+    </select>
 </template>
 
 <template id="w-b2m-select2-template">
@@ -449,7 +427,6 @@
         <div c-selected-items>
             <!-- hidden input for selected items -->
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
 
@@ -465,7 +442,6 @@
         <div>
             <input :name="getFieldName()" c-file class="btn btn-outline-secondary" type="file" v-on:change="validate()" v-bind:c-marker="cMarker">
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
 
@@ -485,7 +461,6 @@
                 <div>
                     <input c-file class="btn btn-outline-secondary" type="file" v-on:change="validate()" v-bind:c-marker="cMarker">
                 </div>
-                <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
             </div>
         </div>
         <div class="col-4">

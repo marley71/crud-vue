@@ -20,7 +20,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 widgets[key] = that._defaultRenderConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
-                widgets[key].operator = null;
                 if (that.data.value && (key in that.data.value) )
                     widgets[key].value = that.data.value[key];
 

@@ -1,6 +1,3 @@
 <script type="text/x-template" id="w-input-template">
-    <div>
-        <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
-    </div>
+    <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
 </script>
