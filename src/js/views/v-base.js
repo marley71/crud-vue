@@ -27,10 +27,6 @@ crud.components.views.vAction = Vue.component('v-action', {
 crud.components.views.vWidget =  Vue.component('v-widget', {
     extends : crud.components.cComponent,
     props : ['cKey','cWidget'],
-    // When the bound element is inserted into the DOM...
-    mounted: function () {
-        //console.log('v-render',this.cConf);
-    },
     data : function() {
         if (this.cKey) {
             var ckeys = this.cKey.split(',');
@@ -76,14 +72,10 @@ crud.components.views.vBase = Vue.component('v-base', {
     props : ['cFields'],
     extends : crud.components.cComponent,
     data : function () {
-        //var d = this._loadConf();
         return {
             viewTitle : '',
             langContext : '',
         }
-        // d.viewTitle = '';
-        // d.langContext = null;
-        // return d;
     },
     methods : {
         fetchData: function (route,callback) {
@@ -131,47 +123,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
             throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },
-        /**
-         * prende la configurazione assegnata alla view
-         * @param modelName
-         * @param type
-         */
-        // getConf : function (modelName,type) {
-        //     var conf = null;
-        //     var defaultConf = this.$crud.conf[type];
-        //     //console.log('cConf',this.cConf);
-        //
-        //     if (this.cConf) {
-        //         if (typeof this.cConf === 'string' || this.cConf instanceof String)
-        //             conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
-        //         else
-        //             conf = this.cConf;
-        //     } else {
-        //         console.log('Check exist default conf '+ 'Model'+this.$crud.pascalCase(modelName));
-        //         if (window['Model'+this.$crud.pascalCase(modelName)]) {
-        //             var cm = window['Model'+this.$crud.pascalCase(modelName)];
-        //             if (cm[type])
-        //                 conf = cm[type];
-        //             else {
-        //                 if (type == 'insert' && cm['edit'])
-        //                     conf = cm['edit'];
-        //                 else {
-        //                     conf = this.$crud.conf[type];
-        //                 }
-        //             }
-        //
-        //         } else {
-        //             //onsole.log('get default crud conf ',type)
-        //             conf = this.$crud.conf[type];
-        //         }
-        //     }
-        //     if (!conf)
-        //         throw "Nessuna configurazione trovata per questa view";
-        //     //console.log('merge confs',defaultConf,conf);
-        //     var finalConf = this.$crud.confMerge(defaultConf,conf);
-        //     console.log('finalConf',finalConf);
-        //     return finalConf;
-        // },
 
         _loadConf : function(modelName,type) {
             var conf = null;
@@ -228,7 +179,7 @@ crud.components.views.vBase = Vue.component('v-base', {
          * @returns {{type: *}}
          * @private
          */
-        _defaultRenderConfig : function(key,configName) {
+        _defaultWidgetConfig : function(key,configName) {
             var that = this;
             var c = {
                 type:that.defaultWidgetType,

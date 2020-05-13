@@ -1643,30 +1643,7 @@ var actionBase = Vue.component('action-base', {
         }
     },
     methods : {
-        // defaultData : function () {
-        //     var that = this;
-        //     var adata = {
-        //         type : 'collection',
-        //         visible : true,
-        //         enabled : true,
-        //         title : '',
-        //         css: 'btn btn-outline-secondary',
-        //         icon : 'fa fa-help',
-        //         text : '',
-        //         controlType : 'button',
-        //         href : '',
-        //     };
-        //     for (var c in this.cConf) {
-        //             adata[c] = this.cConf[c];
-        //     }
-        //     if (!('view' in adata) )
-        //         adata.view = that.$parent;
-        //     // if (! ('langContext' in adata) ){
-        //     //     adata.langContext = adata.view?adata.view.langContext:null;
-        //     // }
-        //     //console.log('action ',adata);
-        //     return adata;
-        // },
+
         _beforeExecute : function (callback) {
             var that =this;
             if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
@@ -1720,10 +1697,11 @@ var actionBase = Vue.component('action-base', {
             enabled : true,
             title : '',
             css: 'btn btn-outline-secondary',
-            icon : 'fa fa-help',
+            icon : '',
             text : '',
             controlType : 'button',
             href : '',
+            target: '_self'
         };
         if (!('view' in adata) )
             adata.view = that.$parent;
@@ -2047,9 +2025,6 @@ crud.components.widgets.wBase = Vue.component('w-base', {
 
 crud.components.widgets.wCustom = Vue.component('w-custom', {
     extends : crud.components.widgets.wBase,
-    mounted : function() {
-        this.value = this.getContent();
-    },
     template: '#w-custom-template',
 });
 
@@ -2211,30 +2186,12 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
                         }
                         //that.suggestValues = {};
                         for (var i in json.result) {
-                            // var s = "";
-                            // for (var k in that.metadata.fields) {
-                            //     s += (s?' ':'') + json.result[i][that.metadata.fields[k]];
-                            // }
                             var s = that._getSuggestion(json.result[i]);
                             suggestions.push(s);
                             that.suggestValues[s] = json.result[i][that.primaryKey];
                         }
                         return suggest(suggestions)
                     })
-                    // jQuery.getJSON(that._createUrl(),{term:term},function (json) {
-                    //     var suggestions = [];
-                    //     //that.suggestValues = {};
-                    //     for (var i in json.result) {
-                    //         // var s = "";
-                    //         // for (var k in that.metadata.fields) {
-                    //         //     s += (s?' ':'') + json.result[i][that.metadata.fields[k]];
-                    //         // }
-                    //         var s = that._getSuggestion(json.result[i]);
-                    //         suggestions.push(s);
-                    //         that.suggestValues[s] = json.result[i]['id'];
-                    //     }
-                    //     return suggest(suggestions)
-                    // })
                 },
                 onSelect: function(e, term, item){
                     console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
@@ -2249,9 +2206,6 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             var that = this;
             //var r = that.$crud.createRoute(that.conf.routeName);
             route.setValues({modelName:that.conf.modelName});
-            //var r = new Route(routeConf);
-
-            //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
             var url = that.url?that.url:route.getUrl();
             url+= '?term='+term+'&';
 
@@ -2283,29 +2237,10 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             jQuery(that.$el).find('[c-autocomplete]').val('');
         },
         _getLabel : function () {
-
             var that = this;
-
             if (that.modelData) {
                 that.label = that._getSuggestion(that.modelData);
             }
-
-            // var r = new Route(that.$crud.routes.view);
-            // console.log('w-autocomplete getLabel',that.conf);
-            // r.setValues({
-            //     modelName : that.conf.modelName,
-            //     pk : that.value
-            // });
-            // // r.values.modelName = that.conf.model;
-            // // r.values.pk = that.value;
-            // var lb = '';
-            // Server.route(r,function (json) {
-            //     if (json.error) {
-            //         that.label = json.msg;
-            //         return ;
-            //     }
-            //     that.label = that._getSuggestion(json.result);
-            // })
         },
         _getSuggestion: function(rowData) {
             var that = this;
@@ -2336,82 +2271,115 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
             ];
         }
+        d.minYear = null;
+        d.maxYear = null;
         return d;
     },
     computed : {
         cDay : function () {
             var that = this;
-            var d = moment(that.value?that.value:that.conf.value);
+            var d = moment(that.value);
+            var days = that._dayValues();
             var cd = {
-                value: d.date(),
-                domainValues: {},
+                value: d.date() > d.daysInMonth()?1:d.date(),
+                domainValues: days,
                 methods: {
                     change: function () {
-                        that.changed();
+                        that._updateSelect();
                     }
                 }
             };
-            for (let i=1;i<=d.daysInMonth();i++) {
-                cd.domainValues[i] = i;
-            }
-            if (d.date() > d.daysInMonth())
-                cd.value = 1;
-            cd.domainValuesOrder = Object.keys(cd.domainValues);
             return cd;
         },
         cMonth : function () {
             var that = this;
-            var d = moment(that.value ? that.value : that.conf.value);
+            var d = moment(that.value);
+            var months = that._monthValues();
             var cm = {
                 value: d.month() + 1,
-                domainValues: {},
+                domainValues: months,
                 methods: {
                     change: function () {
-                        that.changed();
+                        that._updateSelect();
                     }
                 }
             };
-            for (let i=1;i<=12;i++) {
-                cm.domainValues[i] = i;
-            }
             return cm;
         },
         cYear : function () {
             var that = this;
-            var d = moment(that.value ? that.value : that.conf.value);
+            var d = moment(that.value);
+            var years = that._yearValues();
             var cy = {
                 value : d.year(),
-                domainValues: {
-
-                },
+                domainValues: years,
                 methods: {
                     change : function () {
-                        that.changed();
+                        that._updateSelect();
                     }
                 }
             };
-            var minY = that.minYear?that.minYear:d.year()-5;
-            var maxY = that.maxYear?that.maxYear:d.year()+5;
-            for (let i=minY;i<=maxY;i++) {
-                cy.domainValues[i] = i;
-            }
             return cy;
         }
     },
     methods : {
-        changed : function() {
+        _updateSelect : function() {
             var that = this;
-            var s = jQuery(that.$el).find('[c-marker="year"]').val() +  "-" + jQuery(that.$el).find('[c-marker="month"]').val().padStart(2,'0')  + "-" + jQuery(that.$el).find('[c-marker="day"]').val().padStart(2,'0') ;
-            var dds = moment(s);
-            if (dds.isValid()) {
-                that.value = s;
+            if (!that._getValidDate()) {
+                that.errorDialog('invalid Date');
+                return ;
             }
-
-            this.$refs.day.updateConf(that.cDay);
-            this.$refs.month.updateConf(that.cMonth);
-            this.$refs.year.updateConf(that.cYear);
-
-            console.log(this.getValue());
+            var _cday = that.$refs.day;
+            var d = moment(that.value);
+            _cday.domainValues = this._dayValues();
+            _cday.domainValuesOrder = Object.keys(this._dayValues());
+            _cday.value =  d.date() > d.daysInMonth()?1:d.date();
+        },
+        _getValidDate : function() {
+            var that = this;
+            //var s = jQuery(that.$el).find('[c-marker="year"]').val() +  "-" + jQuery(that.$el).find('[c-marker="month"]').val().padStart(2,'0')  + "-" + jQuery(that.$el).find('[c-marker="day"]').val().padStart(2,'0') ;
+            var _cday = that.$refs.day;
+            var _cmonth = that.$refs.month
+            var _cyear = that.$refs.year;
+            var sdate = _cyear.getValue() +  "-" + _cmonth.getValue().toString().padStart(2,'0')  + "-" + _cday.getValue().toString().padStart(2,'0') ;
+            var dds = moment(sdate);
+            if (!dds.isValid()) {
+                _cday.setValue(1);
+                sdate = _cyear.getValue() +  "-" + _cmonth.getValue().toString().padStart(2,'0')  + "-" + _cday.getValue().toString().padStart(2,'0') ;
+                var dds = moment(sdate);
+                if (!dds.isValid())
+                    return false;
+            }
+            that.value = sdate;
+            return true;
+        },
+        _dayValues : function () {
+            var that = this;
+            var d = moment(that.value);
+            var days = {};
+            for (let i=1;i<=d.daysInMonth();i++) {
+                days[i] = i;
+            }
+            return days;
+        },
+        _monthValues : function () {
+            var that = this;
+            var months = {};
+            for (let i=1;i<=12;i++) {
+                months[i] = i;
+            }
+            return months;
+        },
+        _yearValues : function () {
+            var that = this;
+            var years = {};
+            var d = moment(that.value?that.value:that.conf.value);
+            var minY = that.minYear?that.minYear:d.year()-5;
+            var maxY = that.maxYear?that.maxYear:d.year()+5;
+            for (let i=minY;i<=maxY;i++) {
+                years[i] = i;
+            }
+            return years;
         }
     }
 });
@@ -2430,21 +2398,21 @@ crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
                 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
             ];
         }
+        d.displayFormat = _conf.displayFormat || "mm/dd/yyyy";
+        d.dateFormat = _conf.dateFormat || d.displayFormat;
         return d;
     },
     methods : {
         afterLoadResources : function () {
             var that = this;
-            var displayFormat = that.displayFormat || "mm/dd/yyyy";
-            var dateFormat = that.dateFormat || displayFormat;
             jQuery(that.$el).find('[c-picker]').datepicker({
-                format : displayFormat,
+                format : that.displayFormat,
             }).on('changeDate', function(ev) {
-                that.value =  moment(ev.date.toISOString()).format(dateFormat.toUpperCase()); //ev.date.toISOString();
+                that.value =  moment(ev.date.toISOString()).format(that.dateFormat.toUpperCase()); //ev.date.toISOString();
                 that.change();
             });
-            console.log('dateformat',dateFormat.toUpperCase())
-            jQuery(that.$el).find('[c-picker]').datepicker('update',moment(that.value).format(displayFormat.toUpperCase()));
+            console.log('dateformat',that.dateFormat.toUpperCase())
+            jQuery(that.$el).find('[c-picker]').datepicker('update',moment(that.value).format(that.displayFormat.toUpperCase()));
         }
     }
 });
@@ -2485,7 +2453,7 @@ crud.components.widgets.wTexthtml = Vue.component('w-texthtml',{
     }
 });
 
-crud.components.rHasmany =Vue.component('w-hasmany', {
+crud.components.wHasmany =Vue.component('w-hasmany', {
     extends : crud.components.widgets.wBase,
     template: '#w-hasmany-template',
     mounted : function() {
@@ -2542,32 +2510,6 @@ crud.components.rHasmany =Vue.component('w-hasmany', {
             console.log('HMS',hmConf,that.value)
             return hmConf;
 
-
-            // if (that.confViews.length > index) {
-            //     that.confViews[index] = hmConf;
-            //     that.confViews[index].data.value.status = 'updated';
-            // } else {
-            //     if (!hmConf.data.value.status) {
-            //         hmConf.data.value.status = 'new';
-            //     }
-            //     that.confViews.push(hmConf);
-            //     if (that.confViews.length < (index + 1))
-            //         throw "confView.length" + that.confViews.length + " minore di index " + index;
-            // }
-            // // else {
-            // //     // ci sono record gia' presenti prendo da li i fields.
-            // //     if (this.value && this.value.length > 0) {
-            // //         if (!hmConf.fields || !hmConf.fields.length) {
-            // //             hmConf.fields = Object.keys(this.value[0]);
-            // //             hmConf.data.value = Utility.cloneObj(this.value[0]);
-            // //         }
-            // //     }
-            // // }
-            // //console.log('hmConf',hmConf)
-            // //hmConf.metadata.modelName = that.cKey;
-            // console.log('HMS',that.confViews[index],that.value)
-            // return that.confViews[index];
-
         },
         addItem : function () {
             var that = this;
@@ -2610,15 +2552,8 @@ crud.components.rHasmany =Vue.component('w-hasmany', {
 });
 
 crud.components.widgets.wHasmanyView = Vue.component('w-hasmany-view', {
-    extends : crud.components.rHasmany,
+    extends : crud.components.wHasmany,
     template: '#w-hasmany-view-template',
-    // data : function () {
-    //     var d = this._loadConf();
-    //     d.inputType = 'text';
-    //     if (this.cConf.inputType)
-    //         d.inputType = this.cConf.inputType;
-    //     return d;
-    // }
 });
 
 crud.components.widgets.wSwap = Vue.component('w-swap', {
@@ -2689,17 +2624,7 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
             //console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
             that._swap(keys[index]);
         },
-        // _getRoute : function(key) {
-        //     var that = this;
-        //     var r = Route.factory(that.routeName);
-        //     r.values = {
-        //         modelName: that.conf.model,
-        //         field : that.name, //that.conf.key?that.conf.key:that.cKey,
-        //         value : key
-        //     };
-        //     r.params = {id:that.conf.modelData.id};
-        //     return r;
-        // },
+
         _swap : function (key) {
             var that = this;
             var r = that._getRoute();
@@ -2718,7 +2643,7 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
     }
 });
 
-crud.components.rHasmanyThrough =Vue.component('w-hasmany-through', {
+crud.components.wHasmanyThrough =Vue.component('w-hasmany-through', {
     extends : crud.components.widgets.wBase,
     template: '#w-hasmany-through-template',
     // data : function () {
@@ -2991,46 +2916,11 @@ crud.components.widgets.wUpload = Vue.component('w-upload',{
             console.log('validate');
             that.change();
             if (that._validate()) {
-                that.value =
+                //that.value =
                 that.$emit('success', that);
             }
             else
                 that.$emit('error',that);
-            /*var extPos = fileupload.lastIndexOf('.');
-            var ext = "";
-            if (extPos >= 0) {
-                ext = fileupload.substr(extPos + 1);
-            }
-            var cext = ext.toLowerCase();
-            switch (cext) {
-                case 'xls':
-                case 'xlsx':
-                case 'csv':
-                case 'txt': /!* case 'docx': case 'pdf': case 'wps': case 'rtf':  case 'txt': case 'xps': *!/
-                    if (self.iszip) {
-                        self.app.waitEnd();
-                        self.app.errorDialog("(" + cext + ") Estensione del file non valida");
-                        var control = self.uploadForm.find('input[name="file"]');
-                        control.val("");
-                        return false;
-                    }
-                    break;
-                case 'zip':
-                    if (!self.iszip) {
-                        self.app.waitEnd();
-                        self.app.errorDialog("(" + cext + ") Compressione file non accettata");
-                        var control = self.uploadForm.find('input[name="file"]');
-                        control.val("");
-                        return false;
-                    }
-                    break;
-                default:
-                    self.app.waitEnd();
-                    self.app.errorDialog("(" + cext + ") Estensione del file non riconosciuta");
-                    var control = self.uploadForm.find('input[name="file"]');
-                    control.val("");
-                    return false;
-            }*/
         }
     }
 })
@@ -3042,7 +2932,7 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
         var d = this._loadConf();
         d.extensions = d.extensions?d.extensions:[];
         d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
-        d.uploadConf = d.conf;
+        //d.uploadConf = d.conf;
         if (! ("routeName" in d) )
             d.routeName = 'uploadfile';
 
@@ -3052,12 +2942,6 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
             cRef : this._uid + 'preview'
         }
         d.value = JSON.stringify(value).replace(/\\"/g, '"');
-        // d.previewConf = {
-        //     value : d.conf.value,
-        //     metadata :  {
-        //         mimetype : 'image/jpeg'
-        //     }
-        // };
         d.error = false;
         d.errorMessage = '';
         console.log('w-upload data',d);
@@ -3065,13 +2949,14 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
     },
 
     methods : {
+
         setRouteValues: function(route) {
             route.setValues({
                 modelName : this.modelName
             })
             return route;
         },
-        getValue : function () {
+        _getFileValue : function () {
             var that = this;
             console.log('filedesc',jQuery(that.$el).find('[c-file]').prop('files'));
             var fileDesc = jQuery(that.$el).find('[c-file]').prop('files');
@@ -3096,28 +2981,12 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
         },
         sendAjax : function () {
             var that = this;
-            // if (!that.$refs.refUpload) {
-            //     throw 'riferimento a file upload non valido';
-            // }
-            RUPLOAD = that;
-            var fDesc = that.getValue();
+            var fDesc = that._getFileValue();
             if (!fDesc)
                 throw 'descrittore file upload non valido';
-
-            console.log('fDesc',fDesc);
-
             var fileName = fDesc.filename;
-            //var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
-
-            //var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
             var route = that._getRoute();
-            //that.setRouteValues(route);
-
-            //var routeConf = that.$crud.routes[that.conf.routeName];
-            //var route = Route.factory('uploadfile');
-            //route.fillValues(that);
             that.setRouteValues(route);
-            ROUTE = route;
             that.error = false;
             that.complete = false;
 
@@ -3161,28 +3030,12 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
                 }
                 that.$emit('success',that);
                 that.complete = true;
-                // var pconf = {
-                //     value : data.result.url,
-                //     metadata :  {
-                //         mimetype : data.result.mimetype
-                //     }
-                // };
 
                 console.log('data.result',data.result);
-                //that.$crud.cRefs[that._uid+'preview'].value = data.result;
 
-
-                //that.$set(that,'previewConf', {value : data.result});
                 that.lastUpload = that.cloneObj(data.result);
 
-                //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
-                //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));
                 that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
-
-                // for (var k in data.result) {
-                //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
-                //     jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
-                // }
                 var refPreview = that._uid + 'preview';
                 //console.log('refPreview',refPreview,that.$crud.cRefs[refPreview])
                 that.$crud.cRefs[refPreview].value = data.result;
@@ -3199,10 +3052,6 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
 crud.components.widgets.wPreview = Vue.component('w-preview',{
     extends : crud.components.widgets.wBase,
     template : '#w-preview-template',
-    // mounted : function() {
-    //     var that = this;
-    //     this._draw();
-    // },
     data : function () {
         var that = this;
         var _conf = that._getConf() || {};
@@ -3300,10 +3149,6 @@ crud.components.views.vAction = Vue.component('v-action', {
 crud.components.views.vWidget =  Vue.component('v-widget', {
     extends : crud.components.cComponent,
     props : ['cKey','cWidget'],
-    // When the bound element is inserted into the DOM...
-    mounted: function () {
-        //console.log('v-render',this.cConf);
-    },
     data : function() {
         if (this.cKey) {
             var ckeys = this.cKey.split(',');
@@ -3349,14 +3194,10 @@ crud.components.views.vBase = Vue.component('v-base', {
     props : ['cFields'],
     extends : crud.components.cComponent,
     data : function () {
-        //var d = this._loadConf();
         return {
             viewTitle : '',
             langContext : '',
         }
-        // d.viewTitle = '';
-        // d.langContext = null;
-        // return d;
     },
     methods : {
         fetchData: function (route,callback) {
@@ -3404,47 +3245,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
             throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },
-        /**
-         * prende la configurazione assegnata alla view
-         * @param modelName
-         * @param type
-         */
-        // getConf : function (modelName,type) {
-        //     var conf = null;
-        //     var defaultConf = this.$crud.conf[type];
-        //     //console.log('cConf',this.cConf);
-        //
-        //     if (this.cConf) {
-        //         if (typeof this.cConf === 'string' || this.cConf instanceof String)
-        //             conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
-        //         else
-        //             conf = this.cConf;
-        //     } else {
-        //         console.log('Check exist default conf '+ 'Model'+this.$crud.pascalCase(modelName));
-        //         if (window['Model'+this.$crud.pascalCase(modelName)]) {
-        //             var cm = window['Model'+this.$crud.pascalCase(modelName)];
-        //             if (cm[type])
-        //                 conf = cm[type];
-        //             else {
-        //                 if (type == 'insert' && cm['edit'])
-        //                     conf = cm['edit'];
-        //                 else {
-        //                     conf = this.$crud.conf[type];
-        //                 }
-        //             }
-        //
-        //         } else {
-        //             //onsole.log('get default crud conf ',type)
-        //             conf = this.$crud.conf[type];
-        //         }
-        //     }
-        //     if (!conf)
-        //         throw "Nessuna configurazione trovata per questa view";
-        //     //console.log('merge confs',defaultConf,conf);
-        //     var finalConf = this.$crud.confMerge(defaultConf,conf);
-        //     console.log('finalConf',finalConf);
-        //     return finalConf;
-        // },
 
         _loadConf : function(modelName,type) {
             var conf = null;
@@ -3501,7 +3301,7 @@ crud.components.views.vBase = Vue.component('v-base', {
          * @returns {{type: *}}
          * @private
          */
-        _defaultRenderConfig : function(key,configName) {
+        _defaultWidgetConfig : function(key,configName) {
             var that = this;
             var c = {
                 type:that.defaultWidgetType,
@@ -3551,7 +3351,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                widgets[key] = that._defaultRenderConfig(key);
+                widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
                 if (that.data.value && (key in that.data.value) )
@@ -3691,7 +3491,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 recordActions.push({});
                 for (var k in keys) {
                     var key = keys[k];
-                    var dconf = that._defaultRenderConfig(key);
+                    var dconf = that._defaultWidgetConfig(key);
                     dconf.cRef = that.getRefId(that._uid,'r',i,key);
                     dconf.modelData = data.value[i];
                     if (! ('value' in dconf))
@@ -3999,7 +3799,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                 widgetsEdit.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
-                    var dconf = that._defaultRenderConfig(key,'fieldsConfigEditMode');
+                    var dconf = that._defaultWidgetConfig(key,'fieldsConfigEditMode');
                     // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
                     if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
                         dconf.type = 'w-input';
@@ -4295,7 +4095,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                widgets[key] = that._defaultRenderConfig(key);
+                widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
                 if (! ('label' in widgets[key]) )

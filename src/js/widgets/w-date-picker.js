@@ -12,21 +12,21 @@ crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
                 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
             ];
         }
+        d.displayFormat = _conf.displayFormat || "mm/dd/yyyy";
+        d.dateFormat = _conf.dateFormat || d.displayFormat;
         return d;
     },
     methods : {
         afterLoadResources : function () {
             var that = this;
-            var displayFormat = that.displayFormat || "mm/dd/yyyy";
-            var dateFormat = that.dateFormat || displayFormat;
             jQuery(that.$el).find('[c-picker]').datepicker({
-                format : displayFormat,
+                format : that.displayFormat,
             }).on('changeDate', function(ev) {
-                that.value =  moment(ev.date.toISOString()).format(dateFormat.toUpperCase()); //ev.date.toISOString();
+                that.value =  moment(ev.date.toISOString()).format(that.dateFormat.toUpperCase()); //ev.date.toISOString();
                 that.change();
             });
-            console.log('dateformat',dateFormat.toUpperCase())
-            jQuery(that.$el).find('[c-picker]').datepicker('update',moment(that.value).format(displayFormat.toUpperCase()));
+            console.log('dateformat',that.dateFormat.toUpperCase())
+            jQuery(that.$el).find('[c-picker]').datepicker('update',moment(that.value).format(that.displayFormat.toUpperCase()));
         }
     }
 });

@@ -34,30 +34,12 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
                         }
                         //that.suggestValues = {};
                         for (var i in json.result) {
-                            // var s = "";
-                            // for (var k in that.metadata.fields) {
-                            //     s += (s?' ':'') + json.result[i][that.metadata.fields[k]];
-                            // }
                             var s = that._getSuggestion(json.result[i]);
                             suggestions.push(s);
                             that.suggestValues[s] = json.result[i][that.primaryKey];
                         }
                         return suggest(suggestions)
                     })
-                    // jQuery.getJSON(that._createUrl(),{term:term},function (json) {
-                    //     var suggestions = [];
-                    //     //that.suggestValues = {};
-                    //     for (var i in json.result) {
-                    //         // var s = "";
-                    //         // for (var k in that.metadata.fields) {
-                    //         //     s += (s?' ':'') + json.result[i][that.metadata.fields[k]];
-                    //         // }
-                    //         var s = that._getSuggestion(json.result[i]);
-                    //         suggestions.push(s);
-                    //         that.suggestValues[s] = json.result[i]['id'];
-                    //     }
-                    //     return suggest(suggestions)
-                    // })
                 },
                 onSelect: function(e, term, item){
                     console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
@@ -72,9 +54,6 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             var that = this;
             //var r = that.$crud.createRoute(that.conf.routeName);
             route.setValues({modelName:that.conf.modelName});
-            //var r = new Route(routeConf);
-
-            //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
             var url = that.url?that.url:route.getUrl();
             url+= '?term='+term+'&';
 
@@ -106,29 +85,10 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             jQuery(that.$el).find('[c-autocomplete]').val('');
         },
         _getLabel : function () {
-
             var that = this;
-
             if (that.modelData) {
                 that.label = that._getSuggestion(that.modelData);
             }
-
-            // var r = new Route(that.$crud.routes.view);
-            // console.log('w-autocomplete getLabel',that.conf);
-            // r.setValues({
-            //     modelName : that.conf.modelName,
-            //     pk : that.value
-            // });
-            // // r.values.modelName = that.conf.model;
-            // // r.values.pk = that.value;
-            // var lb = '';
-            // Server.route(r,function (json) {
-            //     if (json.error) {
-            //         that.label = json.msg;
-            //         return ;
-            //     }
-            //     that.label = that._getSuggestion(json.result);
-            // })
         },
         _getSuggestion: function(rowData) {
             var that = this;

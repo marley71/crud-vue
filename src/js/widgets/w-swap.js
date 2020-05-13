@@ -66,17 +66,7 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
             //console.log('INDEX ',index,vs,keys,keys[index],vs[index]);
             that._swap(keys[index]);
         },
-        // _getRoute : function(key) {
-        //     var that = this;
-        //     var r = Route.factory(that.routeName);
-        //     r.values = {
-        //         modelName: that.conf.model,
-        //         field : that.name, //that.conf.key?that.conf.key:that.cKey,
-        //         value : key
-        //     };
-        //     r.params = {id:that.conf.modelData.id};
-        //     return r;
-        // },
+
         _swap : function (key) {
             var that = this;
             var r = that._getRoute();

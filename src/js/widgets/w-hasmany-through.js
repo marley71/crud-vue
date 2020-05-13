@@ -1,4 +1,4 @@
-crud.components.rHasmanyThrough =Vue.component('w-hasmany-through', {
+crud.components.wHasmanyThrough =Vue.component('w-hasmany-through', {
     extends : crud.components.widgets.wBase,
     template: '#w-hasmany-through-template',
     // data : function () {

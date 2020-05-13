@@ -1,4 +1,4 @@
-crud.components.rHasmany =Vue.component('w-hasmany', {
+crud.components.wHasmany =Vue.component('w-hasmany', {
     extends : crud.components.widgets.wBase,
     template: '#w-hasmany-template',
     mounted : function() {
@@ -54,32 +54,6 @@ crud.components.rHasmany =Vue.component('w-hasmany', {
             //     hmConf.data.value.status = 'new';
             console.log('HMS',hmConf,that.value)
             return hmConf;
-
-
-            // if (that.confViews.length > index) {
-            //     that.confViews[index] = hmConf;
-            //     that.confViews[index].data.value.status = 'updated';
-            // } else {
-            //     if (!hmConf.data.value.status) {
-            //         hmConf.data.value.status = 'new';
-            //     }
-            //     that.confViews.push(hmConf);
-            //     if (that.confViews.length < (index + 1))
-            //         throw "confView.length" + that.confViews.length + " minore di index " + index;
-            // }
-            // // else {
-            // //     // ci sono record gia' presenti prendo da li i fields.
-            // //     if (this.value && this.value.length > 0) {
-            // //         if (!hmConf.fields || !hmConf.fields.length) {
-            // //             hmConf.fields = Object.keys(this.value[0]);
-            // //             hmConf.data.value = Utility.cloneObj(this.value[0]);
-            // //         }
-            // //     }
-            // // }
-            // //console.log('hmConf',hmConf)
-            // //hmConf.metadata.modelName = that.cKey;
-            // console.log('HMS',that.confViews[index],that.value)
-            // return that.confViews[index];
 
         },
         addItem : function () {

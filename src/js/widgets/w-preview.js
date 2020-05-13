@@ -1,10 +1,6 @@
 crud.components.widgets.wPreview = Vue.component('w-preview',{
     extends : crud.components.widgets.wBase,
     template : '#w-preview-template',
-    // mounted : function() {
-    //     var that = this;
-    //     this._draw();
-    // },
     data : function () {
         var that = this;
         var _conf = that._getConf() || {};

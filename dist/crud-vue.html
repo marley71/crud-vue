@@ -224,7 +224,7 @@
 </script>
 
 <script type="text/x-template" id="w-text-template">
-    <div>{{value}}</div>
+    <span>{{value}}</span>
 </script>
 
 <script type="text/x-template" id="w-image-template">
@@ -309,7 +309,6 @@
     <div>
         <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" :c-marker="cMarker" v-on:change="change">
         <div class="summernote" v-html="value">
-
         </div>
     </div>
 </script>

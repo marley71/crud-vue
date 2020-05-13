@@ -82,24 +82,7 @@ crud.components.cRouter = Vue.component('c-router',{
             that.lastComponent = componente;
             return;
 
-
-
-
-
         },
-        // pushHash : function (hashString) {
-        //     var hash = '#'+hashString
-        //     window.location.replace(hash);
-        //     history.replaceState(undefined, undefined,hash);
-        //     return ;
-        //     if(window.history.pushState) {
-        //         console.log('pushState')
-        //         window.history.pushState(null, null, hash);
-        //     }
-        //     else {
-        //         window.location.hash = hash;
-        //     }
-        // }
     },
     template : '<span></span>'
 })

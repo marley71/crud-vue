@@ -28,30 +28,7 @@ var actionBase = Vue.component('action-base', {
         }
     },
     methods : {
-        // defaultData : function () {
-        //     var that = this;
-        //     var adata = {
-        //         type : 'collection',
-        //         visible : true,
-        //         enabled : true,
-        //         title : '',
-        //         css: 'btn btn-outline-secondary',
-        //         icon : 'fa fa-help',
-        //         text : '',
-        //         controlType : 'button',
-        //         href : '',
-        //     };
-        //     for (var c in this.cConf) {
-        //             adata[c] = this.cConf[c];
-        //     }
-        //     if (!('view' in adata) )
-        //         adata.view = that.$parent;
-        //     // if (! ('langContext' in adata) ){
-        //     //     adata.langContext = adata.view?adata.view.langContext:null;
-        //     // }
-        //     //console.log('action ',adata);
-        //     return adata;
-        // },
+
         _beforeExecute : function (callback) {
             var that =this;
             if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
@@ -105,10 +82,11 @@ var actionBase = Vue.component('action-base', {
             enabled : true,
             title : '',
             css: 'btn btn-outline-secondary',
-            icon : 'fa fa-help',
+            icon : '',
             text : '',
             controlType : 'button',
             href : '',
+            target: '_self'
         };
         if (!('view' in adata) )
             adata.view = that.$parent;

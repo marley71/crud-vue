@@ -36,7 +36,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                 widgetsEdit.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
-                    var dconf = that._defaultRenderConfig(key,'fieldsConfigEditMode');
+                    var dconf = that._defaultWidgetConfig(key,'fieldsConfigEditMode');
                     // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
                     if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
                         dconf.type = 'w-input';

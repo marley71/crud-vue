@@ -10,82 +10,115 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
                 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
             ];
         }
+        d.minYear = null;
+        d.maxYear = null;
         return d;
     },
     computed : {
         cDay : function () {
             var that = this;
-            var d = moment(that.value?that.value:that.conf.value);
+            var d = moment(that.value);
+            var days = that._dayValues();
             var cd = {
-                value: d.date(),
-                domainValues: {},
+                value: d.date() > d.daysInMonth()?1:d.date(),
+                domainValues: days,
                 methods: {
                     change: function () {
-                        that.changed();
+                        that._updateSelect();
                     }
                 }
             };
-            for (let i=1;i<=d.daysInMonth();i++) {
-                cd.domainValues[i] = i;
-            }
-            if (d.date() > d.daysInMonth())
-                cd.value = 1;
-            cd.domainValuesOrder = Object.keys(cd.domainValues);
             return cd;
         },
         cMonth : function () {
             var that = this;
-            var d = moment(that.value ? that.value : that.conf.value);
+            var d = moment(that.value);
+            var months = that._monthValues();
             var cm = {
                 value: d.month() + 1,
-                domainValues: {},
+                domainValues: months,
                 methods: {
                     change: function () {
-                        that.changed();
+                        that._updateSelect();
                     }
                 }
             };
-            for (let i=1;i<=12;i++) {
-                cm.domainValues[i] = i;
-            }
             return cm;
         },
         cYear : function () {
             var that = this;
-            var d = moment(that.value ? that.value : that.conf.value);
+            var d = moment(that.value);
+            var years = that._yearValues();
             var cy = {
                 value : d.year(),
-                domainValues: {
-
-                },
+                domainValues: years,
                 methods: {
                     change : function () {
-                        that.changed();
+                        that._updateSelect();
                     }
                 }
             };
-            var minY = that.minYear?that.minYear:d.year()-5;
-            var maxY = that.maxYear?that.maxYear:d.year()+5;
-            for (let i=minY;i<=maxY;i++) {
-                cy.domainValues[i] = i;
-            }
             return cy;
         }
     },
     methods : {
-        changed : function() {
+        _updateSelect : function() {
             var that = this;
-            var s = jQuery(that.$el).find('[c-marker="year"]').val() +  "-" + jQuery(that.$el).find('[c-marker="month"]').val().padStart(2,'0')  + "-" + jQuery(that.$el).find('[c-marker="day"]').val().padStart(2,'0') ;
-            var dds = moment(s);
-            if (dds.isValid()) {
-                that.value = s;
+            if (!that._getValidDate()) {
+                that.errorDialog('invalid Date');
+                return ;
             }
-
-            this.$refs.day.updateConf(that.cDay);
-            this.$refs.month.updateConf(that.cMonth);
-            this.$refs.year.updateConf(that.cYear);
-
-            console.log(this.getValue());
+            var _cday = that.$refs.day;
+            var d = moment(that.value);
+            _cday.domainValues = this._dayValues();
+            _cday.domainValuesOrder = Object.keys(this._dayValues());
+            _cday.value =  d.date() > d.daysInMonth()?1:d.date();
+        },
+        _getValidDate : function() {
+            var that = this;
+            //var s = jQuery(that.$el).find('[c-marker="year"]').val() +  "-" + jQuery(that.$el).find('[c-marker="month"]').val().padStart(2,'0')  + "-" + jQuery(that.$el).find('[c-marker="day"]').val().padStart(2,'0') ;
+            var _cday = that.$refs.day;
+            var _cmonth = that.$refs.month
+            var _cyear = that.$refs.year;
+            var sdate = _cyear.getValue() +  "-" + _cmonth.getValue().toString().padStart(2,'0')  + "-" + _cday.getValue().toString().padStart(2,'0') ;
+            var dds = moment(sdate);
+            if (!dds.isValid()) {
+                _cday.setValue(1);
+                sdate = _cyear.getValue() +  "-" + _cmonth.getValue().toString().padStart(2,'0')  + "-" + _cday.getValue().toString().padStart(2,'0') ;
+                var dds = moment(sdate);
+                if (!dds.isValid())
+                    return false;
+            }
+            that.value = sdate;
+            return true;
+        },
+        _dayValues : function () {
+            var that = this;
+            var d = moment(that.value);
+            var days = {};
+            for (let i=1;i<=d.daysInMonth();i++) {
+                days[i] = i;
+            }
+            return days;
+        },
+        _monthValues : function () {
+            var that = this;
+            var months = {};
+            for (let i=1;i<=12;i++) {
+                months[i] = i;
+            }
+            return months;
+        },
+        _yearValues : function () {
+            var that = this;
+            var years = {};
+            var d = moment(that.value?that.value:that.conf.value);
+            var minY = that.minYear?that.minYear:d.year()-5;
+            var maxY = that.maxYear?that.maxYear:d.year()+5;
+            for (let i=minY;i<=maxY;i++) {
+                years[i] = i;
+            }
+            return years;
         }
     }
 });

@@ -65,7 +65,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                widgets[key] = that._defaultRenderConfig(key);
+                widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
                 if (! ('label' in widgets[key]) )

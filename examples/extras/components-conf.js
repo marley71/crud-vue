@@ -143,6 +143,22 @@ function wTextConf_f() {
     };
 }
 
+function wCustomConf_f() {
+    wCustomConf = {
+        name: 'field1',
+        value: "prova",
+        methods: {
+            getContent : function() {
+                return 'content';
+            },
+            change: function () {
+                console.log('change ' , this.getValue())
+            }
+        },
+    };
+}
+
+
 function wDateSelectConf_f() {
     wDateSelectConf = {
         name: 'field1',
@@ -315,7 +331,7 @@ function wUploadConf_f() {
     };
 }
 
-function wUploadAjaxCon_f() {
+function wUploadAjaxConf_f() {
     wUploadAjaxConf = {
         value: null,
         name: 'field1',

@@ -5,7 +5,7 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
         var d = this._loadConf();
         d.extensions = d.extensions?d.extensions:[];
         d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
-        d.uploadConf = d.conf;
+        //d.uploadConf = d.conf;
         if (! ("routeName" in d) )
             d.routeName = 'uploadfile';
 
@@ -15,12 +15,6 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
             cRef : this._uid + 'preview'
         }
         d.value = JSON.stringify(value).replace(/\\"/g, '"');
-        // d.previewConf = {
-        //     value : d.conf.value,
-        //     metadata :  {
-        //         mimetype : 'image/jpeg'
-        //     }
-        // };
         d.error = false;
         d.errorMessage = '';
         console.log('w-upload data',d);
@@ -28,13 +22,14 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
     },
 
     methods : {
+
         setRouteValues: function(route) {
             route.setValues({
                 modelName : this.modelName
             })
             return route;
         },
-        getValue : function () {
+        _getFileValue : function () {
             var that = this;
             console.log('filedesc',jQuery(that.$el).find('[c-file]').prop('files'));
             var fileDesc = jQuery(that.$el).find('[c-file]').prop('files');
@@ -59,28 +54,12 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
         },
         sendAjax : function () {
             var that = this;
-            // if (!that.$refs.refUpload) {
-            //     throw 'riferimento a file upload non valido';
-            // }
-            RUPLOAD = that;
-            var fDesc = that.getValue();
+            var fDesc = that._getFileValue();
             if (!fDesc)
                 throw 'descrittore file upload non valido';
-
-            console.log('fDesc',fDesc);
-
             var fileName = fDesc.filename;
-            //var fileName = 'Schermata 2019-07-31 alle 14.40.20.png';
-
-            //var routeConf =  Utility.cloneObj(that.$crud.routes.uploadfile);
             var route = that._getRoute();
-            //that.setRouteValues(route);
-
-            //var routeConf = that.$crud.routes[that.conf.routeName];
-            //var route = Route.factory('uploadfile');
-            //route.fillValues(that);
             that.setRouteValues(route);
-            ROUTE = route;
             that.error = false;
             that.complete = false;
 
@@ -124,28 +103,12 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
                 }
                 that.$emit('success',that);
                 that.complete = true;
-                // var pconf = {
-                //     value : data.result.url,
-                //     metadata :  {
-                //         mimetype : data.result.mimetype
-                //     }
-                // };
 
                 console.log('data.result',data.result);
-                //that.$crud.cRefs[that._uid+'preview'].value = data.result;
 
-
-                //that.$set(that,'previewConf', {value : data.result});
                 that.lastUpload = that.cloneObj(data.result);
 
-                //jQuery(that.$el).find('input[name="' + that.cKey +'"]');
-                //jQuery('<input name="' + that.name + '" type="hidden" value=\'' + JSON.stringify(data.result).replace(/\\"/g, '"') + '\'>').appendTo(jQuery(that.$el));
                 that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
-
-                // for (var k in data.result) {
-                //     console.log('update field',k,data.result[k],jQuery(that.$el).find('[c-marker="' + k + '"]').length);
-                //     jQuery(that.$el).find('[c-marker="' + k + '"]').val(data.result[k]);
-                // }
                 var refPreview = that._uid + 'preview';
                 //console.log('refPreview',refPreview,that.$crud.cRefs[refPreview])
                 that.$crud.cRefs[refPreview].value = data.result;

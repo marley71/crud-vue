@@ -17,7 +17,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                widgets[key] = that._defaultRenderConfig(key);
+                widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
                 if (that.data.value && (key in that.data.value) )
