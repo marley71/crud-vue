@@ -53,7 +53,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 keys =Object.keys(that.data.value[0]);
             return keys;
         },
-        getRender : function (row,key) {
+        getWidget : function (row,key) {
             return this.widgets[row][key];
         },
         createActions : function () {

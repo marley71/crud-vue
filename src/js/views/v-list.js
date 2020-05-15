@@ -19,21 +19,6 @@ crud.components.views.vList = Vue.component('v-list', {
     data :  function () {
         var that = this;
         var d = this._loadConf(that.cModel,'list');
-        // var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
-        // routeConf.values = {
-        //     modelName: this.cModel
-        // }
-        //
-        // if (this.$route && this.$route.query)
-        //     routeConf.params = that.$route.query;
-        //
-        // // var route = that._getRoute(routeConf.values);
-        // var conf = that.getConf(that.cModel,'list');
-        // if (that.cModel)
-        //     conf.modelName = that.cModel;
-        //
-        // console.log('v-list conf',conf);
-
         var dList = {
             loading : true,
             widgets : {},

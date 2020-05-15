@@ -234,7 +234,7 @@ function wHasmanyViewConf_f() {
                     type: 'w-upload-ajax',
                     extensions: ['jpg', 'png'],
                     maxFileSize: '2M',
-                    template : 'c-tpl-record'
+                    template : 'tpl-record'
                 }
             }
         },

@@ -1,76 +1,146 @@
-crud.components.views.vAction = Vue.component('v-action', {
-    extends : crud.components.cComponent,
-    props : ['cName','cAction'],
-    data : function () {
-        var that = this;
-        //console.log('v-action',this.cKey,this.cAction);
-        var aConf =  {
-            name: 'action-base',
-            conf: {},
-        }
-        if (this.cAction) {
-            //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
-            aConf =  {
-                name : this.cName,
-                conf : this.cAction
-            }
-        } else {
-            console.warn('configurazione azione non valida', this.cName, this.cAction);
-        }
-        aConf.conf.view = that.$parent;
-        console.log('v-action create',aConf);
-        return aConf;
-    },
-    template : '<component :is="name" :c-conf="conf"></component>'
-})
+// crud.components.views.vAction = Vue.component('v-action', {
+//     extends : crud.components.cComponent,
+//     props : ['cName','cAction'],
+//     data : function () {
+//         var that = this;
+//         //console.log('v-action',this.cKey,this.cAction);
+//         var aConf =  {
+//             name: 'action-base',
+//             conf: {},
+//         }
+//         if (this.cAction) {
+//             //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
+//             aConf =  {
+//                 name : this.cName,
+//                 conf : this.cAction
+//             }
+//         } else {
+//             console.warn('configurazione azione non valida', this.cName, this.cAction);
+//         }
+//         aConf.conf.view = that.$parent;
+//         console.log('v-action create',aConf);
+//         return aConf;
+//     },
+//     template : '<component :is="name" :c-conf="conf"></component>'
+// })
 
-crud.components.views.vWidget =  Vue.component('v-widget', {
-    extends : crud.components.cComponent,
-    props : ['cKey','cWidget'],
-    data : function() {
-        if (this.cKey) {
-            var ckeys = this.cKey.split(',');
-            var widget = null;
-            for (var i in ckeys) {
-                widget = this.$parent.widgets[ckeys[i]];
-            }
-            //var render = this.$parent.widgets[this.cKey];
-            //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
-            return {
-                type : widget.type,
-                conf : widget
-            }
-        }
-
-        if (this.cWidget) {
-            var conf = null;
-            if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
-                conf = this.getDescendantProp(window, this.cWidget);
-                if (!conf) {
-                    conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
-                }
-            } else
-                conf = this.cWidget;
-
-            //console.log('V-RENDER2 ',conf,this.$parent.widgets);
-            return {
-                type : conf.type,
-                conf : conf
-            }
-        }
-        console.warn('configurazione non valida',this.cKey,this.cWidget);
-        return {
-            type : 'w-text',
-            conf : {},
-        }
-
-    },
-    template : '<component :is="type" :c-conf="conf"></component>'
-})
+// crud.components.views.vWidget =  Vue.component('v-widget', {
+//     extends : crud.components.cComponent,
+//     props : ['cKey','cWidget'],
+//     data : function() {
+//         if (this.cKey) {
+//             var ckeys = this.cKey.split(',');
+//             var widget = null;
+//             for (var i in ckeys) {
+//                 widget = this.$parent.widgets[ckeys[i]];
+//             }
+//             //var render = this.$parent.widgets[this.cKey];
+//             //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
+//             return {
+//                 type : widget.type,
+//                 conf : widget
+//             }
+//         }
+//
+//         if (this.cWidget) {
+//             var conf = null;
+//             if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
+//                 conf = this.getDescendantProp(window, this.cWidget);
+//                 if (!conf) {
+//                     conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
+//                 }
+//             } else
+//                 conf = this.cWidget;
+//
+//             //console.log('V-RENDER2 ',conf,this.$parent.widgets);
+//             return {
+//                 type : conf.type,
+//                 conf : conf
+//             }
+//         }
+//         console.warn('configurazione non valida',this.cKey,this.cWidget);
+//         return {
+//             type : 'w-text',
+//             conf : {},
+//         }
+//
+//     },
+//     template : '<component :is="type" :c-conf="conf"></component>'
+// })
 
 crud.components.views.vBase = Vue.component('v-base', {
     props : ['cFields'],
     extends : crud.components.cComponent,
+    components : {
+        vAction : Vue.component('v-action', {
+            extends: crud.components.cComponent,
+            props: ['cName', 'cAction'],
+            data: function () {
+                var that = this;
+                //console.log('v-action',this.cKey,this.cAction);
+                var aConf = {
+                    name: 'action-base',
+                    conf: {},
+                }
+                if (this.cAction) {
+                    //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
+                    aConf = {
+                        name: this.cName,
+                        conf: this.cAction
+                    }
+                } else {
+                    console.warn('configurazione azione non valida', this.cName, this.cAction);
+                }
+                aConf.conf.view = that.$parent;
+                console.log('v-action create', aConf);
+                return aConf;
+            },
+            template: '<component :is="name" :c-conf="conf"></component>'
+        }),
+        vWidget : Vue.component('v-widget', {
+            extends : crud.components.cComponent,
+            props : ['cKey','cWidget'],
+            data : function() {
+                if (this.cKey) {
+                    var ckeys = this.cKey.split(',');
+                    var widget = null;
+                    for (var i in ckeys) {
+                        widget = this.$parent.widgets[ckeys[i]];
+                    }
+                    //var render = this.$parent.widgets[this.cKey];
+                    //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
+                    return {
+                        type : widget.type,
+                        conf : widget
+                    }
+                }
+
+                if (this.cWidget) {
+                    var conf = null;
+                    if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
+                        conf = this.getDescendantProp(window, this.cWidget);
+                        if (!conf) {
+                            conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
+                        }
+                    } else
+                        conf = this.cWidget;
+
+                    //console.log('V-RENDER2 ',conf,this.$parent.widgets);
+                    return {
+                        type : conf.type,
+                        conf : conf
+                    }
+                }
+                console.warn('configurazione non valida',this.cKey,this.cWidget);
+                return {
+                    type : 'w-text',
+                    conf : {},
+                }
+
+            },
+            template : '<component :is="type" :c-conf="conf"></component>'
+        }),
+    },
     data : function () {
         return {
             viewTitle : '',
@@ -173,7 +243,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             return d;
         },
         /**
-         * ritorna la configurazione minimale di base di un render rispettando le priorita' tra le configurazioni
+         * ritorna la configurazione minimale di base di un widget rispettando le priorita' tra le configurazioni
          * @param key : nome del campo di cui vogliamo la configurazione
          * @param confiName : nome variabile configurazione nell'oggetto conf. opzionale
          * @returns {{type: *}}

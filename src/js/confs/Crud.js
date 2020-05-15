@@ -52,7 +52,7 @@ crud.recordActions = {
     'action-edit' : {
         type : 'record',
         title : 'app.modifica',
-        css: 'btn btn-outline-secondary btn-sm ',
+        css: 'btn btn-outline-secondary btn-sm',
         text : '',
         icon : 'fa fa-edit',
         execute : function () {
@@ -340,7 +340,7 @@ crud.conf = {
         //actions : ['action-back'],
         actions : [],
         customActions: {},
-        widgetTemplate : 'c-tpl-record2',
+        widgetTemplate : 'tpl-record2',
     },
     edit : {
         primaryKey : 'id',
@@ -350,7 +350,7 @@ crud.conf = {
             id : 'w-hidden'
         },
         fields : [],
-        widgetTemplate : 'c-tpl-record',
+        widgetTemplate : 'tpl-record',
         actions : ['action-save','action-back']
     },
     list : {
@@ -359,7 +359,7 @@ crud.conf = {
         customActions: {},
         fieldsConfig : {},
         orderFields: {},
-        widgetTemplate : 'c-tpl-list',
+        widgetTemplate : 'tpl-list',
         actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
     },
     listEdit : {
@@ -368,7 +368,7 @@ crud.conf = {
         customActions: {},
         fieldsConfig : {},
         orderFields: {},
-        widgetTemplate : 'c-tpl-list',
+        widgetTemplate : 'tpl-list',
         actions : [
             'action-insert',
             'action-delete-selected',
@@ -385,12 +385,12 @@ crud.conf = {
         actions : ['action-search'],
         fieldsConfig : {},
         customActions: {},
-        widgetTemplate : 'c-tpl-record',
+        widgetTemplate : 'tpl-record',
     },
     insert : {
         primaryKey : 'id',
         routeName : 'insert',
-        widgetTemplate : 'c-tpl-record',
+        widgetTemplate : 'tpl-record',
         actions : ['action-save','action-back'],
         fieldsConfig : {
             id : 'w-hidden'
@@ -527,9 +527,5 @@ crud.components = {
     libs :  {
 
     }
-};
-
-crud.interfaces = {
-
 };
 

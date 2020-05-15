@@ -52,7 +52,7 @@ crud.recordActions = {
     'action-edit' : {
         type : 'record',
         title : 'app.modifica',
-        css: 'btn btn-outline-secondary btn-sm ',
+        css: 'btn btn-outline-secondary btn-sm',
         text : '',
         icon : 'fa fa-edit',
         execute : function () {
@@ -340,7 +340,7 @@ crud.conf = {
         //actions : ['action-back'],
         actions : [],
         customActions: {},
-        widgetTemplate : 'c-tpl-record2',
+        widgetTemplate : 'tpl-record2',
     },
     edit : {
         primaryKey : 'id',
@@ -350,7 +350,7 @@ crud.conf = {
             id : 'w-hidden'
         },
         fields : [],
-        widgetTemplate : 'c-tpl-record',
+        widgetTemplate : 'tpl-record',
         actions : ['action-save','action-back']
     },
     list : {
@@ -359,7 +359,7 @@ crud.conf = {
         customActions: {},
         fieldsConfig : {},
         orderFields: {},
-        widgetTemplate : 'c-tpl-list',
+        widgetTemplate : 'tpl-list',
         actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
     },
     listEdit : {
@@ -368,7 +368,7 @@ crud.conf = {
         customActions: {},
         fieldsConfig : {},
         orderFields: {},
-        widgetTemplate : 'c-tpl-list',
+        widgetTemplate : 'tpl-list',
         actions : [
             'action-insert',
             'action-delete-selected',
@@ -385,12 +385,12 @@ crud.conf = {
         actions : ['action-search'],
         fieldsConfig : {},
         customActions: {},
-        widgetTemplate : 'c-tpl-record',
+        widgetTemplate : 'tpl-record',
     },
     insert : {
         primaryKey : 'id',
         routeName : 'insert',
-        widgetTemplate : 'c-tpl-record',
+        widgetTemplate : 'tpl-record',
         actions : ['action-save','action-back'],
         fieldsConfig : {
             id : 'w-hidden'
@@ -527,10 +527,6 @@ crud.components = {
     libs :  {
 
     }
-};
-
-crud.interfaces = {
-
 };
 
 
@@ -1587,30 +1583,30 @@ Vue.component('c-loading',{
     template : '#c-loading-template'
 })
 
-crud.components.cTplBase = Vue.component('c-tpl-base',{
+crud.components.tplBase = Vue.component('tpl-base',{
     props : ['cWidget'],
     template : '<span>template base</span>'
 });
 
 
-Vue.component('c-tpl-record',{
-    extends : crud.components.cTplBase,
-    template : '#c-tpl-record-template'
+Vue.component('tpl-record',{
+    extends : crud.components.tplBase,
+    template : '#tpl-record-template'
 });
 
-Vue.component('c-tpl-record2',{
-    extends : crud.components.cTplBase,
-    template : '#c-tpl-record2-template'
+Vue.component('tpl-record2',{
+    extends : crud.components.tplBase,
+    template : '#tpl-record2-template'
 });
 
 
-Vue.component('c-tpl-list', {
-    extends : crud.components.cTplBase,
-    template : '#c-tpl-list-template'
+Vue.component('tpl-list', {
+    extends : crud.components.tplBase,
+    template : '#tpl-list-template'
 });
-Vue.component('c-tpl-no', {
-    extends : crud.components.cTplBase,
-    template : '#c-tpl-no-template'
+Vue.component('tpl-no', {
+    extends : crud.components.tplBase,
+    template : '#tpl-no-template'
 });
 
 var actionBase = Vue.component('action-base', {
@@ -1679,8 +1675,8 @@ var actionBase = Vue.component('action-base', {
             that.afterExecute.apply(that);
         },
 
-        setEnabled : function (enabled) {
-            this.enabled = enabled;
+        setEnabled : function (enable) {
+            this.enabled = enable;
         },
 
         setVisible : function (visible) {
@@ -3120,79 +3116,149 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
     }
 })
 
-crud.components.views.vAction = Vue.component('v-action', {
-    extends : crud.components.cComponent,
-    props : ['cName','cAction'],
-    data : function () {
-        var that = this;
-        //console.log('v-action',this.cKey,this.cAction);
-        var aConf =  {
-            name: 'action-base',
-            conf: {},
-        }
-        if (this.cAction) {
-            //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
-            aConf =  {
-                name : this.cName,
-                conf : this.cAction
-            }
-        } else {
-            console.warn('configurazione azione non valida', this.cName, this.cAction);
-        }
-        aConf.conf.view = that.$parent;
-        console.log('v-action create',aConf);
-        return aConf;
-    },
-    template : '<component :is="name" :c-conf="conf"></component>'
-})
+// crud.components.views.vAction = Vue.component('v-action', {
+//     extends : crud.components.cComponent,
+//     props : ['cName','cAction'],
+//     data : function () {
+//         var that = this;
+//         //console.log('v-action',this.cKey,this.cAction);
+//         var aConf =  {
+//             name: 'action-base',
+//             conf: {},
+//         }
+//         if (this.cAction) {
+//             //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
+//             aConf =  {
+//                 name : this.cName,
+//                 conf : this.cAction
+//             }
+//         } else {
+//             console.warn('configurazione azione non valida', this.cName, this.cAction);
+//         }
+//         aConf.conf.view = that.$parent;
+//         console.log('v-action create',aConf);
+//         return aConf;
+//     },
+//     template : '<component :is="name" :c-conf="conf"></component>'
+// })
 
-crud.components.views.vWidget =  Vue.component('v-widget', {
-    extends : crud.components.cComponent,
-    props : ['cKey','cWidget'],
-    data : function() {
-        if (this.cKey) {
-            var ckeys = this.cKey.split(',');
-            var widget = null;
-            for (var i in ckeys) {
-                widget = this.$parent.widgets[ckeys[i]];
-            }
-            //var render = this.$parent.widgets[this.cKey];
-            //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
-            return {
-                type : widget.type,
-                conf : widget
-            }
-        }
-
-        if (this.cWidget) {
-            var conf = null;
-            if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
-                conf = this.getDescendantProp(window, this.cWidget);
-                if (!conf) {
-                    conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
-                }
-            } else
-                conf = this.cWidget;
-
-            //console.log('V-RENDER2 ',conf,this.$parent.widgets);
-            return {
-                type : conf.type,
-                conf : conf
-            }
-        }
-        console.warn('configurazione non valida',this.cKey,this.cWidget);
-        return {
-            type : 'w-text',
-            conf : {},
-        }
-
-    },
-    template : '<component :is="type" :c-conf="conf"></component>'
-})
+// crud.components.views.vWidget =  Vue.component('v-widget', {
+//     extends : crud.components.cComponent,
+//     props : ['cKey','cWidget'],
+//     data : function() {
+//         if (this.cKey) {
+//             var ckeys = this.cKey.split(',');
+//             var widget = null;
+//             for (var i in ckeys) {
+//                 widget = this.$parent.widgets[ckeys[i]];
+//             }
+//             //var render = this.$parent.widgets[this.cKey];
+//             //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
+//             return {
+//                 type : widget.type,
+//                 conf : widget
+//             }
+//         }
+//
+//         if (this.cWidget) {
+//             var conf = null;
+//             if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
+//                 conf = this.getDescendantProp(window, this.cWidget);
+//                 if (!conf) {
+//                     conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
+//                 }
+//             } else
+//                 conf = this.cWidget;
+//
+//             //console.log('V-RENDER2 ',conf,this.$parent.widgets);
+//             return {
+//                 type : conf.type,
+//                 conf : conf
+//             }
+//         }
+//         console.warn('configurazione non valida',this.cKey,this.cWidget);
+//         return {
+//             type : 'w-text',
+//             conf : {},
+//         }
+//
+//     },
+//     template : '<component :is="type" :c-conf="conf"></component>'
+// })
 
 crud.components.views.vBase = Vue.component('v-base', {
     props : ['cFields'],
     extends : crud.components.cComponent,
+    components : {
+        vAction : Vue.component('v-action', {
+            extends: crud.components.cComponent,
+            props: ['cName', 'cAction'],
+            data: function () {
+                var that = this;
+                //console.log('v-action',this.cKey,this.cAction);
+                var aConf = {
+                    name: 'action-base',
+                    conf: {},
+                }
+                if (this.cAction) {
+                    //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
+                    aConf = {
+                        name: this.cName,
+                        conf: this.cAction
+                    }
+                } else {
+                    console.warn('configurazione azione non valida', this.cName, this.cAction);
+                }
+                aConf.conf.view = that.$parent;
+                console.log('v-action create', aConf);
+                return aConf;
+            },
+            template: '<component :is="name" :c-conf="conf"></component>'
+        }),
+        vWidget : Vue.component('v-widget', {
+            extends : crud.components.cComponent,
+            props : ['cKey','cWidget'],
+            data : function() {
+                if (this.cKey) {
+                    var ckeys = this.cKey.split(',');
+                    var widget = null;
+                    for (var i in ckeys) {
+                        widget = this.$parent.widgets[ckeys[i]];
+                    }
+                    //var render = this.$parent.widgets[this.cKey];
+                    //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
+                    return {
+                        type : widget.type,
+                        conf : widget
+                    }
+                }
+
+                if (this.cWidget) {
+                    var conf = null;
+                    if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
+                        conf = this.getDescendantProp(window, this.cWidget);
+                        if (!conf) {
+                            conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
+                        }
+                    } else
+                        conf = this.cWidget;
+
+                    //console.log('V-RENDER2 ',conf,this.$parent.widgets);
+                    return {
+                        type : conf.type,
+                        conf : conf
+                    }
+                }
+                console.warn('configurazione non valida',this.cKey,this.cWidget);
+                return {
+                    type : 'w-text',
+                    conf : {},
+                }
+
+            },
+            template : '<component :is="type" :c-conf="conf"></component>'
+        }),
+    },
     data : function () {
         return {
             viewTitle : '',
@@ -3295,7 +3361,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             return d;
         },
         /**
-         * ritorna la configurazione minimale di base di un render rispettando le priorita' tra le configurazioni
+         * ritorna la configurazione minimale di base di un widget rispettando le priorita' tra le configurazioni
          * @param key : nome del campo di cui vogliamo la configurazione
          * @param confiName : nome variabile configurazione nell'oggetto conf. opzionale
          * @returns {{type: *}}
@@ -3406,16 +3472,9 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 }
             } else {
                 var protocol = that.createProtocol(route.getProtocol());
-
-
-                //var protocol = Protocol.factory(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
-                //console.log(prop);
-
-
                 for (var i in prop) {
-                    //console.log(k,k,prop[k]);
                     data[prop[i]] = protocol[prop[i]];
                 }
             }
@@ -3423,18 +3482,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
             that.data = data;
             that.json = json;
         },
-        // defaultData : function () {
-        //     return {
-        //         viewTitle : '',
-        //         loading : true,
-        //         widgets : {},
-        //         actionsName : [],
-        //         actions : {},
-        //         vueRefs:{},
-        //         conf : this.cConf || {},
-        //         langContext : this.cModel
-        //     }
-        // },
         getViewData : function () {
             var that = this;
             var data = {};
@@ -3443,9 +3490,9 @@ crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
-        getRender : function (key) {
+        getWidget : function (key) {
             var rConf = this.widgets[key];
-            console.log('getRenderd',key,rConf);
+            console.log('getWidget',key,rConf);
             return this.$crud.cRefs[rConf.cRef];
         },
         getAction : function (name) {
@@ -3454,15 +3501,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return this.$crud.cRefs[rConf.cRef];
         }
     },
-    // data : function() {
-    //     var d =  this._loadConf(this.cModel,);
-    //     if (this.cModel)
-    //         d.conf.modelName = this.cModel;
-    //     if (this.cPk)
-    //         d.conf.pk = this.cPk;
-    //     d.json = {};
-    //     return d;
-    // },
     template : '<div>view record base</div>'
 });
 
@@ -3521,7 +3559,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 keys =Object.keys(that.data.value[0]);
             return keys;
         },
-        getRender : function (row,key) {
+        getWidget : function (row,key) {
             return this.widgets[row][key];
         },
         createActions : function () {
@@ -3618,21 +3656,6 @@ crud.components.views.vList = Vue.component('v-list', {
     data :  function () {
         var that = this;
         var d = this._loadConf(that.cModel,'list');
-        // var routeConf =  this.$crud.cloneObj(that.$crud.routes.list);
-        // routeConf.values = {
-        //     modelName: this.cModel
-        // }
-        //
-        // if (this.$route && this.$route.query)
-        //     routeConf.params = that.$route.query;
-        //
-        // // var route = that._getRoute(routeConf.values);
-        // var conf = that.getConf(that.cModel,'list');
-        // if (that.cModel)
-        //     conf.modelName = that.cModel;
-        //
-        // console.log('v-list conf',conf);
-
         var dList = {
             loading : true,
             widgets : {},

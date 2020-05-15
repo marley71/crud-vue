@@ -10,14 +10,14 @@
         </a>
     </span>
 </script>
-<template id="c-tpl-record-template">
+<template id="tpl-record-template">
     <div>
         <label>{{cWidget.label | translate}}</label>
         <v-widget :c-widget="cWidget"></v-widget>
     </div>
 </template>
 
-<template id="c-tpl-record2-template">
+<template id="tpl-record2-template">
     <div class="row">
         <div class="col col-sm-6">{{cWidget.label | translate}}</div>
         <div class="col col-sm-6">
@@ -26,11 +26,11 @@
     </div>
 </template>
 
-<template id="c-tpl-list-template">
+<template id="tpl-list-template">
     <v-widget :c-widget="cWidget"></v-widget>
 </template>
 
-<template id="c-tpl-no-template">
+<template id="tpl-no-template">
     <v-widget :c-widget="cWidget"></v-widget>
 </template>
 

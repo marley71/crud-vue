@@ -64,8 +64,8 @@ var actionBase = Vue.component('action-base', {
             that.afterExecute.apply(that);
         },
 
-        setEnabled : function (enabled) {
-            this.enabled = enabled;
+        setEnabled : function (enable) {
+            this.enabled = enable;
         },
 
         setVisible : function (visible) {

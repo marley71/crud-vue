@@ -72,16 +72,9 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 }
             } else {
                 var protocol = that.createProtocol(route.getProtocol());
-
-
-                //var protocol = Protocol.factory(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
-                //console.log(prop);
-
-
                 for (var i in prop) {
-                    //console.log(k,k,prop[k]);
                     data[prop[i]] = protocol[prop[i]];
                 }
             }
@@ -89,18 +82,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
             that.data = data;
             that.json = json;
         },
-        // defaultData : function () {
-        //     return {
-        //         viewTitle : '',
-        //         loading : true,
-        //         widgets : {},
-        //         actionsName : [],
-        //         actions : {},
-        //         vueRefs:{},
-        //         conf : this.cConf || {},
-        //         langContext : this.cModel
-        //     }
-        // },
         getViewData : function () {
             var that = this;
             var data = {};
@@ -109,9 +90,9 @@ crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
-        getRender : function (key) {
+        getWidget : function (key) {
             var rConf = this.widgets[key];
-            console.log('getRenderd',key,rConf);
+            console.log('getWidget',key,rConf);
             return this.$crud.cRefs[rConf.cRef];
         },
         getAction : function (name) {
@@ -120,14 +101,5 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return this.$crud.cRefs[rConf.cRef];
         }
     },
-    // data : function() {
-    //     var d =  this._loadConf(this.cModel,);
-    //     if (this.cModel)
-    //         d.conf.modelName = this.cModel;
-    //     if (this.cPk)
-    //         d.conf.pk = this.cPk;
-    //     d.json = {};
-    //     return d;
-    // },
     template : '<div>view record base</div>'
 });

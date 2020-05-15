@@ -1,25 +1,25 @@
-crud.components.cTplBase = Vue.component('c-tpl-base',{
+crud.components.tplBase = Vue.component('tpl-base',{
     props : ['cWidget'],
     template : '<span>template base</span>'
 });
 
 
-Vue.component('c-tpl-record',{
-    extends : crud.components.cTplBase,
-    template : '#c-tpl-record-template'
+Vue.component('tpl-record',{
+    extends : crud.components.tplBase,
+    template : '#tpl-record-template'
 });
 
-Vue.component('c-tpl-record2',{
-    extends : crud.components.cTplBase,
-    template : '#c-tpl-record2-template'
+Vue.component('tpl-record2',{
+    extends : crud.components.tplBase,
+    template : '#tpl-record2-template'
 });
 
 
-Vue.component('c-tpl-list', {
-    extends : crud.components.cTplBase,
-    template : '#c-tpl-list-template'
+Vue.component('tpl-list', {
+    extends : crud.components.tplBase,
+    template : '#tpl-list-template'
 });
-Vue.component('c-tpl-no', {
-    extends : crud.components.cTplBase,
-    template : '#c-tpl-no-template'
+Vue.component('tpl-no', {
+    extends : crud.components.tplBase,
+    template : '#tpl-no-template'
 });
