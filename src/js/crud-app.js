@@ -11,35 +11,8 @@ const CrudApp = Vue.extend({
     created : function() {
         var that = this;
         Vue.prototype.$crud = crud;
-        //Vue.prototype.$lang = lang;
-        //console.log('CrudApp',this.$data._NON_WORD_REGEXP);
-        // for (var k in window) {
-        //     //console.log('window key ',k);
-        //     if (k.indexOf('_interface') > 0) {
-        //         console.log('found interface ',k)
-        //         var methods = window[k].methods || {};
-        //         var __call = function (interface,lk) {
-        //             that.$crud[lk] = function () {
-        //                 var localk = new String(lk);
-        //                 var int = new String(interface);
-        //                 //var arguments = this.arguments;
-        //                 //console.log(localk,'arguments',arguments);
-        //                 return window[interface].methods[localk].apply(that,arguments);
-        //             }
-        //         }
-        //         for (var m in methods) {
-        //             //console.log('....method',m)
-        //             __call(k,m);
-        //         }
-        //     }
-        // }
-
-
-
         that.$crud.instance = that;
         that.$crud.pluginsPath = that.$data.pluginsPath?that.$data.pluginsPath:'/';
-
-
         var __loadResources = function () {
             var resources = [];
             resources.push(that.$data.templatesFile);

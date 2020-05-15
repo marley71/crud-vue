@@ -22,6 +22,9 @@ class Protocol {
         }
         return data;
     }
+    jsonToData(json) {
+        throw "Implentare il metodo jsonToData"
+    }
 }
 
 class ProtocolRecord extends Protocol {

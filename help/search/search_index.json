@@ -1,0 +1,899 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "CRUD-Vue v1.0\n\n\nLibreria CRUD per la realizzazione di interfacce professionali basate su chiamate REST con \nmetodi CREATE,READ,UPDATE,DELETE. Il protocollo utilizzato per la comunicazione \u00e8 il json. \nLa libreria utilizza il concetto di componente. La pagina \u00e8 formata da componenti ed esse\nsono gestite attraverso l\noggetto principale \nCrudApp\n. \nNella libreria \u00e8 definito un oggetto globale crud, accedibile con this.$crud dove sono definiti\ndei comportamenti principali delle componenti e che pu\u00f2 essere esteso e modificato per le\nproprie personalizzazioni.\nIl concetto di base \u00e8 quello di creare una logica e una grafica delle componenti\nin modo che ci sia una versione base implementata dalla libreria, ma che sia customizzabile\na piacere nella propria applicazione sia come layout grafico sia come logica. La libreria poggia sul\nframework vuejs.\n\n\nComponent\n\n\nAbbiamo creato un componente principale vue per tutte le componenti presenti nella libreria, si chiama\n\n\nc-component\n. Va considerato come una classe astratta. L\noggetto c-component\ncrea un componente vue che \u00e8 stato definito per permettere una facile simulazione\ndell\nereditariet\u00e0 di un normale linguaggio ad oggetti. Non andrebbe mai istanziato\n\n\nWidget\n\n\nUna componente \nWidget\n si prende il compito di gestire il singolo dato secondo controlli standard html o plugins \ndi varia complessit\u00e0. Alcuni widget di utilit\u00e0 generale sono stati realizzati nella libreria, ma si possono creare\nwidgets secondo le nostre esigenze o estendendo quelli presenti o crearne di nuovi.\n\nWidgets\n\n\nView\n\n\nLa componente \nView\n rappresenta una collezione di dati. A questi dati \nvengono associati dei componenti di tipo \nWidget\n per la loro gestione. Sono state create delle view di utilizzo \nstandard ma, anche qui, se ne possono creare di nuove per venire incontro alle nostre esigenze.\n\nViews\n\n\nTemplate\n\n\nIl componente \nTemplate\n permette di costruire un template html di contorno per l\noggetto \nWidget\n. \nViene utilizzato dalle views e permette di poter customizzare i templates per i widgets presenti nella view.\nQuesto permette per esempio di enfatizzare alcuni campi la dove serve e di evitare di creare viste monotone.\nTuto questo per avere un minimo di variabilit\u00e0 nelle visualizzazioni delle viste, che altrimenti risulterebbero \ntroppo vincolate.\n\nTemplates\n\n\nAction\n\n\nIl componente \naction\n \u00e8 nato per la gestione delle azioni vogliamo implementare su di una vista. Sono state create\nalcune actions standard, ma possono essere definite delle nuove per ogni vista.\n\nActions\n\n\nConf\n\n\nSono configurazioni iniziali per le istanze delle varie views o wigets. Questo permette di poter variare il comportamento\ndi un componente e specializzarlo dove serve in modo da potersi discostare dal comportamento di default. \n\nConfs\n\n\nRoute\n\n\nLa classe \nRoute\n incapsula l\ninterazione con il server sia per il recupero sia per la spedizione \ndei dati. In genere viene utilizzata da una view e dalle azioni ed \u00e8 possibile parametrizzarla secondo specifiche\nregole.\n\nRoutes\n\n\nServer\n\n\nClasse che rappresenta un wrapper delle chiamate ajax di jquery, con alcune estensioni.\n\nServer\n\n\nCrudApp\n\n\nLa componente \nCrudApp\n rappresenta l\noggetto per la gestione della pagina e delle sue varie componenti \njavascript.\n\nApp\n\n\nDashboard\n\n\nLe dashboards sono modi di utilizzare combinando pi\u00f9 views che interagiscono tra loro. Una dashboarda fondamentale \n\u00e8 stata creata gi\u00e0 nella libreria e che serve come esempio ed \u00e8 la \nc-manage\n.\n\nDashboards", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#crud-vue-v10", 
+            "text": "Libreria CRUD per la realizzazione di interfacce professionali basate su chiamate REST con \nmetodi CREATE,READ,UPDATE,DELETE. Il protocollo utilizzato per la comunicazione \u00e8 il json. \nLa libreria utilizza il concetto di componente. La pagina \u00e8 formata da componenti ed esse\nsono gestite attraverso l oggetto principale  CrudApp . \nNella libreria \u00e8 definito un oggetto globale crud, accedibile con this.$crud dove sono definiti\ndei comportamenti principali delle componenti e che pu\u00f2 essere esteso e modificato per le\nproprie personalizzazioni.\nIl concetto di base \u00e8 quello di creare una logica e una grafica delle componenti\nin modo che ci sia una versione base implementata dalla libreria, ma che sia customizzabile\na piacere nella propria applicazione sia come layout grafico sia come logica. La libreria poggia sul\nframework vuejs.", 
+            "title": "CRUD-Vue v1.0"
+        }, 
+        {
+            "location": "/#component", 
+            "text": "Abbiamo creato un componente principale vue per tutte le componenti presenti nella libreria, si chiama  c-component . Va considerato come una classe astratta. L oggetto c-component\ncrea un componente vue che \u00e8 stato definito per permettere una facile simulazione\ndell ereditariet\u00e0 di un normale linguaggio ad oggetti. Non andrebbe mai istanziato", 
+            "title": "Component"
+        }, 
+        {
+            "location": "/#widget", 
+            "text": "Una componente  Widget  si prende il compito di gestire il singolo dato secondo controlli standard html o plugins \ndi varia complessit\u00e0. Alcuni widget di utilit\u00e0 generale sono stati realizzati nella libreria, ma si possono creare\nwidgets secondo le nostre esigenze o estendendo quelli presenti o crearne di nuovi. Widgets", 
+            "title": "Widget"
+        }, 
+        {
+            "location": "/#view", 
+            "text": "La componente  View  rappresenta una collezione di dati. A questi dati \nvengono associati dei componenti di tipo  Widget  per la loro gestione. Sono state create delle view di utilizzo \nstandard ma, anche qui, se ne possono creare di nuove per venire incontro alle nostre esigenze. Views", 
+            "title": "View"
+        }, 
+        {
+            "location": "/#template", 
+            "text": "Il componente  Template  permette di costruire un template html di contorno per l oggetto  Widget . \nViene utilizzato dalle views e permette di poter customizzare i templates per i widgets presenti nella view.\nQuesto permette per esempio di enfatizzare alcuni campi la dove serve e di evitare di creare viste monotone.\nTuto questo per avere un minimo di variabilit\u00e0 nelle visualizzazioni delle viste, che altrimenti risulterebbero \ntroppo vincolate. Templates", 
+            "title": "Template"
+        }, 
+        {
+            "location": "/#action", 
+            "text": "Il componente  action  \u00e8 nato per la gestione delle azioni vogliamo implementare su di una vista. Sono state create\nalcune actions standard, ma possono essere definite delle nuove per ogni vista. Actions", 
+            "title": "Action"
+        }, 
+        {
+            "location": "/#conf", 
+            "text": "Sono configurazioni iniziali per le istanze delle varie views o wigets. Questo permette di poter variare il comportamento\ndi un componente e specializzarlo dove serve in modo da potersi discostare dal comportamento di default.  Confs", 
+            "title": "Conf"
+        }, 
+        {
+            "location": "/#route", 
+            "text": "La classe  Route  incapsula l interazione con il server sia per il recupero sia per la spedizione \ndei dati. In genere viene utilizzata da una view e dalle azioni ed \u00e8 possibile parametrizzarla secondo specifiche\nregole. Routes", 
+            "title": "Route"
+        }, 
+        {
+            "location": "/#server", 
+            "text": "Classe che rappresenta un wrapper delle chiamate ajax di jquery, con alcune estensioni. Server", 
+            "title": "Server"
+        }, 
+        {
+            "location": "/#crudapp", 
+            "text": "La componente  CrudApp  rappresenta l oggetto per la gestione della pagina e delle sue varie componenti \njavascript. App", 
+            "title": "CrudApp"
+        }, 
+        {
+            "location": "/#dashboard", 
+            "text": "Le dashboards sono modi di utilizzare combinando pi\u00f9 views che interagiscono tra loro. Una dashboarda fondamentale \n\u00e8 stata creata gi\u00e0 nella libreria e che serve come esempio ed \u00e8 la  c-manage . Dashboards", 
+            "title": "Dashboard"
+        }, 
+        {
+            "location": "/component/", 
+            "text": "c-component\n\n\nLa classe principale di tutte le componenti grafiche \u00e8 \nc-component\n, definisce il comportamento\ngenerale che un componente deve avere nella visualizzazione di un html e della gestione dei dati. Definisce\nla propriet\u00e0 cConf per la configurazione del componente, la carica ed estende l\noggetto con tutte le propriet\u00e0\ntrovate in cConf.\n\n\nPer convenzione i metodi preceduti da \n_\n sono da considerarsi privati e non andrebbero mai ridefiniti se non per cambiare\nsostanzialmente il comportamento della classe a basso livello.\n\n\nPropriet\u00e0\n\n\n\n\ncConf\n : rappresenta la configurazione iniziale del componente. E\n formata da un vettore associativo. Tutte le \npropriet\u00e0 di cConf vengono spalmate flat nel \ndata\n del componente vue.\n\n\n\n\nMetodi\n\n\n\n\n\n\njQe(selector)\n : shortcut jquery, ritorna l\noggetto jquery associato al container del componente, se viene\npassato il parametro \nselector\n allora si posiziona all\nelemento puntato dal selector all\ninterno\ndel container.\n\n\n\n\n\n\n_loadConf()\n : Carica l\noggetto cConf e spalma le propriet\u00e0 nell\noggetto.\n\n\n\n\n\n\n_getConf\n : risolve il nome cConf, cConf pu\u00f2 essere un array associativo o una stringa. In caso di stringa ricerca\nla configurazione nella window o nella configurazione generale dell\napplicazione chiamata crud. Pu\u00f2 essere usato il\npunto per configurazioni gerarchiche. Esempio potrei creare una configurazione tipo:\n\n\n\n\n\n\nwindow.conf1 = {\n    paginax : {\n        elementoa: {\n            var1 :'v1',\n            var2 :'v2'\n        }   \n    }\n}\n\n\n\n\nposso passare come attributo del componente c-conf=\nconf1.paginax.elementoa\n;\n\n\n\n\n\n\n_getRoute(routeName)\n : Crea l\noggetto Route di nome routeName. La definizione della route viene cercata nell\noggetto\n$crud.routes[routeName];\n\n\n\n\n\n\nbeforeLoadResources()\n : metodo chiamato prima di caricare risorse esterne di particolari plugins di terze parti \n\n\n\n\nafterLoadResources()\n : metodo chiamato dopo aver caricato risorse esterne di plugins. Questo permette di eseguire\neventuali azioni del plugins dopo che le risorse siano state caricate.", 
+            "title": "Component"
+        }, 
+        {
+            "location": "/component/#c-component", 
+            "text": "La classe principale di tutte le componenti grafiche \u00e8  c-component , definisce il comportamento\ngenerale che un componente deve avere nella visualizzazione di un html e della gestione dei dati. Definisce\nla propriet\u00e0 cConf per la configurazione del componente, la carica ed estende l oggetto con tutte le propriet\u00e0\ntrovate in cConf.  Per convenzione i metodi preceduti da  _  sono da considerarsi privati e non andrebbero mai ridefiniti se non per cambiare\nsostanzialmente il comportamento della classe a basso livello.", 
+            "title": "c-component"
+        }, 
+        {
+            "location": "/component/#proprieta", 
+            "text": "cConf  : rappresenta la configurazione iniziale del componente. E  formata da un vettore associativo. Tutte le \npropriet\u00e0 di cConf vengono spalmate flat nel  data  del componente vue.", 
+            "title": "Propriet\u00e0"
+        }, 
+        {
+            "location": "/component/#metodi", 
+            "text": "jQe(selector)  : shortcut jquery, ritorna l oggetto jquery associato al container del componente, se viene\npassato il parametro  selector  allora si posiziona all elemento puntato dal selector all interno\ndel container.    _loadConf()  : Carica l oggetto cConf e spalma le propriet\u00e0 nell oggetto.    _getConf  : risolve il nome cConf, cConf pu\u00f2 essere un array associativo o una stringa. In caso di stringa ricerca\nla configurazione nella window o nella configurazione generale dell applicazione chiamata crud. Pu\u00f2 essere usato il\npunto per configurazioni gerarchiche. Esempio potrei creare una configurazione tipo:    window.conf1 = {\n    paginax : {\n        elementoa: {\n            var1 :'v1',\n            var2 :'v2'\n        }   \n    }\n}  posso passare come attributo del componente c-conf= conf1.paginax.elementoa ;    _getRoute(routeName)  : Crea l oggetto Route di nome routeName. La definizione della route viene cercata nell oggetto\n$crud.routes[routeName];    beforeLoadResources()  : metodo chiamato prima di caricare risorse esterne di particolari plugins di terze parti    afterLoadResources()  : metodo chiamato dopo aver caricato risorse esterne di plugins. Questo permette di eseguire\neventuali azioni del plugins dopo che le risorse siano state caricate.", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/widgets/", 
+            "text": "Widgets\n\n\nL\ninsieme dei \nWidgets\n estendono la componente \nc-component\n e rappresentano le classe per la gestione di un \nsingolo dato. Le componenti widgets possono essere utilizzati in maniera diretta, ma il loro utilizzo reale \u00e8 \ncome componente dei singoli dati di una view. Tutte le propriet\u00e0 devono essere passate attraverso un vettore associativo.\nche rappresenta la cConf del componente. La definizione dei templates si trovano tutti nel \nfile \ncrud-vue.html\n \n\n\nw-base\n\n\nE\n stato creato il component widget base chiamato wBase che deve essere considerata come una specie di classe \nastratta che tutti i widgets estendono e definisce alcuni metodi di uso generale e che quindi come la classe che \ndefinisce l\ninterfaccia base dei vari oggetti Widget concreti. Non dovrebbe mai essere istanziata. La sua \ndefinizione \u00e8 in \ncrud.components.wBase\n\n\ndata\n\n\n\n\nname\n : null - nome dell\noggetto widget (il campo del modello dati che vogliamo gestire)\n\n\nvalue\n : null - valore oggetto\n\n\nresources\n : [] - eventuale vettore risorse da caricare per il funzionamento del componente\n\n\n\n\nMetodi\n\n\n\n\ngetFieldName()\n - ritorna il nome del campo da attribuire al controllo html di default ritorna la propriet\u00e0 name. \n\n\ngetValue()\n - ritorna il valore del widget, default ritorna la propriet\u00e0 value\n\n\nsetValue(value)\n - metodo per settare il valore del widget\n\n\nchange()\n : metodo chiamato quando il widget cambia valore.\n\n\n\n\nWidgets Implementati nel framework\n\n\nLa libreria mette a disposizione dei widgets standard per gli usi pi\u00f9 comuni, in modo da avere gi\u00e0 una base \nabbastanza completa per iniziare a creare le nostre applicazioni. Questi widgets possono essere ridefiniti e/o \ncreati di nuovi. Questo ci permette di cambiare, nella nostra applicazione, aspetto e/o funzionalit\u00e0. \n\n\n\n\nw-input\n\n\nComponente per la gestione degli input standard html. La sua definizione \u00e8 in \ncrud.components.widgets.wInput\n\nLa definizione del template \u00e8 nel container con id \nw-input-template\n\n\ndata\n\n\n\n\ninputType\n : rappresenta il type del controllo input html. Pu\u00f2 essere tutti quelli accettati dal type input html\n\n\n\n\n{{{example_render_input_edit}}}\n\n\n\n\nProvalo online\n\n\n\n\nw-input-hidden\n\n\nDAFINIRE\n\n\nw-text\n\n\nComponente per la visualizzazione di un testo. La sua definizione \u00e8 in \ncrud.components.widgets.wText\n\nLa definizione del template \u00e8 nel container con id  \nw-text-template\n\n\n\n\nesempio\n\n\n\n\n{{{example_render_text_view}}}\n\n\n\n\nprovalo online\n\n\n\n\nw-textarea\n\n\nComponente per la gestione di una textarea. La sua definizione \u00e8 in \ncrud.components.widgets.wTextarea\n\nLa definizione del template \u00e8 nel container con id \nw-textarea-template\n\n\n\n\nw-select\n\n\nComponente per la gestione di una select html\nLa definizione del template \u00e8 nel container con id \nw-select-template\n\n\ndata\n\n\n\n\ndomainValues\n : vettore associativo key =\n valore che rappresenta tutti i possibili valori della select\n\n\ndomainValueOrder\n : array, facoltativo,eventuale ordinamento dei domainValues.\n\n\n\n\n\n\nw-input-helped\n\n\nQuesto Render permette di aggiungere ad un input una serie di valori predefiniti che aiutano l\nutilizzatore.\nLa sua definizione \u00e8 in \ncrud.components.widgets.wInputHelped\n.\nLa definizione del template \u00e8 nel container con id \nw-input-helped-template\n\n\ndata\n\n\n\n\ncustomValue\n : true, indica se pu\u00f2 essere inserito un valore fuori dal range dei valori predefiniti\n\n\ndomainValues\n : vettore associativo key =\n valore che rappresenta tutti i possibili valori che possono essere scelti\n\n\ndomainValueOrder\n : array, facoltativo,eventuale ordinamento dei domainValues.\n\n\n\n\n\n\nw-radio\n\n\nComponente per la gestione di radiobutton html.La sua definizione \u00e8 in \ncrud.components.widgets.wRadio\n\nLa definizione del template \u00e8 nel container con id \nw-radio-template\n\n\ndata\n\n\n\n\ndomainValues\n : vettore associativo key =\n valore che rappresenta tutti i possibili valori della select\n\n\ndomainValueOrder\n : array, facoltativo,eventuale ordinamento dei domainValues.\n\n\n\n\n\n\nw-checkbox\n\n\nComponente per la gestione di checkbox html.La sua definizione \u00e8 in \ncrud.components.widgets.wCheckbox\n\nLa definizione del template \u00e8 nel container con id \nw-checkbox-template\n\n\ndata\n\n\n\n\ndomainValues\n : vettore associativo key =\n valore che rappresenta tutti i possibili valori della select\n\n\ndomainValueOrder\n : array, facoltativo,eventuale ordinamento dei domainValues.\n\n\n\n\n\n\nw-custom\n\n\nOggetto per chi vuole poter modificare l\nhtml da renderizzare. \nLa sua definizione \u00e8 in \ncrud.components.widgets.wCustom\n\nLa definizione del template \u00e8 nel container con id \nw-custom-template\n\n\n\n\nw-autocomplete\n\n\nQuesto render \u00e8 stato pensato per il popolamento di una chiave con riferimento ad una tabella\nesterna permettendo la ricerca e inserendo la chiave_id  selezionata in un input nascosto.\nIl plugin utilizzato \u00e8 quello di jquery-autocomplete.\nLa sua definizione \u00e8 in \ncrud.components.widgets.wAutocomplete\n\nLa definizione del template \u00e8 nel container con id \nw-autocomplete-template\n\n\ndata\n\n\n\n\nrouteName\n : \nautocomplete\n - nome della route da utilizzare per reperire i dati dal server\n\n\nresources\n : \n[\n                    \nhttps://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css\n,\n                    \nhttps://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js\n         \n\n                 ]\n\n\nprimaryKey\n : \nid\n - nome campo da salvare nel campo nascosto.\n\n\nfields\n : [], vettore dei campi da visualizzare nella tendina degli elementi trovati\n\n\nmodelName\n : \nnome modello dati da passare alla route\n\n\n\n\nMetodi\n\n\n\n\nafterLoadResources()\n : Questo metodo viene chiamato in automatico e viene utilizzato per\ninstanziare il plugin.\n\n\nsetRouteValues\n : metodo per settare i parametri della route. In caso di route personalizzata, usare\nquesto metodo per instanziarla e inserire i parametri giusti.\n\n\nclear\n : metodo per cancellare eventuale valore selezionato.\n\n\n_getLabel\n : politica per il riempimento della label che visualizza l\nelemento scelto\n\n\n_getSuggestion\n : metodo per il riempimento dei valori trovati mostrati dal widget\n\n\n\n\nw-belongsto\n\n\nQuesto widget \u00e8 solo per la visualizzazione di dati pi\u00f9 complessi che non sono formati da un solo\nvalore, ma da un vettore associativo. In genere viene utilizzato per la rappresentazione dei \ncampi di una relazione esterna belongsto\nLa sua definizione \u00e8 in \ncrud.components.widgets.wBelongsto\n\nLa definizione del template \u00e8 nel container con id \nw-belongsto-template\n\n\ndata\n\n\n\n\nfields: [], vettore nomi dei campi da visualizzare\n\n\n\n\n\n\nw-date-select\n\n\nQuesto widget \u00e8 per l\ninserimento di una data. Questo widget utilizza tre componenti w-select per \nl\ninserimento di una data. Il valore viene salvato in un input nascosto nel formato yyyy-mm-dd;\nUsa moment per il controllo di validit\u00e0 della data.\nLa sua definizione \u00e8 in \ncrud.components.widgets.wDateSelect\n\nLa definizione del template \u00e8 nel container con id \nw-date-select-template\n\n\ndata\n\n\n\n\nminYear    : null, anno minimo se non settatto viene preso l\nanno corrente - 5 ,\n\n\nmaxYear    : null, anno massimo se non settato viene preso l\nanno corrente + 5,\n\n\nresources :[\n    \nmoment-with-locales.min.js\n,\n]\n\n\n\n\nMetodi\n\n\n\n\n_updateSelect : function () - \n\n\n_getValidDate : function () - \n\n\n_dayValues : function () \n\n\n_monthValues : function () \n\n\n_yearValues : function ()\n\n\n\n\nComputed\n\n\n\n\ncDay : crea la configurazione iniziale per la select giorni\n\n\ncMonth : crea la configurazione iniziale per la select mesi\n\n\ncYear : crea la configurazione iniziale per la select anni\n\n\n\n\nw-date-picker\n\n\nQuesto widget \u00e8 per l\ninserimento di una data. Utilizza il picker bootstrap per \nl\ninserimento di una data.\nLa sua definizione \u00e8 in \ncrud.components.widgets.wDatePicker\n\nLa definizione del template \u00e8 nel container con id \nw-date-picker-template\n\n\ndata\n\n\n\n\ndisplayFormat : Modalit\u00e0 visualizzazione data nel picker, default dd/mm/yyyy\n\n\ndateFormat : formato di salvataggio della data nel campo nascosto, default uguale a displayFormat\n\n\n\n\nresources : [\n    'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',\n    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',\n    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'\n]\n\n\n\n\n\n\nw-hasmany\n\n\nComponente per la gestione di dati da salvare in una relazione esterna di tipo hasmany \nin un\nunica form. Contiene all\ninterno una lista di v-hasmany.\nLa sua definizione \u00e8 in \ncrud.components.widgets.wHasmany\n\nLa definizione del template \u00e8 nel container con id \nw-hasmany-template\n\n\ndata\n\n\n\n\nresources : [\njquery-sortable.js\n]\n\n\nconfViews : [], vettore configurazione delle views v-hasmany interne\n\n\nhasmanyConf : configurazione della view v-hasmany, uguale ad una normale conf di una view ma non \n    sono considerate le azioni.\n\n\nlimit : default 100, limite massimo del numero di record hasmany\n\n\n\n\nmetodi\n\n\n\n\ngetHasmanyConf(index,value),\n\n\naddItem() \n\n\ndeleteItem(index) \n\n\nshowItem(index)\n\n\noutOfLimit()\n\n\n\n\nw-hasmany-view\n\n\nComponente per la visualizzazione di dati in una relazione esterna di tipo hasmany \nLa sua definizione \u00e8 in \ncrud.components.widgets.wHasmanyView\n\nLa definizione del template \u00e8 nel container con id \nw-hasmany-view-template\n\n\n\n\nwHasmanyThrough\n\n\nOggetto per la gestione degli hasmany trought\n\n\npropriet\u00e0\n\n\n\n\nselected : [],\n\n\nmodelName : \nnone\n,\n\n\nlast_searched_result : null,  // json risultato dell\nultima ricerca\n\n\nhasmany_container : \n[crud-hasmany_container]\n,\n\n\nselected_container : \n[crud-selected_container]\n,\n\n\ntitle_selector : \n[crud-render_title]\n,\n\n\nremoveActionOptions : null, // eventuali classi per il bottone\n\n\nmorph : null,\n\n\n//label_field : null,\n\n\nlabelFields : [\nlabel\n],  // campi che verranno visualizzati per gli elementi presenti\n\n\nhiddenFields : [\nid\n,\nstatus\n],\n\n\n\n\nlabelFieldsConfig : {}, // configurazioni speciali per i label fields default sono text\n\n\n\n\n\n\naddNew : false,\n\n\n\n\n\n\nsearchField : null,\n\n\n\n\nsearchDescription : null,\n\n\n\n\nsearchMethod : null,\n\n\n\n\n\n\nitemAddTemplate : null,\n\n\n\n\nitemViewTemplate : null,\n\n\n\n\nlistItemsTemplate : null,\n\n\n\n\n\n\nmetadata : {\n    autocompleteModel : null,\n  },\n\n\n\n\n\n\nmetodi\n\n\n\n\n_populateItem : function(values,container) {\n\n\n_populate : function (filter) {\n\n\n\n\npropriet\u00e0\n\n\n\n\nresources : [ \njquery-sortable.js\n]\n\n\n_views : [],\n\n\n\n\nmetodi\n\n\n\n\nitemExist : function (values) {\n\n\naddItem : function (values) {\n\n\ndeleteItem : function (vkey) {\n\n\n\n\nw-upload-ajax\n\n\nDAFINIRE\nComponente per la gestione di un upload in modalit\u00e0 ajax. Il componente fa\n una chiamata ajax\ndove invia il file da uploare e poi salva in un campo nascosto il risultato. Insieme al risultato\nci  mette anche un  anteprima utilizzando il componente r-preview.\nLa sua definizione \u00e8 in \ncrud.components.widgets.wUploadAjax\nLa definizione del template \u00e8 nel container con id\nw-upload-ajax-template`\n\n\ndata\n\n\n\n\nextensions : [] estensioni del file accettate,\n\n\nmaxFileSize : \n dimensione massimo del file da uploadare,\n\n\nrouteName : \nuploadfile\n,\n\n\npreviewConf : configurazione del componente r-preview. Gestione interna,\n\n\nerror : presenza di errori durante l\nupload,\n\n\nerrorMessage : messaggio di errore dell\nupload,\n\n\najaxFields : vettore associativo di eventuali campi nascosti da mandare in ajax insieme al file,\n\n\nlastUpload : contiene la risposta json dell\nultima chiamata ajax.\n\n\n\n\nmetodi\n\n\n\n\nsetRouteValues(route) : metodo per configurare i parametri della route\n\n\n_getFileValue():ritorna il valore del controllo file\n\n\n_validate() : eventuali controlli personali di validazione da parte javascript\n\n\nvalidate() : metodo chiamato prima di spedire il file ajax\n\n\nsendAjax() : metodo per la chiamata ajax.\n\n\n_setUploadFieldsType : function () {\n\n\n_setFieldsType : function () {\n\n\n\n\n\n\nw-upload\n\n\nDAFINIRE\nComponente per la gestione di un upload nella form\nLa sua definizione \u00e8 in \ncrud.components.widgets.wUpload\nLa definizione del template \u00e8 nel container con id\nw-upload-template`\n\n\npropriet\u00e0\n\n\n\n\nextensions : [] estensioni del file accettate,\n\n\nmaxFileSize : \n dimensione massimo del file da uploadare,\n\n\n\n\nmetodi\n\n\n\n\n_showItemUploadedPreview : function (container,values) {\n\n\n_bindActions : function () {\n\n\n_checkLimit : function () {\n\n\nrenderNewItem : function (values) {\n\n\ndeleteItem : function (index) {\n\n\nok : function(dialog) {\n\n\ncancel : function () {\n\n\n_setUploadFieldsType : function () {\n\n\n_setFieldsType : function () {\n\n\nafterUpload : function (data) {\n\n\n\n\n\n\nw-preview\n\n\nDAFINIRE\n- esempio\n\n\n{{{example_render_hasmany_upload_image_view}}}\n\n\n\n\nprovalo online\n\n\n\n\ntemplate\n\n\n\n\ndiv crud-render_element\n\n    \nul class=\nlist-unstyled\n crud-render_list \n\n        \n!--  -- contenitore lista fotos -- --\n\n    \n/ul\n\n\n/div\n\n\n\n\n\nitemTemplate\n\n\nli\n\n    \nimg class=\nimg-circle img-list\n src=\n crud-attrs=\n{src:Server.getUrl(urls+'icon')}\n /\n\n\n/li\n\n\n\n\n\n\n\nmarcatori\n\n\n\n\n\n\nw-swap\n\n\nDAFINIRE\nComponente per eseguire uno swap di valore di un determinato campo attraverso una chiamata ajax.\nLa sua definizione \u00e8 in \ncrud.components.widgets.wSwap\nLa definizione del template \u00e8 nel container con id\nw-swap-template`\n\n\ndata\n\n\niconClass : {\n        0 : \nfa fa-circle text-danger\n,\n        1 : \nfa fa-circle text-success\n\n    },\n    metadata : {\n        domainValues : {\n            0: \ndisattivo\n,\n            1: \nattivo\n\n        }\n    },\n\n\nmetodi\n\n\n\n\n_setHtmlData :function() {\n\n\n_swap : function () {\n\n\n_callback : function (json) {\n\n\n\n\nprovalo online\n\n\n\n\ntemplate\n\n\n\n\nbutton type=\nbutton\n class=\nbtn btn-default btn-xs\n crud-render_element title=\n\n    \ni crud-icon class=\n/i\n\n\n/button\n\n\n\n\n\n\n\nmarcatori\n\n\n\n\n\n\nw-texthtml\n\n\nDAFINIRE\nrappresentazione ed editing di testo html\n\n\neditor html summernote.\n\n\n\n\nesempio\n\n\n\n\n{{{example_render_texthtml_edit}}}\n\n\n\n\nprovalo online\n\n\n\n\n\n\nheight : 200,\n      pluginOptions : {},\n      _pluginObject : null,\n\n\n\n\n\n\ntemplate\n\n\n\n\n\n\n    \ntextarea crud-render_element crud-render_control class=\nsummernote form-control\n crud-summernote-lang=\nit-IT\n/textarea\n\n\n\n\n\n\n\n\nw-preview\n\n\nDAFINIRE\n\n\nw-b2-select2\n\n\nDAFINIRE\n\n\nw-b2m-select2\n\n\nDAFINIRE", 
+            "title": "Widgets"
+        }, 
+        {
+            "location": "/widgets/#widgets", 
+            "text": "L insieme dei  Widgets  estendono la componente  c-component  e rappresentano le classe per la gestione di un \nsingolo dato. Le componenti widgets possono essere utilizzati in maniera diretta, ma il loro utilizzo reale \u00e8 \ncome componente dei singoli dati di una view. Tutte le propriet\u00e0 devono essere passate attraverso un vettore associativo.\nche rappresenta la cConf del componente. La definizione dei templates si trovano tutti nel \nfile  crud-vue.html", 
+            "title": "Widgets"
+        }, 
+        {
+            "location": "/widgets/#w-base", 
+            "text": "E  stato creato il component widget base chiamato wBase che deve essere considerata come una specie di classe \nastratta che tutti i widgets estendono e definisce alcuni metodi di uso generale e che quindi come la classe che \ndefinisce l interfaccia base dei vari oggetti Widget concreti. Non dovrebbe mai essere istanziata. La sua \ndefinizione \u00e8 in  crud.components.wBase", 
+            "title": "w-base"
+        }, 
+        {
+            "location": "/widgets/#data", 
+            "text": "name  : null - nome dell oggetto widget (il campo del modello dati che vogliamo gestire)  value  : null - valore oggetto  resources  : [] - eventuale vettore risorse da caricare per il funzionamento del componente", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#metodi", 
+            "text": "getFieldName()  - ritorna il nome del campo da attribuire al controllo html di default ritorna la propriet\u00e0 name.   getValue()  - ritorna il valore del widget, default ritorna la propriet\u00e0 value  setValue(value)  - metodo per settare il valore del widget  change()  : metodo chiamato quando il widget cambia valore.", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/widgets/#widgets-implementati-nel-framework", 
+            "text": "La libreria mette a disposizione dei widgets standard per gli usi pi\u00f9 comuni, in modo da avere gi\u00e0 una base \nabbastanza completa per iniziare a creare le nostre applicazioni. Questi widgets possono essere ridefiniti e/o \ncreati di nuovi. Questo ci permette di cambiare, nella nostra applicazione, aspetto e/o funzionalit\u00e0.", 
+            "title": "Widgets Implementati nel framework"
+        }, 
+        {
+            "location": "/widgets/#w-input", 
+            "text": "Componente per la gestione degli input standard html. La sua definizione \u00e8 in  crud.components.widgets.wInput \nLa definizione del template \u00e8 nel container con id  w-input-template", 
+            "title": "w-input"
+        }, 
+        {
+            "location": "/widgets/#data_1", 
+            "text": "inputType  : rappresenta il type del controllo input html. Pu\u00f2 essere tutti quelli accettati dal type input html   {{{example_render_input_edit}}}  Provalo online", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#w-input-hidden", 
+            "text": "DAFINIRE", 
+            "title": "w-input-hidden"
+        }, 
+        {
+            "location": "/widgets/#w-text", 
+            "text": "Componente per la visualizzazione di un testo. La sua definizione \u00e8 in  crud.components.widgets.wText \nLa definizione del template \u00e8 nel container con id   w-text-template   esempio   {{{example_render_text_view}}}  provalo online", 
+            "title": "w-text"
+        }, 
+        {
+            "location": "/widgets/#w-textarea", 
+            "text": "Componente per la gestione di una textarea. La sua definizione \u00e8 in  crud.components.widgets.wTextarea \nLa definizione del template \u00e8 nel container con id  w-textarea-template", 
+            "title": "w-textarea"
+        }, 
+        {
+            "location": "/widgets/#w-select", 
+            "text": "Componente per la gestione di una select html\nLa definizione del template \u00e8 nel container con id  w-select-template", 
+            "title": "w-select"
+        }, 
+        {
+            "location": "/widgets/#data_2", 
+            "text": "domainValues  : vettore associativo key =  valore che rappresenta tutti i possibili valori della select  domainValueOrder  : array, facoltativo,eventuale ordinamento dei domainValues.", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#w-input-helped", 
+            "text": "Questo Render permette di aggiungere ad un input una serie di valori predefiniti che aiutano l utilizzatore.\nLa sua definizione \u00e8 in  crud.components.widgets.wInputHelped .\nLa definizione del template \u00e8 nel container con id  w-input-helped-template", 
+            "title": "w-input-helped"
+        }, 
+        {
+            "location": "/widgets/#data_3", 
+            "text": "customValue  : true, indica se pu\u00f2 essere inserito un valore fuori dal range dei valori predefiniti  domainValues  : vettore associativo key =  valore che rappresenta tutti i possibili valori che possono essere scelti  domainValueOrder  : array, facoltativo,eventuale ordinamento dei domainValues.", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#w-radio", 
+            "text": "Componente per la gestione di radiobutton html.La sua definizione \u00e8 in  crud.components.widgets.wRadio \nLa definizione del template \u00e8 nel container con id  w-radio-template", 
+            "title": "w-radio"
+        }, 
+        {
+            "location": "/widgets/#data_4", 
+            "text": "domainValues  : vettore associativo key =  valore che rappresenta tutti i possibili valori della select  domainValueOrder  : array, facoltativo,eventuale ordinamento dei domainValues.", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#w-checkbox", 
+            "text": "Componente per la gestione di checkbox html.La sua definizione \u00e8 in  crud.components.widgets.wCheckbox \nLa definizione del template \u00e8 nel container con id  w-checkbox-template", 
+            "title": "w-checkbox"
+        }, 
+        {
+            "location": "/widgets/#data_5", 
+            "text": "domainValues  : vettore associativo key =  valore che rappresenta tutti i possibili valori della select  domainValueOrder  : array, facoltativo,eventuale ordinamento dei domainValues.", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#w-custom", 
+            "text": "Oggetto per chi vuole poter modificare l html da renderizzare. \nLa sua definizione \u00e8 in  crud.components.widgets.wCustom \nLa definizione del template \u00e8 nel container con id  w-custom-template", 
+            "title": "w-custom"
+        }, 
+        {
+            "location": "/widgets/#w-autocomplete", 
+            "text": "Questo render \u00e8 stato pensato per il popolamento di una chiave con riferimento ad una tabella\nesterna permettendo la ricerca e inserendo la chiave_id  selezionata in un input nascosto.\nIl plugin utilizzato \u00e8 quello di jquery-autocomplete.\nLa sua definizione \u00e8 in  crud.components.widgets.wAutocomplete \nLa definizione del template \u00e8 nel container con id  w-autocomplete-template", 
+            "title": "w-autocomplete"
+        }, 
+        {
+            "location": "/widgets/#data_6", 
+            "text": "routeName  :  autocomplete  - nome della route da utilizzare per reperire i dati dal server  resources  :  [\n                     https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css ,\n                     https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js           \n                 ]  primaryKey  :  id  - nome campo da salvare nel campo nascosto.  fields  : [], vettore dei campi da visualizzare nella tendina degli elementi trovati  modelName  :  nome modello dati da passare alla route", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#metodi_1", 
+            "text": "afterLoadResources()  : Questo metodo viene chiamato in automatico e viene utilizzato per\ninstanziare il plugin.  setRouteValues  : metodo per settare i parametri della route. In caso di route personalizzata, usare\nquesto metodo per instanziarla e inserire i parametri giusti.  clear  : metodo per cancellare eventuale valore selezionato.  _getLabel  : politica per il riempimento della label che visualizza l elemento scelto  _getSuggestion  : metodo per il riempimento dei valori trovati mostrati dal widget", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/widgets/#w-belongsto", 
+            "text": "Questo widget \u00e8 solo per la visualizzazione di dati pi\u00f9 complessi che non sono formati da un solo\nvalore, ma da un vettore associativo. In genere viene utilizzato per la rappresentazione dei \ncampi di una relazione esterna belongsto\nLa sua definizione \u00e8 in  crud.components.widgets.wBelongsto \nLa definizione del template \u00e8 nel container con id  w-belongsto-template", 
+            "title": "w-belongsto"
+        }, 
+        {
+            "location": "/widgets/#data_7", 
+            "text": "fields: [], vettore nomi dei campi da visualizzare", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#w-date-select", 
+            "text": "Questo widget \u00e8 per l inserimento di una data. Questo widget utilizza tre componenti w-select per \nl inserimento di una data. Il valore viene salvato in un input nascosto nel formato yyyy-mm-dd;\nUsa moment per il controllo di validit\u00e0 della data.\nLa sua definizione \u00e8 in  crud.components.widgets.wDateSelect \nLa definizione del template \u00e8 nel container con id  w-date-select-template", 
+            "title": "w-date-select"
+        }, 
+        {
+            "location": "/widgets/#data_8", 
+            "text": "minYear    : null, anno minimo se non settatto viene preso l anno corrente - 5 ,  maxYear    : null, anno massimo se non settato viene preso l anno corrente + 5,  resources :[\n     moment-with-locales.min.js ,\n]", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#metodi_2", 
+            "text": "_updateSelect : function () -   _getValidDate : function () -   _dayValues : function ()   _monthValues : function ()   _yearValues : function ()", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/widgets/#computed", 
+            "text": "cDay : crea la configurazione iniziale per la select giorni  cMonth : crea la configurazione iniziale per la select mesi  cYear : crea la configurazione iniziale per la select anni", 
+            "title": "Computed"
+        }, 
+        {
+            "location": "/widgets/#w-date-picker", 
+            "text": "Questo widget \u00e8 per l inserimento di una data. Utilizza il picker bootstrap per \nl inserimento di una data.\nLa sua definizione \u00e8 in  crud.components.widgets.wDatePicker \nLa definizione del template \u00e8 nel container con id  w-date-picker-template", 
+            "title": "w-date-picker"
+        }, 
+        {
+            "location": "/widgets/#data_9", 
+            "text": "displayFormat : Modalit\u00e0 visualizzazione data nel picker, default dd/mm/yyyy  dateFormat : formato di salvataggio della data nel campo nascosto, default uguale a displayFormat   resources : [\n    'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',\n    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',\n    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'\n]", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#w-hasmany", 
+            "text": "Componente per la gestione di dati da salvare in una relazione esterna di tipo hasmany \nin un unica form. Contiene all interno una lista di v-hasmany.\nLa sua definizione \u00e8 in  crud.components.widgets.wHasmany \nLa definizione del template \u00e8 nel container con id  w-hasmany-template", 
+            "title": "w-hasmany"
+        }, 
+        {
+            "location": "/widgets/#data_10", 
+            "text": "resources : [ jquery-sortable.js ]  confViews : [], vettore configurazione delle views v-hasmany interne  hasmanyConf : configurazione della view v-hasmany, uguale ad una normale conf di una view ma non \n    sono considerate le azioni.  limit : default 100, limite massimo del numero di record hasmany", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#metodi_3", 
+            "text": "getHasmanyConf(index,value),  addItem()   deleteItem(index)   showItem(index)  outOfLimit()", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/widgets/#w-hasmany-view", 
+            "text": "Componente per la visualizzazione di dati in una relazione esterna di tipo hasmany \nLa sua definizione \u00e8 in  crud.components.widgets.wHasmanyView \nLa definizione del template \u00e8 nel container con id  w-hasmany-view-template", 
+            "title": "w-hasmany-view"
+        }, 
+        {
+            "location": "/widgets/#whasmanythrough", 
+            "text": "Oggetto per la gestione degli hasmany trought", 
+            "title": "wHasmanyThrough"
+        }, 
+        {
+            "location": "/widgets/#proprieta", 
+            "text": "selected : [],  modelName :  none ,  last_searched_result : null,  // json risultato dell ultima ricerca  hasmany_container :  [crud-hasmany_container] ,  selected_container :  [crud-selected_container] ,  title_selector :  [crud-render_title] ,  removeActionOptions : null, // eventuali classi per il bottone  morph : null,  //label_field : null,  labelFields : [ label ],  // campi che verranno visualizzati per gli elementi presenti  hiddenFields : [ id , status ],   labelFieldsConfig : {}, // configurazioni speciali per i label fields default sono text    addNew : false,    searchField : null,   searchDescription : null,   searchMethod : null,    itemAddTemplate : null,   itemViewTemplate : null,   listItemsTemplate : null,    metadata : {\n    autocompleteModel : null,\n  },", 
+            "title": "propriet\u00e0"
+        }, 
+        {
+            "location": "/widgets/#metodi_4", 
+            "text": "_populateItem : function(values,container) {  _populate : function (filter) {", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/widgets/#proprieta_1", 
+            "text": "resources : [  jquery-sortable.js ]  _views : [],", 
+            "title": "propriet\u00e0"
+        }, 
+        {
+            "location": "/widgets/#metodi_5", 
+            "text": "itemExist : function (values) {  addItem : function (values) {  deleteItem : function (vkey) {", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/widgets/#w-upload-ajax", 
+            "text": "DAFINIRE\nComponente per la gestione di un upload in modalit\u00e0 ajax. Il componente fa  una chiamata ajax\ndove invia il file da uploare e poi salva in un campo nascosto il risultato. Insieme al risultato\nci  mette anche un  anteprima utilizzando il componente r-preview.\nLa sua definizione \u00e8 in  crud.components.widgets.wUploadAjax\nLa definizione del template \u00e8 nel container con id w-upload-ajax-template`", 
+            "title": "w-upload-ajax"
+        }, 
+        {
+            "location": "/widgets/#data_11", 
+            "text": "extensions : [] estensioni del file accettate,  maxFileSize :   dimensione massimo del file da uploadare,  routeName :  uploadfile ,  previewConf : configurazione del componente r-preview. Gestione interna,  error : presenza di errori durante l upload,  errorMessage : messaggio di errore dell upload,  ajaxFields : vettore associativo di eventuali campi nascosti da mandare in ajax insieme al file,  lastUpload : contiene la risposta json dell ultima chiamata ajax.", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#metodi_6", 
+            "text": "setRouteValues(route) : metodo per configurare i parametri della route  _getFileValue():ritorna il valore del controllo file  _validate() : eventuali controlli personali di validazione da parte javascript  validate() : metodo chiamato prima di spedire il file ajax  sendAjax() : metodo per la chiamata ajax.  _setUploadFieldsType : function () {  _setFieldsType : function () {", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/widgets/#w-upload", 
+            "text": "DAFINIRE\nComponente per la gestione di un upload nella form\nLa sua definizione \u00e8 in  crud.components.widgets.wUpload\nLa definizione del template \u00e8 nel container con id w-upload-template`", 
+            "title": "w-upload"
+        }, 
+        {
+            "location": "/widgets/#proprieta_2", 
+            "text": "extensions : [] estensioni del file accettate,  maxFileSize :   dimensione massimo del file da uploadare,", 
+            "title": "propriet\u00e0"
+        }, 
+        {
+            "location": "/widgets/#metodi_7", 
+            "text": "_showItemUploadedPreview : function (container,values) {  _bindActions : function () {  _checkLimit : function () {  renderNewItem : function (values) {  deleteItem : function (index) {  ok : function(dialog) {  cancel : function () {  _setUploadFieldsType : function () {  _setFieldsType : function () {  afterUpload : function (data) {", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/widgets/#w-preview", 
+            "text": "DAFINIRE\n- esempio  {{{example_render_hasmany_upload_image_view}}}  provalo online   template   div crud-render_element \n     ul class= list-unstyled  crud-render_list  \n         !--  -- contenitore lista fotos -- -- \n     /ul  /div", 
+            "title": "w-preview"
+        }, 
+        {
+            "location": "/widgets/#itemtemplate", 
+            "text": "li \n     img class= img-circle img-list  src=  crud-attrs= {src:Server.getUrl(urls+'icon')}  /  /li    marcatori", 
+            "title": "itemTemplate"
+        }, 
+        {
+            "location": "/widgets/#w-swap", 
+            "text": "DAFINIRE\nComponente per eseguire uno swap di valore di un determinato campo attraverso una chiamata ajax.\nLa sua definizione \u00e8 in  crud.components.widgets.wSwap\nLa definizione del template \u00e8 nel container con id w-swap-template`", 
+            "title": "w-swap"
+        }, 
+        {
+            "location": "/widgets/#data_12", 
+            "text": "iconClass : {\n        0 :  fa fa-circle text-danger ,\n        1 :  fa fa-circle text-success \n    },\n    metadata : {\n        domainValues : {\n            0:  disattivo ,\n            1:  attivo \n        }\n    },", 
+            "title": "data"
+        }, 
+        {
+            "location": "/widgets/#metodi_8", 
+            "text": "_setHtmlData :function() {  _swap : function () {  _callback : function (json) {   provalo online   template   button type= button  class= btn btn-default btn-xs  crud-render_element title= \n     i crud-icon class= /i  /button    marcatori", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/widgets/#w-texthtml", 
+            "text": "DAFINIRE\nrappresentazione ed editing di testo html  editor html summernote.   esempio   {{{example_render_texthtml_edit}}}  provalo online    height : 200,\n      pluginOptions : {},\n      _pluginObject : null,    template         textarea crud-render_element crud-render_control class= summernote form-control  crud-summernote-lang= it-IT /textarea", 
+            "title": "w-texthtml"
+        }, 
+        {
+            "location": "/widgets/#w-preview_1", 
+            "text": "", 
+            "title": "w-preview"
+        }, 
+        {
+            "location": "/widgets/#dafinire", 
+            "text": "", 
+            "title": "DAFINIRE"
+        }, 
+        {
+            "location": "/widgets/#w-b2-select2", 
+            "text": "DAFINIRE", 
+            "title": "w-b2-select2"
+        }, 
+        {
+            "location": "/widgets/#w-b2m-select2", 
+            "text": "DAFINIRE", 
+            "title": "w-b2m-select2"
+        }, 
+        {
+            "location": "/views/", 
+            "text": "View\n\n\nL\ninsieme delle \nViews\n estende la componente \nc-omponent\n rappresenta il contenitore di \ndati associate ad un modello di dati. Questi dati possono essere passati manualmente o \nattraverso un server, utilizzando le route che usano le convenzioni REST che restituiscano dati \nin formato json.\nNella libreria le route sono parametriche rispetto al nome del modello dati e in base alla chiave\nprimaria in caso di singolo record. E\n stata definita una classe base\n\n\nv-base\n\n\nComponente base di tutte le views. Deve essere considerato come un componente astratto.\nLa sua definizione \u00e8 in \ncrud.views.wBase\n\n\ncomponents\n\n\n\n\nv-widget :\n\n\nv-action : \n\n\n\n\ndata\n\n\nviewTitle : default \n titolo della view\nlangContext : default \n eventuale contesto per la traduzione in lingua delle label presenti nella view.\n\n\nmetodi\n\n\n\n\nfecthData(route,callback) : metodo per il caricamento dei dati callback di ritorno dopo aver \ncaricato i dati.\n\n\ngetActionConfig(name,type) : che ritorna la configurazione di un\nazione in base al name e al tipo\n\n\n_loadConf(modelName,type) : politica per il caricamento della configurazione iniziale della view. \nSe cConf \u00e8 una stringa viene cercata come definizione di window, se non trovata viene cercata in crud.conf.\nSe cConf non viene passata viene cercata una definizione globale della window composta cosi\n. window.Model+\npascalCase(modelName)[type]. Nel caso di type uguale a insert se non esiste viene cercato il type edit.\n\n\ndefaultWidgetConfig : function(key,configName) : ritorna la configurazione minimale di base di un widget rispettando \nle priorita\n tra le configurazioni. key : nome del campo di cui vogliamo la configurazione. confiName : nome variabile \nconfigurazione nell\noggetto conf. (opzionale)\n\n\ngetFieldName(key) : ritorna il nome da utilizzare per il controllo html della form.\n\n\n\n\nv-record\n\n\nEstende il compomente v-base per la gestione di dati provenienti da un singolo record di un modello dati. \nDeve essere considerato come componente astratto che viene esteso da tutte le views che gestiscono un singolo record.\nLa sua definizione \u00e8 in \ncrud.components.views.wRecord\n\n\nprops\n\n\n\n\ncModel,\n\n\ncPk\n\n\n\n\nmetodi\n\n\n\n\nsetWidgetValue(key,value)\n: metodo per settare il valore di un widget.\n\n\ncreateWidgets()\n : metodo per la creazione delle configurazioni dei widgets della view.\n\n\ncreateActions()\n : metodo per la creazione del vettore di tutte le azioni da creare.\n\n\ncreateActionsClass()\n : metodo per la creazione delle configurazioni delle azioni presenti nel vettore.\n\n\nfillData(route,json)\n : metodo per il propolamento del propriet\u00e0 data della view. Se route \u00e8 null allora viene presa\nl\neventuale data di travato in cConf.data. Se route \u00e8 valorizzata viene chiamata la classe Protocol definita nella \nroute che ha il compito di riempire la propriet\u00e0 data.\n\n\ngetViewData()\n : ritorna la serializzazione di tutti i controlli della form, se presente.\n\n\ngetWidget(key)\n : ritorna il widget associato alla key.\n\n\ngetAction(name)\n : ritorna l\nazione di nome name.\n\n\n\n\nv-collection\n\n\nEstende il compomente v-base per la gestione di una collezione di record di un modello dati. \nDeve essere considerato come componente astratto \nche viene esteso da tutte le views che gestiscono una collection record.\nLa sua definizione \u00e8 in \ncrud.components.views.wCollection\n\n\nprops\n\n\n\n\ncModel\n\n\n\n\nMetodi\n\n\n\n\nsetWidgetValue(row,key,value)\n metodo per settare il valore di un widget alla riga row e nome key.\n\n\ncreateWidgets()\n : metodo per la creazione delle configurazioni dei widgets della view.\n\n\ngetKeys()\n : ritorna le chiavi da visualizzare nella view.\n\n\ngetWidget(row,key)\n : ritorna il wiget associato alla row,key.\n\n\ncreateActions()\n : crea i due vettori delle definizioni delle azioni da istanziare.  collectionActionsName,\nrecordActionsName\n\n\ncreateRecordActions(row)\n : crea le azioni da associare alla row.\n\n\ncreateCollectionActions()\n : crea le azioni da associare all\nintera view.\n\n\n\n\nViews Implementate\n\n\nNella libreria sono state implementate delle views di uso comune\nDAFINIRE\n\n\nv-list\n\n\nE\n una collection view che renderizza i risultati su un template tabellare, viene popolata attraverso la \nRouteList\n che prevede come parametro il modelName, questa view \u00e8 composta dal\ntemplate principale piu\n altri template delle varie sezioni di una lista. Questo permette di poter configurare\nle singole parti in modo pi\u00f9 puntuale. \nDAFINIRE\n\n\n\n\nv-list-edit\n\n\nDAFINIRE\n\n\n\n\nv-insert\n\n\nE\n una view per la creazione di un nuovo record. Utilizza la route RouteInsert per il \ncaricamento dei dati e la RouteSave per il salvataggio\nDAFINIRE\n\n\n\n\nv-edit\n\n\nE\n una view per la modifica di un record. Utilizza la route RouteEdit per il caricamento\ne la RouteUpdate per il salvataggio\nDAFINIRE\n\n\n\n\nv-search\n\n\nE\n una view per effettuare una ricerca.\nDAFINIRE\n\n\n\n\nv-view\n\n\nE\n una view per visualizzare i risultati in modalit\u00e0 lettura.\nDAFINIRE\n\n\n\n\nv-hasmany\n\n\nDAFINIRE\n\n\nv-hasmany-view\n\n\nDAFINIRE", 
+            "title": "Views"
+        }, 
+        {
+            "location": "/views/#view", 
+            "text": "L insieme delle  Views  estende la componente  c-omponent  rappresenta il contenitore di \ndati associate ad un modello di dati. Questi dati possono essere passati manualmente o \nattraverso un server, utilizzando le route che usano le convenzioni REST che restituiscano dati \nin formato json.\nNella libreria le route sono parametriche rispetto al nome del modello dati e in base alla chiave\nprimaria in caso di singolo record. E  stata definita una classe base", 
+            "title": "View"
+        }, 
+        {
+            "location": "/views/#v-base", 
+            "text": "Componente base di tutte le views. Deve essere considerato come un componente astratto.\nLa sua definizione \u00e8 in  crud.views.wBase", 
+            "title": "v-base"
+        }, 
+        {
+            "location": "/views/#components", 
+            "text": "v-widget :  v-action :", 
+            "title": "components"
+        }, 
+        {
+            "location": "/views/#data", 
+            "text": "viewTitle : default   titolo della view\nlangContext : default   eventuale contesto per la traduzione in lingua delle label presenti nella view.", 
+            "title": "data"
+        }, 
+        {
+            "location": "/views/#metodi", 
+            "text": "fecthData(route,callback) : metodo per il caricamento dei dati callback di ritorno dopo aver \ncaricato i dati.  getActionConfig(name,type) : che ritorna la configurazione di un azione in base al name e al tipo  _loadConf(modelName,type) : politica per il caricamento della configurazione iniziale della view. \nSe cConf \u00e8 una stringa viene cercata come definizione di window, se non trovata viene cercata in crud.conf.\nSe cConf non viene passata viene cercata una definizione globale della window composta cosi . window.Model+\npascalCase(modelName)[type]. Nel caso di type uguale a insert se non esiste viene cercato il type edit.  defaultWidgetConfig : function(key,configName) : ritorna la configurazione minimale di base di un widget rispettando \nle priorita  tra le configurazioni. key : nome del campo di cui vogliamo la configurazione. confiName : nome variabile \nconfigurazione nell oggetto conf. (opzionale)  getFieldName(key) : ritorna il nome da utilizzare per il controllo html della form.", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/views/#v-record", 
+            "text": "Estende il compomente v-base per la gestione di dati provenienti da un singolo record di un modello dati. \nDeve essere considerato come componente astratto che viene esteso da tutte le views che gestiscono un singolo record.\nLa sua definizione \u00e8 in  crud.components.views.wRecord", 
+            "title": "v-record"
+        }, 
+        {
+            "location": "/views/#props", 
+            "text": "cModel,  cPk", 
+            "title": "props"
+        }, 
+        {
+            "location": "/views/#metodi_1", 
+            "text": "setWidgetValue(key,value) : metodo per settare il valore di un widget.  createWidgets()  : metodo per la creazione delle configurazioni dei widgets della view.  createActions()  : metodo per la creazione del vettore di tutte le azioni da creare.  createActionsClass()  : metodo per la creazione delle configurazioni delle azioni presenti nel vettore.  fillData(route,json)  : metodo per il propolamento del propriet\u00e0 data della view. Se route \u00e8 null allora viene presa\nl eventuale data di travato in cConf.data. Se route \u00e8 valorizzata viene chiamata la classe Protocol definita nella \nroute che ha il compito di riempire la propriet\u00e0 data.  getViewData()  : ritorna la serializzazione di tutti i controlli della form, se presente.  getWidget(key)  : ritorna il widget associato alla key.  getAction(name)  : ritorna l azione di nome name.", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/views/#v-collection", 
+            "text": "Estende il compomente v-base per la gestione di una collezione di record di un modello dati. \nDeve essere considerato come componente astratto \nche viene esteso da tutte le views che gestiscono una collection record.\nLa sua definizione \u00e8 in  crud.components.views.wCollection", 
+            "title": "v-collection"
+        }, 
+        {
+            "location": "/views/#props_1", 
+            "text": "cModel", 
+            "title": "props"
+        }, 
+        {
+            "location": "/views/#metodi_2", 
+            "text": "setWidgetValue(row,key,value)  metodo per settare il valore di un widget alla riga row e nome key.  createWidgets()  : metodo per la creazione delle configurazioni dei widgets della view.  getKeys()  : ritorna le chiavi da visualizzare nella view.  getWidget(row,key)  : ritorna il wiget associato alla row,key.  createActions()  : crea i due vettori delle definizioni delle azioni da istanziare.  collectionActionsName,\nrecordActionsName  createRecordActions(row)  : crea le azioni da associare alla row.  createCollectionActions()  : crea le azioni da associare all intera view.", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/views/#views-implementate", 
+            "text": "Nella libreria sono state implementate delle views di uso comune\nDAFINIRE", 
+            "title": "Views Implementate"
+        }, 
+        {
+            "location": "/views/#v-list", 
+            "text": "E  una collection view che renderizza i risultati su un template tabellare, viene popolata attraverso la  RouteList  che prevede come parametro il modelName, questa view \u00e8 composta dal\ntemplate principale piu  altri template delle varie sezioni di una lista. Questo permette di poter configurare\nle singole parti in modo pi\u00f9 puntuale. \nDAFINIRE", 
+            "title": "v-list"
+        }, 
+        {
+            "location": "/views/#v-list-edit", 
+            "text": "DAFINIRE", 
+            "title": "v-list-edit"
+        }, 
+        {
+            "location": "/views/#v-insert", 
+            "text": "E  una view per la creazione di un nuovo record. Utilizza la route RouteInsert per il \ncaricamento dei dati e la RouteSave per il salvataggio\nDAFINIRE", 
+            "title": "v-insert"
+        }, 
+        {
+            "location": "/views/#v-edit", 
+            "text": "E  una view per la modifica di un record. Utilizza la route RouteEdit per il caricamento\ne la RouteUpdate per il salvataggio\nDAFINIRE", 
+            "title": "v-edit"
+        }, 
+        {
+            "location": "/views/#v-search", 
+            "text": "E  una view per effettuare una ricerca.\nDAFINIRE", 
+            "title": "v-search"
+        }, 
+        {
+            "location": "/views/#v-view", 
+            "text": "E  una view per visualizzare i risultati in modalit\u00e0 lettura.\nDAFINIRE", 
+            "title": "v-view"
+        }, 
+        {
+            "location": "/views/#v-hasmany", 
+            "text": "", 
+            "title": "v-hasmany"
+        }, 
+        {
+            "location": "/views/#dafinire", 
+            "text": "", 
+            "title": "DAFINIRE"
+        }, 
+        {
+            "location": "/views/#v-hasmany-view", 
+            "text": "", 
+            "title": "v-hasmany-view"
+        }, 
+        {
+            "location": "/views/#dafinire_1", 
+            "text": "", 
+            "title": "DAFINIRE"
+        }, 
+        {
+            "location": "/templates/", 
+            "text": "Template\n\n\nIl componente \ntemplate\n \u00e8 formato dal da un template html per la visualizzazione di un widget,\nall\ninterno di una view. Questo ci permette,volendo, di avere strutture diverse per ogni singolo widget. \nIn questo modo possiamo coprire tutte le esigenze di layout della nostra applicazione e render meno statiche\nle views. Ogni view ha di default il suo template, possiamo modifcarlo per tutti o per solo per alcuni widget.\n\n\ntpl-record\n\n\ncomponente per la visualizzazione semplice di un widget all\ninterno di una view record\n\n\ntemplate\n\n\ndiv\n\n    \nlabel\n{{cWidget.label | translate}}\n/label\n\n    \nv-widget :c-widget=\ncWidget\n/v-widget\n\n\n/div\n\n\n\n\n\ntpl-record2\n\n\ncomponente per la visualizzazione semplice di un widget all\ninterno di una view record a due colonne\n\n\ntemplate\n\n\ndiv class=\nrow\n\n    \ndiv class=\ncol col-sm-6\n{{cWidget.label | translate}}\n/div\n\n    \ndiv class=\ncol col-sm-6\n\n        \nv-widget :c-widget=\ncWidget\n/v-widget\n\n    \n/div\n\n\n/div\n\n\n\n\n\ntpl-list\n\n\ncomponente per la visualizzazione semplice di un widget all\ninterno di una view list\n\n\ntemplate\n\n\nv-widget :c-widget=\ncWidget\n/v-widget\n\n\n\n\n\ntpl-no\n\n\ncomponente per la visualizzazione di un widget senza template\n\n\ntemplate\n\n\nv-widget :c-widget=\ncWidget\n/v-widget", 
+            "title": "Templates"
+        }, 
+        {
+            "location": "/templates/#template", 
+            "text": "Il componente  template  \u00e8 formato dal da un template html per la visualizzazione di un widget,\nall interno di una view. Questo ci permette,volendo, di avere strutture diverse per ogni singolo widget. \nIn questo modo possiamo coprire tutte le esigenze di layout della nostra applicazione e render meno statiche\nle views. Ogni view ha di default il suo template, possiamo modifcarlo per tutti o per solo per alcuni widget.", 
+            "title": "Template"
+        }, 
+        {
+            "location": "/templates/#tpl-record", 
+            "text": "componente per la visualizzazione semplice di un widget all interno di una view record", 
+            "title": "tpl-record"
+        }, 
+        {
+            "location": "/templates/#template_1", 
+            "text": "div \n     label {{cWidget.label | translate}} /label \n     v-widget :c-widget= cWidget /v-widget  /div", 
+            "title": "template"
+        }, 
+        {
+            "location": "/templates/#tpl-record2", 
+            "text": "componente per la visualizzazione semplice di un widget all interno di una view record a due colonne", 
+            "title": "tpl-record2"
+        }, 
+        {
+            "location": "/templates/#template_2", 
+            "text": "div class= row \n     div class= col col-sm-6 {{cWidget.label | translate}} /div \n     div class= col col-sm-6 \n         v-widget :c-widget= cWidget /v-widget \n     /div  /div", 
+            "title": "template"
+        }, 
+        {
+            "location": "/templates/#tpl-list", 
+            "text": "componente per la visualizzazione semplice di un widget all interno di una view list", 
+            "title": "tpl-list"
+        }, 
+        {
+            "location": "/templates/#template_3", 
+            "text": "v-widget :c-widget= cWidget /v-widget", 
+            "title": "template"
+        }, 
+        {
+            "location": "/templates/#tpl-no", 
+            "text": "componente per la visualizzazione di un widget senza template", 
+            "title": "tpl-no"
+        }, 
+        {
+            "location": "/templates/#template_4", 
+            "text": "v-widget :c-widget= cWidget /v-widget", 
+            "title": "template"
+        }, 
+        {
+            "location": "/actions/", 
+            "text": "Actions\n\n\nLe actions sono dei componenti che agiscono su delle view. Attraverso le azioni possiamo agire sulle view. Esempi\nstandard di azioni sono la save, insert, stampa, ecc.\n\n\naction-base\n\n\nClasse principale delle azioni. Estende la classe principale \nc-component\n Le azioni rappresentano l\naggancio per le interazioni con \nl\nutente sulle views, dashboard oppure semplici bottoni html. Da questa classe\nsono state definite altri due azioni generali la \nRecordAction\n e la \nCollectionAction\n che\nfondamentalmente dividono il comportamento in azioni che agiscono sul singolo record\ne azioni che agiscono su una collezione di record.\n\n\ndata\n\n\n\n\ntype\n : default collection pu\u00f2 essere \nrecord\n o \ncollection\n\n\ncontrolType\n : default \nbutton\n,\n\n\ntext\n : \n,\n\n\nicon\n : \n,\n\n\ncss\n : \nbtn btn-outline-secondary\n,\n\n\ntarget\n : \n,\n\n\nhref\n : \n,\n\n\nenabled\n : true,\n\n\nvisible\n : true,\n\n\ntitle\n : \n,\n\n\nview\n : default this.$parent\n\n\n\n\nMetodi\n\n\n\n\n_beforeExecute(callback)\n : metodo chiamato quando l\nazione viene cliccata, prima di essere eseguita\n\n\n_execute\n : esecuzione dell\nazione \n\n\n_afterExecute\n : metodo chiamato dopo che l\nazione \u00e8 stata eseguita.\n\n\nsetEnabled(enable)\n : abilita o disablita l\nazione\n\n\nsetVisible(visible)\n : se definita viene chiamata al termi dell\nexecute\n\n\n\n\nActions Implementate\n\n\nLa libreria, come per tutti gli altri componenti, mette a disposizione delle azioni gi\u00e0 predefinite, \nutilizzabili immediamente. Queste azioni rappresentano le azioni pi\u00f9 comuni in una libreria crud. Ovviamente\npossono essere estese o definite delle nuove. Le configurazioni di tale azioni le potete trovare sotto\ncrud.recordActions e crud.collectionActions. Potete ridefinire qui le varie opzioni grafiche o del metodo\nexecute.\n\n\naction-edit\n\n\nAzione di tipo record pensata per l\nutilizzo dentro una view list e rappresenta l\nedit di un record \nall\ninterno della lista. \n\n\ndata\n\n\n\n\ntype\n : \nrecord\n\n\ntitle\n : \napp.modifica\n,\n\n\nicon\n : \nfa fa-edit\n,\n\n\ncss\n : \nbtn btn-outline-secondary btn-sm\n\n\nmodelName\n : nome modello dati della view,\n\n\nmodelData\n : l\nintera record del modello dati\n\n\n\n\nMetodi\n\n\n\n\nexecute\n - carica una pagina con url \n/edit/\n + this.modelName + \n/\n + this.modelData[this.view.primaryKey];\n\n\n\n\naction-insert\n\n\nAzione di tipo  \ncollection\n. Azione pensata per l\nutilizzo dentro una view list  per l\ninserimento di un record all\ninterno della lista.\n\n\ndata\n\n\n\n\ntitle\n : \nInserisci\n,\n\n\nicon\n : \nfa fa-plus text-success\n,\n\n\ncss\n : \nbtn btn-default btn-xs text-success\n,\n\n\ntext\n : \nNuovo\n,\n\n\n\n\nmetodi\n\n\n\n\nexecute\n - utilizza al route per una pagina in insert per richiamare la pagina nuova\n\n\n\n\naction-save\n\n\nAzione di tipo record pensata per l\nutilizzo dentro una view edit per salvare le modifiche\n\n\n\n\ntitle\n : \nSalva\n,\n\n\ntext\n : \nSalva\n,\n\n\n\n\nmultiText\n : \nSalva\n,\n\n\n\n\n\n\nexecute\n - utilizza le route update o save a seconda se il modello dati \u00e8 in modifica o insert\n\n\n\n\n\n\naction-back\n\n\nEstende \nRecordAction\n. Azione pensata per l\nutilizzo dentro una view edit ritorna alla pagina di provienienza\n\n\n\n\ntitle\n : \nIndietro\n,\n\n\n\n\ntext\n : \nTorna indietro\n,\n\n\n\n\n\n\nexecute\n esegue sostanzialmente un history.back();\n\n\n\n\n\n\naction-view\n\n\nEstende \nRecordAction\n. Azione pensata per l\nutilizzo dentro una view list  per la visualizzazione di un record all\ninterno della lista.\n\n\ndata\n\n\n\n\ntitle\n :\nVisualizza\n,\n\n\nicon\n:  \nfa fa-list-alt\n,\n\n\nmultiText\n : \nVisualizza\n,\n\n\nrouteName\n : \npage_view\n,\n\n\n\n\nMetodi\n\n\n\n\nexecute\n - utilizza al route per una pagina in view per richiamare la pagina nuova\n\n\n\n\naction-delete\n\n\nEstende \nRecordAction\n. Azione pensata per l\nutilizzo dentro una view list  per la cancellazione di un record all\ninterno della lista.\n\n\ndata\n\n\n\n\ntitle\n : \nCancella\n,\n\n\nicon\n:  \nfa fa-remove text-danger\n,\n\n\nmultiText\n : \nCancella\n,\n\n\n\n\nMetodi\n\n\n\n\nexecute\n - utilizza al route delete per eseguire la richiesta di cancellazione. Prima chiede conferma\n\n\n\n\naction-delete-selected\n\n\nEstende \nCollectionAction\n. Azione pensata per l\nutilizzo dentro una view list  per la cancellazione di tutti i record selezionati nella lista.\n\n\ndata\n\n\n\n\nclassName\n : \nActionMultiDelete\n,\n\n\ntitle\n : \nCancella selezionati\n,\n\n\nicon\n:  \nfa fa-trash text-danger\n,\n\n\ncssClass\n : \nbtn btn-default btn-xs text-danger\n,\n\n\ntext\n : \nSelezionati\n,\n\n\nneedSelection\n : true,     \n\n\n\n\naction-search\n\n\nEstende \nCollectionAction\n. Azione pensata per l\nutilizzo dentro una view search  per la ricerca dei record con i filtri della view.\n\n\ndata\n\n\n\n\nclassName\n : \nActionSearch\n,\n\n\ntitle\n : \nRicerca\n,\n\n\nicon\n:  \nfa fa-search\n,\n\n\ncssClass\n : \nbtn btn-xs btn-default text-info\n,\n\n\ntext\n : \nCerca\n,\n\n\n\n\nMetodi\n\n\n\n\nexecute\n - richiama la pagina con i parametri in get presenti nella form della vista\n\n\n\n\naction-order\n\n\naction-edit-mode\n\n\naction-view-mode\n\n\naction-save-row", 
+            "title": "Actions"
+        }, 
+        {
+            "location": "/actions/#actions", 
+            "text": "Le actions sono dei componenti che agiscono su delle view. Attraverso le azioni possiamo agire sulle view. Esempi\nstandard di azioni sono la save, insert, stampa, ecc.", 
+            "title": "Actions"
+        }, 
+        {
+            "location": "/actions/#action-base", 
+            "text": "Classe principale delle azioni. Estende la classe principale  c-component  Le azioni rappresentano l aggancio per le interazioni con \nl utente sulle views, dashboard oppure semplici bottoni html. Da questa classe\nsono state definite altri due azioni generali la  RecordAction  e la  CollectionAction  che\nfondamentalmente dividono il comportamento in azioni che agiscono sul singolo record\ne azioni che agiscono su una collezione di record.", 
+            "title": "action-base"
+        }, 
+        {
+            "location": "/actions/#data", 
+            "text": "type  : default collection pu\u00f2 essere  record  o  collection  controlType  : default  button ,  text  :  ,  icon  :  ,  css  :  btn btn-outline-secondary ,  target  :  ,  href  :  ,  enabled  : true,  visible  : true,  title  :  ,  view  : default this.$parent", 
+            "title": "data"
+        }, 
+        {
+            "location": "/actions/#metodi", 
+            "text": "_beforeExecute(callback)  : metodo chiamato quando l azione viene cliccata, prima di essere eseguita  _execute  : esecuzione dell azione   _afterExecute  : metodo chiamato dopo che l azione \u00e8 stata eseguita.  setEnabled(enable)  : abilita o disablita l azione  setVisible(visible)  : se definita viene chiamata al termi dell execute", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/actions/#actions-implementate", 
+            "text": "La libreria, come per tutti gli altri componenti, mette a disposizione delle azioni gi\u00e0 predefinite, \nutilizzabili immediamente. Queste azioni rappresentano le azioni pi\u00f9 comuni in una libreria crud. Ovviamente\npossono essere estese o definite delle nuove. Le configurazioni di tale azioni le potete trovare sotto\ncrud.recordActions e crud.collectionActions. Potete ridefinire qui le varie opzioni grafiche o del metodo\nexecute.", 
+            "title": "Actions Implementate"
+        }, 
+        {
+            "location": "/actions/#action-edit", 
+            "text": "Azione di tipo record pensata per l utilizzo dentro una view list e rappresenta l edit di un record \nall interno della lista.", 
+            "title": "action-edit"
+        }, 
+        {
+            "location": "/actions/#data_1", 
+            "text": "type  :  record  title  :  app.modifica ,  icon  :  fa fa-edit ,  css  :  btn btn-outline-secondary btn-sm  modelName  : nome modello dati della view,  modelData  : l intera record del modello dati", 
+            "title": "data"
+        }, 
+        {
+            "location": "/actions/#metodi_1", 
+            "text": "execute  - carica una pagina con url  /edit/  + this.modelName +  /  + this.modelData[this.view.primaryKey];", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/actions/#action-insert", 
+            "text": "Azione di tipo   collection . Azione pensata per l utilizzo dentro una view list  per l inserimento di un record all interno della lista.", 
+            "title": "action-insert"
+        }, 
+        {
+            "location": "/actions/#data_2", 
+            "text": "title  :  Inserisci ,  icon  :  fa fa-plus text-success ,  css  :  btn btn-default btn-xs text-success ,  text  :  Nuovo ,", 
+            "title": "data"
+        }, 
+        {
+            "location": "/actions/#metodi_2", 
+            "text": "execute  - utilizza al route per una pagina in insert per richiamare la pagina nuova", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/actions/#action-save", 
+            "text": "Azione di tipo record pensata per l utilizzo dentro una view edit per salvare le modifiche   title  :  Salva ,  text  :  Salva ,   multiText  :  Salva ,    execute  - utilizza le route update o save a seconda se il modello dati \u00e8 in modifica o insert", 
+            "title": "action-save"
+        }, 
+        {
+            "location": "/actions/#action-back", 
+            "text": "Estende  RecordAction . Azione pensata per l utilizzo dentro una view edit ritorna alla pagina di provienienza   title  :  Indietro ,   text  :  Torna indietro ,    execute  esegue sostanzialmente un history.back();", 
+            "title": "action-back"
+        }, 
+        {
+            "location": "/actions/#action-view", 
+            "text": "Estende  RecordAction . Azione pensata per l utilizzo dentro una view list  per la visualizzazione di un record all interno della lista.", 
+            "title": "action-view"
+        }, 
+        {
+            "location": "/actions/#data_3", 
+            "text": "title  : Visualizza ,  icon :   fa fa-list-alt ,  multiText  :  Visualizza ,  routeName  :  page_view ,", 
+            "title": "data"
+        }, 
+        {
+            "location": "/actions/#metodi_3", 
+            "text": "execute  - utilizza al route per una pagina in view per richiamare la pagina nuova", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/actions/#action-delete", 
+            "text": "Estende  RecordAction . Azione pensata per l utilizzo dentro una view list  per la cancellazione di un record all interno della lista.", 
+            "title": "action-delete"
+        }, 
+        {
+            "location": "/actions/#data_4", 
+            "text": "title  :  Cancella ,  icon :   fa fa-remove text-danger ,  multiText  :  Cancella ,", 
+            "title": "data"
+        }, 
+        {
+            "location": "/actions/#metodi_4", 
+            "text": "execute  - utilizza al route delete per eseguire la richiesta di cancellazione. Prima chiede conferma", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/actions/#action-delete-selected", 
+            "text": "Estende  CollectionAction . Azione pensata per l utilizzo dentro una view list  per la cancellazione di tutti i record selezionati nella lista.", 
+            "title": "action-delete-selected"
+        }, 
+        {
+            "location": "/actions/#data_5", 
+            "text": "className  :  ActionMultiDelete ,  title  :  Cancella selezionati ,  icon :   fa fa-trash text-danger ,  cssClass  :  btn btn-default btn-xs text-danger ,  text  :  Selezionati ,  needSelection  : true,", 
+            "title": "data"
+        }, 
+        {
+            "location": "/actions/#action-search", 
+            "text": "Estende  CollectionAction . Azione pensata per l utilizzo dentro una view search  per la ricerca dei record con i filtri della view.", 
+            "title": "action-search"
+        }, 
+        {
+            "location": "/actions/#data_6", 
+            "text": "className  :  ActionSearch ,  title  :  Ricerca ,  icon :   fa fa-search ,  cssClass  :  btn btn-xs btn-default text-info ,  text  :  Cerca ,", 
+            "title": "data"
+        }, 
+        {
+            "location": "/actions/#metodi_5", 
+            "text": "execute  - richiama la pagina con i parametri in get presenti nella form della vista", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/actions/#action-order", 
+            "text": "", 
+            "title": "action-order"
+        }, 
+        {
+            "location": "/actions/#action-edit-mode", 
+            "text": "", 
+            "title": "action-edit-mode"
+        }, 
+        {
+            "location": "/actions/#action-view-mode", 
+            "text": "", 
+            "title": "action-view-mode"
+        }, 
+        {
+            "location": "/actions/#action-save-row", 
+            "text": "", 
+            "title": "action-save-row"
+        }, 
+        {
+            "location": "/confs/", 
+            "text": "crud\n\n\nIl vettore associativo globale \ncrud\n contiene le configurazioni base di azioni, routes, view.\nE\n accedibile esternamente attraverso la costante \ncrud\n o dall\ninterno delle componenti con this.$crud.\nqueste configurazioni vengono prese come base e poi effettuato il merge con le varie istanze. Il\nrisultato viene poi passato al componente per la sua configurazione iniziale. \nDi seguito riportiamo alcune configurazioni iniziali.\n\n\ncrud.conf.view = {\n    primaryKey : 'id',\n    routeName : 'view',\n    fieldsConfig : {},\n    //actions : ['action-back'],\n    actions : [],\n    customActions: {},\n    widgetTemplate : 'c-tpl-record2',\n}", 
+            "title": "Confs"
+        }, 
+        {
+            "location": "/confs/#crud", 
+            "text": "Il vettore associativo globale  crud  contiene le configurazioni base di azioni, routes, view.\nE  accedibile esternamente attraverso la costante  crud  o dall interno delle componenti con this.$crud.\nqueste configurazioni vengono prese come base e poi effettuato il merge con le varie istanze. Il\nrisultato viene poi passato al componente per la sua configurazione iniziale. \nDi seguito riportiamo alcune configurazioni iniziali.  crud.conf.view = {\n    primaryKey : 'id',\n    routeName : 'view',\n    fieldsConfig : {},\n    //actions : ['action-back'],\n    actions : [],\n    customActions: {},\n    widgetTemplate : 'c-tpl-record2',\n}", 
+            "title": "crud"
+        }, 
+        {
+            "location": "/routes/", 
+            "text": "Routes\n\n\nLe routes rappresentano le classi per la gestione degli url per la comunicazione verso il server che\nfornir\u00e0 i dati\n\n\nRoute\n\n\nClasse base per la gestione delle route verso il backend. Sono state definite\nalcune route per le principali interazioni con il backend secondo le specifiche REST.\n\n\nPropriet\u00e0\n\n\n\n\nclassName\n: default \nRoute\n variabile di comodo per riconoscere in quale route ci troviamo\n\n\nmethod\n: default null rappresenta il metodo usato per la chiamata ajax, pu\u00f2 essere get o post\n\n\nurl\n : default null rappresenta l\nurl che deve essere composto per eseguire la chiamataa \n    Le parti variabili devono essere racchiuse tra parentesi graffe. Per esempio : /action/{var1}/print \u00e8 un\n    url in cui {var1} verr\u00e0 sostituita con il valore che l\noggetto Route ha in quel momento.\n\n\nresultType\n default  null tipo di risultato, pu\u00f2 essere record o list\n\n\nprotocol\n default null nome della classe protocollo da utilizzare per applicare eventuali\n elaborazioni sui dati dopo averli ricevuti. Di default sono stati implementati due protocolli: \n\n\nListProtocol\n\n\nRecordProtocol\n\n\n\n\n\n\nextraParams\n  : {}, parametri statici da aggiungere sempre alla chiamata prima di eseguire la richiesta \nal server.\n\n\nvalues\n : {}, vettore associativo con il valore dei parametri per la costruzione dell\nurl\n\n\nparams\n :{} vettore associativo dei parametri passati nella richiesta. Prima\ndella richiesta vengono sommati agli extraParams\n\n\n\n\nMetodi\n\n\n\n\n\n\ninit(attrs)\n costruttore. Accetta come parametro un vettore associativo che permette\ndi sovrascrivere le propriet\u00e0 dell\noggetto creato.\n\n\n\n\n\n\ngetUrl(values)\n ritorna url esatto valorizzando le variabili parametriche tra {} \npresenti nella stringa url. Il parametro \nvalues\n \u00e8 il vettore associativo dei valori\nattuali per valorizzare le variabili. Se non viene passato prende i valori presenti\nnell\noggetto nel vettore values\n\n\n\n\n\n\ngetParams\n ritorna tutti i parametri che verranno passati nella richiesta. L\nunione\ntra params ed extra_params dell\noggetto\n\n\n\n\n\n\ngetKeys\n ritorna un vettore con tutte le keys necessarie per la composizione dell\nulr\ndella route che devono essere valorizzati per ritornare l\nurl esatto. Peer esempio \nse url e\n fatto come /pippo/{param1}/{param2} ritorna [\nparam1\n,\nparam2\n]\n\n\n\n\n\n\nRoute Implementate\n\n\nLa libreria contiene gi\u00e0 delle route per l\nuso comune che vengono utilizzate dalle views\ne dalle actions. Per la creazione di una route \u00e8 stato realizzato un pseduo metodo statico\nchiamato factory. Se vogliamo utilizzare il metodo factory dobbiamo rispettare la convenzione\nsui nomi. Chiamare il factory(\nlist\n) il metodo cercher\u00e0 l\nesistenza della classe\nRouteList, se chiamiamo il factory(\nlist_mia\n) il metodo cercher\u00e0 l\nesistenza\ndella classe RouteListMia. In altre parole sul nome passato al metodo factory viene\napplicata la funziona \npascal case\n concatenato con il prefisso \nRoute\n\n\n\n\nRoute.factory(type,attrs)\n questo metodo istanzia una Route di tipo type\npassando al costruttore gli attrs. Alla variabile type viene applicata la trasformazione\npascal case e aggiunto il prefisso \nRoute\n. Per esempio se vogliamo istanziare un oggetto chiamato RouteList si chiama il metodo\nstatico :\n\n\n\n\nvar r = Route.factory('list',{\n    values : {\n        modelName : 'user'\n    }\n});\n\n\n\n\nQuesto codice crea un\ninstanza della classe RouteList e il vettore associativo values\nprender\u00e0 come valori quelli passati.\n\n\nRouteList\n\n\nla route \u00e8 stata creata per recuperare una lista di record del modello specificato.\nNel vettore \nvalues\n deve essere presente la chiave:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}\n,\n    \nprotocol\n: \nlist\n,\n    \nresultType\n: \nlist\n,\n    \nmethod\n: \nget\n,\n    \nkeys\n: [\n        \nmodelName\n\n    ]\n}\n\n\n\n\nRouteEdit\n\n\nLa route carica i dati di un record per la modifica.\nNel vettore \nvalues\n devono essere presenti le chiavi:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\npk\n: rappresenta l\nid che identifica il record specifico\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}/{pk}/edit\n,\n    \nprotocol\n: \nrecord\n,\n    \nresultType\n: \nrecord\n,\n    \nmethod\n: \nget\n,\n    \nkeys\n: [\n        \nmodelName\n,\n        \npk\n\n    ]\n}\n\n\n\n\nRouteSearch\n\n\nLa route che chiede i dati di un record per la ricerca.\nNel vettore \nvalues\n deve essere presente la chiave:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}/search\n,\n    \nprotocol\n: \nrecord\n,\n    \nresultType\n: \nrecord\n,\n    \nmethod\n: \nget\n,\n    \nkeys\n: [\n        \nmodelName\n\n    ]\n}\n\n\n\n\nRouteInsert\n\n\nLa route che chiede i dati di un record per l\ninserimento.\nNel vettore \nvalues\n deve essere presente la chiave:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}/create\n,\n    \nprotocol\n: \nrecord\n,\n    \nresultType\n: \nrecord\n,\n    \nmethod\n: \nget\n,\n    \nkeys\n: [\n        \nmodelName\n\n    ]\n}\n\n\n\n\nRouteSave\n\n\nLa route che invia i dati di un record per crearlo. I dati del modello verranno passati\ncome params. In questa route viene aggiunto sempre un parametro chiamato _method=\nPOST\n che \nserve a simulare il metodo save REST attraverso la chiamata http.\n\n\nNel vettore \nvalues\n deve essere presente la chiave:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}/create\n,\n    \nprotocol\n: \nrecord\n,\n    \nresultType\n: \nrecord\n,\n    \nmethod\n: \npost\n,\n    \nkeys\n: [\n        \nmodelName\n\n    ],\n    \nextra_params\n: {\n        \n_method\n: \nPOST\n\n    }\n}\n\n\n\n\nRouteUpdate\n\n\nLa route che invia i dati di un record per la modifica. I dati del modello verranno passati\ncome params. In questa route viene aggiunto sempre un parametro chiamato _method=\nPUT\n che \nserve a simulare il metodo put REST attraverso la chiamata http.\nNel vettore \nvalues\n devono essere presenti le chiavi:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\npk\n: rappresenta l\nid che identifica il record specifico\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}/{pk}\n,\n    \nprotocol\n: \nrecord\n,\n    \nresultType\n: \nrecord\n,\n    \nmethod\n: \npost\n,\n    \nkeys\n: [\n        \nmodelName\n,\n        \npk\n\n    ],\n    \nextra_params\n: {\n        \n_method\n: \nPUT\n\n    }\n}\n\n\n\n\nRouteView\n\n\nLa route che chiede i dati di un record in modalit\u00e0 lettura.\nNel vettore \nvalues\n devono essere presenti le chiavi:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\npk\n: rappresenta l\nid che identifica il record specifico\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}/{pk}\n,\n    \nprotocol\n: \nrecord\n,\n    \nresultType\n: \nrecord\n,\n    \nmethod\n: \nget\n,\n    \nkeys\n: [\n        \nmodelName\n,\n        \npk\n\n    ]\n}\n\n\n\n\nRouteDelete\n\n\nLa route che rimuove un record. In questa route viene aggiunto sempre un parametro chiamato \n_method=\nDELETE\n che serve a simulare il metodo delete REST attraverso la chiamata http.\nNel vettore \nvalues\n devono essere presenti le chiavi:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\npk\n: rappresenta l\nid che identifica il record specifico\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}/{pk}\n,\n    \nprotocol\n: \nrecord\n,\n    \nresultType\n: \nrecord\n,\n    \nmethod\n: \npost\n,\n    \nkeys\n: [\n        \nmodelName\n,\n        \npk\n\n    ],\n    \nextra_params\n: {\n        \n_method\n: \nDELETE\n\n    }\n}\n\n\n\n\nRouteMultiDelete\n\n\nLa route che rimuove una lista di record. La lista viene passata come vettore di id\nnei params.\nNel vettore \nvalues\n deve essere presente la chiave:\n\n\n\n\nmodelName\n: rappresenta il nome del modello.\n\n\n\n\n{\n    \nurl\n: \n/api/json/{modelName}/deleteall\n,\n    \nprotocol\n: \nrecord\n,\n    \nresultType\n: \nrecord\n,\n    \nmethod\n: \npost\n,\n    \nkeys\n: [\n        \nmodelName\n\n    ]\n}", 
+            "title": "Routes"
+        }, 
+        {
+            "location": "/routes/#routes", 
+            "text": "Le routes rappresentano le classi per la gestione degli url per la comunicazione verso il server che\nfornir\u00e0 i dati", 
+            "title": "Routes"
+        }, 
+        {
+            "location": "/routes/#route", 
+            "text": "Classe base per la gestione delle route verso il backend. Sono state definite\nalcune route per le principali interazioni con il backend secondo le specifiche REST.", 
+            "title": "Route"
+        }, 
+        {
+            "location": "/routes/#proprieta", 
+            "text": "className : default  Route  variabile di comodo per riconoscere in quale route ci troviamo  method : default null rappresenta il metodo usato per la chiamata ajax, pu\u00f2 essere get o post  url  : default null rappresenta l url che deve essere composto per eseguire la chiamataa \n    Le parti variabili devono essere racchiuse tra parentesi graffe. Per esempio : /action/{var1}/print \u00e8 un\n    url in cui {var1} verr\u00e0 sostituita con il valore che l oggetto Route ha in quel momento.  resultType  default  null tipo di risultato, pu\u00f2 essere record o list  protocol  default null nome della classe protocollo da utilizzare per applicare eventuali\n elaborazioni sui dati dopo averli ricevuti. Di default sono stati implementati due protocolli:   ListProtocol  RecordProtocol    extraParams   : {}, parametri statici da aggiungere sempre alla chiamata prima di eseguire la richiesta \nal server.  values  : {}, vettore associativo con il valore dei parametri per la costruzione dell url  params  :{} vettore associativo dei parametri passati nella richiesta. Prima\ndella richiesta vengono sommati agli extraParams", 
+            "title": "Propriet\u00e0"
+        }, 
+        {
+            "location": "/routes/#metodi", 
+            "text": "init(attrs)  costruttore. Accetta come parametro un vettore associativo che permette\ndi sovrascrivere le propriet\u00e0 dell oggetto creato.    getUrl(values)  ritorna url esatto valorizzando le variabili parametriche tra {} \npresenti nella stringa url. Il parametro  values  \u00e8 il vettore associativo dei valori\nattuali per valorizzare le variabili. Se non viene passato prende i valori presenti\nnell oggetto nel vettore values    getParams  ritorna tutti i parametri che verranno passati nella richiesta. L unione\ntra params ed extra_params dell oggetto    getKeys  ritorna un vettore con tutte le keys necessarie per la composizione dell ulr\ndella route che devono essere valorizzati per ritornare l url esatto. Peer esempio \nse url e  fatto come /pippo/{param1}/{param2} ritorna [ param1 , param2 ]", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/routes/#route-implementate", 
+            "text": "La libreria contiene gi\u00e0 delle route per l uso comune che vengono utilizzate dalle views\ne dalle actions. Per la creazione di una route \u00e8 stato realizzato un pseduo metodo statico\nchiamato factory. Se vogliamo utilizzare il metodo factory dobbiamo rispettare la convenzione\nsui nomi. Chiamare il factory( list ) il metodo cercher\u00e0 l esistenza della classe\nRouteList, se chiamiamo il factory( list_mia ) il metodo cercher\u00e0 l esistenza\ndella classe RouteListMia. In altre parole sul nome passato al metodo factory viene\napplicata la funziona  pascal case  concatenato con il prefisso  Route   Route.factory(type,attrs)  questo metodo istanzia una Route di tipo type\npassando al costruttore gli attrs. Alla variabile type viene applicata la trasformazione\npascal case e aggiunto il prefisso  Route . Per esempio se vogliamo istanziare un oggetto chiamato RouteList si chiama il metodo\nstatico :   var r = Route.factory('list',{\n    values : {\n        modelName : 'user'\n    }\n});  Questo codice crea un instanza della classe RouteList e il vettore associativo values\nprender\u00e0 come valori quelli passati.", 
+            "title": "Route Implementate"
+        }, 
+        {
+            "location": "/routes/#routelist", 
+            "text": "la route \u00e8 stata creata per recuperare una lista di record del modello specificato.\nNel vettore  values  deve essere presente la chiave:   modelName : rappresenta il nome del modello.   {\n     url :  /api/json/{modelName} ,\n     protocol :  list ,\n     resultType :  list ,\n     method :  get ,\n     keys : [\n         modelName \n    ]\n}", 
+            "title": "RouteList"
+        }, 
+        {
+            "location": "/routes/#routeedit", 
+            "text": "La route carica i dati di un record per la modifica.\nNel vettore  values  devono essere presenti le chiavi:   modelName : rappresenta il nome del modello.  pk : rappresenta l id che identifica il record specifico   {\n     url :  /api/json/{modelName}/{pk}/edit ,\n     protocol :  record ,\n     resultType :  record ,\n     method :  get ,\n     keys : [\n         modelName ,\n         pk \n    ]\n}", 
+            "title": "RouteEdit"
+        }, 
+        {
+            "location": "/routes/#routesearch", 
+            "text": "La route che chiede i dati di un record per la ricerca.\nNel vettore  values  deve essere presente la chiave:   modelName : rappresenta il nome del modello.   {\n     url :  /api/json/{modelName}/search ,\n     protocol :  record ,\n     resultType :  record ,\n     method :  get ,\n     keys : [\n         modelName \n    ]\n}", 
+            "title": "RouteSearch"
+        }, 
+        {
+            "location": "/routes/#routeinsert", 
+            "text": "La route che chiede i dati di un record per l inserimento.\nNel vettore  values  deve essere presente la chiave:   modelName : rappresenta il nome del modello.   {\n     url :  /api/json/{modelName}/create ,\n     protocol :  record ,\n     resultType :  record ,\n     method :  get ,\n     keys : [\n         modelName \n    ]\n}", 
+            "title": "RouteInsert"
+        }, 
+        {
+            "location": "/routes/#routesave", 
+            "text": "La route che invia i dati di un record per crearlo. I dati del modello verranno passati\ncome params. In questa route viene aggiunto sempre un parametro chiamato _method= POST  che \nserve a simulare il metodo save REST attraverso la chiamata http.  Nel vettore  values  deve essere presente la chiave:   modelName : rappresenta il nome del modello.   {\n     url :  /api/json/{modelName}/create ,\n     protocol :  record ,\n     resultType :  record ,\n     method :  post ,\n     keys : [\n         modelName \n    ],\n     extra_params : {\n         _method :  POST \n    }\n}", 
+            "title": "RouteSave"
+        }, 
+        {
+            "location": "/routes/#routeupdate", 
+            "text": "La route che invia i dati di un record per la modifica. I dati del modello verranno passati\ncome params. In questa route viene aggiunto sempre un parametro chiamato _method= PUT  che \nserve a simulare il metodo put REST attraverso la chiamata http.\nNel vettore  values  devono essere presenti le chiavi:   modelName : rappresenta il nome del modello.  pk : rappresenta l id che identifica il record specifico   {\n     url :  /api/json/{modelName}/{pk} ,\n     protocol :  record ,\n     resultType :  record ,\n     method :  post ,\n     keys : [\n         modelName ,\n         pk \n    ],\n     extra_params : {\n         _method :  PUT \n    }\n}", 
+            "title": "RouteUpdate"
+        }, 
+        {
+            "location": "/routes/#routeview", 
+            "text": "La route che chiede i dati di un record in modalit\u00e0 lettura.\nNel vettore  values  devono essere presenti le chiavi:   modelName : rappresenta il nome del modello.  pk : rappresenta l id che identifica il record specifico   {\n     url :  /api/json/{modelName}/{pk} ,\n     protocol :  record ,\n     resultType :  record ,\n     method :  get ,\n     keys : [\n         modelName ,\n         pk \n    ]\n}", 
+            "title": "RouteView"
+        }, 
+        {
+            "location": "/routes/#routedelete", 
+            "text": "La route che rimuove un record. In questa route viene aggiunto sempre un parametro chiamato \n_method= DELETE  che serve a simulare il metodo delete REST attraverso la chiamata http.\nNel vettore  values  devono essere presenti le chiavi:   modelName : rappresenta il nome del modello.  pk : rappresenta l id che identifica il record specifico   {\n     url :  /api/json/{modelName}/{pk} ,\n     protocol :  record ,\n     resultType :  record ,\n     method :  post ,\n     keys : [\n         modelName ,\n         pk \n    ],\n     extra_params : {\n         _method :  DELETE \n    }\n}", 
+            "title": "RouteDelete"
+        }, 
+        {
+            "location": "/routes/#routemultidelete", 
+            "text": "La route che rimuove una lista di record. La lista viene passata come vettore di id\nnei params.\nNel vettore  values  deve essere presente la chiave:   modelName : rappresenta il nome del modello.   {\n     url :  /api/json/{modelName}/deleteall ,\n     protocol :  record ,\n     resultType :  record ,\n     method :  post ,\n     keys : [\n         modelName \n    ]\n}", 
+            "title": "RouteMultiDelete"
+        }, 
+        {
+            "location": "/server/", 
+            "text": "Server\n\n\nClasse per le comunicazioni ajax con il backend. E\n un wrapper delle chiamate jQuery\n\n\nPropriet\u00e0\n\n\n\n\nServer.subdomain\n : null\npropriet\u00e0 che permette di avere una base comune in tutti gli url codificati dentro\njavascript. Esempio se il nostro sito si trova sotto una sottodominio o cartella\nhttp://dominio.it/sottodominio  settiamo il subdomain=sottodominio. Da questo momento in poi\ntutte le chiamate avranno url che inizier\u00e0 con \nsottodominio\n\n\n\n\nMetodi\n\n\n\n\n\n\nServer.getUrl(url)\n\nRitorna l\nurl reale combinato con il subdomain.\n\n\n\n\n\n\nServer.getHearders()\n\nridefinire questa funzione per aggiungere eventuali headers comuni a tutte le chiamate ajax\n\n\n\n\n\n\nServer.get(url, params, callback)\n\nEsegue una chiamata ajax al server in GET.\n\n\n\n\n@param url : url da richiamare\n\n\n@param params : parametri che vengono passati in get.\n\n\n@param callback : funzione che verr\u00e0 richiamata passando come parametro il risultato ricevuto dal\nserver\n\n\n\n\n\n\n\n\nServer.post(url, params, callback)\n\nEsegue una chiamata ajax al server in POST.\n\n\n\n\n@param url : url da richiamare\n\n\n@param params : parametri che vengono passati in pos.\n\n\n@param callback : funzione che verr\u00e0 richiamata passando come parametro il risultato ricevuto dal\nserver\n\n\n\n\n\n\n\n\nServer.route(route,callback)\n\nEsegue una chiamata ajax al server utilizzando l\noggetto route.\n\n\n\n\n@param route : Oggetto route che incapsula la chiamata\n\n\n@param callback : funzione che verr\u00e0 richiamata passando come parametro il risultato ricevuto dal\nserver", 
+            "title": "Server"
+        }, 
+        {
+            "location": "/server/#server", 
+            "text": "Classe per le comunicazioni ajax con il backend. E  un wrapper delle chiamate jQuery", 
+            "title": "Server"
+        }, 
+        {
+            "location": "/server/#proprieta", 
+            "text": "Server.subdomain  : null\npropriet\u00e0 che permette di avere una base comune in tutti gli url codificati dentro\njavascript. Esempio se il nostro sito si trova sotto una sottodominio o cartella\nhttp://dominio.it/sottodominio  settiamo il subdomain=sottodominio. Da questo momento in poi\ntutte le chiamate avranno url che inizier\u00e0 con  sottodominio", 
+            "title": "Propriet\u00e0"
+        }, 
+        {
+            "location": "/server/#metodi", 
+            "text": "Server.getUrl(url) \nRitorna l url reale combinato con il subdomain.    Server.getHearders() \nridefinire questa funzione per aggiungere eventuali headers comuni a tutte le chiamate ajax    Server.get(url, params, callback) \nEsegue una chiamata ajax al server in GET.   @param url : url da richiamare  @param params : parametri che vengono passati in get.  @param callback : funzione che verr\u00e0 richiamata passando come parametro il risultato ricevuto dal\nserver     Server.post(url, params, callback) \nEsegue una chiamata ajax al server in POST.   @param url : url da richiamare  @param params : parametri che vengono passati in pos.  @param callback : funzione che verr\u00e0 richiamata passando come parametro il risultato ricevuto dal\nserver     Server.route(route,callback) \nEsegue una chiamata ajax al server utilizzando l oggetto route.   @param route : Oggetto route che incapsula la chiamata  @param callback : funzione che verr\u00e0 richiamata passando come parametro il risultato ricevuto dal\nserver", 
+            "title": "Metodi"
+        }, 
+        {
+            "location": "/app/", 
+            "text": "CrudApp\n\n\nCrudApp \u00e8 la classe per la gestione dell\napplicazione. Estende Vue, definisce due mixin\n- \ncore_mixin\n : qui vengono definiti metodi di utilit\u00e0 generale.\n- \ndialogs_mixin\n : metodi generali per la gestione di dialog.\n\n\ndata\n\n\n\n\ntemplatesFile\n : defaul \n/crud-vue/crud-vue.html\n file html dove si trovano tutti i template dei vari\nwidgets,views e componenti in generale. \n\n\nel\n : default \n#app\n, contenitore della nostra applicazione\n\n\nappConfig\n = null  : eventuale file javascript per le modifiche della configurazione iniziale \ncrud\n\n\n\n\ncore_mixin\n\n\nmetodi\n\n\n\n\nwaitStart : function (msg,container)\n\n\nwaitEnd : function (component)\n\n\n_createContainer : function (container)\n\n\ntranslate : function (key,plural,params)\n\n\ncreateRoute : function(routeName)\n \n\n\ncreateProtocol : function(name)\n \n\n\ngetDescendantProp : function(obj, desc)\n \n\n\ngetFormData : function (form)\n \n\n\nsentenceCase : function (str)\n\n\ncamelCase : function (string)\n\n\ncostantCase : function (string)\n \n\n\ndotCase : function (string)\n \n\n\nisLowerCase : function (string)\n\n\nisUpperCase : function (string)\n \n\n\nlowerCase : function (str)\n \n\n\nparamCase : function (string)\n \n\n\npascalCase : function (string)\n \n\n\npathCase : function (string)\n \n\n\nsnakeCase : function (string)\n \n\n\nswapCase : function (str)\n \n\n\ntitleCase : function (string)\n \n\n\nupperCase : function (str)\n \n-\nupperCaseFirst : function (str)\n\n\ncloneObj : function (obj)\n \n\n\nconfMerge : function(obj1,obj2)\n \n\n\nmerge : function(obj1, obj2)\n \n\n\n\n\ngetAllUrlParams : function (url)\n :ritorna i parametri sotto forma di vettore associativo di un \nurl altrimenti di location.search.\n\n\n\n\n\n\nloadResources : function(resources, callback)\n {\ncarica un vettore di risorse, al fine caricamento chiama la callback\n @param resources\n@param callback\n\n\n\n\n\n\nloadResource : function (fileName, callback)\n {\ncarica una risorsa script o css dinamicamente partendo dalla cartella\npluginsPath quando lo script e\n stato caricato chiama la callback\n @param fileName\n@param callback\n\n\n\n\n\n\n-\ngetRefId : function ()\n : costruisce il riferimento id di un compoenente utilizzando la concatenazione\n          degli argomenti passati con \n-\n; \n- \n_loadHtml  : function (fileName,callback)\n \n\n\n\n\n\n\n_loadScript : function (scriptName, callback)\n\n\n\n\n\n\n_loadCss : function (scriptName,callback)\n \n\n\n\n\n\n\ndialogs_mixin\n\n\nmetodi\n\n\n\n\nmessageDialog : function (bodyProps,callbacks)\n\n\nerrorDialog : function (bodyProps,callbacks)\n\n\nconfirmDialog : function (bodyProps,callbacks)\n\n\nwarningDialog : function (bodyProps,callbacks)\n\n\ncustomDialog : function (bodyProps,callbacks)\n\n\npopover : function (message,classes,time)\n\n\npopoverSuccess : function (message,time)\n\n\npopoverError : function (message,time)\n\n\npopoverInfo : function (message,time)\n\n\npopoverWarning : function (message,time)\n\n\n_popover : function (message,classes,time)", 
+            "title": "App"
+        }, 
+        {
+            "location": "/app/#crudapp", 
+            "text": "CrudApp \u00e8 la classe per la gestione dell applicazione. Estende Vue, definisce due mixin\n-  core_mixin  : qui vengono definiti metodi di utilit\u00e0 generale.\n-  dialogs_mixin  : metodi generali per la gestione di dialog.", 
+            "title": "CrudApp"
+        }, 
+        {
+            "location": "/app/#data", 
+            "text": "templatesFile  : defaul  /crud-vue/crud-vue.html  file html dove si trovano tutti i template dei vari\nwidgets,views e componenti in generale.   el  : default  #app , contenitore della nostra applicazione  appConfig  = null  : eventuale file javascript per le modifiche della configurazione iniziale  crud", 
+            "title": "data"
+        }, 
+        {
+            "location": "/app/#core_mixin", 
+            "text": "", 
+            "title": "core_mixin"
+        }, 
+        {
+            "location": "/app/#metodi", 
+            "text": "waitStart : function (msg,container)  waitEnd : function (component)  _createContainer : function (container)  translate : function (key,plural,params)  createRoute : function(routeName)    createProtocol : function(name)    getDescendantProp : function(obj, desc)    getFormData : function (form)    sentenceCase : function (str)  camelCase : function (string)  costantCase : function (string)    dotCase : function (string)    isLowerCase : function (string)  isUpperCase : function (string)    lowerCase : function (str)    paramCase : function (string)    pascalCase : function (string)    pathCase : function (string)    snakeCase : function (string)    swapCase : function (str)    titleCase : function (string)    upperCase : function (str)  \n- upperCaseFirst : function (str)  cloneObj : function (obj)    confMerge : function(obj1,obj2)    merge : function(obj1, obj2)     getAllUrlParams : function (url)  :ritorna i parametri sotto forma di vettore associativo di un \nurl altrimenti di location.search.    loadResources : function(resources, callback)  {\ncarica un vettore di risorse, al fine caricamento chiama la callback\n @param resources\n@param callback    loadResource : function (fileName, callback)  {\ncarica una risorsa script o css dinamicamente partendo dalla cartella\npluginsPath quando lo script e  stato caricato chiama la callback\n @param fileName\n@param callback    - getRefId : function ()  : costruisce il riferimento id di un compoenente utilizzando la concatenazione\n          degli argomenti passati con  - ; \n-  _loadHtml  : function (fileName,callback)      _loadScript : function (scriptName, callback)    _loadCss : function (scriptName,callback)", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/app/#dialogs_mixin", 
+            "text": "", 
+            "title": "dialogs_mixin"
+        }, 
+        {
+            "location": "/app/#metodi_1", 
+            "text": "messageDialog : function (bodyProps,callbacks)  errorDialog : function (bodyProps,callbacks)  confirmDialog : function (bodyProps,callbacks)  warningDialog : function (bodyProps,callbacks)  customDialog : function (bodyProps,callbacks)  popover : function (message,classes,time)  popoverSuccess : function (message,time)  popoverError : function (message,time)  popoverInfo : function (message,time)  popoverWarning : function (message,time)  _popover : function (message,classes,time)", 
+            "title": "metodi"
+        }, 
+        {
+            "location": "/dashboards/", 
+            "text": "dashboards\n\n\nc-manage", 
+            "title": "Dashboards"
+        }, 
+        {
+            "location": "/dashboards/#dashboards", 
+            "text": "", 
+            "title": "dashboards"
+        }, 
+        {
+            "location": "/dashboards/#c-manage", 
+            "text": "", 
+            "title": "c-manage"
+        }, 
+        {
+            "location": "/protocollo_dati/", 
+            "text": "Protocollo dati\n\n\nLa classe protocollo serve per mediare tra la struttura dati che arriva dal server con la struttura interna delle views.\nIn questo modo, se dovessero cambiare le strutture dati di uscita di un server, implementando il protocollo opportuno,\nl\napplicazione puo\n continuare a funzionare.\nE\n stato implementato un protocollo di base, per una risposta tipica da parte di un backend. In caso il nostro backend\nrispondesse con un json diverso, si devono implementare nuovi protocolli di trasformazione.\n\n\nEsiste la classe base astratta \nProtocol\n che definisce due metodi:\n- \ngetData()\n : ritorna tutte le propriet\u00e0 della classe\n- `jsonToData(json)\n : dato un json applica la politica di trasformazione per le strutture interne della view.\n\n\nI protocolli attuali sono di due tipi. \n- \nProtocolRecord\n: per la gestione delle view di un singolo record\n- \nProtocolList\n : per la gestione delle view list che gestiscono la lista di records.\n\n\nProtocolRecord\n\n\nQuesto protocollo si aspetta una json fatto in questo modo.\n\n\n{\n    error : 0, // 0 o 1. indica la presenza di errori nella richiesta \n    msg : \n, // messaggio di errore o di success \n    result : {\n        field1 : value // nome campo : valore campo \n        // ... ecc\n    },\n    metadata : {\n        fields : {\n            field1 : { // array associativo degli eventuali metadati \n                options : {}, // vettore di valori di dominio, per esempio nelle select,\n                options_order : [] //  vettore ordinamento delle options.\n\n            } \n        }\n        relations : { // vettore relazioni presenti nel modello dati\n            relazione1 : {\n                fields : {},  // vettore dei campi della relazione \n                // altre informazioni che potete usare\n            }   \n        }       \n    }\n}\n\n\n\n\nProtocolList\n\n\n{\n    error : 0, // 0 o 1. indica la presenza di errori nella richiesta \n    msg : \n, // messaggio di errore o di success \n    result : {\n        current_page : 1,   // pagina corrente\n        from : 1,           // numero partenza del primo elemento\n        last_page : 10,     // ultima pagina\n        pagination_steps : { // configurazione nel numero di elementi per pagina\n            5 : 5,\n            10 : 10,\n            25 : 25,\n            50 : 50\n        },\n        per_page : 10,      // numero elementi per pagina selezionato\n        to : 10,            // numero finale dell'ultimo elemento\n        total : 100,        // numero elementi totali\n        data : [            // vettore di array associativi dei valori \n            {\n                field1 : value  // valore campo \n            } \n            //,{\n            // ... ecc\n            // }\n        ],\n\n    },\n    metadata : {\n        fields : {\n            field1 : { // array associativo degli eventuali metadati \n                options : {}, // vettore di valori di dominio, per esempio nelle select,\n                options_order : [] //  vettore ordinamento delle options.\n\n            } \n        }\n        relations : { // vettore relazioni presenti nel modello dati\n            relazione1 : {\n                fields : {},  // vettore dei campi della relazione \n                // altre informazioni che potete usare\n            }   \n        },\n        order : {  // ordinamento della lista, se presente\n            direction : \nASC o DESC\n,\n            field : 'nomecampo'\n        }             \n    }\n}\n\n\n\n\nPOST di un record in modifica\n\n\nL\ninvio dei dati in post viene inviato attraverso il post normale di una form html.\nesempio di dati inviati al backend da una view in modifica\n\n\n_method: PUT  // variabile speciale per simulare l'azione put REST  \nfield1 : value  \nfield2 : value  \n// in caso di relazioni esterne ci saranno   \nrelazione1-field1[] : value\nrelazione1-field2[] : value\n\n\n\n\n\nPOST di un record in inserimento\n\n\nQuesto \u00e8 un esempio di cosa invia la form di una view in inserimento al server, rispetto alla modifica cambia\nil valore del campo _method,\n\n\n_method: POST  // variabile speciale per simulare l'azione inserimento REST  \nfield1 : value  \nfield2 : value  \n// in caso di relazioni esterne ci saranno   \nrelazione1-field1[] : value\nrelazione1-field2[] : value\n\n\n\n\n\nDELETE di un record", 
+            "title": "Protocols"
+        }, 
+        {
+            "location": "/protocollo_dati/#protocollo-dati", 
+            "text": "La classe protocollo serve per mediare tra la struttura dati che arriva dal server con la struttura interna delle views.\nIn questo modo, se dovessero cambiare le strutture dati di uscita di un server, implementando il protocollo opportuno,\nl applicazione puo  continuare a funzionare.\nE  stato implementato un protocollo di base, per una risposta tipica da parte di un backend. In caso il nostro backend\nrispondesse con un json diverso, si devono implementare nuovi protocolli di trasformazione.  Esiste la classe base astratta  Protocol  che definisce due metodi:\n-  getData()  : ritorna tutte le propriet\u00e0 della classe\n- `jsonToData(json)  : dato un json applica la politica di trasformazione per le strutture interne della view.  I protocolli attuali sono di due tipi. \n-  ProtocolRecord : per la gestione delle view di un singolo record\n-  ProtocolList  : per la gestione delle view list che gestiscono la lista di records.", 
+            "title": "Protocollo dati"
+        }, 
+        {
+            "location": "/protocollo_dati/#protocolrecord", 
+            "text": "Questo protocollo si aspetta una json fatto in questo modo.  {\n    error : 0, // 0 o 1. indica la presenza di errori nella richiesta \n    msg :  , // messaggio di errore o di success \n    result : {\n        field1 : value // nome campo : valore campo \n        // ... ecc\n    },\n    metadata : {\n        fields : {\n            field1 : { // array associativo degli eventuali metadati \n                options : {}, // vettore di valori di dominio, per esempio nelle select,\n                options_order : [] //  vettore ordinamento delle options.\n\n            } \n        }\n        relations : { // vettore relazioni presenti nel modello dati\n            relazione1 : {\n                fields : {},  // vettore dei campi della relazione \n                // altre informazioni che potete usare\n            }   \n        }       \n    }\n}", 
+            "title": "ProtocolRecord"
+        }, 
+        {
+            "location": "/protocollo_dati/#protocollist", 
+            "text": "{\n    error : 0, // 0 o 1. indica la presenza di errori nella richiesta \n    msg :  , // messaggio di errore o di success \n    result : {\n        current_page : 1,   // pagina corrente\n        from : 1,           // numero partenza del primo elemento\n        last_page : 10,     // ultima pagina\n        pagination_steps : { // configurazione nel numero di elementi per pagina\n            5 : 5,\n            10 : 10,\n            25 : 25,\n            50 : 50\n        },\n        per_page : 10,      // numero elementi per pagina selezionato\n        to : 10,            // numero finale dell'ultimo elemento\n        total : 100,        // numero elementi totali\n        data : [            // vettore di array associativi dei valori \n            {\n                field1 : value  // valore campo \n            } \n            //,{\n            // ... ecc\n            // }\n        ],\n\n    },\n    metadata : {\n        fields : {\n            field1 : { // array associativo degli eventuali metadati \n                options : {}, // vettore di valori di dominio, per esempio nelle select,\n                options_order : [] //  vettore ordinamento delle options.\n\n            } \n        }\n        relations : { // vettore relazioni presenti nel modello dati\n            relazione1 : {\n                fields : {},  // vettore dei campi della relazione \n                // altre informazioni che potete usare\n            }   \n        },\n        order : {  // ordinamento della lista, se presente\n            direction :  ASC o DESC ,\n            field : 'nomecampo'\n        }             \n    }\n}", 
+            "title": "ProtocolList"
+        }, 
+        {
+            "location": "/protocollo_dati/#post-di-un-record-in-modifica", 
+            "text": "L invio dei dati in post viene inviato attraverso il post normale di una form html.\nesempio di dati inviati al backend da una view in modifica  _method: PUT  // variabile speciale per simulare l'azione put REST  \nfield1 : value  \nfield2 : value  \n// in caso di relazioni esterne ci saranno   \nrelazione1-field1[] : value\nrelazione1-field2[] : value", 
+            "title": "POST di un record in modifica"
+        }, 
+        {
+            "location": "/protocollo_dati/#post-di-un-record-in-inserimento", 
+            "text": "Questo \u00e8 un esempio di cosa invia la form di una view in inserimento al server, rispetto alla modifica cambia\nil valore del campo _method,  _method: POST  // variabile speciale per simulare l'azione inserimento REST  \nfield1 : value  \nfield2 : value  \n// in caso di relazioni esterne ci saranno   \nrelazione1-field1[] : value\nrelazione1-field2[] : value", 
+            "title": "POST di un record in inserimento"
+        }, 
+        {
+            "location": "/protocollo_dati/#delete-di-un-record", 
+            "text": "", 
+            "title": "DELETE di un record"
+        }, 
+        {
+            "location": "/esempi_views/", 
+            "text": "View che lavorano con liste di dati\n\n\nPer avere un comporamento simil ad un linguaggio ad oggetti..\nOgni volta che si ridefinisce un metodo della Component \u00e8\npossibile chiamare il metodo padre attaverso la convenzione this.super\n\n\n- Lista con dati json\n\n\n// definisco i miei dati\nvar mydata = {\n    value :  [\n        {\n            text : 100,\n            intero : '1',\n            stringa : 'prova'\n        },\n        {\n            text : 2,\n            intero : '1',\n            stringa : 'fprova2'\n        },\n    ]\n}\n\n// creo una configurazione per la view lista\nvar myList = new ConfList({\n    fields : ['stringa','intero','text'], // campi che voglio visualizzare\n    container : '#test_container1',  // container dove verr\u00e0 disegnata la view\n    modelName : 'dummy', // modelname dummy, uso sempre questo per i dati dinamici\n    routeName : null, // nessuna route verso il server i dati ci sono gi\u00e0\n    pagination : false, // se voglio o no il navigatore per la paginazione\n    actions : [], //azioni che si possono fare sui singoli record  o lista\n    data : mydata // dati della lista\n});\n\n// aggiungo la lista\nvar vkey = app.addView(myList);\n// la renderizzo \napp.renderView(vkey);\n\n\n\n\n\n esempio online \n\n\n- Lista con dati json con intestazioni header custom\n\n\n// definisco i miei dati\nvar mydata = {\n    value :  [\n        {\n            text : 100,\n            intero : '1',\n            stringa : 'prova'\n        },\n        {\n            text : 2,\n            intero : '1',\n            stringa : 'fprova2'\n        },\n    ]\n}\n\n// creo una configurazione per la view lista\nvar myList = new ConfList({\n    fields : ['stringa','intero','text'], // campi che voglio visualizzare\n    container : '#test_container1',  // container dove verr\u00e0 disegnata la view\n    modelName : 'dummy', // modelname dummy, uso sempre questo per i dati dinamici\n    routeName : null, // nessuna route verso il server, i dati ci sono gi\u00e0\n    pagination : false, // se voglio o no il navigatore per la paginazione\n    actions : [], //azioni che si possono fare sui singoli record  o lista\n    data : mydata, // dati della lista\n    labels : {\n        'dummy.stringa.label' : 'campo stringa'\n    }\n});\n\n// aggiungo la lista\nvar vkey = app.addView(myList);\n// la renderizzo \napp.renderView(vkey);\n\n\n\n\n esempio online \n\n\nViews che lavorano con singolo record\n\n\n- Vista in modalit\u00e0 edit con azione ActionSave ridefinita\n\n\n\n// definisco i miei dati che propongo nella view. Un solo record\nvar mydata =  {\n    value : {  // valori del mio ipotetico modello dati\n        text : \ntesto \n,\n        intero : 1,\n        stringa : 'prova'\n    },\n    metadata : {  // metadata dei miei valori, in questo caso il campo intero pu\u00f2 avere solo 2 valori\n        intero : {\n            domainValues : {\n                0 : 'Zero',\n                1 : 'Uno'\n            }\n        }\n    }\n}\n// definisco la configurazione della mia vista\nvar myList = new ConfInsert({\n    fields : ['stringa','intero','text'],  //campi che voglio visualizzare\n    container : '#test_container1',        // container dove verr\u00e0 disegnata la vista\n    modelName : 'dummy',                    // model name per dati dinamici\n    routeName : null,                       // nessuna route verso il server, i dati ci sono gi\u00e0\n    actions : ['ActionSave','ActionMia'],   //azione save presente nella libreria\n    data : mydata,\n    fields_config : {                       // configurazione campi\n        intero : {                          // dico che il campo intero e' una select\n            type : 'select'\n        },\n        text : {\n            type : 'textarea'\n        }\n    },\n    custom_actions : {   // ridefiniamo l'azione ActionSave presente in libreria per inserire il nostro comportamento\n        ActionSave : ActionSave.extend({\n            execute : function () {\n                alert(JSON.stringify(this.view.getFormData()))\n            }\n        })  \n    },\n    autorender : true, // dico che la view la voglio renderizzare appena l'aggiungo\n});\napp.addView(myList);\n\n\n\n\n\n- Vista in modalit\u00e0 edit con azione custom e template custom\n\n\n\n// definisco i miei dati che propongo nella view. Un solo record\nvar mydata =  {\n    value : {  // valori del mio ipotetico modello dati\n        text : \ntesto \n,\n        intero : 1,\n        stringa : 'prova'\n    },\n    metadata : {  // metadata dei miei valori, in questo caso il campo intero pu\u00f2 avere solo 2 valori\n        intero : {\n            domainValues : {\n                0 : 'Zero',\n                1 : 'Uno'\n            }\n        }\n    }\n}\n// definisco la configurazione della mia vista\nvar myList = new ConfInsert({\n    fields : ['stringa','intero','text'],  //campi che voglio visualizzare\n    container : '#test_container1',        // container dove verr\u00e0 disegnata la vista\n    modelName : 'dummy',                    // model name per dati dinamici\n    routeName : null,                       // nessuna route verso il server, i dati ci sono gi\u00e0\n    actions : ['ActionMia'],               //azione save presente nella libreria\n    data : mydata,\n    fields_config : {                       // configurazione campi\n        intero : {                          // dico che il campo intero e' una select\n            type : 'select'\n        },\n        text : {\n            type : 'textarea'\n        }\n    },\n    custom_actions : {\n        ActionMia : RecordAction.extend({\n            text : 'mia',\n            title : 'azione custom',\n            execute : function () {\n                alert(JSON.stringify(this.view.getFormData()))\n            }\n        })  \n    },\n    labels : {\n        'app.mialabel' : 'Questa e\\' una vista con template personale rispetto a quello standard',  \n    },\n    template : function () {\n        return `\n        \ndiv class=\nwell\n crud-edit-main\n\n            \ndiv crud-alert class=\nalert alert-success hide\n/div\n\n            \ndiv crud-label=\napp.mialabel\n/div\n\n            \nform name=\ndata_form\n class=\nmodel-edit\n\n                \ndiv crud-hidden_fields\n\n                    \n!-- qui dentro verrano disegnati i renders speciali hidden --\n\n                \n/div\n\n                \ndiv crud-view_elements\n\n                    \n!-- qui dentro verrano disegnati i renders --\n\n                \n/div\n\n                \ndiv crud-view_action \n\n                    \n!-- qui dentro verrano disegnate le azioni definite --\n\n                \n/div\n\n            \n/form\n\n        \n/div\n\n    `\n    },\n    autorender : true, // dico che la view la voglio renderizzare appena l'aggiungo\n});\napp.addView(myList);", 
+            "title": "Esempi Views"
+        }, 
+        {
+            "location": "/esempi_views/#view-che-lavorano-con-liste-di-dati", 
+            "text": "Per avere un comporamento simil ad un linguaggio ad oggetti..\nOgni volta che si ridefinisce un metodo della Component \u00e8\npossibile chiamare il metodo padre attaverso la convenzione this.super", 
+            "title": "View che lavorano con liste di dati"
+        }, 
+        {
+            "location": "/esempi_views/#-lista-con-dati-json", 
+            "text": "// definisco i miei dati\nvar mydata = {\n    value :  [\n        {\n            text : 100,\n            intero : '1',\n            stringa : 'prova'\n        },\n        {\n            text : 2,\n            intero : '1',\n            stringa : 'fprova2'\n        },\n    ]\n}\n\n// creo una configurazione per la view lista\nvar myList = new ConfList({\n    fields : ['stringa','intero','text'], // campi che voglio visualizzare\n    container : '#test_container1',  // container dove verr\u00e0 disegnata la view\n    modelName : 'dummy', // modelname dummy, uso sempre questo per i dati dinamici\n    routeName : null, // nessuna route verso il server i dati ci sono gi\u00e0\n    pagination : false, // se voglio o no il navigatore per la paginazione\n    actions : [], //azioni che si possono fare sui singoli record  o lista\n    data : mydata // dati della lista\n});\n\n// aggiungo la lista\nvar vkey = app.addView(myList);\n// la renderizzo \napp.renderView(vkey);   esempio online", 
+            "title": "- Lista con dati json"
+        }, 
+        {
+            "location": "/esempi_views/#-lista-con-dati-json-con-intestazioni-header-custom", 
+            "text": "// definisco i miei dati\nvar mydata = {\n    value :  [\n        {\n            text : 100,\n            intero : '1',\n            stringa : 'prova'\n        },\n        {\n            text : 2,\n            intero : '1',\n            stringa : 'fprova2'\n        },\n    ]\n}\n\n// creo una configurazione per la view lista\nvar myList = new ConfList({\n    fields : ['stringa','intero','text'], // campi che voglio visualizzare\n    container : '#test_container1',  // container dove verr\u00e0 disegnata la view\n    modelName : 'dummy', // modelname dummy, uso sempre questo per i dati dinamici\n    routeName : null, // nessuna route verso il server, i dati ci sono gi\u00e0\n    pagination : false, // se voglio o no il navigatore per la paginazione\n    actions : [], //azioni che si possono fare sui singoli record  o lista\n    data : mydata, // dati della lista\n    labels : {\n        'dummy.stringa.label' : 'campo stringa'\n    }\n});\n\n// aggiungo la lista\nvar vkey = app.addView(myList);\n// la renderizzo \napp.renderView(vkey);   esempio online", 
+            "title": "- Lista con dati json con intestazioni header custom"
+        }, 
+        {
+            "location": "/esempi_views/#views-che-lavorano-con-singolo-record", 
+            "text": "", 
+            "title": "Views che lavorano con singolo record"
+        }, 
+        {
+            "location": "/esempi_views/#-vista-in-modalita-edit-con-azione-actionsave-ridefinita", 
+            "text": "// definisco i miei dati che propongo nella view. Un solo record\nvar mydata =  {\n    value : {  // valori del mio ipotetico modello dati\n        text :  testo  ,\n        intero : 1,\n        stringa : 'prova'\n    },\n    metadata : {  // metadata dei miei valori, in questo caso il campo intero pu\u00f2 avere solo 2 valori\n        intero : {\n            domainValues : {\n                0 : 'Zero',\n                1 : 'Uno'\n            }\n        }\n    }\n}\n// definisco la configurazione della mia vista\nvar myList = new ConfInsert({\n    fields : ['stringa','intero','text'],  //campi che voglio visualizzare\n    container : '#test_container1',        // container dove verr\u00e0 disegnata la vista\n    modelName : 'dummy',                    // model name per dati dinamici\n    routeName : null,                       // nessuna route verso il server, i dati ci sono gi\u00e0\n    actions : ['ActionSave','ActionMia'],   //azione save presente nella libreria\n    data : mydata,\n    fields_config : {                       // configurazione campi\n        intero : {                          // dico che il campo intero e' una select\n            type : 'select'\n        },\n        text : {\n            type : 'textarea'\n        }\n    },\n    custom_actions : {   // ridefiniamo l'azione ActionSave presente in libreria per inserire il nostro comportamento\n        ActionSave : ActionSave.extend({\n            execute : function () {\n                alert(JSON.stringify(this.view.getFormData()))\n            }\n        })  \n    },\n    autorender : true, // dico che la view la voglio renderizzare appena l'aggiungo\n});\napp.addView(myList);", 
+            "title": "- Vista in modalit\u00e0 edit con azione ActionSave ridefinita"
+        }, 
+        {
+            "location": "/esempi_views/#-vista-in-modalita-edit-con-azione-custom-e-template-custom", 
+            "text": "// definisco i miei dati che propongo nella view. Un solo record\nvar mydata =  {\n    value : {  // valori del mio ipotetico modello dati\n        text :  testo  ,\n        intero : 1,\n        stringa : 'prova'\n    },\n    metadata : {  // metadata dei miei valori, in questo caso il campo intero pu\u00f2 avere solo 2 valori\n        intero : {\n            domainValues : {\n                0 : 'Zero',\n                1 : 'Uno'\n            }\n        }\n    }\n}\n// definisco la configurazione della mia vista\nvar myList = new ConfInsert({\n    fields : ['stringa','intero','text'],  //campi che voglio visualizzare\n    container : '#test_container1',        // container dove verr\u00e0 disegnata la vista\n    modelName : 'dummy',                    // model name per dati dinamici\n    routeName : null,                       // nessuna route verso il server, i dati ci sono gi\u00e0\n    actions : ['ActionMia'],               //azione save presente nella libreria\n    data : mydata,\n    fields_config : {                       // configurazione campi\n        intero : {                          // dico che il campo intero e' una select\n            type : 'select'\n        },\n        text : {\n            type : 'textarea'\n        }\n    },\n    custom_actions : {\n        ActionMia : RecordAction.extend({\n            text : 'mia',\n            title : 'azione custom',\n            execute : function () {\n                alert(JSON.stringify(this.view.getFormData()))\n            }\n        })  \n    },\n    labels : {\n        'app.mialabel' : 'Questa e\\' una vista con template personale rispetto a quello standard',  \n    },\n    template : function () {\n        return `\n         div class= well  crud-edit-main \n             div crud-alert class= alert alert-success hide /div \n             div crud-label= app.mialabel /div \n             form name= data_form  class= model-edit \n                 div crud-hidden_fields \n                     !-- qui dentro verrano disegnati i renders speciali hidden -- \n                 /div \n                 div crud-view_elements \n                     !-- qui dentro verrano disegnati i renders -- \n                 /div \n                 div crud-view_action  \n                     !-- qui dentro verrano disegnate le azioni definite -- \n                 /div \n             /form \n         /div \n    `\n    },\n    autorender : true, // dico che la view la voglio renderizzare appena l'aggiungo\n});\napp.addView(myList);", 
+            "title": "- Vista in modalit\u00e0 edit con azione custom e template custom"
+        }
+    ]
+}

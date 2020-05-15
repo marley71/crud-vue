@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Widgets - CRUD-VUE</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Widgets";
+    var mkdocs_page_input_path = "widgets.md";
+    var mkdocs_page_url = "/widgets/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CRUD-VUE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../component/">Component</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Widgets</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#widgets">Widgets</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#w-base">w-base</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#widgets-implementati-nel-framework">Widgets Implementati nel framework</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#w-input">w-input</a></li>
+        
+            <li><a class="toctree-l3" href="#w-input-hidden">w-input-hidden</a></li>
+        
+            <li><a class="toctree-l3" href="#w-text">w-text</a></li>
+        
+            <li><a class="toctree-l3" href="#w-textarea">w-textarea</a></li>
+        
+            <li><a class="toctree-l3" href="#w-select">w-select</a></li>
+        
+            <li><a class="toctree-l3" href="#w-input-helped">w-input-helped</a></li>
+        
+            <li><a class="toctree-l3" href="#w-radio">w-radio</a></li>
+        
+            <li><a class="toctree-l3" href="#w-checkbox">w-checkbox</a></li>
+        
+            <li><a class="toctree-l3" href="#w-custom">w-custom</a></li>
+        
+            <li><a class="toctree-l3" href="#w-autocomplete">w-autocomplete</a></li>
+        
+            <li><a class="toctree-l3" href="#w-belongsto">w-belongsto</a></li>
+        
+            <li><a class="toctree-l3" href="#w-date-select">w-date-select</a></li>
+        
+            <li><a class="toctree-l3" href="#w-date-picker">w-date-picker</a></li>
+        
+            <li><a class="toctree-l3" href="#w-hasmany">w-hasmany</a></li>
+        
+            <li><a class="toctree-l3" href="#whasmanythrough">wHasmanyThrough</a></li>
+        
+            <li><a class="toctree-l3" href="#w-upload-ajax">w-upload-ajax</a></li>
+        
+            <li><a class="toctree-l3" href="#w-upload">w-upload</a></li>
+        
+            <li><a class="toctree-l3" href="#w-swap">w-swap</a></li>
+        
+            <li><a class="toctree-l3" href="#w-texthtml">w-texthtml</a></li>
+        
+            <li><a class="toctree-l3" href="#w-preview_1">w-preview</a></li>
+        
+            <li><a class="toctree-l3" href="#dafinire">DAFINIRE</a></li>
+        
+            <li><a class="toctree-l3" href="#w-b2-select2">w-b2-select2</a></li>
+        
+            <li><a class="toctree-l3" href="#w-b2m-select2">w-b2m-select2</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../views/">Views</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../templates/">Templates</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../actions/">Actions</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../confs/">Confs</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../routes/">Routes</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../server/">Server</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../app/">App</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dashboards/">Dashboards</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../protocollo_dati/">Protocols</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../esempi_views/">Esempi Views</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CRUD-VUE</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Widgets</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/marley71/crud#root/docs/widgets.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="widgets">Widgets</h1>
+<p>L&rsquo;insieme dei <code>Widgets</code> estendono la componente <code>c-component</code> e rappresentano le classe per la gestione di un 
+singolo dato. Le componenti widgets possono essere utilizzati in maniera diretta, ma il loro utilizzo reale è 
+come componente dei singoli dati di una view. Tutte le proprietà devono essere passate attraverso un vettore associativo.
+che rappresenta la cConf del componente. La definizione dei templates si trovano tutti nel 
+file <code>crud-vue.html</code> </p>
+<h2 id="w-base">w-base</h2>
+<p>E&rsquo; stato creato il component widget base chiamato wBase che deve essere considerata come una specie di classe 
+astratta che tutti i widgets estendono e definisce alcuni metodi di uso generale e che quindi come la classe che 
+definisce l&rsquo;interfaccia base dei vari oggetti Widget concreti. Non dovrebbe mai essere istanziata. La sua 
+definizione è in <code>crud.components.wBase</code></p>
+<h4 id="data">data</h4>
+<ul>
+<li><code>name</code> : null - nome dell&rsquo;oggetto widget (il campo del modello dati che vogliamo gestire)</li>
+<li><code>value</code> : null - valore oggetto</li>
+<li><code>resources</code> : [] - eventuale vettore risorse da caricare per il funzionamento del componente</li>
+</ul>
+<h4 id="metodi">Metodi</h4>
+<ul>
+<li><code>getFieldName()</code> - ritorna il nome del campo da attribuire al controllo html di default ritorna la proprietà name. </li>
+<li><code>getValue()</code> - ritorna il valore del widget, default ritorna la proprietà value</li>
+<li><code>setValue(value)</code> - metodo per settare il valore del widget</li>
+<li><code>change()</code> : metodo chiamato quando il widget cambia valore.</li>
+</ul>
+<h1 id="widgets-implementati-nel-framework">Widgets Implementati nel framework</h1>
+<p>La libreria mette a disposizione dei widgets standard per gli usi più comuni, in modo da avere già una base 
+abbastanza completa per iniziare a creare le nostre applicazioni. Questi widgets possono essere ridefiniti e/o 
+creati di nuovi. Questo ci permette di cambiare, nella nostra applicazione, aspetto e/o funzionalità. </p>
+<hr />
+<h2 id="w-input">w-input</h2>
+<p>Componente per la gestione degli input standard html. La sua definizione è in <code>crud.components.widgets.wInput</code>
+La definizione del template è nel container con id <code>w-input-template</code></p>
+<h4 id="data_1">data</h4>
+<ul>
+<li><code>inputType</code> : rappresenta il type del controllo input html. Può essere tutti quelli accettati dal type input html</li>
+</ul>
+<pre><code class="javascript">{{{example_render_input_edit}}}
+</code></pre>
+
+<p><a href="http://www.pierpaolociullo.it/example?f=example_render_input_edit" target="_blank">Provalo online</a></p>
+<hr />
+<h2 id="w-input-hidden">w-input-hidden</h2>
+<p>DAFINIRE</p>
+<h2 id="w-text">w-text</h2>
+<p>Componente per la visualizzazione di un testo. La sua definizione è in <code>crud.components.widgets.wText</code>
+La definizione del template è nel container con id  <code>w-text-template</code></p>
+<ul>
+<li>esempio</li>
+</ul>
+<pre><code class="javascript">{{{example_render_text_view}}}
+</code></pre>
+
+<p><a href="http://www.pierpaolociullo.it/example?f=example_render_text_view" target="_blank">provalo online</a></p>
+<hr />
+<h2 id="w-textarea">w-textarea</h2>
+<p>Componente per la gestione di una textarea. La sua definizione è in <code>crud.components.widgets.wTextarea</code>
+La definizione del template è nel container con id <code>w-textarea-template</code></p>
+<hr />
+<h2 id="w-select">w-select</h2>
+<p>Componente per la gestione di una select html
+La definizione del template è nel container con id <code>w-select-template</code></p>
+<h4 id="data_2">data</h4>
+<ul>
+<li><code>domainValues</code> : vettore associativo key =&gt; valore che rappresenta tutti i possibili valori della select</li>
+<li><code>domainValueOrder</code> : array, facoltativo,eventuale ordinamento dei domainValues.</li>
+</ul>
+<hr />
+<h2 id="w-input-helped">w-input-helped</h2>
+<p>Questo Render permette di aggiungere ad un input una serie di valori predefiniti che aiutano l&rsquo;utilizzatore.
+La sua definizione è in <code>crud.components.widgets.wInputHelped</code>.
+La definizione del template è nel container con id <code>w-input-helped-template</code></p>
+<h4 id="data_3">data</h4>
+<ul>
+<li><code>customValue</code> : true, indica se può essere inserito un valore fuori dal range dei valori predefiniti</li>
+<li><code>domainValues</code> : vettore associativo key =&gt; valore che rappresenta tutti i possibili valori che possono essere scelti</li>
+<li><code>domainValueOrder</code> : array, facoltativo,eventuale ordinamento dei domainValues.</li>
+</ul>
+<hr />
+<h2 id="w-radio">w-radio</h2>
+<p>Componente per la gestione di radiobutton html.La sua definizione è in <code>crud.components.widgets.wRadio</code>
+La definizione del template è nel container con id <code>w-radio-template</code></p>
+<h4 id="data_4">data</h4>
+<ul>
+<li><code>domainValues</code> : vettore associativo key =&gt; valore che rappresenta tutti i possibili valori della select</li>
+<li><code>domainValueOrder</code> : array, facoltativo,eventuale ordinamento dei domainValues.</li>
+</ul>
+<hr />
+<h2 id="w-checkbox">w-checkbox</h2>
+<p>Componente per la gestione di checkbox html.La sua definizione è in <code>crud.components.widgets.wCheckbox</code>
+La definizione del template è nel container con id <code>w-checkbox-template</code></p>
+<h4 id="data_5">data</h4>
+<ul>
+<li><code>domainValues</code> : vettore associativo key =&gt; valore che rappresenta tutti i possibili valori della select</li>
+<li><code>domainValueOrder</code> : array, facoltativo,eventuale ordinamento dei domainValues.</li>
+</ul>
+<hr />
+<h2 id="w-custom">w-custom</h2>
+<p>Oggetto per chi vuole poter modificare l&rsquo;html da renderizzare. 
+La sua definizione è in <code>crud.components.widgets.wCustom</code>
+La definizione del template è nel container con id <code>w-custom-template</code></p>
+<hr />
+<h2 id="w-autocomplete">w-autocomplete</h2>
+<p>Questo render è stato pensato per il popolamento di una chiave con riferimento ad una tabella
+esterna permettendo la ricerca e inserendo la chiave_id  selezionata in un input nascosto.
+Il plugin utilizzato è quello di jquery-autocomplete.
+La sua definizione è in <code>crud.components.widgets.wAutocomplete</code>
+La definizione del template è nel container con id <code>w-autocomplete-template</code></p>
+<h4 id="data_6">data</h4>
+<ul>
+<li><code>routeName</code> : &lsquo;autocomplete&rsquo; - nome della route da utilizzare per reperire i dati dal server</li>
+<li><code>resources</code> : &lsquo;[
+                    &lsquo;https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css&rsquo;,
+                    &lsquo;https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js&rsquo;         <br />
+                 ]</li>
+<li><code>primaryKey</code> : &lsquo;id&rsquo; - nome campo da salvare nel campo nascosto.</li>
+<li><code>fields</code> : [], vettore dei campi da visualizzare nella tendina degli elementi trovati</li>
+<li><code>modelName</code> : &lsquo;nome modello dati da passare alla route&rsquo;</li>
+</ul>
+<h4 id="metodi_1">Metodi</h4>
+<ul>
+<li><code>afterLoadResources()</code> : Questo metodo viene chiamato in automatico e viene utilizzato per
+instanziare il plugin.</li>
+<li><code>setRouteValues</code> : metodo per settare i parametri della route. In caso di route personalizzata, usare
+questo metodo per instanziarla e inserire i parametri giusti.</li>
+<li><code>clear</code> : metodo per cancellare eventuale valore selezionato.</li>
+<li><code>_getLabel</code> : politica per il riempimento della label che visualizza l&rsquo;elemento scelto</li>
+<li><code>_getSuggestion</code> : metodo per il riempimento dei valori trovati mostrati dal widget</li>
+</ul>
+<h2 id="w-belongsto">w-belongsto</h2>
+<p>Questo widget è solo per la visualizzazione di dati più complessi che non sono formati da un solo
+valore, ma da un vettore associativo. In genere viene utilizzato per la rappresentazione dei 
+campi di una relazione esterna belongsto
+La sua definizione è in <code>crud.components.widgets.wBelongsto</code>
+La definizione del template è nel container con id <code>w-belongsto-template</code></p>
+<h4 id="data_7">data</h4>
+<ul>
+<li>fields: [], vettore nomi dei campi da visualizzare</li>
+</ul>
+<hr />
+<h2 id="w-date-select">w-date-select</h2>
+<p>Questo widget è per l&rsquo;inserimento di una data. Questo widget utilizza tre componenti w-select per 
+l&rsquo;inserimento di una data. Il valore viene salvato in un input nascosto nel formato yyyy-mm-dd;
+Usa moment per il controllo di validità della data.
+La sua definizione è in <code>crud.components.widgets.wDateSelect</code>
+La definizione del template è nel container con id <code>w-date-select-template</code></p>
+<h4 id="data_8">data</h4>
+<ul>
+<li>minYear    : null, anno minimo se non settatto viene preso l&rsquo;anno corrente - 5 ,</li>
+<li>maxYear    : null, anno massimo se non settato viene preso l&rsquo;anno corrente + 5,</li>
+<li>resources :[
+    &lsquo;moment-with-locales.min.js&rsquo;,
+]</li>
+</ul>
+<h4 id="metodi_2">Metodi</h4>
+<ul>
+<li>_updateSelect : function () - </li>
+<li>_getValidDate : function () - </li>
+<li>_dayValues : function () </li>
+<li>_monthValues : function () </li>
+<li>_yearValues : function ()</li>
+</ul>
+<h4 id="computed">Computed</h4>
+<ul>
+<li>cDay : crea la configurazione iniziale per la select giorni</li>
+<li>cMonth : crea la configurazione iniziale per la select mesi</li>
+<li>cYear : crea la configurazione iniziale per la select anni</li>
+</ul>
+<h2 id="w-date-picker">w-date-picker</h2>
+<p>Questo widget è per l&rsquo;inserimento di una data. Utilizza il picker bootstrap per 
+l&rsquo;inserimento di una data.
+La sua definizione è in <code>crud.components.widgets.wDatePicker</code>
+La definizione del template è nel container con id <code>w-date-picker-template</code></p>
+<h4 id="data_9">data</h4>
+<ul>
+<li>displayFormat : Modalità visualizzazione data nel picker, default dd/mm/yyyy</li>
+<li>dateFormat : formato di salvataggio della data nel campo nascosto, default uguale a displayFormat</li>
+</ul>
+<pre><code class="javascript">resources : [
+    'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
+]
+</code></pre>
+
+<hr />
+<h2 id="w-hasmany">w-hasmany</h2>
+<p>Componente per la gestione di dati da salvare in una relazione esterna di tipo hasmany 
+in un&rsquo;unica form. Contiene all&rsquo;interno una lista di v-hasmany.
+La sua definizione è in <code>crud.components.widgets.wHasmany</code>
+La definizione del template è nel container con id <code>w-hasmany-template</code></p>
+<h4 id="data_10">data</h4>
+<ul>
+<li>resources : [&lsquo;jquery-sortable.js&rsquo;]</li>
+<li>confViews : [], vettore configurazione delle views v-hasmany interne</li>
+<li>hasmanyConf : configurazione della view v-hasmany, uguale ad una normale conf di una view ma non 
+    sono considerate le azioni.</li>
+<li>limit : default 100, limite massimo del numero di record hasmany</li>
+</ul>
+<h4 id="metodi_3">metodi</h4>
+<ul>
+<li>getHasmanyConf(index,value),</li>
+<li>addItem() </li>
+<li>deleteItem(index) </li>
+<li>showItem(index)</li>
+<li>outOfLimit()</li>
+</ul>
+<h3 id="w-hasmany-view">w-hasmany-view</h3>
+<p>Componente per la visualizzazione di dati in una relazione esterna di tipo hasmany 
+La sua definizione è in <code>crud.components.widgets.wHasmanyView</code>
+La definizione del template è nel container con id <code>w-hasmany-view-template</code></p>
+<hr />
+<h2 id="whasmanythrough">wHasmanyThrough</h2>
+<p>Oggetto per la gestione degli hasmany trought&hellip;</p>
+<h4 id="proprieta">proprietà</h4>
+<ul>
+<li>selected : [],</li>
+<li>modelName : &ldquo;none&rdquo;,</li>
+<li>last_searched_result : null,  // json risultato dell&rsquo;ultima ricerca</li>
+<li>hasmany_container : &lsquo;[crud-hasmany_container]&rsquo;,</li>
+<li>selected_container : &lsquo;[crud-selected_container]&rsquo;,</li>
+<li>title_selector : &lsquo;[crud-render_title]&rsquo;,</li>
+<li>removeActionOptions : null, // eventuali classi per il bottone</li>
+<li>morph : null,</li>
+<li>//label_field : null,</li>
+<li>labelFields : [&lsquo;label&rsquo;],  // campi che verranno visualizzati per gli elementi presenti</li>
+<li>hiddenFields : [&lsquo;id&rsquo;,&rsquo;status&rsquo;],</li>
+<li>
+<p>labelFieldsConfig : {}, // configurazioni speciali per i label fields default sono text</p>
+</li>
+<li>
+<p>addNew : false,</p>
+</li>
+<li>
+<p>searchField : null,</p>
+</li>
+<li>searchDescription : null,</li>
+<li>
+<p>searchMethod : null,</p>
+</li>
+<li>
+<p>itemAddTemplate : null,</p>
+</li>
+<li>itemViewTemplate : null,</li>
+<li>
+<p>listItemsTemplate : null,</p>
+</li>
+<li>
+<p>metadata : {
+    autocompleteModel : null,
+  },</p>
+</li>
+</ul>
+<h4 id="metodi_4">metodi</h4>
+<ul>
+<li>_populateItem : function(values,container) {</li>
+<li>_populate : function (filter) {</li>
+</ul>
+<h4 id="proprieta_1">proprietà</h4>
+<ul>
+<li>resources : [ &lsquo;jquery-sortable.js&rsquo;]</li>
+<li>_views : [],</li>
+</ul>
+<h4 id="metodi_5">metodi</h4>
+<ul>
+<li>itemExist : function (values) {</li>
+<li>addItem : function (values) {</li>
+<li>deleteItem : function (vkey) {</li>
+</ul>
+<h2 id="w-upload-ajax">w-upload-ajax</h2>
+<p>DAFINIRE
+Componente per la gestione di un upload in modalità ajax. Il componente fa&rsquo; una chiamata ajax
+dove invia il file da uploare e poi salva in un campo nascosto il risultato. Insieme al risultato
+ci  mette anche un  anteprima utilizzando il componente r-preview.
+La sua definizione è in <code>crud.components.widgets.wUploadAjax
+La definizione del template è nel container con id</code>w-upload-ajax-template`</p>
+<h4 id="data_11">data</h4>
+<ul>
+<li>extensions : [] estensioni del file accettate,</li>
+<li>maxFileSize : &lsquo;&rsquo; dimensione massimo del file da uploadare,</li>
+<li>routeName : &lsquo;uploadfile&rsquo;,</li>
+<li>previewConf : configurazione del componente r-preview. Gestione interna,</li>
+<li>error : presenza di errori durante l&rsquo;upload,</li>
+<li>errorMessage : messaggio di errore dell&rsquo;upload,</li>
+<li>ajaxFields : vettore associativo di eventuali campi nascosti da mandare in ajax insieme al file,</li>
+<li>lastUpload : contiene la risposta json dell&rsquo;ultima chiamata ajax.</li>
+</ul>
+<h4 id="metodi_6">metodi</h4>
+<ul>
+<li>setRouteValues(route) : metodo per configurare i parametri della route</li>
+<li>_getFileValue():ritorna il valore del controllo file</li>
+<li>_validate() : eventuali controlli personali di validazione da parte javascript</li>
+<li>validate() : metodo chiamato prima di spedire il file ajax</li>
+<li>sendAjax() : metodo per la chiamata ajax.</li>
+<li>_setUploadFieldsType : function () {</li>
+<li>_setFieldsType : function () {</li>
+</ul>
+<hr />
+<h2 id="w-upload">w-upload</h2>
+<p>DAFINIRE
+Componente per la gestione di un upload nella form
+La sua definizione è in <code>crud.components.widgets.wUpload
+La definizione del template è nel container con id</code>w-upload-template`</p>
+<h4 id="proprieta_2">proprietà</h4>
+<ul>
+<li>extensions : [] estensioni del file accettate,</li>
+<li>maxFileSize : &lsquo;&rsquo; dimensione massimo del file da uploadare,</li>
+</ul>
+<h4 id="metodi_7">metodi</h4>
+<ul>
+<li>_showItemUploadedPreview : function (container,values) {</li>
+<li>_bindActions : function () {</li>
+<li>_checkLimit : function () {</li>
+<li>renderNewItem : function (values) {</li>
+<li>deleteItem : function (index) {</li>
+<li>ok : function(dialog) {</li>
+<li>cancel : function () {</li>
+<li>_setUploadFieldsType : function () {</li>
+<li>_setFieldsType : function () {</li>
+<li>afterUpload : function (data) {</li>
+</ul>
+<hr />
+<h3 id="w-preview">w-preview</h3>
+<p>DAFINIRE
+- esempio</p>
+<pre><code class="javascript">{{{example_render_hasmany_upload_image_view}}}
+</code></pre>
+
+<p><a href="http://www.pierpaolociullo.it/example?f=example_render_hasmany_upload_image_view" target="_blank">provalo online</a></p>
+<ul>
+<li>template</li>
+</ul>
+<pre><code class="html">&lt;div crud-render_element&gt;
+    &lt;ul class=&quot;list-unstyled&quot; crud-render_list &gt;
+        &lt;!--  -- contenitore lista fotos -- --&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h4 id="itemtemplate">itemTemplate</h4>
+<pre><code class="html">&lt;li&gt;
+    &lt;img class=&quot;img-circle img-list&quot; src=&quot;&quot; crud-attrs=&quot;{src:Server.getUrl(urls+'icon')}&quot; /&gt;
+&lt;/li&gt;
+</code></pre>
+
+<ul>
+<li>marcatori</li>
+</ul>
+<hr />
+<h2 id="w-swap">w-swap</h2>
+<p>DAFINIRE
+Componente per eseguire uno swap di valore di un determinato campo attraverso una chiamata ajax.
+La sua definizione è in <code>crud.components.widgets.wSwap
+La definizione del template è nel container con id</code>w-swap-template`</p>
+<h4 id="data_12">data</h4>
+<p>iconClass : {
+        0 : &lsquo;fa fa-circle text-danger&rsquo;,
+        1 : &lsquo;fa fa-circle text-success&rsquo;
+    },
+    metadata : {
+        domainValues : {
+            0: &lsquo;disattivo&rsquo;,
+            1: &lsquo;attivo&rsquo;
+        }
+    },</p>
+<h4 id="metodi_8">metodi</h4>
+<ul>
+<li>_setHtmlData :function() {</li>
+<li>_swap : function () {</li>
+<li>_callback : function (json) {</li>
+</ul>
+<p><a href="http://www.pierpaolociullo.it/example?f=example_render_swap_edit" target="_blank">provalo online</a></p>
+<ul>
+<li>template</li>
+</ul>
+<pre><code class="html">&lt;button type=&quot;button&quot; class=&quot;btn btn-default btn-xs&quot; crud-render_element title=&quot;&quot;&gt;
+    &lt;i crud-icon class=&quot;&quot;&gt;&lt;/i&gt;
+&lt;/button&gt;
+</code></pre>
+
+<ul>
+<li>marcatori</li>
+</ul>
+<hr />
+<h2 id="w-texthtml">w-texthtml</h2>
+<p>DAFINIRE
+rappresentazione ed editing di testo html</p>
+<p>editor html summernote.</p>
+<ul>
+<li>esempio</li>
+</ul>
+<pre><code class="javascript">{{{example_render_texthtml_edit}}}
+</code></pre>
+
+<p><a href="http://www.pierpaolociullo.it/example?f=example_render_texthtml_edit" target="_blank">provalo online</a></p>
+<ul>
+<li>
+<p>height : 200,
+      pluginOptions : {},
+      _pluginObject : null,</p>
+</li>
+<li>
+<p>template</p>
+</li>
+</ul>
+<pre><code class="html">    &lt;textarea crud-render_element crud-render_control class=&quot;summernote form-control&quot; crud-summernote-lang=&quot;it-IT&quot;&gt;&lt;/textarea&gt;
+
+</code></pre>
+
+<hr />
+<h2 id="w-preview_1">w-preview</h2>
+<h2 id="dafinire">DAFINIRE</h2>
+<h2 id="w-b2-select2">w-b2-select2</h2>
+<p>DAFINIRE</p>
+<h2 id="w-b2m-select2">w-b2m-select2</h2>
+<p>DAFINIRE</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../views/" class="btn btn-neutral float-right" title="Views">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../component/" class="btn btn-neutral" title="Component"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/marley71/crud" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../component/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../views/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>
