@@ -524,6 +524,9 @@ crud.components = {
     views : {
 
     },
+    actions : {
+
+    },
     libs :  {
 
     }
