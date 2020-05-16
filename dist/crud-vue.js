@@ -1165,6 +1165,9 @@ class Protocol {
         }
         return data;
     }
+    jsonToData(json) {
+        throw "Implentare il metodo jsonToData"
+    }
 }
 
 class ProtocolRecord extends Protocol {
@@ -1609,7 +1612,7 @@ Vue.component('tpl-no', {
     template : '#tpl-no-template'
 });
 
-var actionBase = Vue.component('action-base', {
+crud.components.actions.actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
     mounted : function() {
@@ -1707,39 +1710,39 @@ var actionBase = Vue.component('action-base', {
 });
 
 Vue.component('action-edit', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-view', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-save', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-insert', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-back', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-search', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-delete', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-delete-selected', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-order', {
-    extends : actionBase,
+    extends : crud.components.actions.actionBase,
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
@@ -1758,20 +1761,20 @@ Vue.component('action-order', {
 })
 
 Vue.component('action-edit-mode',{
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-view-mode',{
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-save-row',{
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 
 Vue.component('action-dialog', {
-    extends : actionBase,
+    extends : crud.components.actions.actionBase,
     data : function () {
         var d = this.defaultData();
         d.dialog = this.$parent;
@@ -3073,7 +3076,8 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
                 "zip",
                 "mp3",
                 "application/pdf",
-                "txt"
+                "txt",
+                "csv"
             ];
             var imageTypes = [
                 "image/jpeg","image/png"
@@ -3288,7 +3292,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 if (!this.$options.components[name]) {
                     //console.log('estendo azioni ',name);
                     Vue.component(name, {
-                        extends : actionBase
+                        extends : crud.components.actions.actionBase
                     });
                 } else {
                     aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.collectionActions[name]?this.$crud.collectionActions[name]:{})
@@ -3575,7 +3579,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     collectionActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
-                        extends : actionBase
+                        extends : crud.components.actions.actionBase
                     });
                     if (that.conf.customActions[aName].type == 'collection')
                         collectionActionsName.push(aName);
@@ -4248,35 +4252,8 @@ const CrudApp = Vue.extend({
     created : function() {
         var that = this;
         Vue.prototype.$crud = crud;
-        //Vue.prototype.$lang = lang;
-        //console.log('CrudApp',this.$data._NON_WORD_REGEXP);
-        // for (var k in window) {
-        //     //console.log('window key ',k);
-        //     if (k.indexOf('_interface') > 0) {
-        //         console.log('found interface ',k)
-        //         var methods = window[k].methods || {};
-        //         var __call = function (interface,lk) {
-        //             that.$crud[lk] = function () {
-        //                 var localk = new String(lk);
-        //                 var int = new String(interface);
-        //                 //var arguments = this.arguments;
-        //                 //console.log(localk,'arguments',arguments);
-        //                 return window[interface].methods[localk].apply(that,arguments);
-        //             }
-        //         }
-        //         for (var m in methods) {
-        //             //console.log('....method',m)
-        //             __call(k,m);
-        //         }
-        //     }
-        // }
-
-
-
         that.$crud.instance = that;
         that.$crud.pluginsPath = that.$data.pluginsPath?that.$data.pluginsPath:'/';
-
-
         var __loadResources = function () {
             var resources = [];
             resources.push(that.$data.templatesFile);

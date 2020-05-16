@@ -1,4 +1,4 @@
-var actionBase = Vue.component('action-base', {
+crud.components.actions.actionBase = Vue.component('action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
     mounted : function() {
@@ -96,39 +96,39 @@ var actionBase = Vue.component('action-base', {
 });
 
 Vue.component('action-edit', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-view', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-save', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-insert', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-back', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-search', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-delete', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-delete-selected', {
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-order', {
-    extends : actionBase,
+    extends : crud.components.actions.actionBase,
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
@@ -147,20 +147,20 @@ Vue.component('action-order', {
 })
 
 Vue.component('action-edit-mode',{
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-view-mode',{
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 Vue.component('action-save-row',{
-    extends : actionBase
+    extends : crud.components.actions.actionBase
 });
 
 
 Vue.component('action-dialog', {
-    extends : actionBase,
+    extends : crud.components.actions.actionBase,
     data : function () {
         var d = this.defaultData();
         d.dialog = this.$parent;

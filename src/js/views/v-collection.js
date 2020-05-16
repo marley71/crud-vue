@@ -69,7 +69,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     collectionActionsName.push(aName);
                 else if (that.conf.customActions[aName]) {
                     Vue.component(aName, {
-                        extends : actionBase
+                        extends : crud.components.actions.actionBase
                     });
                     if (that.conf.customActions[aName].type == 'collection')
                         collectionActionsName.push(aName);

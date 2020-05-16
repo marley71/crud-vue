@@ -170,7 +170,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 if (!this.$options.components[name]) {
                     //console.log('estendo azioni ',name);
                     Vue.component(name, {
-                        extends : actionBase
+                        extends : crud.components.actions.actionBase
                     });
                 } else {
                     aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.collectionActions[name]?this.$crud.collectionActions[name]:{})

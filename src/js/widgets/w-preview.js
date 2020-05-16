@@ -26,7 +26,8 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
                 "zip",
                 "mp3",
                 "application/pdf",
-                "txt"
+                "txt",
+                "csv"
             ];
             var imageTypes = [
                 "image/jpeg","image/png"
