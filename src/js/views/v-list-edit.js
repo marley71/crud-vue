@@ -15,7 +15,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
 
         draw : function() {
             var that = this;
-            that.editMode = new Array(that.data.value.length).fill(false);
+            that.editMode = new Array(that.value.length).fill(false);
             that.createActions();
             that.createWidgets();
             that.createWidgetsEdit();
@@ -30,9 +30,9 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
             var that = this;
             //console.log('Vlist-create widgets',that.data);
             var widgetsEdit = [];
-            var data = that.data;
+            //var data = that.data;
             var keys = that.keys;
-            for (var i in data.value) {
+            for (var i in that.value) {
                 widgetsEdit.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
@@ -41,11 +41,11 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                     if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
                         dconf.type = 'w-input';
                     dconf.cRef = that.getRefId(that._uid,'redit',i,key);
-                    dconf.modelData = data.value[i];
+                    dconf.modelData = that.value[i];
                     if (! ('value' in dconf))
                         dconf.value = null;
-                    if (data.value[i][key])
-                        dconf.value = data.value[i][key];
+                    if (that.value[i][key])
+                        dconf.value = that.value[i][key];
                     dconf.name = that.getFieldName(key);
                     widgetsEdit[i][key] = dconf;
                 }

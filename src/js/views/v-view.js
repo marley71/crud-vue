@@ -30,7 +30,7 @@ crud.components.views.vView = Vue.component('v-view', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-text',

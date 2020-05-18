@@ -3,21 +3,22 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
     //props : ['c-conf'],
     data :  function () {
         var that = this;
-        var d = that._loadConf(that.cModel,'edit');
+        //var d = that._loadConf(that.cModel,'edit');
         var dHasmany =  {
             loading : true,
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             //conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultWidgetType : 'w-input',
         }
-        return this.merge(dHasmany,d);
+        return dHasmany;
     },
     methods : {
         fillData : function () {
-            this.data = this.conf.data;
+            //console.log('filldata',this.data);
+            this.value = this.conf.value;
         },
         // renderKey : function (key) {
         //     var that = this;

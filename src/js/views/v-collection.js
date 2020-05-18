@@ -1,7 +1,23 @@
 crud.components.views.vCollection = Vue.component('v-collection', {
     extends : crud.components.views.vBase,
-    props : ['cModel'],
+    props : {
+        'cModel' : {
+            default: null
+        },
+        'cType' : {
+            default: 'list'
+        }
+    },
     methods : {
+        data : function () {
+            var that = this;
+            var d =  {};
+            if (that.cModel)
+                d.modelName = that.cModel;
+            // d.value = [];
+            // d.metadata = {};
+            return d;
+        },
         setWidgetValue : function(row,key,value) {
             var that = this;
             if (!that.widgets[row][key]) {
@@ -15,21 +31,21 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var widgets = [];
             var recordActions = that.recordActions;
             var recordActionsName = that.recordActionsName;
-            var data = that.data;
+            var value = that.value;
             var keys = that.keys;
-            console.log('keys',keys,data.value);
-            for (var i in data.value) {
+            console.log('keys',keys,value);
+            for (var i in value) {
                 widgets.push({});
                 recordActions.push({});
                 for (var k in keys) {
                     var key = keys[k];
                     var dconf = that._defaultWidgetConfig(key);
                     dconf.cRef = that.getRefId(that._uid,'r',i,key);
-                    dconf.modelData = data.value[i];
+                    dconf.modelData = value[i];
                     if (! ('value' in dconf))
                         dconf.value = null;
-                    if (data.value[i][key])
-                        dconf.value = data.value[i][key];
+                    if (value[i][key])
+                        dconf.value = value[i][key];
                     dconf.name = that.getFieldName(key);
                     //console.log(i,widgets,widgets[i],key,dconf),
                     widgets[i][key] = dconf;
@@ -49,8 +65,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             if (that.cFields) {
                 keys = that.cFields.split(',');
             }
-            if (keys.length == 0 && that.data.value.length)
-                keys =Object.keys(that.data.value[0]);
+            if (keys.length == 0 && that.value.length)
+                keys =Object.keys(that.value[0]);
             return keys;
         },
         getWidget : function (row,key) {
@@ -92,14 +108,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var that = this;
             var recordActionsName = that.recordActionsName;
             var recordActions = that.recordActions;
-            var data = that.data;
+
 
             for(var k in recordActionsName) {
                 var aName = recordActionsName[k];
                 var aConf = that.getActionConfig(aName,'record');
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
-                aConf.modelData = this.cloneObj(data.value[row]);
+                aConf.modelData = this.cloneObj(that.value[row]);
                 aConf.modelName = that.cModel;
                 aConf.index = row;
                 aConf.cRef = that.getRefId(that._uid,'ra',row,aName);
@@ -110,14 +126,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var that = this;
             var collectionActions = [];
             var collectionActionsName = that.collectionActionsName;
-            var data = that.data;
+            //var data = that.data;
 
             for (var i in collectionActionsName) {
                 var aName = collectionActionsName[i];
                 var aConf = that.getActionConfig(aName,'collection');
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
-                aConf.modelData = jQuery.extend(true,{},data.value);
+                aConf.modelData = jQuery.extend(true,{},that.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
                 aConf.cRef = that.getRefId(that._uid,'ca',aName);

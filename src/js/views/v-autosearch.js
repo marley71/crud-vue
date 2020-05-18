@@ -52,7 +52,7 @@ crud.components.views.vAutosearch = Vue.component('v-autosearch', {
         },
         createWidgets : function() {
             var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
@@ -61,8 +61,8 @@ crud.components.views.vAutosearch = Vue.component('v-autosearch', {
                 widgets[key].value = null;
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
-                if (that.data.value && that.data.value[key])
-                    widgets[key].value = that.data.value[key];
+                if (that.value && that.value[key])
+                    widgets[key].value = that.value[key];
 
                 widgets[key].name = that.getFieldName(key);
             }

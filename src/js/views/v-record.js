@@ -3,6 +3,18 @@ crud.components.views.vRecord = Vue.component('v-record', {
     props : ['cModel','cPk'],
     methods : {
 
+        data : function () {
+            var that = this;
+            var d =  {};
+            if (that.cModel)
+                d.modelName = that.cModel;
+            if (that.cPk)
+                d.pk = that.cPk;
+            d.value = {};
+            d.metadata = {};
+            return d;
+        },
+
         setWidgetValue : function(key,value) {
             var that = this;
             if (!that.widgets[key]) {
@@ -13,15 +25,15 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
         createWidgets : function() {
             var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
                 widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
-                if (that.data.value && (key in that.data.value) )
-                    widgets[key].value = that.data.value[key];
+                if (that.value && (key in that.value) )
+                    widgets[key].value = that.value[key];
 
                 widgets[key].name = that.getFieldName(key);
                 if (! ('label' in widgets[key]) )
@@ -54,7 +66,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName,'collection');
-                aConf.modelData = this.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
+                aConf.modelData = this.cloneObj(that.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
                 aConf.cRef = that.getRefId(that._uid,'a',aName);
@@ -64,22 +76,22 @@ crud.components.views.vRecord = Vue.component('v-record', {
         },
         fillData : function (route,json) {
             var that = this;
-            var data = {value : {}};
+            //var data = {value : {}};
             if (!route) {
-                console.log('dati manuali',that.conf.data);
-                if (that.conf.data) {
-                    data = that.conf.data;
+                console.log('dati manuali',that.conf.value);
+                if (that.conf.value) {
+                    that.value = that.conf.value;
                 }
             } else {
                 var protocol = that.createProtocol(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 for (var i in prop) {
-                    data[prop[i]] = protocol[prop[i]];
+                    that[prop[i]] = protocol[prop[i]];
                 }
             }
 
-            that.data = data;
+            //that.data = data;
             that.json = json;
         },
         getViewData : function () {

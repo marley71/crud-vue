@@ -33,7 +33,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-input',
@@ -61,7 +61,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
         },
         createWidgets : function() {
             var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
@@ -71,8 +71,8 @@ crud.components.views.vSearch = Vue.component('v-search', {
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
                 widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
-                if (that.data.value && that.data.value[key])
-                    widgets[key].value = that.data.value[key];
+                if (that.value && that.value[key])
+                    widgets[key].value = that.value[key];
 
                 widgets[key].name = that.getFieldName(key);
             }

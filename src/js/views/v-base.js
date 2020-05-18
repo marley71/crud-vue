@@ -1,73 +1,3 @@
-// crud.components.views.vAction = Vue.component('v-action', {
-//     extends : crud.components.cComponent,
-//     props : ['cName','cAction'],
-//     data : function () {
-//         var that = this;
-//         //console.log('v-action',this.cKey,this.cAction);
-//         var aConf =  {
-//             name: 'action-base',
-//             conf: {},
-//         }
-//         if (this.cAction) {
-//             //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
-//             aConf =  {
-//                 name : this.cName,
-//                 conf : this.cAction
-//             }
-//         } else {
-//             console.warn('configurazione azione non valida', this.cName, this.cAction);
-//         }
-//         aConf.conf.view = that.$parent;
-//         console.log('v-action create',aConf);
-//         return aConf;
-//     },
-//     template : '<component :is="name" :c-conf="conf"></component>'
-// })
-
-// crud.components.views.vWidget =  Vue.component('v-widget', {
-//     extends : crud.components.cComponent,
-//     props : ['cKey','cWidget'],
-//     data : function() {
-//         if (this.cKey) {
-//             var ckeys = this.cKey.split(',');
-//             var widget = null;
-//             for (var i in ckeys) {
-//                 widget = this.$parent.widgets[ckeys[i]];
-//             }
-//             //var render = this.$parent.widgets[this.cKey];
-//             //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
-//             return {
-//                 type : widget.type,
-//                 conf : widget
-//             }
-//         }
-//
-//         if (this.cWidget) {
-//             var conf = null;
-//             if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
-//                 conf = this.getDescendantProp(window, this.cWidget);
-//                 if (!conf) {
-//                     conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
-//                 }
-//             } else
-//                 conf = this.cWidget;
-//
-//             //console.log('V-RENDER2 ',conf,this.$parent.widgets);
-//             return {
-//                 type : conf.type,
-//                 conf : conf
-//             }
-//         }
-//         console.warn('configurazione non valida',this.cKey,this.cWidget);
-//         return {
-//             type : 'w-text',
-//             conf : {},
-//         }
-//
-//     },
-//     template : '<component :is="type" :c-conf="conf"></component>'
-// })
-
 crud.components.views.vBase = Vue.component('v-base', {
     props : ['cFields'],
     extends : crud.components.cComponent,
@@ -194,9 +124,12 @@ crud.components.views.vBase = Vue.component('v-base', {
             throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },
 
-        _loadConf : function(modelName,type) {
+        _loadConf : function() {
+            var that = this;
             var conf = null;
             var d = {};
+            var type = that.cType;
+            var modelName = that.cModel;
             var defaultConf = this.$crud.conf[type];
             console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
@@ -228,8 +161,10 @@ crud.components.views.vBase = Vue.component('v-base', {
                     conf = this.$crud.conf[type];
                 }
             }
-            if (!conf)
+            if (!conf) {
+                console.trace();
                 throw "Nessuna configurazione trovata per questa view";
+            }
             //console.log('merge confs',defaultConf,conf);
             var finalConf = this.confMerge(defaultConf,conf);
 
@@ -270,7 +205,8 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!c.template)
                 c.template = that.conf.widgetTemplate;
             //c.metadata = this.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
-            c = this.merge( c ,(that.data.metadata[key] || {}));
+            //console.log('AAAAAAa',that);
+            c = this.merge( c ,(that.metadata[key] || {}));
             return c;
         },
         getFieldName : function (key) {

@@ -27,28 +27,24 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
             hmConf = this.confMerge({
                 fields : [],
                 fieldsConfig : {},
-                data :  {
-                    value : {
-                    },
-                    metadata : {
-
-                    }
-                },
+                routeName : null,
+                value : {},
+                metadata : {}
             },hmConf);
             hmConf.cRef = 'hm-' + index;
 
             if (value && Object.keys(value).length > 0) {
-                hmConf.data.value = value;
+                hmConf.value = value;
                 if (!hmConf.fields || !hmConf.fields.length) {
                     hmConf.fields = Object.keys(value);
                 }
             }
             if (!value) {
                 that.value[index].status = 'new';
-                hmConf.data.value.status = 'new';
+                hmConf.value.status = 'new';
             } else {
                 that.value[index].status = 'updated';
-                hmConf.data.value.status = 'updated';
+                hmConf.value.status = 'updated';
             }
             // if (!hmConf.data.value.status )
             //     hmConf.data.value.status = 'new';
@@ -72,7 +68,7 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
             else {
                 //console.log('update status deleted ', index,this.confViews[index].data.value)
                 this.$set(this.value[index], 'status', 'deleted');
-                this.$set(this.confViews[index].data.value, 'status' , 'deleted');
+                this.$set(this.confViews[index].value, 'status' , 'deleted');
                 this.$crud.cRefs['hm-'+index].setFieldValue('status','deleted');
             }
             this.$forceUpdate();
@@ -81,7 +77,7 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
             //console.log('show item',index,this.confViews[index]);
             if (!this.confViews[index])
                 return false;
-            return (this.confViews[index].data.value.status != 'deleted'  )
+            return (this.confViews[index].value.status != 'deleted'  )
         },
         outOfLimit : function () {
             var that = this;

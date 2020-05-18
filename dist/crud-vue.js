@@ -123,7 +123,7 @@ crud.recordActions = {
                 if (that.$crud.cRefs[sref])
                     values[k] = that.$crud.cRefs[sref].getValue();
             }
-            var id = that.view.data.value[that.index][that.view.conf.primaryKey];
+            var id = that.view.value[that.index][that.view.conf.primaryKey];
             var r = that.createRoute('update');
             that.setRouteValues(r);
             r.setParams(values);
@@ -248,7 +248,7 @@ crud.collectionActions = {
 
                 //var form = jQuery(this.view.$el).find('form');
                 //var formData = Utility.getFormData(form);
-
+                formData['page'] = 1;
                 targetView.route.setParams(formData);
                 targetView.reload();
                 return ;
@@ -2484,28 +2484,24 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
             hmConf = this.confMerge({
                 fields : [],
                 fieldsConfig : {},
-                data :  {
-                    value : {
-                    },
-                    metadata : {
-
-                    }
-                },
+                routeName : null,
+                value : {},
+                metadata : {}
             },hmConf);
             hmConf.cRef = 'hm-' + index;
 
             if (value && Object.keys(value).length > 0) {
-                hmConf.data.value = value;
+                hmConf.value = value;
                 if (!hmConf.fields || !hmConf.fields.length) {
                     hmConf.fields = Object.keys(value);
                 }
             }
             if (!value) {
                 that.value[index].status = 'new';
-                hmConf.data.value.status = 'new';
+                hmConf.value.status = 'new';
             } else {
                 that.value[index].status = 'updated';
-                hmConf.data.value.status = 'updated';
+                hmConf.value.status = 'updated';
             }
             // if (!hmConf.data.value.status )
             //     hmConf.data.value.status = 'new';
@@ -2529,7 +2525,7 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
             else {
                 //console.log('update status deleted ', index,this.confViews[index].data.value)
                 this.$set(this.value[index], 'status', 'deleted');
-                this.$set(this.confViews[index].data.value, 'status' , 'deleted');
+                this.$set(this.confViews[index].value, 'status' , 'deleted');
                 this.$crud.cRefs['hm-'+index].setFieldValue('status','deleted');
             }
             this.$forceUpdate();
@@ -2538,7 +2534,7 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
             //console.log('show item',index,this.confViews[index]);
             if (!this.confViews[index])
                 return false;
-            return (this.confViews[index].data.value.status != 'deleted'  )
+            return (this.confViews[index].value.status != 'deleted'  )
         },
         outOfLimit : function () {
             var that = this;
@@ -2664,15 +2660,11 @@ crud.components.wHasmanyThrough =Vue.component('w-hasmany-through', {
             var hmConf = that.hasmanyConf?that.hasmanyConf:{
                 fields : [],
                 fieldsConfig : {},
-                data :  {
-                    value : {},
-                    metadata : {
-
-                    }
-                },
+                value : {},
+                metadata : {},
             };
             if (value && Object.keys(value).length > 0) {
-                hmConf.data.value = value;
+                hmConf.value = value;
                 if (!hmConf.fields || !hmConf.fields.length) {
                     hmConf.fields = Object.keys(value);
                 }
@@ -2681,7 +2673,7 @@ crud.components.wHasmanyThrough =Vue.component('w-hasmany-through', {
                 if (this.value && this.value.length > 0) {
                     if (!hmConf.fields || !hmConf.fields.length) {
                         hmConf.fields = Object.keys(this.value[0]);
-                        hmConf.data.value = this.cloneObj(this.value[0]);
+                        hmConf.value = this.cloneObj(this.value[0]);
                     }
                 }
             }
@@ -3123,76 +3115,6 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
     }
 })
 
-// crud.components.views.vAction = Vue.component('v-action', {
-//     extends : crud.components.cComponent,
-//     props : ['cName','cAction'],
-//     data : function () {
-//         var that = this;
-//         //console.log('v-action',this.cKey,this.cAction);
-//         var aConf =  {
-//             name: 'action-base',
-//             conf: {},
-//         }
-//         if (this.cAction) {
-//             //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
-//             aConf =  {
-//                 name : this.cName,
-//                 conf : this.cAction
-//             }
-//         } else {
-//             console.warn('configurazione azione non valida', this.cName, this.cAction);
-//         }
-//         aConf.conf.view = that.$parent;
-//         console.log('v-action create',aConf);
-//         return aConf;
-//     },
-//     template : '<component :is="name" :c-conf="conf"></component>'
-// })
-
-// crud.components.views.vWidget =  Vue.component('v-widget', {
-//     extends : crud.components.cComponent,
-//     props : ['cKey','cWidget'],
-//     data : function() {
-//         if (this.cKey) {
-//             var ckeys = this.cKey.split(',');
-//             var widget = null;
-//             for (var i in ckeys) {
-//                 widget = this.$parent.widgets[ckeys[i]];
-//             }
-//             //var render = this.$parent.widgets[this.cKey];
-//             //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
-//             return {
-//                 type : widget.type,
-//                 conf : widget
-//             }
-//         }
-//
-//         if (this.cWidget) {
-//             var conf = null;
-//             if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
-//                 conf = this.getDescendantProp(window, this.cWidget);
-//                 if (!conf) {
-//                     conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
-//                 }
-//             } else
-//                 conf = this.cWidget;
-//
-//             //console.log('V-RENDER2 ',conf,this.$parent.widgets);
-//             return {
-//                 type : conf.type,
-//                 conf : conf
-//             }
-//         }
-//         console.warn('configurazione non valida',this.cKey,this.cWidget);
-//         return {
-//             type : 'w-text',
-//             conf : {},
-//         }
-//
-//     },
-//     template : '<component :is="type" :c-conf="conf"></component>'
-// })
-
 crud.components.views.vBase = Vue.component('v-base', {
     props : ['cFields'],
     extends : crud.components.cComponent,
@@ -3319,9 +3241,12 @@ crud.components.views.vBase = Vue.component('v-base', {
             throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },
 
-        _loadConf : function(modelName,type) {
+        _loadConf : function() {
+            var that = this;
             var conf = null;
             var d = {};
+            var type = that.cType;
+            var modelName = that.cModel;
             var defaultConf = this.$crud.conf[type];
             console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
@@ -3353,8 +3278,10 @@ crud.components.views.vBase = Vue.component('v-base', {
                     conf = this.$crud.conf[type];
                 }
             }
-            if (!conf)
+            if (!conf) {
+                console.trace();
                 throw "Nessuna configurazione trovata per questa view";
+            }
             //console.log('merge confs',defaultConf,conf);
             var finalConf = this.confMerge(defaultConf,conf);
 
@@ -3395,7 +3322,8 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!c.template)
                 c.template = that.conf.widgetTemplate;
             //c.metadata = this.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
-            c = this.merge( c ,(that.data.metadata[key] || {}));
+            //console.log('AAAAAAa',that);
+            c = this.merge( c ,(that.metadata[key] || {}));
             return c;
         },
         getFieldName : function (key) {
@@ -3410,6 +3338,18 @@ crud.components.views.vRecord = Vue.component('v-record', {
     props : ['cModel','cPk'],
     methods : {
 
+        data : function () {
+            var that = this;
+            var d =  {};
+            if (that.cModel)
+                d.modelName = that.cModel;
+            if (that.cPk)
+                d.pk = that.cPk;
+            d.value = {};
+            d.metadata = {};
+            return d;
+        },
+
         setWidgetValue : function(key,value) {
             var that = this;
             if (!that.widgets[key]) {
@@ -3420,15 +3360,15 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
         createWidgets : function() {
             var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
                 widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
-                if (that.data.value && (key in that.data.value) )
-                    widgets[key].value = that.data.value[key];
+                if (that.value && (key in that.value) )
+                    widgets[key].value = that.value[key];
 
                 widgets[key].name = that.getFieldName(key);
                 if (! ('label' in widgets[key]) )
@@ -3461,7 +3401,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName,'collection');
-                aConf.modelData = this.cloneObj(that.data.value); //jQuery.extend(true,{},that.data.value);
+                aConf.modelData = this.cloneObj(that.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
                 aConf.cRef = that.getRefId(that._uid,'a',aName);
@@ -3471,22 +3411,22 @@ crud.components.views.vRecord = Vue.component('v-record', {
         },
         fillData : function (route,json) {
             var that = this;
-            var data = {value : {}};
+            //var data = {value : {}};
             if (!route) {
-                console.log('dati manuali',that.conf.data);
-                if (that.conf.data) {
-                    data = that.conf.data;
+                console.log('dati manuali',that.conf.value);
+                if (that.conf.value) {
+                    that.value = that.conf.value;
                 }
             } else {
                 var protocol = that.createProtocol(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 for (var i in prop) {
-                    data[prop[i]] = protocol[prop[i]];
+                    that[prop[i]] = protocol[prop[i]];
                 }
             }
 
-            that.data = data;
+            //that.data = data;
             that.json = json;
         },
         getViewData : function () {
@@ -3513,8 +3453,24 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
 crud.components.views.vCollection = Vue.component('v-collection', {
     extends : crud.components.views.vBase,
-    props : ['cModel'],
+    props : {
+        'cModel' : {
+            default: null
+        },
+        'cType' : {
+            default: 'list'
+        }
+    },
     methods : {
+        data : function () {
+            var that = this;
+            var d =  {};
+            if (that.cModel)
+                d.modelName = that.cModel;
+            // d.value = [];
+            // d.metadata = {};
+            return d;
+        },
         setWidgetValue : function(row,key,value) {
             var that = this;
             if (!that.widgets[row][key]) {
@@ -3528,21 +3484,21 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var widgets = [];
             var recordActions = that.recordActions;
             var recordActionsName = that.recordActionsName;
-            var data = that.data;
+            var value = that.value;
             var keys = that.keys;
-            console.log('keys',keys,data.value);
-            for (var i in data.value) {
+            console.log('keys',keys,value);
+            for (var i in value) {
                 widgets.push({});
                 recordActions.push({});
                 for (var k in keys) {
                     var key = keys[k];
                     var dconf = that._defaultWidgetConfig(key);
                     dconf.cRef = that.getRefId(that._uid,'r',i,key);
-                    dconf.modelData = data.value[i];
+                    dconf.modelData = value[i];
                     if (! ('value' in dconf))
                         dconf.value = null;
-                    if (data.value[i][key])
-                        dconf.value = data.value[i][key];
+                    if (value[i][key])
+                        dconf.value = value[i][key];
                     dconf.name = that.getFieldName(key);
                     //console.log(i,widgets,widgets[i],key,dconf),
                     widgets[i][key] = dconf;
@@ -3562,8 +3518,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             if (that.cFields) {
                 keys = that.cFields.split(',');
             }
-            if (keys.length == 0 && that.data.value.length)
-                keys =Object.keys(that.data.value[0]);
+            if (keys.length == 0 && that.value.length)
+                keys =Object.keys(that.value[0]);
             return keys;
         },
         getWidget : function (row,key) {
@@ -3605,14 +3561,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var that = this;
             var recordActionsName = that.recordActionsName;
             var recordActions = that.recordActions;
-            var data = that.data;
+
 
             for(var k in recordActionsName) {
                 var aName = recordActionsName[k];
                 var aConf = that.getActionConfig(aName,'record');
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
-                aConf.modelData = this.cloneObj(data.value[row]);
+                aConf.modelData = this.cloneObj(that.value[row]);
                 aConf.modelName = that.cModel;
                 aConf.index = row;
                 aConf.cRef = that.getRefId(that._uid,'ra',row,aName);
@@ -3623,14 +3579,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var that = this;
             var collectionActions = [];
             var collectionActionsName = that.collectionActionsName;
-            var data = that.data;
+            //var data = that.data;
 
             for (var i in collectionActionsName) {
                 var aName = collectionActionsName[i];
                 var aConf = that.getActionConfig(aName,'collection');
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
-                aConf.modelData = jQuery.extend(true,{},data.value);
+                aConf.modelData = jQuery.extend(true,{},that.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
                 aConf.cRef = that.getRefId(that._uid,'ca',aName);
@@ -3662,7 +3618,8 @@ crud.components.views.vList = Vue.component('v-list', {
 
     data :  function () {
         var that = this;
-        var d = this._loadConf(that.cModel,'list');
+        //var d = this._loadConf(that.cModel,'list');
+        var _c = that.cConf || {};
         var dList = {
             loading : true,
             widgets : {},
@@ -3673,7 +3630,8 @@ crud.components.views.vList = Vue.component('v-list', {
             collectionActionsName : [],
             //routeConf : routeConf,
             route : null,
-            data : [],
+            value : [],
+            metadata : {},
             maxPage : 0,
             //conf : conf,
             needSelection : true,
@@ -3683,10 +3641,10 @@ crud.components.views.vList = Vue.component('v-list', {
             langContext : that.cModel,
             json : {},
         };
-        if (d.conf.viewTitle) {
-            d.viewTitle = d.conf.viewTitle;
+        if (_c.viewTitle) {
+            dList.viewTitle = _c.viewTitle;
         }
-        return this.merge(dList,d);
+        return dList;
     },
 
     methods: {
@@ -3700,11 +3658,11 @@ crud.components.views.vList = Vue.component('v-list', {
 
         fillData : function(route, json) {
             var that = this;
-            var data = {};
+            //var value = {};
             if (!route) {
                 console.log('dati manuali',that.conf.data);
-                if (that.conf.data) {
-                    data = that.conf.data;
+                if (that.conf.value) {
+                    that.value = that.conf.value;
                     that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
                 }
             } else {
@@ -3714,17 +3672,17 @@ crud.components.views.vList = Vue.component('v-list', {
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);
-                var data = {};
+
 
                 for (var i in prop) {
                     //console.log(k,k,prop[k]);
-                    data[prop[i]] = protocol[prop[i]];
+                    that[prop[i]] = protocol[prop[i]];
                 }
-                var data = data;
+                //var data = data;
                 //this.maxPage = data.pagination.last_page;
-                that.pagination = data.pagination;
+                //that.pagination = data.pagination;
             }
-            that.data = data;
+            //that.value = data;
             that.json = json;
         },
 
@@ -3735,7 +3693,7 @@ crud.components.views.vList = Vue.component('v-list', {
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)
-            var order = that.data.metadata.order || {};
+            var order = that.metadata.order || {};
             //console.log('GETORDERCONF CALLED',key,order);
             conf.orderDirection = (order.field == conf.orderField)?order.direction:null;
             return conf;
@@ -3763,7 +3721,7 @@ crud.components.views.vList = Vue.component('v-list', {
             that.jQe('[c-row-check]').each(function () {
                 if (jQuery(this).prop('checked')) {
                     var index = jQuery(this).closest('tr').index();
-                    sel.push(that.data.value[index].id);
+                    sel.push(that.value[index].id);
                 }
             });
             //console.log('select3ed',sel);
@@ -3808,7 +3766,7 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
 
         draw : function() {
             var that = this;
-            that.editMode = new Array(that.data.value.length).fill(false);
+            that.editMode = new Array(that.value.length).fill(false);
             that.createActions();
             that.createWidgets();
             that.createWidgetsEdit();
@@ -3823,9 +3781,9 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
             var that = this;
             //console.log('Vlist-create widgets',that.data);
             var widgetsEdit = [];
-            var data = that.data;
+            //var data = that.data;
             var keys = that.keys;
-            for (var i in data.value) {
+            for (var i in that.value) {
                 widgetsEdit.push({});
                 for (var k in that.keys) {
                     var key = keys[k];
@@ -3834,11 +3792,11 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
                     if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
                         dconf.type = 'w-input';
                     dconf.cRef = that.getRefId(that._uid,'redit',i,key);
-                    dconf.modelData = data.value[i];
+                    dconf.modelData = that.value[i];
                     if (! ('value' in dconf))
                         dconf.value = null;
-                    if (data.value[i][key])
-                        dconf.value = data.value[i][key];
+                    if (that.value[i][key])
+                        dconf.value = that.value[i][key];
                     dconf.name = that.getFieldName(key);
                     widgetsEdit[i][key] = dconf;
                 }
@@ -3924,7 +3882,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-input',
@@ -3980,7 +3938,7 @@ crud.components.views.vView = Vue.component('v-view', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-text',
@@ -4036,7 +3994,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             //conf : that.conf,
             defaultWidgetType : 'w-input',
         }
@@ -4093,7 +4051,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-input',
@@ -4121,7 +4079,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
         },
         createWidgets : function() {
             var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.data.value);
+            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
@@ -4131,8 +4089,8 @@ crud.components.views.vSearch = Vue.component('v-search', {
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
                 widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
-                if (that.data.value && that.data.value[key])
-                    widgets[key].value = that.data.value[key];
+                if (that.value && that.value[key])
+                    widgets[key].value = that.value[key];
 
                 widgets[key].name = that.getFieldName(key);
             }
@@ -4159,21 +4117,22 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
     //props : ['c-conf'],
     data :  function () {
         var that = this;
-        var d = that._loadConf(that.cModel,'edit');
+        //var d = that._loadConf(that.cModel,'edit');
         var dHasmany =  {
             loading : true,
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             //conf : conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultWidgetType : 'w-input',
         }
-        return this.merge(dHasmany,d);
+        return dHasmany;
     },
     methods : {
         fillData : function () {
-            this.data = this.conf.data;
+            //console.log('filldata',this.data);
+            this.value = this.conf.value;
         },
         // renderKey : function (key) {
         //     var that = this;
@@ -4200,10 +4159,14 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
 
 crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf'],
+    props : {
+        cType : {
+            default : 'view'
+        }
+    },
     data :  function () {
         var that = this;
-        var d  = that._loadConf(that.cModel,'view');
+        //var d  = that._loadConf(that.cModel,'view');
         //that.createActions();
 
         //that.loading = true;
@@ -4213,14 +4176,15 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             //conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultWidgetType : 'w-text',
         }
-        return this.merge(dHasmany,d);
+        return dHasmany;
     },
     methods : {
         fillData : function () {
+            console.log('filldata hasamanyview',this.data);
             this.data = this.cConf.data;
         },
         renderKey : function (key) {

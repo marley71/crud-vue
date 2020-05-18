@@ -18,7 +18,8 @@ crud.components.views.vList = Vue.component('v-list', {
 
     data :  function () {
         var that = this;
-        var d = this._loadConf(that.cModel,'list');
+        //var d = this._loadConf(that.cModel,'list');
+        var _c = that.cConf || {};
         var dList = {
             loading : true,
             widgets : {},
@@ -29,7 +30,8 @@ crud.components.views.vList = Vue.component('v-list', {
             collectionActionsName : [],
             //routeConf : routeConf,
             route : null,
-            data : [],
+            value : [],
+            metadata : {},
             maxPage : 0,
             //conf : conf,
             needSelection : true,
@@ -39,10 +41,10 @@ crud.components.views.vList = Vue.component('v-list', {
             langContext : that.cModel,
             json : {},
         };
-        if (d.conf.viewTitle) {
-            d.viewTitle = d.conf.viewTitle;
+        if (_c.viewTitle) {
+            dList.viewTitle = _c.viewTitle;
         }
-        return this.merge(dList,d);
+        return dList;
     },
 
     methods: {
@@ -56,11 +58,11 @@ crud.components.views.vList = Vue.component('v-list', {
 
         fillData : function(route, json) {
             var that = this;
-            var data = {};
+            //var value = {};
             if (!route) {
                 console.log('dati manuali',that.conf.data);
-                if (that.conf.data) {
-                    data = that.conf.data;
+                if (that.conf.value) {
+                    that.value = that.conf.value;
                     that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
                 }
             } else {
@@ -70,17 +72,17 @@ crud.components.views.vList = Vue.component('v-list', {
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 //console.log(prop);
-                var data = {};
+
 
                 for (var i in prop) {
                     //console.log(k,k,prop[k]);
-                    data[prop[i]] = protocol[prop[i]];
+                    that[prop[i]] = protocol[prop[i]];
                 }
-                var data = data;
+                //var data = data;
                 //this.maxPage = data.pagination.last_page;
-                that.pagination = data.pagination;
+                //that.pagination = data.pagination;
             }
-            that.data = data;
+            //that.value = data;
             that.json = json;
         },
 
@@ -91,7 +93,7 @@ crud.components.views.vList = Vue.component('v-list', {
             conf.text = key;
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)
-            var order = that.data.metadata.order || {};
+            var order = that.metadata.order || {};
             //console.log('GETORDERCONF CALLED',key,order);
             conf.orderDirection = (order.field == conf.orderField)?order.direction:null;
             return conf;
@@ -119,7 +121,7 @@ crud.components.views.vList = Vue.component('v-list', {
             that.jQe('[c-row-check]').each(function () {
                 if (jQuery(this).prop('checked')) {
                     var index = jQuery(this).closest('tr').index();
-                    sel.push(that.data.value[index].id);
+                    sel.push(that.value[index].id);
                 }
             });
             //console.log('select3ed',sel);

@@ -29,7 +29,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             //conf : that.conf,
             defaultWidgetType : 'w-input',
         }

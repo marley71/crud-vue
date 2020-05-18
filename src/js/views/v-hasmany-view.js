@@ -1,9 +1,13 @@
 crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf'],
+    props : {
+        cType : {
+            default : 'view'
+        }
+    },
     data :  function () {
         var that = this;
-        var d  = that._loadConf(that.cModel,'view');
+        //var d  = that._loadConf(that.cModel,'view');
         //that.createActions();
 
         //that.loading = true;
@@ -13,14 +17,15 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             //conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
             defaultWidgetType : 'w-text',
         }
-        return this.merge(dHasmany,d);
+        return dHasmany;
     },
     methods : {
         fillData : function () {
+            console.log('filldata hasamanyview',this.data);
             this.data = this.cConf.data;
         },
         renderKey : function (key) {

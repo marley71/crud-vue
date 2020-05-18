@@ -17,15 +17,11 @@ crud.components.wHasmanyThrough =Vue.component('w-hasmany-through', {
             var hmConf = that.hasmanyConf?that.hasmanyConf:{
                 fields : [],
                 fieldsConfig : {},
-                data :  {
-                    value : {},
-                    metadata : {
-
-                    }
-                },
+                value : {},
+                metadata : {},
             };
             if (value && Object.keys(value).length > 0) {
-                hmConf.data.value = value;
+                hmConf.value = value;
                 if (!hmConf.fields || !hmConf.fields.length) {
                     hmConf.fields = Object.keys(value);
                 }
@@ -34,7 +30,7 @@ crud.components.wHasmanyThrough =Vue.component('w-hasmany-through', {
                 if (this.value && this.value.length > 0) {
                     if (!hmConf.fields || !hmConf.fields.length) {
                         hmConf.fields = Object.keys(this.value[0]);
-                        hmConf.data.value = this.cloneObj(this.value[0]);
+                        hmConf.value = this.cloneObj(this.value[0]);
                     }
                 }
             }

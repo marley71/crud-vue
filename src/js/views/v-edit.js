@@ -31,7 +31,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             widgets : {},
             actionsClass : [],
             actions : {},
-            data : {},
+            //data : {},
             route : null,
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-input',

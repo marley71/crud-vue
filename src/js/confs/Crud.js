@@ -123,7 +123,7 @@ crud.recordActions = {
                 if (that.$crud.cRefs[sref])
                     values[k] = that.$crud.cRefs[sref].getValue();
             }
-            var id = that.view.data.value[that.index][that.view.conf.primaryKey];
+            var id = that.view.value[that.index][that.view.conf.primaryKey];
             var r = that.createRoute('update');
             that.setRouteValues(r);
             r.setParams(values);
@@ -248,7 +248,7 @@ crud.collectionActions = {
 
                 //var form = jQuery(this.view.$el).find('form');
                 //var formData = Utility.getFormData(form);
-
+                formData['page'] = 1;
                 targetView.route.setParams(formData);
                 targetView.reload();
                 return ;
