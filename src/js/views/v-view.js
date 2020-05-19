@@ -1,7 +1,11 @@
 crud.components.views.vView = Vue.component('v-view', {
     extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
-
+    props : {
+        cType : {
+            default : 'view'
+        }
+    },
     mounted : function() {
         var that = this;
         if (that.cModel)
@@ -22,7 +26,7 @@ crud.components.views.vView = Vue.component('v-view', {
     data :  function () {
         var that = this;
         console.log('v-view');
-        var d = this._loadConf(that.cModel,'view');
+        //var d = this._loadConf(that.cModel,'view');
         //d.conf = that.getConf(that.cModel,'view');
 
         var dView = {
@@ -35,7 +39,7 @@ crud.components.views.vView = Vue.component('v-view', {
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-text',
         }
-        return this.merge(dView,d);
+        return dView;
 
     },
 

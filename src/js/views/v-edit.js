@@ -1,6 +1,10 @@
 crud.components.views.vEdit = Vue.component('v-edit', {
     extends : crud.components.views.vRecord,
-    //props : ['cModel','cPk'],
+    props : {
+        cType : {
+            default : 'edit'
+        }
+    },
 
     mounted : function() {
         var that = this;

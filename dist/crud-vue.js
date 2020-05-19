@@ -3851,7 +3851,11 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
 
 crud.components.views.vEdit = Vue.component('v-edit', {
     extends : crud.components.views.vRecord,
-    //props : ['cModel','cPk'],
+    props : {
+        cType : {
+            default : 'edit'
+        }
+    },
 
     mounted : function() {
         var that = this;
@@ -3909,7 +3913,11 @@ crud.components.views.vEdit = Vue.component('v-edit', {
 crud.components.views.vView = Vue.component('v-view', {
     extends : crud.components.views.vRecord,
     //props : ['cModel','cPk'],
-
+    props : {
+        cType : {
+            default : 'view'
+        }
+    },
     mounted : function() {
         var that = this;
         if (that.cModel)
@@ -3930,7 +3938,7 @@ crud.components.views.vView = Vue.component('v-view', {
     data :  function () {
         var that = this;
         console.log('v-view');
-        var d = this._loadConf(that.cModel,'view');
+        //var d = this._loadConf(that.cModel,'view');
         //d.conf = that.getConf(that.cModel,'view');
 
         var dView = {
@@ -3943,7 +3951,7 @@ crud.components.views.vView = Vue.component('v-view', {
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-text',
         }
-        return this.merge(dView,d);
+        return dView;
 
     },
 
@@ -3965,7 +3973,11 @@ crud.components.views.vView = Vue.component('v-view', {
 
 crud.components.views.vInsert = Vue.component('v-insert', {
     extends : crud.components.views.vRecord,
-    //props : ['c-conf','c-model'],
+    props : {
+        cType : {
+            default : 'insert'
+        }
+    },
 
     mounted : function() {
         var that = this;
@@ -4018,7 +4030,14 @@ crud.components.views.vInsert = Vue.component('v-insert', {
 
 crud.components.views.vSearch = Vue.component('v-search', {
     extends : crud.components.views.vRecord,
-    props : ['cConf','cRouteConf','cTargetRef'],
+    props : {
+        cRouteConf : {},
+        cTargetRef : {},
+        cType : {
+            default : 'search'
+        }
+    },
+
     mounted : function() {
         var that = this;
         // var route = that._getRoute({

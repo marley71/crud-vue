@@ -1,6 +1,10 @@
 crud.components.views.vInsert = Vue.component('v-insert', {
     extends : crud.components.views.vRecord,
-    //props : ['c-conf','c-model'],
+    props : {
+        cType : {
+            default : 'insert'
+        }
+    },
 
     mounted : function() {
         var that = this;

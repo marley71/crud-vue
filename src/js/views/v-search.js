@@ -1,6 +1,13 @@
 crud.components.views.vSearch = Vue.component('v-search', {
     extends : crud.components.views.vRecord,
-    props : ['cConf','cRouteConf','cTargetRef'],
+    props : {
+        cRouteConf : {},
+        cTargetRef : {},
+        cType : {
+            default : 'search'
+        }
+    },
+
     mounted : function() {
         var that = this;
         // var route = that._getRoute({
