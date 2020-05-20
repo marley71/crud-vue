@@ -26,10 +26,6 @@ crud.components.views.vEdit = Vue.component('v-edit', {
     },
 
     data :  function () {
-        var that = this;
-        var d = this._loadConf(that.cModel,'edit');
-        //d.conf = that.getConf(that.cModel,'edit');
-
         var dEdit = {
             loading : true,
             widgets : {},
@@ -40,8 +36,7 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-input',
         }
-        return that.merge(dEdit,d);
-
+        return dEdit;
     },
 
     methods : {

@@ -1,20 +1,21 @@
 crud.components.views.vRecord = Vue.component('v-record', {
     extends : crud.components.views.vBase,
     props : ['cModel','cPk'],
+    data : function () {
+        var that = this;
+        var d =  {};
+        if (that.cModel)
+            d.modelName = that.cModel;
+        if (that.cPk)
+            d.pk = that.cPk;
+        d.value = {};
+        d.metadata = {};
+        d.langContext = d.modelName;
+        //console.log('vRecord.data',d);
+        return d;
+    },
+
     methods : {
-
-        data : function () {
-            var that = this;
-            var d =  {};
-            if (that.cModel)
-                d.modelName = that.cModel;
-            if (that.cPk)
-                d.pk = that.cPk;
-            d.value = {};
-            d.metadata = {};
-            return d;
-        },
-
         setWidgetValue : function(key,value) {
             var that = this;
             if (!that.widgets[key]) {
@@ -38,7 +39,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 widgets[key].name = that.getFieldName(key);
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
-
+                console.log('translate',that.langContext,widgets[key].label )
                 widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
             }
 

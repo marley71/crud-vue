@@ -3,12 +3,12 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
 
     data : function() {
         var that = this;
-        var d = that._loadConf(that.cModel,'listEdit');
+        //var d = that._loadConf(that.cModel,'listEdit');
         var dListEdit = {
             widgetsEdit : {},
             editMode : []
         };
-        return this.merge(dListEdit,d);
+        return dListEdit;
     },
 
     methods: {

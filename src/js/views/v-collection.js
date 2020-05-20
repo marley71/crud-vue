@@ -8,16 +8,17 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             default: 'list'
         }
     },
+    data : function () {
+        var that = this;
+        var d =  {};
+        if (that.cModel)
+            d.modelName = that.cModel;
+        d.value = [];
+        d.metadata = {};
+        return d;
+    },
     methods : {
-        data : function () {
-            var that = this;
-            var d =  {};
-            if (that.cModel)
-                d.modelName = that.cModel;
-            // d.value = [];
-            // d.metadata = {};
-            return d;
-        },
+
         setWidgetValue : function(row,key,value) {
             var that = this;
             if (!that.widgets[row][key]) {
