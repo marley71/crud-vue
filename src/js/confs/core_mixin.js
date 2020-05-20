@@ -64,9 +64,12 @@ core_mixin = {
         },
 
         _translate : function (key,plural,params) {
-            var testo = this.$crud.lang[key];
-            if (!testo)
+            var testi = this.$crud.lang[key];
+            if (!testi)
                 return key;
+            testi = testi.split('|');
+            var testo = (plural && testi.length>1)?testi[1]:testi[0];
+            console.log('testi',testi);
             if (params instanceof Array) {
                 for (var i = 0; i < params.length; i++) {
                     testo= testo.replace("(" + i +")", params[i] );

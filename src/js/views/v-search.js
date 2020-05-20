@@ -66,27 +66,29 @@ crud.components.views.vSearch = Vue.component('v-search', {
         getFieldName : function (key) {
             return 's_' + key;
         },
-        createWidgets : function() {
-            var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
-            var widgets = {};
-            for (var k in keys) {
-                var key = keys[k];
-                widgets[key] = that._defaultWidgetConfig(key);
-                widgets[key].cRef = that.getRefId(that._uid,'r',key);
-                widgets[key].value = null;
-                if (! ('label' in widgets[key]) )
-                    widgets[key].label = key;
-                widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
-                if (that.value && that.value[key])
-                    widgets[key].value = that.value[key];
-
-                widgets[key].name = that.getFieldName(key);
-            }
-
-            console.log('v-searc.widgets',widgets);
-            that.widgets = widgets;
-        },
+        // createWidgets : function() {
+        //     var that = this;
+        //     var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
+        //     var widgets = {};
+        //     for (var k in keys) {
+        //         var key = keys[k];
+        //         widgets[key] = that._defaultWidgetConfig(key);
+        //         widgets[key].cRef = that.getRefId(that._uid,'r',key);
+        //         widgets[key].value = null;
+        //         if (that.value && that.value[key])
+        //             widgets[key].value = that.value[key];
+        //         widgets[key].name = that.getFieldName(key);
+        //         if (! ('label' in widgets[key]) )
+        //             widgets[key].label = key;
+        //         widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
+        //
+        //
+        //
+        //     }
+        //
+        //     console.log('v-searc.widgets',widgets);
+        //     that.widgets = widgets;
+        // },
 
         setRouteValues : function (route) {
             var that  = this;

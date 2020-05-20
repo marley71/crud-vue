@@ -12,14 +12,14 @@
 </script>
 <template id="tpl-record-template">
     <div>
-        <label>{{cWidget.label | translate}}</label>
+        <label>{{cWidget.label}}</label>
         <v-widget :c-widget="cWidget"></v-widget>
     </div>
 </template>
 
 <template id="tpl-record2-template">
     <div class="row">
-        <div class="col col-sm-6">{{cWidget.label | translate}}</div>
+        <div class="col col-sm-6">{{cWidget.label}}</div>
         <div class="col col-sm-6">
             <v-widget :c-widget="cWidget"></v-widget>
         </div>
@@ -506,7 +506,7 @@
                         </th>
                         <th v-for="key in keys">
                             <action-order v-if="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
-                            <span v-else>{{key | translate(langContext) }}</span>
+                            <span v-else>{{key+'.label' | translate(langContext) }}</span>
                         </th>
                     </tr>
                     <tr v-if="widgets.length == 0">

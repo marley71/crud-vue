@@ -39,8 +39,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 widgets[key].name = that.getFieldName(key);
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
-                console.log('translate',that.langContext,widgets[key].label )
-                widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
+                //console.log('translate',that.langContext,widgets[key].label )
+                widgets[key].label = that.$options.filters.translate(widgets[key].label+'.label',that.langContext);
             }
 
             console.log('v-record.widgets',widgets);

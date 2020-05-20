@@ -731,9 +731,12 @@ core_mixin = {
         },
 
         _translate : function (key,plural,params) {
-            var testo = this.$crud.lang[key];
-            if (!testo)
+            var testi = this.$crud.lang[key];
+            if (!testi)
                 return key;
+            testi = testi.split('|');
+            var testo = (plural && testi.length>1)?testi[1]:testi[0];
+            console.log('testi',testi);
             if (params instanceof Array) {
                 for (var i = 0; i < params.length; i++) {
                     testo= testo.replace("(" + i +")", params[i] );
@@ -1751,8 +1754,8 @@ Vue.component('action-order', {
             this.icon = null;
         if (this.text) {
             var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
-            if (this.hasTranslation(langKey))
-                this.text = this.translate(langKey)
+            if (this.hasTranslation(langKey+'.label'))
+                this.text = this.translate(langKey+'.label')
         }
 
         //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);
@@ -3370,8 +3373,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 widgets[key].name = that.getFieldName(key);
                 if (! ('label' in widgets[key]) )
                     widgets[key].label = key;
-                console.log('translate',that.langContext,widgets[key].label )
-                widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
+                //console.log('translate',that.langContext,widgets[key].label )
+                widgets[key].label = that.$options.filters.translate(widgets[key].label+'.label',that.langContext);
             }
 
             console.log('v-record.widgets',widgets);
@@ -4089,27 +4092,29 @@ crud.components.views.vSearch = Vue.component('v-search', {
         getFieldName : function (key) {
             return 's_' + key;
         },
-        createWidgets : function() {
-            var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
-            var widgets = {};
-            for (var k in keys) {
-                var key = keys[k];
-                widgets[key] = that._defaultWidgetConfig(key);
-                widgets[key].cRef = that.getRefId(that._uid,'r',key);
-                widgets[key].value = null;
-                if (! ('label' in widgets[key]) )
-                    widgets[key].label = key;
-                widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
-                if (that.value && that.value[key])
-                    widgets[key].value = that.value[key];
-
-                widgets[key].name = that.getFieldName(key);
-            }
-
-            console.log('v-searc.widgets',widgets);
-            that.widgets = widgets;
-        },
+        // createWidgets : function() {
+        //     var that = this;
+        //     var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
+        //     var widgets = {};
+        //     for (var k in keys) {
+        //         var key = keys[k];
+        //         widgets[key] = that._defaultWidgetConfig(key);
+        //         widgets[key].cRef = that.getRefId(that._uid,'r',key);
+        //         widgets[key].value = null;
+        //         if (that.value && that.value[key])
+        //             widgets[key].value = that.value[key];
+        //         widgets[key].name = that.getFieldName(key);
+        //         if (! ('label' in widgets[key]) )
+        //             widgets[key].label = key;
+        //         widgets[key].label = that.$options.filters.translate(widgets[key].label,that.langContext);
+        //
+        //
+        //
+        //     }
+        //
+        //     console.log('v-searc.widgets',widgets);
+        //     that.widgets = widgets;
+        // },
 
         setRouteValues : function (route) {
             var that  = this;
@@ -4220,6 +4225,14 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
 
 const CrudApp = Vue.extend({
     mixins : [core_mixin,dialogs_mixin],
+    // filter : {
+    //     translate : function (value,context) {
+    //         var langKey = context?context+'.'+value:value;
+    //         return this.translate(langKey,1);
+    //         //console.log('translate global',value,context,langKey);
+    //         return crud.lang[langKey]?crud.lang[langKey]:value;
+    //     }
+    // },
     data : function() {
         var d = {
             templatesFile : '/crud-vue/crud-vue.html',
@@ -4261,8 +4274,12 @@ const CrudApp = Vue.extend({
     }
 });
 
-Vue.filter('translate', function (value,context) {
+Vue.filter('translate', function (value,context,plural,params) {
+    //onsole.log('TRANSLATE',this);
     var langKey = context?context+'.'+value:value;
+    if (crud.instance.hasTranslation(langKey))
+        return crud.instance.translate(langKey,plural,params);
+    return value;
     //console.log('translate global',value,context,langKey);
-    return crud.lang[langKey]?crud.lang[langKey]:value;
+    //return crud.lang[langKey]?crud.lang[langKey]:value;
 })

@@ -24,7 +24,7 @@
                         </th>
                         <th v-for="key in keys">
                             <action-order v-if="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
-                            <span v-else>{{key | translate(langContext) }}</span>
+                            <span v-else>{{key+'.label' | translate(langContext) }}</span>
                         </th>
                     </tr>
                     <tr v-if="widgets.length == 0">

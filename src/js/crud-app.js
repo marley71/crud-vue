@@ -1,5 +1,13 @@
 const CrudApp = Vue.extend({
     mixins : [core_mixin,dialogs_mixin],
+    // filter : {
+    //     translate : function (value,context) {
+    //         var langKey = context?context+'.'+value:value;
+    //         return this.translate(langKey,1);
+    //         //console.log('translate global',value,context,langKey);
+    //         return crud.lang[langKey]?crud.lang[langKey]:value;
+    //     }
+    // },
     data : function() {
         var d = {
             templatesFile : '/crud-vue/crud-vue.html',
@@ -41,8 +49,12 @@ const CrudApp = Vue.extend({
     }
 });
 
-Vue.filter('translate', function (value,context) {
+Vue.filter('translate', function (value,context,plural,params) {
+    //onsole.log('TRANSLATE',this);
     var langKey = context?context+'.'+value:value;
+    if (crud.instance.hasTranslation(langKey))
+        return crud.instance.translate(langKey,plural,params);
+    return value;
     //console.log('translate global',value,context,langKey);
-    return crud.lang[langKey]?crud.lang[langKey]:value;
+    //return crud.lang[langKey]?crud.lang[langKey]:value;
 })
