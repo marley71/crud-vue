@@ -724,15 +724,10 @@ core_mixin = {
          * @param params
          * @returns {string|*}
          */
-        translateIfExist : function (key,plural,params) {
-            var tmp = key.split('.');
-            var skey = this.$crud.lang;
-            for (var i in tmp) {
-                if (! (tmp[i] in skey))
-                    return "";
-                skey = skey[tmp[i]];
-            }
-            return this.translate(key,plural,params);
+        hasTranslation : function (key) {
+            if (this.$crud.lang[key])
+                return true;
+            return false;
         },
 
         _translate : function (key,plural,params) {
@@ -1756,7 +1751,8 @@ Vue.component('action-order', {
             this.icon = null;
         if (this.text) {
             var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
-            this.text = this.translate(langKey)
+            if (this.hasTranslation(langKey))
+                this.text = this.translate(langKey)
         }
 
         //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);

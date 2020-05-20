@@ -57,15 +57,10 @@ core_mixin = {
          * @param params
          * @returns {string|*}
          */
-        translateIfExist : function (key,plural,params) {
-            var tmp = key.split('.');
-            var skey = this.$crud.lang;
-            for (var i in tmp) {
-                if (! (tmp[i] in skey))
-                    return "";
-                skey = skey[tmp[i]];
-            }
-            return this.translate(key,plural,params);
+        hasTranslation : function (key) {
+            if (this.$crud.lang[key])
+                return true;
+            return false;
         },
 
         _translate : function (key,plural,params) {
