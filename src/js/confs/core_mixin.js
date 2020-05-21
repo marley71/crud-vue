@@ -69,7 +69,7 @@ core_mixin = {
                 return key;
             testi = testi.split('|');
             var testo = (plural && testi.length>1)?testi[1]:testi[0];
-            console.log('testi',testi);
+            //console.log('testi',testi);
             if (params instanceof Array) {
                 for (var i = 0; i < params.length; i++) {
                     testo= testo.replace("(" + i +")", params[i] );

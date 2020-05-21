@@ -31,17 +31,26 @@ crud.components.actions.actionBase = Vue.component('action-base', {
 
         _beforeExecute : function (callback) {
             var that =this;
+            console.log('_beforeExecute')
             if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
                 callback();
                 return ;
             }
-            // controllo se la funzione before execute ha una callback per controlli asincroni.
-            if (that.cConf.length > 0) {
-                that.cConf.beforeExecute.apply(that,[callback]);;
+
+            var args = that.cConf.beforeExecute.toString()
+                .match(/\((?:.+(?=\s*\))|)/)[0]
+                .slice(1).split(/\s*,\s*/g);
+            args.forEach(function (e, i, a) {a[i] = e.trim();});
+            // se before execute ha un parametro allora e' la callback che verrà chiamata in caso di esisto positivo
+            if (args[0]) {
+                that.cConf.beforeExecute.apply(that,[callback]);
+            } else {
+                // altrimenti continuo solo se before execute mi ritorna true.
+                if (that.cConf.beforeExecute.apply(that) ) {
+                    callback();
+                }
             }
-            if (that.cConf.beforeExecute.apply(that) ) {
-                callback();
-            }
+
 
         },
         _execute : function () {
@@ -51,9 +60,21 @@ crud.components.actions.actionBase = Vue.component('action-base', {
                 return ;
             }
             that._beforeExecute(function () {
-                //console.log('call execute')
-                that.execute.apply(that);
-                that._afterExecute();
+                // controllo che execute abbia o no una callback per operazioni asincrone
+                var args = that.cConf.execute.toString()
+                    .match(/\((?:.+(?=\s*\))|)/)[0]
+                    .slice(1).split(/\s*,\s*/g);
+                args.forEach(function (e, i, a) {a[i] = e.trim();});
+                if (args[0]) {
+                    var __cb = function() {
+                        that._afterExecute();
+                    }
+                    that.execute.apply(that,[__cb]);
+                } else {
+                    that.execute.apply(that);
+                    that._afterExecute();
+                }
+
             })
         },
         _afterExecute : function () {

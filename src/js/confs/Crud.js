@@ -200,7 +200,7 @@ crud.collectionActions = {
             route.setParams(that.view.getViewData());
             return route;
         },
-        execute : function () {
+        execute : function (callback) {
             var that = this;
             console.log('action save',this);
             var rName = 'create';
@@ -213,7 +213,8 @@ crud.collectionActions = {
                     that.errorDialog(json.msg)
                     return ;
                 }
-                that.popoverSuccess('app.salvataggio-ok')
+                that.popoverSuccess('app.salvataggio-ok');
+                callback();
             })
         }
     },
@@ -238,32 +239,12 @@ crud.collectionActions = {
             if (this.view && this.view.targetRef) {
                 console.log('target ref',this.view.targetRef);
                 var targetView = this.$crud.cRefs[this.view.targetRef];
-
-                // var ref = this.view.$parent.$refs[this.view.targetRef];
-                // if (!ref) {
-                //     console.error(this.view.targetRef +' ref non trovata in ',this.view.$parent.$refs);
-                //     throw "errore";
-                // }
                 var formData = this.view.getViewData();
-
-                //var form = jQuery(this.view.$el).find('form');
-                //var formData = Utility.getFormData(form);
                 formData['page'] = 1;
                 targetView.route.setParams(formData);
                 targetView.reload();
                 return ;
             }
-            // TODO in caso di mancanza di una targetView modificare l'url con i parametri di search
-            // if (this.view.cRouteConf) {
-            //     var routeConf = this.$crud.cloneObj(this.view.cRouteConf);
-            //     var form = jQuery(this.view.$el).find('form');
-            //     var formData = this.$crud.getFormData(form);
-            //     console.log('formData',formData);
-            //     this.view.doSearch(formData)
-            //     //this.view.setCRouteCo .cRouteConf = routeConf;
-            // } else
-            //     console.warn('routeConf non definita')
-            //console.log('SEARCH',this.view,this.cRouteConf);
         }
     },
     'action-order' : {
@@ -281,12 +262,6 @@ crud.collectionActions = {
             params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
             this.view.route.setParams(params);
             this.view.reload();
-
-            // var params = this.$crud.cloneObj(this.view.routeConf.params);
-            // params.order_field = this.orderField;
-            // //params.order_direction = (this.view.data.metadata.order.field == this.orderField)?(this.view.data.metadata.order.direction.toLowerCase() == 'asc'?'DESC':'ASC'):'Asc';
-            // params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
-            // this.view.routeConf.params = params;
         }
     },
     'action-delete-selected' : {
