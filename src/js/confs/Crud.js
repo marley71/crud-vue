@@ -170,7 +170,7 @@ crud.collectionActions = {
         visible : true,
         enabled : true,
         title : 'app.nuovo',
-        css: 'btn btn-outline-primary btn-sm btn-group',
+        css: 'btn btn-outline-primary btn-sm btn-group mr-1',
         icon : 'fa fa-plus',
         text : 'app.nuovo',
         execute  :function () {
@@ -182,7 +182,7 @@ crud.collectionActions = {
     'action-save' : {
         type : 'collection',
         title : 'app.salva',
-        css: 'btn btn-primary btn-sm',
+        css: 'btn btn-primary btn-sm mr-1',
         icon : 'fa fa-save',
         text : 'app.salva',
         setRouteValues : function(route) {
@@ -221,7 +221,7 @@ crud.collectionActions = {
     'action-back' : {
         type : 'collection',
         title : 'app.indietro',
-        css: 'btn btn-secondary btn-sm',
+        css: 'btn btn-secondary btn-sm mr-1',
         icon : 'fa fa-backward',
         text : 'app.indietro',
         execute : function () {
@@ -231,7 +231,7 @@ crud.collectionActions = {
     'action-search' : {
         type : 'collection',
         title : 'app.cerca',
-        css: 'btn btn-primary btn-sm btn-group',
+        css: 'btn btn-primary btn-sm btn-group mr-1',
         icon : 'fa fa-search',
         text : 'app.cerca',
         execute : function () {
@@ -250,7 +250,7 @@ crud.collectionActions = {
     'action-order' : {
         type : 'collection',
         title : 'app.order',
-        css: 'btn btn-default btn-sm',
+        css: 'btn btn-default btn-sm mr-1',
         iconUp : 'fa fa-caret-up',
         iconDown : 'fa fa-caret-down',
         icon : null,
@@ -267,7 +267,7 @@ crud.collectionActions = {
     'action-delete-selected' : {
         type : 'collection',
         title : 'app.cancella-selezionati',
-        css: 'btn btn-outline-danger btn-sm',
+        css: 'btn btn-outline-danger btn-sm mr-1',
         icon : 'fa fa-trash',
         text : '',
         setRouteValues : function(route) {
@@ -282,21 +282,15 @@ crud.collectionActions = {
             var checked = that.view.selectedRows();
             var num = checked.length;
             if (num === 0)
-                return ;
+                return ; 
             that.confirmDialog(that.translate('app.conferma-multidelete',false,[num]), {
                 ok : function () {
                     var r = that.createRoute('multi-delete');
                     that.setRouteValues(r);
                     r.setParams({'ids': checked});
-
-
-                    // var r = Route.factory('multi_delete');
-                    // r.values = {
-                    //     modelName: that.modelName
-                    // };
-                    that.$crud.waitStart();
+                    that.waitStart();
                     Server.route(r,function (json) {
-                        that.$crud.waitEnd();
+                        that.waitEnd();
                         that.view.reload();
                         //that.callback(json);
                     })
