@@ -31,7 +31,7 @@ crud.components.actions.actionBase = Vue.component('action-base', {
 
         _beforeExecute : function (callback) {
             var that =this;
-            console.log('_beforeExecute')
+            //console.log('_beforeExecute')
             if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
                 callback();
                 return ;
@@ -95,7 +95,7 @@ crud.components.actions.actionBase = Vue.component('action-base', {
     },
     data :  function () {
         var that = this;
-        console.log('action-base')
+        //console.log('action-base')
         var d =  that._loadConf();
         var adata = {
             type : 'collection',

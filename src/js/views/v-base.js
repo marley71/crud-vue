@@ -1,5 +1,5 @@
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cFields'],
+    props : ['cFields','cTargetRef'],
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
@@ -75,6 +75,7 @@ crud.components.views.vBase = Vue.component('v-base', {
         return {
             viewTitle : '',
             langContext : '',
+            targetRef : this.cTargetRef,
         }
     },
     methods : {

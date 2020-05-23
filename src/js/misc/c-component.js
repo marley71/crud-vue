@@ -1,21 +1,14 @@
 crud.components.cComponent = Vue.component('c-component',{
-    // props : {
-    //     'c-conf' : {
-    //         default : function () {
-    //             return {
-    //                 value : null,
-    //                 name : null,
-    //             }
-    //         }
-    //     }
-    // },
-    props : ['cConf'],
+    props : ['cConf','compRef'],
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
         //console.log('c-component.mounted',that.$options.name);
         if (that.conf.cRef) {
             that.$crud.cRefs[that.conf.cRef] = this;
+        }
+        if (that.compRef) {
+            that.$crud.cRefs[that.compRef] = this;
         }
         if (that.resources && that.resources.length) {
             that.beforeLoadResources();

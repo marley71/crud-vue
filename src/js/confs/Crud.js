@@ -235,7 +235,7 @@ crud.collectionActions = {
         icon : 'fa fa-search',
         text : 'app.cerca',
         execute : function () {
-            //console.log('action-search',this.view,this.view.targetId);
+            console.log('action-search',this,'view',this.view.targetRef);
             if (this.view && this.view.targetRef) {
                 console.log('target ref',this.view.targetRef);
                 var targetView = this.$crud.cRefs[this.view.targetRef];

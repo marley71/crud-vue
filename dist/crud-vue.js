@@ -235,7 +235,7 @@ crud.collectionActions = {
         icon : 'fa fa-search',
         text : 'app.cerca',
         execute : function () {
-            //console.log('action-search',this.view,this.view.targetId);
+            console.log('action-search',this,'view',this.view.targetRef);
             if (this.view && this.view.targetRef) {
                 console.log('target ref',this.view.targetRef);
                 var targetView = this.$crud.cRefs[this.view.targetRef];
@@ -1433,23 +1433,16 @@ Server.route = function(route,callback) {
 Server.subdomain = null;
 
 crud.components.cComponent = Vue.component('c-component',{
-    // props : {
-    //     'c-conf' : {
-    //         default : function () {
-    //             return {
-    //                 value : null,
-    //                 name : null,
-    //             }
-    //         }
-    //     }
-    // },
-    props : ['cConf'],
+    props : ['cConf','compRef'],
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
         //console.log('c-component.mounted',that.$options.name);
         if (that.conf.cRef) {
             that.$crud.cRefs[that.conf.cRef] = this;
+        }
+        if (that.compRef) {
+            that.$crud.cRefs[that.compRef] = this;
         }
         if (that.resources && that.resources.length) {
             that.beforeLoadResources();
@@ -1621,7 +1614,7 @@ crud.components.actions.actionBase = Vue.component('action-base', {
 
         _beforeExecute : function (callback) {
             var that =this;
-            console.log('_beforeExecute')
+            //console.log('_beforeExecute')
             if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
                 callback();
                 return ;
@@ -1685,7 +1678,7 @@ crud.components.actions.actionBase = Vue.component('action-base', {
     },
     data :  function () {
         var that = this;
-        console.log('action-base')
+        //console.log('action-base')
         var d =  that._loadConf();
         var adata = {
             type : 'collection',
@@ -3111,7 +3104,7 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
 })
 
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cFields'],
+    props : ['cFields','cTargetRef'],
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
@@ -3187,6 +3180,7 @@ crud.components.views.vBase = Vue.component('v-base', {
         return {
             viewTitle : '',
             langContext : '',
+            targetRef : this.cTargetRef,
         }
     },
     methods : {
@@ -4024,7 +4018,6 @@ crud.components.views.vSearch = Vue.component('v-search', {
     extends : crud.components.views.vRecord,
     props : {
         cRouteConf : {},
-        cTargetRef : {},
         cType : {
             default : 'search'
         }
@@ -4066,7 +4059,6 @@ crud.components.views.vSearch = Vue.component('v-search', {
             route : null,
             //viewTitle : d.conf.viewTitle,
             defaultWidgetType : 'w-input',
-            targetRef : that.cTargetRef,
         }
         if (!("langContext" in d)){
             d.langContext = that.cModel;
