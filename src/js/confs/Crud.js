@@ -282,7 +282,7 @@ crud.collectionActions = {
             var checked = that.view.selectedRows();
             var num = checked.length;
             if (num === 0)
-                return ; 
+                return ;
             that.confirmDialog(that.translate('app.conferma-multidelete',false,[num]), {
                 ok : function () {
                     var r = that.createRoute('multi-delete');

@@ -1,6 +1,13 @@
 crud.components.views.vListEdit = Vue.component('v-list-edit', {
     extends : crud.components.views.vList,
-
+    props : {
+        'cModel' : {
+            default: null
+        },
+        'cType' : {
+            default: 'listEdit'
+        }
+    },
     data : function() {
         var that = this;
         //var d = that._loadConf(that.cModel,'listEdit');

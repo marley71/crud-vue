@@ -282,7 +282,7 @@ crud.collectionActions = {
             var checked = that.view.selectedRows();
             var num = checked.length;
             if (num === 0)
-                return ; 
+                return ;
             that.confirmDialog(that.translate('app.conferma-multidelete',false,[num]), {
                 ok : function () {
                     var r = that.createRoute('multi-delete');
@@ -3736,7 +3736,14 @@ crud.components.views.vList = Vue.component('v-list', {
 
 crud.components.views.vListEdit = Vue.component('v-list-edit', {
     extends : crud.components.views.vList,
-
+    props : {
+        'cModel' : {
+            default: null
+        },
+        'cType' : {
+            default: 'listEdit'
+        }
+    },
     data : function() {
         var that = this;
         //var d = that._loadConf(that.cModel,'listEdit');
