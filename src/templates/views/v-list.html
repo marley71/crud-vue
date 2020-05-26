@@ -19,7 +19,7 @@
                     <thead>
                     <tr v-if="widgets.length > 0">
                         <th v-show="recordActionsName.length">
-                            <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                            <input c-row-check-all v-on:change="selectAllRows" v-if="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
                             <span>{{"app.azioni" | translate }}</span>
                         </th>
                         <th v-for="key in keys">
@@ -38,8 +38,8 @@
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group btn-group-sm" role="group">
-                                <div class="input-group-text bg-transparent">
-                                    <input c-row-check v-show="needSelection"  type="checkbox">
+                                <div v-if="needSelection" class="input-group-text bg-transparent">
+                                    <input c-row-check type="checkbox">
                                 </div>
 
                                 <template v-for="(action,name) in recordActions[index]">

@@ -15,6 +15,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             d.modelName = that.cModel;
         d.value = [];
         d.metadata = {};
+        d.needSelection = false;
         return d;
     },
     methods : {
@@ -138,6 +139,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
                 aConf.cRef = that.getRefId(that._uid,'ca',aName);
+                that.needSelection = that.needSelection || aConf.needSelection;
                 collectionActions[aName] = aConf;
             }
             that.collectionActions = collectionActions;

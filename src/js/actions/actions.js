@@ -96,7 +96,8 @@ crud.components.actions.actionBase = Vue.component('action-base', {
     data :  function () {
         var that = this;
         //console.log('action-base')
-        var d =  that._loadConf();
+        //var d =  that._loadConf();
+        var d = that._getConf();
         var adata = {
             type : 'collection',
             visible : true,
@@ -107,7 +108,8 @@ crud.components.actions.actionBase = Vue.component('action-base', {
             text : '',
             controlType : 'button',
             href : '',
-            target: '_self'
+            target: '_self',
+            needSelection  : false,
         };
         if (!('view' in adata) )
             adata.view = that.$parent;

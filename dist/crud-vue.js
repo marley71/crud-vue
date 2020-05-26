@@ -270,6 +270,7 @@ crud.collectionActions = {
         css: 'btn btn-outline-danger btn-sm mr-1',
         icon : 'fa fa-trash',
         text : '',
+        needSelection : true,
         setRouteValues : function(route) {
             var that = this;
             route.setValues({
@@ -1673,7 +1674,8 @@ crud.components.actions.actionBase = Vue.component('action-base', {
     data :  function () {
         var that = this;
         //console.log('action-base')
-        var d =  that._loadConf();
+        //var d =  that._loadConf();
+        var d = that._getConf();
         var adata = {
             type : 'collection',
             visible : true,
@@ -1684,7 +1686,8 @@ crud.components.actions.actionBase = Vue.component('action-base', {
             text : '',
             controlType : 'button',
             href : '',
-            target: '_self'
+            target: '_self',
+            needSelection  : false,
         };
         if (!('view' in adata) )
             adata.view = that.$parent;
@@ -3452,6 +3455,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             d.modelName = that.cModel;
         d.value = [];
         d.metadata = {};
+        d.needSelection = false;
         return d;
     },
     methods : {
@@ -3575,6 +3579,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
                 aConf.cRef = that.getRefId(that._uid,'ca',aName);
+                that.needSelection = that.needSelection || aConf.needSelection;
                 collectionActions[aName] = aConf;
             }
             that.collectionActions = collectionActions;
@@ -3619,7 +3624,6 @@ crud.components.views.vList = Vue.component('v-list', {
             //metadata : {},
             maxPage : 0,
             //conf : conf,
-            needSelection : true,
             pagination : {},
             viewTitle : '',
             defaultWidgetType : 'w-text',

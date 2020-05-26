@@ -34,7 +34,6 @@ crud.components.views.vList = Vue.component('v-list', {
             //metadata : {},
             maxPage : 0,
             //conf : conf,
-            needSelection : true,
             pagination : {},
             viewTitle : '',
             defaultWidgetType : 'w-text',

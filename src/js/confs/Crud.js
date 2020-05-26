@@ -270,6 +270,7 @@ crud.collectionActions = {
         css: 'btn btn-outline-danger btn-sm mr-1',
         icon : 'fa fa-trash',
         text : '',
+        needSelection : true,
         setRouteValues : function(route) {
             var that = this;
             route.setValues({
