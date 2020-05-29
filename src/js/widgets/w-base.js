@@ -34,19 +34,5 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             this.conf = conf;
         },
     },
-    // watch : {
-    //     resourcesLoaded : {
-    //         deep : true,
-    //         handler() {
-    //             var that = this;
-    //             console.log('resouces Loaded',that.resourcesLoaded)
-    //             if (that.resourcesLoaded) {
-    //                 jQuery(that.$el).find('[c-autocomplete]').mdbAutocomplete({
-    //                     data: that.cConf.metadata.domainValues
-    //                 });
-    //             }
-    //         }
-    //     }
-    // },
     template: '<div>render base</div>'
 });

@@ -3,7 +3,7 @@ crud.components.views.vBase = Vue.component('v-base', {
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
-            extends: crud.components.cComponent,
+            //extends: crud.components.cComponent,
             props: ['cName', 'cAction'],
             data: function () {
                 var that = this;
@@ -28,7 +28,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             template: '<component :is="name" :c-conf="conf"></component>'
         }),
         vWidget : Vue.component('v-widget', {
-            extends : crud.components.cComponent,
+            //extends : crud.components.cComponent,
             props : ['cKey','cWidget'],
             data : function() {
                 if (this.cKey) {
@@ -136,9 +136,9 @@ crud.components.views.vBase = Vue.component('v-base', {
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String) {
-                    conf = this.$crud.getDescendantProp(window, this.cConf);
+                    conf = this.getDescendantProp(window, this.cConf);
                     if (!conf) {
-                        conf = this.$crud.getDescendantProp(this.$crud.conf, this.cConf);
+                        conf = this.getDescendantProp(this.$crud.conf, this.cConf);
                     }
                 }
                 else

@@ -3,6 +3,7 @@ crud.components.cComponent = Vue.component('c-component',{
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
+        //console.log('COMPONENTE MOUNTED',that._id);
         //console.log('c-component.mounted',that.$options.name);
         if (that.conf.cRef) {
             that.$crud.cRefs[that.conf.cRef] = this;
@@ -34,7 +35,7 @@ crud.components.cComponent = Vue.component('c-component',{
                 __call(k);
             }
 
-            if ( that.conf.mounted ) {
+            if ( that.conf.mounted) {
                 that.conf.mounted.apply(that);
             }
         //}
@@ -57,7 +58,7 @@ crud.components.cComponent = Vue.component('c-component',{
             var _c = this._getConf() || {};
             var d = {};
             for (var k in _c) {
-                if (k == 'methods')
+                if (['methods','mounted'].indexOf(k) >= 0)
                     continue;
                 d[k] = _c[k];
             }

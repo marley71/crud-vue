@@ -1432,6 +1432,7 @@ crud.components.cComponent = Vue.component('c-component',{
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
+        //console.log('COMPONENTE MOUNTED',that._id);
         //console.log('c-component.mounted',that.$options.name);
         if (that.conf.cRef) {
             that.$crud.cRefs[that.conf.cRef] = this;
@@ -1463,7 +1464,7 @@ crud.components.cComponent = Vue.component('c-component',{
                 __call(k);
             }
 
-            if ( that.conf.mounted ) {
+            if ( that.conf.mounted) {
                 that.conf.mounted.apply(that);
             }
         //}
@@ -1486,7 +1487,7 @@ crud.components.cComponent = Vue.component('c-component',{
             var _c = this._getConf() || {};
             var d = {};
             for (var k in _c) {
-                if (k == 'methods')
+                if (['methods','mounted'].indexOf(k) >= 0)
                     continue;
                 d[k] = _c[k];
             }
@@ -1993,20 +1994,6 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             this.conf = conf;
         },
     },
-    // watch : {
-    //     resourcesLoaded : {
-    //         deep : true,
-    //         handler() {
-    //             var that = this;
-    //             console.log('resouces Loaded',that.resourcesLoaded)
-    //             if (that.resourcesLoaded) {
-    //                 jQuery(that.$el).find('[c-autocomplete]').mdbAutocomplete({
-    //                     data: that.cConf.metadata.domainValues
-    //                 });
-    //             }
-    //         }
-    //     }
-    // },
     template: '<div>render base</div>'
 });
 
@@ -3105,7 +3092,7 @@ crud.components.views.vBase = Vue.component('v-base', {
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
-            extends: crud.components.cComponent,
+            //extends: crud.components.cComponent,
             props: ['cName', 'cAction'],
             data: function () {
                 var that = this;
@@ -3130,7 +3117,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             template: '<component :is="name" :c-conf="conf"></component>'
         }),
         vWidget : Vue.component('v-widget', {
-            extends : crud.components.cComponent,
+            //extends : crud.components.cComponent,
             props : ['cKey','cWidget'],
             data : function() {
                 if (this.cKey) {
@@ -3238,9 +3225,9 @@ crud.components.views.vBase = Vue.component('v-base', {
 
             if (this.cConf) {
                 if (typeof this.cConf === 'string' || this.cConf instanceof String) {
-                    conf = this.$crud.getDescendantProp(window, this.cConf);
+                    conf = this.getDescendantProp(window, this.cConf);
                     if (!conf) {
-                        conf = this.$crud.getDescendantProp(this.$crud.conf, this.cConf);
+                        conf = this.getDescendantProp(this.$crud.conf, this.cConf);
                     }
                 }
                 else
