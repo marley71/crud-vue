@@ -20,15 +20,17 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
                 1 : 'Si'
             }
         }
+        var value = _conf.value;
         var dV = (_conf.domainValues)? _conf.domainValues:defaultDomainValues[d.swapType];
-        //console.log('dV',dV);
+
         var keys = Object.keys(dV).map(String);
-        if (keys.indexOf(""+d.value) >= 0) {
-            d.slot = dV[""+d.value];
+        if (keys.indexOf(""+value) >= 0) {
+            d.slot = dV[""+value];
         } else {
             d.slot = dV[keys[0]];
         }
         d.domainValues = dV;
+        console.log('dV',dV,'value',value,'keys',keys,'slot',d.slot,'conf',_conf);
         return d;
     },
     methods : {

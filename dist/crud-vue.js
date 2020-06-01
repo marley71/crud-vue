@@ -14,6 +14,7 @@ crud.lang = {
     'app.azioni' : 'Azioni',
     'app.cancella' : 'Cancella elemento',
     'app.cancella-selezionati' : 'Cancella elementi selezionati',
+    'app.cancellazione-successo' : 'Cancellazione avvenuta con successo',
     'app.carico' : 'Carico...',
     'app.cerca' : 'Cerca',
     'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
@@ -82,7 +83,7 @@ crud.recordActions = {
             var that = this;
             route.setValues({
                 modelName: that.view.cModel,
-                pk : that.modelData[that.view.conf.primaryKey]
+                pk : that.modelData[that.view.primaryKey]
             });
             return route;
         },
@@ -93,6 +94,11 @@ crud.recordActions = {
                     var r = that.createRoute('delete');
                     that.setRouteValues(r);
                     Server.route(r,function (json) {
+                        if (json.error) {
+                            that.errorDialog(json.msg);
+                            return ;
+                        }
+                        that.popoverSuccess('app.cancellazione-successo')
                         that.view.reload();
                     });
                 }
@@ -2552,15 +2558,17 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
                 1 : 'Si'
             }
         }
+        var value = _conf.value;
         var dV = (_conf.domainValues)? _conf.domainValues:defaultDomainValues[d.swapType];
-        //console.log('dV',dV);
+
         var keys = Object.keys(dV).map(String);
-        if (keys.indexOf(""+d.value) >= 0) {
-            d.slot = dV[""+d.value];
+        if (keys.indexOf(""+value) >= 0) {
+            d.slot = dV[""+value];
         } else {
             d.slot = dV[keys[0]];
         }
         d.domainValues = dV;
+        console.log('dV',dV,'value',value,'keys',keys,'slot',d.slot,'conf',_conf);
         return d;
     },
     methods : {

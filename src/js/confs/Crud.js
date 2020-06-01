@@ -14,6 +14,7 @@ crud.lang = {
     'app.azioni' : 'Azioni',
     'app.cancella' : 'Cancella elemento',
     'app.cancella-selezionati' : 'Cancella elementi selezionati',
+    'app.cancellazione-successo' : 'Cancellazione avvenuta con successo',
     'app.carico' : 'Carico...',
     'app.cerca' : 'Cerca',
     'app.conferma-cancellazione' : 'Sicuro di voler cancellare l\'elemento?',
@@ -82,7 +83,7 @@ crud.recordActions = {
             var that = this;
             route.setValues({
                 modelName: that.view.cModel,
-                pk : that.modelData[that.view.conf.primaryKey]
+                pk : that.modelData[that.view.primaryKey]
             });
             return route;
         },
@@ -93,6 +94,11 @@ crud.recordActions = {
                     var r = that.createRoute('delete');
                     that.setRouteValues(r);
                     Server.route(r,function (json) {
+                        if (json.error) {
+                            that.errorDialog(json.msg);
+                            return ;
+                        }
+                        that.popoverSuccess('app.cancellazione-successo')
                         that.view.reload();
                     });
                 }
