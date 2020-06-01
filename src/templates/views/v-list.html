@@ -1,7 +1,7 @@
 <script type="text/x-template" id="v-list-template">
     <div class="float-end ">
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <div v-else>
             <div class="float-none">
                 <div class="float-left" v-show="collectionActionsName.length">

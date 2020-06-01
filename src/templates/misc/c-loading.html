@@ -1,5 +1,8 @@
 <script type="text/x-template" id="c-loading-template">
-    <div class="spinner-border text-primary" role="status">
+    <div v-if="!errorMsg" class="spinner-border text-primary" role="status">
         <span class="sr-only">{{'app.carico'|translate}}</span>
+    </div>
+    <div v-else>
+        <span class="text-danger text-2xl">{{errorMsg}}</span>
     </div>
 </script>

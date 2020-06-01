@@ -174,8 +174,7 @@ crud.collectionActions = {
         icon : 'fa fa-plus',
         text : 'app.nuovo',
         execute  :function () {
-            var url = this.$crud.application.useRouter?'#':'';
-            url += "/insert/" + this.modelName + "/new";
+            var url = "/insert/" + this.modelName + "/new";
             document.location.href=url;
         }
     },
@@ -1548,7 +1547,12 @@ crud.components.cComponent = Vue.component('c-component',{
 });
 
 Vue.component('c-loading',{
-    template : '#c-loading-template'
+    template : '#c-loading-template',
+    props : {
+        errorMsg : {
+            defaulValue : ''
+        }
+    }
 })
 
 crud.components.tplBase = Vue.component('tpl-base',{
@@ -3165,6 +3169,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             viewTitle : '',
             langContext : '',
             targetRef : this.cTargetRef,
+            errorMsg : '',
         }
     },
     methods : {
@@ -3174,10 +3179,11 @@ crud.components.views.vBase = Vue.component('v-base', {
                 callback({});
                 return;
             }
-            console.log('fetchData',route.getConf());
+            //console.log('fetchData',route.getConf());
             Server.route(route,function (json) {
                 if (json.error) {
                     that.errorDialog(json.msg);
+                    that.errorMsg = json.msg;
                     return
                 }
                 callback(json);

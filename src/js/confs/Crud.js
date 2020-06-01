@@ -174,8 +174,7 @@ crud.collectionActions = {
         icon : 'fa fa-plus',
         text : 'app.nuovo',
         execute  :function () {
-            var url = this.$crud.application.useRouter?'#':'';
-            url += "/insert/" + this.modelName + "/new";
+            var url = "/insert/" + this.modelName + "/new";
             document.location.href=url;
         }
     },

@@ -180,8 +180,11 @@
 </template>
 
 <script type="text/x-template" id="c-loading-template">
-    <div class="spinner-border text-primary" role="status">
+    <div v-if="!errorMsg" class="spinner-border text-primary" role="status">
         <span class="sr-only">{{'app.carico'|translate}}</span>
+    </div>
+    <div v-else>
+        <span class="text-danger text-2xl">{{errorMsg}}</span>
     </div>
 </script>
 
@@ -482,7 +485,7 @@
 <script type="text/x-template" id="v-list-template">
     <div class="float-end ">
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <div v-else>
             <div class="float-none">
                 <div class="float-left" v-show="collectionActionsName.length">

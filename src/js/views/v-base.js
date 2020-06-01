@@ -76,6 +76,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             viewTitle : '',
             langContext : '',
             targetRef : this.cTargetRef,
+            errorMsg : '',
         }
     },
     methods : {
@@ -85,10 +86,11 @@ crud.components.views.vBase = Vue.component('v-base', {
                 callback({});
                 return;
             }
-            console.log('fetchData',route.getConf());
+            //console.log('fetchData',route.getConf());
             Server.route(route,function (json) {
                 if (json.error) {
                     that.errorDialog(json.msg);
+                    that.errorMsg = json.msg;
                     return
                 }
                 callback(json);
