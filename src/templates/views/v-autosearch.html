@@ -1,7 +1,7 @@
 <script type="text/x-template" id="v-autosearch-template">
     <div class="card-body" v-if="(widgets && Object.keys(widgets).length > 0)">
         <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <form v-else>
             <!-- campi nascosti -->
             <component v-for="(item, key) in widgets" v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>

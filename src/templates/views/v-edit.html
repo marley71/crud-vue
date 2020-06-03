@@ -1,11 +1,12 @@
 <script type="text/x-template" id="v-edit-template">
     <div class="container-fluid">
         <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <form v-else enctype="multipart/form-data">
-            <div  v-for="(item, key) in widgets">
-                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
+<!--                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>-->
+<!--                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>-->
             </div>
         </form>
         <div class="p-3" v-show="actions.length">

@@ -28,22 +28,21 @@ crud.components.views.vBase = Vue.component('v-base', {
             template: '<component :is="name" :c-conf="conf"></component>'
         }),
         vWidget : Vue.component('v-widget', {
-            //extends : crud.components.cComponent,
-            props : ['cKey','cWidget'],
+            props : ['cWidget'],
             data : function() {
-                if (this.cKey) {
-                    var ckeys = this.cKey.split(',');
-                    var widget = null;
-                    for (var i in ckeys) {
-                        widget = this.$parent.widgets[ckeys[i]];
-                    }
-                    //var render = this.$parent.widgets[this.cKey];
-                    //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
-                    return {
-                        type : widget.type,
-                        conf : widget
-                    }
-                }
+                // if (this.cKey) {
+                //     var ckeys = this.cKey.split(',');
+                //     var widget = null;
+                //     for (var i in ckeys) {
+                //         widget = this.$parent.widgets[ckeys[i]];
+                //     }
+                //     //var render = this.$parent.widgets[this.cKey];
+                //     //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
+                //     return {
+                //         type : widget.type,
+                //         conf : widget
+                //     }
+                // }
 
                 if (this.cWidget) {
                     var conf = null;
@@ -57,18 +56,20 @@ crud.components.views.vBase = Vue.component('v-base', {
 
                     //console.log('V-RENDER2 ',conf,this.$parent.widgets);
                     return {
-                        type : conf.type,
+                        cTemplate : conf.template,
                         conf : conf
                     }
                 }
-                console.warn('configurazione non valida',this.cKey,this.cWidget);
+                console.warn('configurazione non valida',this.cWidget);
                 return {
-                    type : 'w-text',
-                    conf : {},
+                    cTemplate : 'tpl-no',
+                    conf : {
+                        type : 'w-text'
+                    },
                 }
 
             },
-            template : '<component :is="type" :c-conf="conf"></component>'
+            template : '<component :is="cTemplate" :c-widget="conf"></component>'
         }),
     },
     data : function () {

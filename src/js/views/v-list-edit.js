@@ -27,10 +27,6 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
             that.createWidgets();
             that.createWidgetsEdit();
             that.createCollectionActions();
-            // console.log('widgetsEdit',that.widgetsEdit);
-            // console.log('widgets',that.widgets,'recordActions',that.recordActions);
-            // console.log('collectionActions',that.collectionActions);
-            // console.log('editMode',that.editMode)
         },
 
         createWidgetsEdit : function () {

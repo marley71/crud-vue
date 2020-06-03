@@ -1,20 +1,6 @@
 crud.components.views.vList = Vue.component('v-list', {
     extends : crud.components.views.vCollection,
 
-    mounted : function() {
-        var that = this;
-        if (that.cModel)
-            that.conf.modelName = that.cModel;
-        that.route = that._getRoute();
-        that.setRouteValues(that.route);
-
-        that.fetchData(that.route,function (json) {
-            that.fillData(that.route,json);
-            that.keys = that.getKeys();
-            that.draw();
-            that.loading = false;
-        });
-    },
 
     data :  function () {
         var that = this;
@@ -48,12 +34,7 @@ crud.components.views.vList = Vue.component('v-list', {
 
     methods: {
 
-        draw : function() {
-            var that = this;
-            that.createActions();
-            that.createWidgets();
-            that.createCollectionActions();
-        },
+
 
         fillData : function(route, json) {
             var that = this;

@@ -1,7 +1,7 @@
 <script type="text/x-template" id="v-list-edit-template">
     <div>
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <div v-else>
             <div class="float-none">
                 <div class="float-left" v-show="collectionActionsName.length">
@@ -49,8 +49,11 @@
 
                         </td>
                         <td v-for="(widget, key) in row">
-                            <component v-if="!editMode[index]" :is="widget.type"            :c-conf="widget"            :c-key="key" :c-ref="'rv-'+index+'-'+key"></component>
-                            <component v-if="editMode[index]" :is="widgetsEdit[index][key].type"  :c-conf="widgetsEdit[index][key]"  :c-key="key" :c-ref="'re-'+index+'-'+key"></component>
+                            <v-widget  v-show="!editMode[index]" :c-widget="widget"></v-widget>
+                            <v-widget  v-show="editMode[index]" :c-widget="widgetsEdit[index][key]"></v-widget>
+
+<!--                            <component v-if="!editMode[index]" :is="widget.type"            :c-conf="widget"            :c-key="key" :c-ref="'rv-'+index+'-'+key"></component>-->
+<!--                            <component v-if="editMode[index]" :is="widgetsEdit[index][key].type"  :c-conf="widgetsEdit[index][key]"  :c-key="key" :c-ref="'re-'+index+'-'+key"></component>-->
                         </td>
                     </tr>
                     </tbody>

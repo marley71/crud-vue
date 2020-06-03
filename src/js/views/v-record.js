@@ -1,6 +1,22 @@
 crud.components.views.vRecord = Vue.component('v-record', {
     extends : crud.components.views.vBase,
     props : ['cModel','cPk'],
+    mounted : function() {
+        var that = this;
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+        if (that.cPk)
+            that.conf.pk = that.cPk;
+
+        that.route = that._getRoute();
+        that.setRouteValues(that.route);
+        that.fetchData(that.route,function (json) {
+            that.fillData(that.route,json);
+            that.draw();
+            that.loading = false;
+        });
+    },
+
     data : function () {
         var that = this;
         var d =  {};
@@ -11,11 +27,24 @@ crud.components.views.vRecord = Vue.component('v-record', {
         d.value = {};
         d.metadata = {};
         d.langContext = d.modelName;
-        //console.log('vRecord.data',d);
+        d.route = null;
+        d.loading = true;
+        d.widgets = {};
+        d.actionsClass = [];
+        d.actions = {};
+        d.defaultWidgetType = 'w-input';
+
         return d;
     },
 
     methods : {
+
+        draw : function() {
+            var that = this;
+            that.createActions();
+            that.createActionsClass();
+            that.createWidgets();
+        },
         setWidgetValue : function(key,value) {
             var that = this;
             if (!that.widgets[key]) {

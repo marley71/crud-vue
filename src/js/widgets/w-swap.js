@@ -30,13 +30,13 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
             d.slot = dV[keys[0]];
         }
         d.domainValues = dV;
-        console.log('dV',dV,'value',value,'keys',keys,'slot',d.slot,'conf',_conf);
+        //console.log('dV',dV,'value',value,'keys',keys,'slot',d.slot,'conf',_conf);
         return d;
     },
     methods : {
         getDV : function() {
             var that = this;
-            console.log('swaptype',that.swapType,'domainValues',that.domainValues)
+            //console.log('swaptype',that.swapType,'domainValues',that.domainValues)
             return (that.domainValues)? that.domainValues:that.domainValues[that.swapType];
 
         },
@@ -50,7 +50,7 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
             index = (index + 1) % vs.length;
 
             route.setValues({
-                modelName: that.conf.model,
+                modelName: that.modelName,
                 field : that.name, //that.conf.key?that.conf.key:that.cKey,
                 value : keys[index]
             });

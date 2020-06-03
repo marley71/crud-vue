@@ -8,6 +8,21 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             default: 'list'
         }
     },
+    mounted : function() {
+        var that = this;
+        if (that.cModel)
+            that.conf.modelName = that.cModel;
+        that.route = that._getRoute();
+        that.setRouteValues(that.route);
+
+        that.fetchData(that.route,function (json) {
+            that.fillData(that.route,json);
+            that.keys = that.getKeys();
+            that.draw();
+            that.loading = false;
+        });
+    },
+
     data : function () {
         var that = this;
         var d =  {};
@@ -19,6 +34,13 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         return d;
     },
     methods : {
+
+        draw : function() {
+            var that = this;
+            that.createActions();
+            that.createWidgets();
+            that.createCollectionActions();
+        },
 
         setWidgetValue : function(row,key,value) {
             var that = this;

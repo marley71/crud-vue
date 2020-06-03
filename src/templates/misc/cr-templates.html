@@ -1,23 +1,28 @@
 <template id="tpl-record-template">
-    <div>
+    <div v-if="cWidget.type!='w-hidden'">
         <label>{{cWidget.label}}</label>
-        <v-widget :c-widget="cWidget"></v-widget>
+        <component :is="cWidget.type" :c-conf="cWidget"></component>
     </div>
+    <component v-else :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
 <template id="tpl-record2-template">
-    <div class="row">
+    <div v-if="cWidget.type!='w-hidden'" class="row">
         <div class="col col-sm-6">{{cWidget.label}}</div>
         <div class="col col-sm-6">
-            <v-widget :c-widget="cWidget"></v-widget>
+<!--            <v-widget :c-widget="cWidget"></v-widget>-->
+            <component :is="cWidget.type" :c-conf="cWidget"></component>
         </div>
     </div>
+    <component v-else :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
 <template id="tpl-list-template">
-    <v-widget :c-widget="cWidget"></v-widget>
+<!--    <v-widget :c-widget="cWidget"></v-widget>-->
+    <component :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
 <template id="tpl-no-template">
-    <v-widget :c-widget="cWidget"></v-widget>
+<!--    <v-widget :c-widget="cWidget"></v-widget>-->
+    <component :is="cWidget.type" :c-conf="cWidget"></component>
 </template>

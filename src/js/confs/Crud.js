@@ -57,7 +57,7 @@ crud.recordActions = {
         text : '',
         icon : 'fa fa-edit',
         execute : function () {
-            var url = "/edit/" + this.modelName + "/" + this.modelData[this.view.primaryKey];
+            var url = "/edit/" + this.view.modelName + "/" + this.modelData[this.view.primaryKey];
             document.location.href=url
         }
     },
@@ -69,7 +69,7 @@ crud.recordActions = {
         text : '',
         execute : function () {
             var url = this.$crud.application.useRouter?'#':'';
-            url += "/view/" + this.modelName + "/" + this.modelData.id;
+            url += "/view/" + this.view.modelName + "/" + this.modelData.id;
             document.location.href=url;
         }
     },
@@ -82,7 +82,7 @@ crud.recordActions = {
         setRouteValues : function(route) {
             var that = this;
             route.setValues({
-                modelName: that.view.cModel,
+                modelName: that.view.modelName,
                 pk : that.modelData[that.view.primaryKey]
             });
             return route;
@@ -115,7 +115,7 @@ crud.recordActions = {
         setRouteValues : function(route) {
             var that = this;
             route.setValues({
-                modelName: that.view.cModel,
+                modelName: that.view.modelName,
                 pk : that.modelData[that.view.conf.primaryKey]
             });
             return route;
@@ -180,7 +180,7 @@ crud.collectionActions = {
         icon : 'fa fa-plus',
         text : 'app.nuovo',
         execute  :function () {
-            var url = "/insert/" + this.modelName + "/new";
+            var url = "/insert/" + this.view.modelName + "/new";
             document.location.href=url;
         }
     },
@@ -194,12 +194,12 @@ crud.collectionActions = {
             var that = this;
             if (that.view.cPk) {
                 route.setValues({
-                    modelName: that.view.cModel,
+                    modelName: that.view.modelName,
                     pk : this.view.cPk
                 });
             } else {
                 route.setValues({
-                    modelName: that.view.cModel,
+                    modelName: that.view.modelName,
                 });
             }
             route.setParams(that.view.getViewData());
@@ -279,7 +279,7 @@ crud.collectionActions = {
         setRouteValues : function(route) {
             var that = this;
             route.setValues({
-                modelName: that.view.cModel,
+                modelName: that.view.modelName,
             });
             return route;
         },
@@ -297,6 +297,10 @@ crud.collectionActions = {
                     that.waitStart();
                     Server.route(r,function (json) {
                         that.waitEnd();
+                        if (json.error) {
+                            that.errorDialog(json.msg);
+                            return ;
+                        }
                         that.view.reload();
                         //that.callback(json);
                     })
