@@ -81,6 +81,10 @@ crud.components.views.vBase = Vue.component('v-base', {
         }
     },
     methods : {
+        // evento chiamato quando la view ha caricato i dati e disegnato tutti i controlli e azioni
+        completed : function() {
+
+        },
         fetchData: function (route,callback) {
             var that = this;
             if (!route) {

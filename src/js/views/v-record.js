@@ -14,6 +14,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
             that.fillData(that.route,json);
             that.draw();
             that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10)
+
         });
     },
 
@@ -131,6 +135,14 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 data = this.getFormData(that.jQe('form'));
             }
             return data;
+        },
+
+        resetViewData : function() {
+            var that = this;
+            for (var k in that.widgets) {
+                var w = this.getWidget(k);
+                w.value = '';
+            }
         },
         getWidget : function (key) {
             var rConf = this.widgets[key];

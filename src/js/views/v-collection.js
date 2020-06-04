@@ -20,6 +20,9 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.keys = that.getKeys();
             that.draw();
             that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10);
         });
     },
 

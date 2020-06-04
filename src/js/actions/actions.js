@@ -142,6 +142,10 @@ Vue.component('action-search', {
     extends : crud.components.actions.actionBase
 });
 
+Vue.component('action-reset', {
+    extends : crud.components.actions.actionBase
+});
+
 Vue.component('action-delete', {
     extends : crud.components.actions.actionBase
 });

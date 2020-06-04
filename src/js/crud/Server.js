@@ -12,24 +12,6 @@ var Server = {};
  * @returns {*}
  *
  * **/
-// jQuery.getFailMessage = function (e) {
-//
-//     try {
-//         if (jQuery.isProduction)
-//             return e.status + " " + e.statusText;
-//         var msg =  e.status + " " + e.statusText + "<br>";
-//         if ( e.responseJSON) {
-//             msg += e.responseJSON.error.message + "<br>";
-//             msg += "line :" + e.responseJSON.error.line + "<br>";
-//             msg += e.responseJSON.error.file ;
-//         }
-//         return msg;
-//     } catch(em) {
-//         return ""+em;
-//     }
-//
-// };
-
 Server.getUrl = function (url) {
     return Server.subdomain?Server.subdomain + url:url;
 };
@@ -47,22 +29,11 @@ Server.post = function (url, params, callback) {
         headers: Server.getHearders(),
         type: 'POST',
         data: params,
-        //processData: false,
-        //contentType: false                    // Using FormData, no need to process data.
     }).done(function(json) {
         callback(json);
     }).fail(function (data, error, msg) {
-        console.log('Errore ajax',data,error,msg);
         callback({error:1,msg:msg});
     });
-
-
-
-    // jQuery.post(realUrl, params, function (json) {
-    //     callback(json);
-    // }).fail(function (e) {
-    //     callback({error: 1, msg: Utility.getFailMessage(e)})
-    // })
 };
 
 Server.get = function (url, params, callback) {
@@ -72,22 +43,11 @@ Server.get = function (url, params, callback) {
         headers: Server.getHearders(),
         type: 'GET',
         data: params,
-        //processData: false,
-        //contentType: false                    // Using FormData, no need to process data.
     }).done(function(json) {
         callback(json);
     }).fail(function (data, error, msg) {
-        console.log('Errore ajax',data,error,msg);
         callback({error:1,msg:msg});
     });
-
-
-
-    // jQuery.get(realUrl, params, function (json) {
-    //     callback(json);
-    // }).fail(function (e) {
-    //     callback({error: 1, msg: Utility.getFailMessage(e)})
-    // })
 };
 
 Server.route = function(route,callback) {

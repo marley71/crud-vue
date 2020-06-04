@@ -26,10 +26,28 @@
 </head>
 <body>
 <div>
-    <div class="navbar">
-        <h1><a href="./index.html">CRUD</a> <small>framework basato su vue</small></h1>
-    </div>
-
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="./index.html">CRUD</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="./components.html">Components <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./dialogs.html">Dialogs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./misc.html">Miscellaneous</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Server</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div id="app">
         <div class="row">
             <div class="col-3">
@@ -37,14 +55,14 @@
                     <div class="card">
                         <div class="card-header" id="headingOne">
                             <h2 class="mb-0">
-                                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne">Routes</button>
+                                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#ruotes">Routes</button>
                             </h2>
                         </div>
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#myAccordion">
+                        <div id="ruotes" class="collapse show" aria-labelledby="headingOne" data-parent="#myAccordion">
                             <div class="card-body">
-                                <div>Dialogs</div>
+                                <div>Routes</div>
                                 <ul class="">
-                                    <li class="nav-item pl-2"><a href="#messageDialog">messageDialog</a></li>
+                                    <li class="nav-item pl-2"><a href="#rList">list</a></li>
                                     <li class="nav-item pl-2"><a href="#errorDialog">errorDialog</a></li>
                                     <li class="nav-item pl-2"><a href="#warningDialog">warningDialog</a></li>
                                     <li class="nav-item pl-2"><a href="#confirmDialog">confirmDialog</a></li>
@@ -55,41 +73,41 @@
                     <div class="card">
                         <div class="card-header" id="headingTwo">
                             <h2 class="mb-0">
-                                <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo">Server</button>
+                                <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#server">Server</button>
                             </h2>
                         </div>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#myAccordion">
+                        <div id="server" class="collapse" aria-labelledby="headingTwo" data-parent="#myAccordion">
                             <div class="card-body">
-                                <div>Popover</div>
+                                <div>Server</div>
                                 <ul class="">
-                                    <li class="nav-item pl-2"><a href="#popoverSuccess">popoverSuccess</a></li>
-                                    <li class="nav-item pl-2"><a href="#popoverSuccess2">popoverSuccess2</a></li>
-                                    <li class="nav-item pl-2"><a href="#popoverError">popoverError</a></li>
+                                    <li class="nav-item pl-2"><a href="#popoverSuccess">Server.get</a></li>
+                                    <li class="nav-item pl-2"><a href="#popoverSuccess2">Server.post</a></li>
+                                    <li class="nav-item pl-2"><a href="#popoverError">Server.route</a></li>
                                     <li class="nav-item pl-2"><a href="#popoverInfo">popoverInfo</a></li>
                                     <li class="nav-item pl-2"><a href="#popoverWarning">popoverWarning</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header" id="headingThree">
-                            <h2 class="mb-0">
-                                <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree">Server</button>
-                            </h2>
-                        </div>
-                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#myAccordion">
-                            <div class="card-body">
-                                <div>Popover</div>
-                                <ul class="">
-                                    <li class="nav-item pl-2"><a href="#popoverSuccess">popoverSuccess</a></li>
-                                    <li class="nav-item pl-2"><a href="#popoverSuccess2">popoverSuccess2</a></li>
-                                    <li class="nav-item pl-2"><a href="#popoverError">popoverError</a></li>
-                                    <li class="nav-item pl-2"><a href="#popoverInfo">popoverInfo</a></li>
-                                    <li class="nav-item pl-2"><a href="#popoverWarning">popoverWarning</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="card">-->
+<!--                        <div class="card-header" id="headingThree">-->
+<!--                            <h2 class="mb-0">-->
+<!--                                <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree">Server</button>-->
+<!--                            </h2>-->
+<!--                        </div>-->
+<!--                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#myAccordion">-->
+<!--                            <div class="card-body">-->
+<!--                                <div>Popover</div>-->
+<!--                                <ul class="">-->
+<!--                                    <li class="nav-item pl-2"><a href="#popoverSuccess">popoverSuccess</a></li>-->
+<!--                                    <li class="nav-item pl-2"><a href="#popoverSuccess2">popoverSuccess2</a></li>-->
+<!--                                    <li class="nav-item pl-2"><a href="#popoverError">popoverError</a></li>-->
+<!--                                    <li class="nav-item pl-2"><a href="#popoverInfo">popoverInfo</a></li>-->
+<!--                                    <li class="nav-item pl-2"><a href="#popoverWarning">popoverWarning</a></li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
 
             </div>
@@ -103,6 +121,10 @@
                     <div >
                         <div >
                             <textarea id="editor" style="height:400px;width:100%"></textarea>
+                        </div>
+                        <div>
+                            <h6 id="risultato"></h6>
+                            <pre id="code"></pre>
                         </div>
                     </div>
                 </div>
@@ -125,8 +147,21 @@
         },10);
 
     };
-    function messageDialog() {
-        app.messageDialog("Questa è una dialog per messaggi")
+    function rList() {
+        var r = app.createRoute('list');
+        r.setValues({
+            modelName : 'user'
+        })
+        Server.route(r,function (json) {
+            if (json.error) {
+                app.errorDialog(json.msg);
+                return;
+            }
+            jQuery('#risultato').html("Risultato json della richiesta fatta da route list")
+            jQuery('#code').html(JSON.stringify(json,'\t',3))
+
+        })
+
     }
     function errorDialog() {
         app.errorDialog("Questa è una dialog per gli errori")

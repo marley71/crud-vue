@@ -26,9 +26,28 @@
 </head>
 <body>
 <div>
-    <div class="navbar">
-        <h1><a href="./index.html">CRUD</a> <small>framework basato su vue</small></h1>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="./index.html">CRUD</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="./components.html">Components <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./dialogs.html">Dialogs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./misc.html">Miscellaneous</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Server</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
     <div id="app">
         <!-- crud vue container -->

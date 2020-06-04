@@ -252,6 +252,24 @@ crud.collectionActions = {
             }
         }
     },
+    'action-reset' : {
+        type : 'collection',
+        title : 'app.reset',
+        css: 'btn btn-primary btn-sm btn-group mr-1',
+        //icon : 'fa fa-search',
+        text : 'app.reset',
+        execute : function () {
+            if (this.view) {
+                console.log('target ref',this.view.targetRef);
+                //var targetView = this.$crud.cRefs[this.view.targetRef];
+                this.view.resetViewData();
+                // formData['page'] = 1;
+                // targetView.route.setParams(formData);
+                // targetView.reload();
+                return ;
+            }
+        }
+    },
     'action-order' : {
         type : 'collection',
         title : 'app.order',
@@ -361,7 +379,7 @@ crud.conf = {
     search : {
         primaryKey : 'id',
         routeName : 'search',
-        actions : ['action-search'],
+        actions : ['action-search','action-reset'],
         fieldsConfig : {},
         customActions: {},
         widgetTemplate : 'tpl-record',

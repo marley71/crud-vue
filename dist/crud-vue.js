@@ -252,6 +252,24 @@ crud.collectionActions = {
             }
         }
     },
+    'action-reset' : {
+        type : 'collection',
+        title : 'app.reset',
+        css: 'btn btn-primary btn-sm btn-group mr-1',
+        //icon : 'fa fa-search',
+        text : 'app.reset',
+        execute : function () {
+            if (this.view) {
+                console.log('target ref',this.view.targetRef);
+                //var targetView = this.$crud.cRefs[this.view.targetRef];
+                this.view.resetViewData();
+                // formData['page'] = 1;
+                // targetView.route.setParams(formData);
+                // targetView.reload();
+                return ;
+            }
+        }
+    },
     'action-order' : {
         type : 'collection',
         title : 'app.order',
@@ -361,7 +379,7 @@ crud.conf = {
     search : {
         primaryKey : 'id',
         routeName : 'search',
-        actions : ['action-search'],
+        actions : ['action-search','action-reset'],
         fieldsConfig : {},
         customActions: {},
         widgetTemplate : 'tpl-record',
@@ -1347,24 +1365,6 @@ var Server = {};
  * @returns {*}
  *
  * **/
-// jQuery.getFailMessage = function (e) {
-//
-//     try {
-//         if (jQuery.isProduction)
-//             return e.status + " " + e.statusText;
-//         var msg =  e.status + " " + e.statusText + "<br>";
-//         if ( e.responseJSON) {
-//             msg += e.responseJSON.error.message + "<br>";
-//             msg += "line :" + e.responseJSON.error.line + "<br>";
-//             msg += e.responseJSON.error.file ;
-//         }
-//         return msg;
-//     } catch(em) {
-//         return ""+em;
-//     }
-//
-// };
-
 Server.getUrl = function (url) {
     return Server.subdomain?Server.subdomain + url:url;
 };
@@ -1382,22 +1382,11 @@ Server.post = function (url, params, callback) {
         headers: Server.getHearders(),
         type: 'POST',
         data: params,
-        //processData: false,
-        //contentType: false                    // Using FormData, no need to process data.
     }).done(function(json) {
         callback(json);
     }).fail(function (data, error, msg) {
-        console.log('Errore ajax',data,error,msg);
         callback({error:1,msg:msg});
     });
-
-
-
-    // jQuery.post(realUrl, params, function (json) {
-    //     callback(json);
-    // }).fail(function (e) {
-    //     callback({error: 1, msg: Utility.getFailMessage(e)})
-    // })
 };
 
 Server.get = function (url, params, callback) {
@@ -1407,22 +1396,11 @@ Server.get = function (url, params, callback) {
         headers: Server.getHearders(),
         type: 'GET',
         data: params,
-        //processData: false,
-        //contentType: false                    // Using FormData, no need to process data.
     }).done(function(json) {
         callback(json);
     }).fail(function (data, error, msg) {
-        console.log('Errore ajax',data,error,msg);
         callback({error:1,msg:msg});
     });
-
-
-
-    // jQuery.get(realUrl, params, function (json) {
-    //     callback(json);
-    // }).fail(function (e) {
-    //     callback({error: 1, msg: Utility.getFailMessage(e)})
-    // })
 };
 
 Server.route = function(route,callback) {
@@ -1732,6 +1710,10 @@ Vue.component('action-back', {
 });
 
 Vue.component('action-search', {
+    extends : crud.components.actions.actionBase
+});
+
+Vue.component('action-reset', {
     extends : crud.components.actions.actionBase
 });
 
@@ -3186,6 +3168,10 @@ crud.components.views.vBase = Vue.component('v-base', {
         }
     },
     methods : {
+        // evento chiamato quando la view ha caricato i dati e disegnato tutti i controlli e azioni
+        completed : function() {
+
+        },
         fetchData: function (route,callback) {
             var that = this;
             if (!route) {
@@ -3341,6 +3327,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
             that.fillData(that.route,json);
             that.draw();
             that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10)
+
         });
     },
 
@@ -3459,6 +3449,14 @@ crud.components.views.vRecord = Vue.component('v-record', {
             }
             return data;
         },
+
+        resetViewData : function() {
+            var that = this;
+            for (var k in that.widgets) {
+                var w = this.getWidget(k);
+                w.value = '';
+            }
+        },
         getWidget : function (key) {
             var rConf = this.widgets[key];
             console.log('getWidget',key,rConf);
@@ -3495,6 +3493,9 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.keys = that.getKeys();
             that.draw();
             that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10);
         });
     },
 
@@ -3979,6 +3980,7 @@ crud.components.views.vSearch = Vue.component('v-search', {
             default : 'search'
         }
     },
+
     data :  function () {
         var that = this;
         var d = {
@@ -3989,15 +3991,28 @@ crud.components.views.vSearch = Vue.component('v-search', {
     },
 
     methods : {
-        doSearch : function (params) {
+        completed : function() {
             var that = this;
-            var oldP = this.cloneObj(this.cRouteConf.params);
-
-            for (var k in params) {
-                oldP[k] = params[k];
-            }
-            this.cRouteConf.params = oldP;
+            //console.log('COMPLETED',that.jQe().html())
+            that.jQe('form').each(function() {
+                jQuery(this).find('input').keypress(function(e) {
+                    // Enter pressed?
+                    if(e.which == 10 || e.which == 13) {
+                        var a = that.getAction('action-search');
+                        a.execute();
+                    }
+                });
+            });
         },
+        // doSearch : function (params) {
+        //     var that = this;
+        //     var oldP = this.cloneObj(this.cRouteConf.params);
+        //
+        //     for (var k in params) {
+        //         oldP[k] = params[k];
+        //     }
+        //     this.cRouteConf.params = oldP;
+        // },
         getFieldName : function (key) {
             return 's_' + key;
         },
