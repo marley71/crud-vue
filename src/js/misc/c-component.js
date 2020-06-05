@@ -3,7 +3,7 @@ crud.components.cComponent = Vue.component('c-component',{
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
-        //console.log('COMPONENTE MOUNTED',that._id);
+        console.log('COMPONENTE MOUNTED',jQuery(that.$el).html());
         //console.log('c-component.mounted',that.$options.name);
         if (that.conf.cRef) {
             that.$crud.cRefs[that.conf.cRef] = this;
@@ -11,17 +11,7 @@ crud.components.cComponent = Vue.component('c-component',{
         if (that.compRef) {
             that.$crud.cRefs[that.compRef] = this;
         }
-        if (that.resources && that.resources.length) {
-            that.beforeLoadResources();
-            //that.resourcesLoaded = false;
-            that.loadResources(that.resources,function () {
-                //console.log('resoures loaded callback',that);
-                that.resourcesLoaded = true;
-                that.afterLoadResources();
-            })
-        } else {
-            that.resourcesLoaded = true;
-        }
+
         //if (that.conf) {
             var __call = function (lk) {
                 that[lk] = function () {
@@ -39,7 +29,20 @@ crud.components.cComponent = Vue.component('c-component',{
                 that.conf.mounted.apply(that);
             }
         //}
+        if (that.resources && that.resources.length) {
+            that.beforeLoadResources();
+            //that.resourcesLoaded = false;
+            that.loadResources(that.resources,function () {
+                //console.log('resoures loaded callback',that);
+                that.resourcesLoaded = true;
+                setTimeout(function () {
+                    that.afterLoadResources();
+                },1000)
 
+            })
+        } else {
+            that.resourcesLoaded = true;
+        }
     },
     data : function() {
         var d =  this._loadConf();

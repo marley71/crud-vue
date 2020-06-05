@@ -23,6 +23,8 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
             that.route = that._getRoute();
             that.setRouteValues(that.route);
             var url = that.route.getUrl();
+            //console.log('conf',that.conf);
+            //console.log('url',url);
             var ajax = {
                 url : url,
                 method : that.route.getMethod(),
@@ -56,6 +58,11 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
         afterLoadResources : function () {
             var that = this;
             var data = [];
+            //W2=this;
+            // setTimeout(function () {
+            //     that.afterLoadResources();
+            // },2000)
+            //console.log('w2-select MOUNTED',jQuery(that.$el).html());
             if (that.value) {
                 data.push({
                     id : that.value,
@@ -64,15 +71,20 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                 });
             }
 
-            jQuery(that.$el).find('[c-select2]').select2({
+            that.jQe('[c-select2]').select2({
                 data : data,
                 ajax : that._getAjaxConf(),
                 allowClear : that.allowClear,
                 placeholder: that.placeholder?that.placeholder:"Seleziona",
+                // ajax: {
+                //     url: 'https://api.github.com/search/repositories',
+                //     dataType: 'json'
+                //     // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                // }
             });
-            jQuery(that.$el).find('[c-select2]').on('select2:select', function (e) {
-                console.log('value',that.getValue())
-
+            that.jQe('[c-select2]').on('select2:select', function (e) {
+                //console.log('value',that.getValue())
+                that.change();
                 //that.$emit('change',e);
             });
         },
@@ -86,7 +98,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
         },
         getValue : function () {
             var that = this;
-            var selValue = jQuery(that.$el).find('[c-select2]').select2('data');
+            var selValue = that.jQe('[c-select2]').select2('data');
             console.log('selvalue',selValue);
             return selValue.length>0?selValue[0].id:null;
 
@@ -95,33 +107,6 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
             route.setValues({modelName:this.modelName});
             return route;
         },
-        // _createUrl : function () {
-        //     var that = this;
-        //     var r = that.$crud.createRoute(that.routeName);
-        //     that.route = that.setRouteValues(r);
-        //
-        //
-        //     //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
-        //     var url = that.url?that.url:r.getUrl();
-        //     url+= '?';
-        //
-        //     if (that.conf.fields) {
-        //         for(var f in that.conf.fields) {
-        //             url+="field[]="+that.conf.fields[f]+"&";
-        //         }
-        //     }
-        //     /* @TODO se metto la description diventa difficile cambiare la
-        //      if (that.model_description) {
-        //      for(var f in that.model_description) {
-        //      url+="description[]="+that.model_description[f]+"&";
-        //      }
-        //      }
-        //      */
-        //     url += that.conf.separator ? '&separator=' + that.conf.separator : '';
-        //     url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
-        //     url += that.conf.method ? '&method=' + that.conf.method: '';
-        //     return url;
-        // },
     }
 
 });
