@@ -22,7 +22,7 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
     methods : {
         afterLoadResources : function () {
             var that = this;
-            jQuery(that.$el).find('[c-autocomplete]').autoComplete({
+            that.jQe('[c-autocomplete]').autoComplete({
                 source : function(term,suggest) {
                     var r = that._getRoute(that.conf.routeName);
                     that.setRouteValues(r,term);
