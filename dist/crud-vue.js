@@ -1419,7 +1419,7 @@ crud.components.cComponent = Vue.component('c-component',{
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
-        console.log('COMPONENTE MOUNTED',jQuery(that.$el).html());
+        //console.log('COMPONENTE MOUNTED',jQuery(that.$el).html());
         //console.log('c-component.mounted',that.$options.name);
         if (that.conf.cRef) {
             that.$crud.cRefs[that.conf.cRef] = this;
