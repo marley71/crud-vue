@@ -274,8 +274,9 @@ crud.collectionActions = {
         type : 'collection',
         title : 'app.order',
         css: 'btn btn-default btn-sm mr-1',
-        iconUp : 'fa fa-caret-up',
-        iconDown : 'fa fa-caret-down',
+        iconSortAsc : 'fa fa-sort-asc',
+        iconSortDesc : 'fa fa-sort-desc',
+        iconSort : 'fa fa-sort',
         icon : null,
         text : '',
         execute : function () {

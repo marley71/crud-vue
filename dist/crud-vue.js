@@ -274,8 +274,9 @@ crud.collectionActions = {
         type : 'collection',
         title : 'app.order',
         css: 'btn btn-default btn-sm mr-1',
-        iconUp : 'fa fa-caret-up',
-        iconDown : 'fa fa-caret-down',
+        iconSortAsc : 'fa fa-sort-asc',
+        iconSortDesc : 'fa fa-sort-desc',
+        iconSort : 'fa fa-sort',
         icon : null,
         text : '',
         execute : function () {
@@ -1733,11 +1734,11 @@ Vue.component('action-order', {
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
-            this.icon = this.cConf.iconDown;
+            this.icon = this.cConf.iconSortDesc;
         else if (direction == 'asc')
-            this.icon = this.cConf.iconUp
+            this.icon = this.cConf.iconSortAsc
         else
-            this.icon = null;
+            this.icon = this.cConf.iconSort;
         if (this.text) {
             var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
             if (this.hasTranslation(langKey+'.label'))
