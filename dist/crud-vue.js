@@ -1451,9 +1451,9 @@ crud.components.cComponent = Vue.component('c-component',{
             that.loadResources(that.resources,function () {
                 //console.log('resoures loaded callback',that);
                 that.resourcesLoaded = true;
-                setTimeout(function () {
+                //setTimeout(function () {
                     that.afterLoadResources();
-                },1000)
+                //},1000)
 
             })
         } else {
