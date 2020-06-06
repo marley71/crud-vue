@@ -137,11 +137,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return data;
         },
 
-        resetViewData : function() {
+        reset: function() {
             var that = this;
             for (var k in that.widgets) {
-                var w = this.getWidget(k);
-                w.value = '';
+                this.getWidget(k).reset();
             }
         },
         getWidget : function (key) {

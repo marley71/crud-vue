@@ -7,5 +7,13 @@ crud.components.widgets.wSelect = Vue.component('w-select',{
         d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(d.domainValues);
         return d;
     },
+    methods : {
+        reset : function() {
+            if (this.defaultValue)
+                this.value = this.defaultValue;
+            else
+                this.value = this.domainValuesOrder[0];
+        },
+    }
 });
 

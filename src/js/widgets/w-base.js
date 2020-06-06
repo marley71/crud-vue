@@ -7,6 +7,8 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         var d  = {};
         if (! ('value' in _conf))
             d.value = null;
+        if (! ('defaultValue') in _conf)
+            d.defaultValue = null;
         return d;
     },
     methods : {
@@ -21,6 +23,9 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         },
         setValue : function(value) {
             this.value = value;
+        },
+        reset : function() {
+            this.value = this.defaultValue;
         },
         //events
         change : function () {

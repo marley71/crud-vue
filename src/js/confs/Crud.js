@@ -262,7 +262,7 @@ crud.collectionActions = {
             if (this.view) {
                 console.log('target ref',this.view.targetRef);
                 //var targetView = this.$crud.cRefs[this.view.targetRef];
-                this.view.resetViewData();
+                this.view.reset();
                 // formData['page'] = 1;
                 // targetView.route.setParams(formData);
                 // targetView.reload();

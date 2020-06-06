@@ -262,7 +262,7 @@ crud.collectionActions = {
             if (this.view) {
                 console.log('target ref',this.view.targetRef);
                 //var targetView = this.$crud.cRefs[this.view.targetRef];
-                this.view.resetViewData();
+                this.view.reset();
                 // formData['page'] = 1;
                 // targetView.route.setParams(formData);
                 // targetView.reload();
@@ -1966,6 +1966,8 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         var d  = {};
         if (! ('value' in _conf))
             d.value = null;
+        if (! ('defaultValue') in _conf)
+            d.defaultValue = null;
         return d;
     },
     methods : {
@@ -1980,6 +1982,9 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         },
         setValue : function(value) {
             this.value = value;
+        },
+        reset : function() {
+            this.value = this.defaultValue;
         },
         //events
         change : function () {
@@ -2081,6 +2086,14 @@ crud.components.widgets.wSelect = Vue.component('w-select',{
         d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(d.domainValues);
         return d;
     },
+    methods : {
+        reset : function() {
+            if (this.defaultValue)
+                this.value = this.defaultValue;
+            else
+                this.value = this.domainValuesOrder[0];
+        },
+    }
 });
 
 
@@ -3438,11 +3451,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return data;
         },
 
-        resetViewData : function() {
+        reset: function() {
             var that = this;
             for (var k in that.widgets) {
-                var w = this.getWidget(k);
-                w.value = '';
+                this.getWidget(k).reset();
             }
         },
         getWidget : function (key) {
