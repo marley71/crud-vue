@@ -48,7 +48,7 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
                     that.change();
                 }
             });
-            that._getLabel();
+            that.getLabel();
         },
         setRouteValues : function (route,term) {
             var that = this;
@@ -84,7 +84,7 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             that.suggestValues = {};
             jQuery(that.$el).find('[c-autocomplete]').val('');
         },
-        _getLabel : function () {
+        getLabel : function () {
             var that = this;
             if (that.modelData) {
                 that.label = that._getSuggestion(that.modelData);

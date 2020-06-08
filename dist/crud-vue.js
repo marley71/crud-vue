@@ -2187,7 +2187,7 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
                     that.change();
                 }
             });
-            that._getLabel();
+            that.getLabel();
         },
         setRouteValues : function (route,term) {
             var that = this;
@@ -2223,7 +2223,7 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             that.suggestValues = {};
             jQuery(that.$el).find('[c-autocomplete]').val('');
         },
-        _getLabel : function () {
+        getLabel : function () {
             var that = this;
             if (that.modelData) {
                 that.label = that._getSuggestion(that.modelData);
@@ -2721,7 +2721,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                     for (var i in json.result) {
                         items.push({
                             id : json.result[i][that.primaryKey],
-                            text : that._getLabel(json.result[i]),
+                            text : that.getLabel(json.result[i]),
                             record : json.result[i]
                         });
                     }
@@ -2745,7 +2745,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                 data.push({
                     id : that.value,
                     selected : true,
-                    text : that._getLabel(that.modelData)
+                    text : that.getLabel(that.modelData)
                 });
             }
 
@@ -2766,7 +2766,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                 //that.$emit('change',e);
             });
         },
-        _getLabel : function(value) {
+        getLabel : function(value) {
             var that  =this;
             var label = "";
             for (var i in that.fields) {
@@ -2799,7 +2799,7 @@ crud.components.widgets.wB2mSelect2 = Vue.component('w-b2m-select2', {
             for (var i in that.value) {
                 selected.push({
                     id : that.value[i].id,
-                    text : that._getLabel(that.value[i]),
+                    text : that.getLabel(that.value[i]),
                     selected : true,
                 });
             }

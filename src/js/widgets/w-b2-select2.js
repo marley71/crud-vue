@@ -43,7 +43,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                     for (var i in json.result) {
                         items.push({
                             id : json.result[i][that.primaryKey],
-                            text : that._getLabel(json.result[i]),
+                            text : that.getLabel(json.result[i]),
                             record : json.result[i]
                         });
                     }
@@ -67,7 +67,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                 data.push({
                     id : that.value,
                     selected : true,
-                    text : that._getLabel(that.modelData)
+                    text : that.getLabel(that.modelData)
                 });
             }
 
@@ -88,7 +88,7 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                 //that.$emit('change',e);
             });
         },
-        _getLabel : function(value) {
+        getLabel : function(value) {
             var that  =this;
             var label = "";
             for (var i in that.fields) {

@@ -8,7 +8,7 @@ crud.components.widgets.wB2mSelect2 = Vue.component('w-b2m-select2', {
             for (var i in that.value) {
                 selected.push({
                     id : that.value[i].id,
-                    text : that._getLabel(that.value[i]),
+                    text : that.getLabel(that.value[i]),
                     selected : true,
                 });
             }
