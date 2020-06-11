@@ -2749,11 +2749,13 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
                 });
             }
 
+
             that.jQe('[c-select2]').select2({
                 data : data,
                 ajax : that._getAjaxConf(),
+                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
                 allowClear : that.allowClear,
-                placeholder: that.placeholder?that.placeholder:"Seleziona",
+                theme : that.theme,
                 // ajax: {
                 //     url: 'https://api.github.com/search/repositories',
                 //     dataType: 'json'
