@@ -1313,6 +1313,7 @@ function Route(conf) {
      * @returns {*}
      */
     this.setParams = function(params) {
+        routeConf.params = {};
         for (var k in params) {
             routeConf.params[k] = params[k];
         }
