@@ -1985,6 +1985,7 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             this.value = value;
         },
         reset : function() {
+            //console.log('defaultValue',this.defaultValue)
             this.value = this.defaultValue;
         },
         //events
@@ -2786,6 +2787,12 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
         setRouteValues : function(route) {
             route.setValues({modelName:this.modelName});
             return route;
+        },
+        reset : function() {
+            if (this.defaultValue)
+                this.value = this.defaultValue;
+            else
+                this.value = [];
         },
     }
 

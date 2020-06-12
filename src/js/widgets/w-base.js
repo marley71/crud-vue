@@ -25,6 +25,7 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             this.value = value;
         },
         reset : function() {
+            //console.log('defaultValue',this.defaultValue)
             this.value = this.defaultValue;
         },
         //events

@@ -109,6 +109,12 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
             route.setValues({modelName:this.modelName});
             return route;
         },
+        reset : function() {
+            if (this.defaultValue)
+                this.value = this.defaultValue;
+            else
+                this.value = [];
+        },
     }
 
 });
