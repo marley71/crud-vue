@@ -1,6 +1,5 @@
-crud.components.widgets.wSelect = Vue.component('w-select',{
+crud.components.widgets.coreWSelect = Vue.component('core-w-select',{
     extends : crud.components.widgets.wBase,
-    template: '#w-select-template',
     data :  function () {
         var d = this._loadConf();
         d.domainValues = d.domainValues || {};

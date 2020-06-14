@@ -39,6 +39,5 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         updateConf : function (conf) {
             this.conf = conf;
         },
-    },
-    template: '<div>render base</div>'
+    }
 });

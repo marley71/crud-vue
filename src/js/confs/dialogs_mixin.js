@@ -8,7 +8,7 @@ const dialogs_mixin = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new crud.components.dMessage({
+            var d = new crud.components.misc.dMessage({
                 propsData : props,
                 methods : callbacks,
             });
@@ -24,7 +24,7 @@ const dialogs_mixin = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new crud.components.dError({
+            var d = new crud.components.misc.dError({
                 propsData : props,
                 methods : callbacks,
             });
@@ -41,7 +41,7 @@ const dialogs_mixin = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new crud.components.dConfirm({
+            var d = new crud.components.misc.dConfirm({
                 propsData : props,
                 methods : callbacks,
             });
@@ -58,7 +58,7 @@ const dialogs_mixin = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new crud.components.dWarning({
+            var d = new crud.components.misc.dWarning({
                 propsData : props,
                 methods : callbacks,
             });
@@ -78,7 +78,7 @@ const dialogs_mixin = {
             } else
                 props.cCallbacks = callbacks;
 
-            var d = new crud.components.dCustom({
+            var d = new crud.components.misc.dCustom({
                 propsData : props,
                 //methods : callbacks,
             });

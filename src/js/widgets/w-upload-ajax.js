@@ -1,15 +1,16 @@
-crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
+crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
     extends : crud.components.widgets.wBase,
-    template : '#w-upload-ajax-template',
     data : function () {
-        var d = this._loadConf();
-        d.extensions = d.extensions?d.extensions:[];
-        d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
+        var that = this;
+        var _conf = that._getConf() || {};
+        var d = {};
+        d.extensions = _conf.extensions?_conf.extensions:[];
+        d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
         //d.uploadConf = d.conf;
-        if (! ("routeName" in d) )
+        if (! ("routeName" in _conf) )
             d.routeName = 'uploadfile';
 
-        var value = d.value || {};
+        var value = _conf.value || {};
         d.previewConf = {
             value : value,
             cRef : this._uid + 'preview'
@@ -17,7 +18,6 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
         d.value = JSON.stringify(value).replace(/\\"/g, '"');
         d.error = false;
         d.errorMessage = '';
-        console.log('w-upload data',d);
         return d;
     },
 
@@ -74,9 +74,7 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
 
             jQuery.ajax({
                 url: realUrl,
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                },
+                headers: Server.getHearders(),
                 type: 'POST',
                 data: fdata,
                 processData: false,

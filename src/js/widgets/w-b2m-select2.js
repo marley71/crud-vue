@@ -1,6 +1,5 @@
-crud.components.widgets.wB2mSelect2 = Vue.component('w-b2m-select2', {
-    extends : crud.components.widgets.wB2Select2,
-    template: '#w-b2m-select2-template',
+crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
+    extends : crud.components.widgets.coreWB2Select2,
     methods : {
         afterLoadResources : function () {
             var that = this;

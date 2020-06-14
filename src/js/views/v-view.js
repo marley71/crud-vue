@@ -1,4 +1,4 @@
-crud.components.views.vView = Vue.component('v-view', {
+crud.components.views.coreVView = Vue.component('core-v-view', {
     extends : crud.components.views.vRecord,
     props : {
         cType : {
@@ -6,12 +6,10 @@ crud.components.views.vView = Vue.component('v-view', {
         }
     },
     data :  function () {
-        var that = this;
-        var d = {
-            defaultWidgetType : 'w-text',
-        }
+        var _conf = this._getConf() || {};
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
         return d;
-
     },
 
     methods : {
@@ -25,6 +23,5 @@ crud.components.views.vView = Vue.component('v-view', {
             }
             return route;
         }
-    },
-    template : '#v-view-template'
+    }
 });

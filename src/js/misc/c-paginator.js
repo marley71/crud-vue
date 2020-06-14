@@ -1,7 +1,6 @@
-Vue.component('c-paginator',{
+crud.components.misc.crudCPaginator = Vue.component('crud-c-paginator',{
     extends : crud.components.cComponent,
     props : ['c-pagination'],
-    template : '#c-paginator-template',
     data : function () {
         var that = this;
         //console.log('paginator',that.cPagination, that.$parent.pagination )

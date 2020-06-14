@@ -1,4 +1,3 @@
-crud.components.widgets.wText = Vue.component('w-text',{
+crud.components.widgets.coreWText = Vue.component('core-w-text',{
     extends : crud.components.widgets.wBase,
-    template: '#w-text-template'
 });

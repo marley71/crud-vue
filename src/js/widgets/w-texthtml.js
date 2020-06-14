@@ -1,6 +1,5 @@
-crud.components.widgets.wTexthtml = Vue.component('w-texthtml',{
+crud.components.widgets.coreWTexthtml = Vue.component('core-w-texthtml',{
     extends : crud.components.widgets.wBase,
-    template: '#w-texthtml-template',
     data : function() {
         var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {

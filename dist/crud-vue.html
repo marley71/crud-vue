@@ -358,7 +358,6 @@
                         </div>
                         <button v-else v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
                             <span >{{ 'app.aggiungi' | translate }}</span>&nbsp;
-<!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
                         </button>
                     </div>
                 </div>
@@ -370,6 +369,7 @@
 <script type="text/x-template" id="w-hasmany-view-template">
     <div crud-render_element>
         <div class="list-unstyled" crud-render_list >
+
             <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
             <ul class="list-unstyled" v-for="(item,index) in value">
                 <li>
@@ -732,10 +732,8 @@
         <div>&nbsp;</div>
         <c-loading v-if="loading"></c-loading>
         <div v-else>
-            <div  v-for="(item, key) in widgets">
-                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='w-hidden'" :is="item.type"  :c-conf="item" :c-key="getFieldName(key)"></component>
-
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
             </div>
         </div>
     </div>
@@ -749,10 +747,10 @@
         </div>
         <div v-else>
             <div>pippo</div>
-            <div  v-for="(item, key) in widgets">
-                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
-<!--                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
+<!--                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>-->
+<!--                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>-->
             </div>
         </div>
         <div v-show="actions.length">

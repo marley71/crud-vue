@@ -11,12 +11,6 @@ crud.components.dBase = Vue.component('d-base',{
         })
     },
     methods : {
-        defaultData : function () {
-            return {
-                message : this.cMessage,
-                title : this.cTitle,
-            }
-        },
         ok : function () {
             console.log('default ok')
         },
@@ -29,11 +23,14 @@ crud.components.dBase = Vue.component('d-base',{
         }
     },
     data :function () {
-        return this.defaultData();
+        return {
+            message : this.cMessage,
+            title : this.cTitle,
+        }
     }
 });
 
-crud.components.dConfirm = Vue.component('d-confirm', {
+crud.components.misc.crudDConfirm = Vue.component('crud-d-confirm', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
@@ -41,14 +38,15 @@ crud.components.dConfirm = Vue.component('d-confirm', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {
+
+        };
         d.selector = '[c-confirm-dialog]';
         return d;
     },
-    template : '#d-confirm-template'
 });
 
-crud.components.dMessage = Vue.component('d-message', {
+crud.components.misc.crudDMessage = Vue.component('crud-d-message', {
     extends : crud.components.dBase,
     props : {
         'cTitle': {
@@ -56,14 +54,13 @@ crud.components.dMessage = Vue.component('d-message', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-message-dialog]';
         return d;
     },
-    template : '#d-message-template'
 });
 
-crud.components.dError = Vue.component('d-error', {
+crud.components.misc.crudDError = Vue.component('crud-d-error', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
@@ -71,13 +68,12 @@ crud.components.dError = Vue.component('d-error', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-error-dialog]';
         return d;
     },
-    template : '#d-error-template'
 });
-crud.components.dWarning = Vue.component('d-warning', {
+crud.components.misc.crudDWarning = Vue.component('crud-d-warning', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
@@ -85,14 +81,13 @@ crud.components.dWarning = Vue.component('d-warning', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-warning-dialog]';
         return d;
     },
-    template : '#d-warning-template'
 });
 
-crud.components.dCustom = Vue.component('d-custom', {
+crud.components.misc.crudDCustom = Vue.component('d-custom', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
@@ -108,10 +103,9 @@ crud.components.dCustom = Vue.component('d-custom', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-custom-dialog]';
         d.content = this.cContent;
         return d;
     },
-    template : '#d-custom-template'
 });

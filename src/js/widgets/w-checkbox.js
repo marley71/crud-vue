@@ -1,4 +1,4 @@
-crud.components.widgets.wCheckbox = Vue.component('w-checkbox',{
+crud.components.widgets.coreWCheckbox = Vue.component('core-w-checkbox',{
     extends : crud.components.widgets.wBase,
     data :  function () {
         var that = this;
@@ -19,6 +19,5 @@ crud.components.widgets.wCheckbox = Vue.component('w-checkbox',{
             return this.name + '[]';
         }
     },
-    template: '#w-checkbox-template',
 });
 

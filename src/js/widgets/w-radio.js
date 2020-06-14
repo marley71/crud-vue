@@ -1,6 +1,5 @@
-crud.components.widgets.wRadio = Vue.component('w-radio',{
+crud.components.widgets.coreWRadio = Vue.component('core-w-radio',{
     extends : crud.components.widgets.wBase,
-    template: '#w-radio-template',
     data : function() {
         var that = this;
         var _conf  = that._getConf() || {};

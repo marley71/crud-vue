@@ -1,13 +1,18 @@
-crud.components.views.vHasmany = Vue.component('v-hasmany', {
+crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
     extends : crud.components.views.vRecord,
-    //props : ['c-conf'],
-    data :  function () {
-        var that = this;
-        var d =  {
-            defaultWidgetType : 'w-input',
+    props : {
+        cType : {
+            default : 'insert'
         }
+    },
+    data :  function () {
+        var _conf = this._getConf();
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
+        console.log('VHASMANY TYPE',d);
         return d;
     },
+
     methods : {
         fillData : function () {
             this.value = this.conf.value;
@@ -16,17 +21,5 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
             var that = this;
             return that.cModel + "-" + key + '[]';
         }
-    },
-    // mounted : function () {
-    //     var that = this;
-    //     this.fetchData(null,function (json) {
-    //         that.fillData(null,null);
-    //         that.createActions();
-    //         that.createActionsClass();
-    //         that.createWidgets();
-    //         that.loading = false;
-    //         console.log('v-hasmany',that.loading);
-    //     });
-    // },
-    template : '#v-hasmany-template'
+    }
 });

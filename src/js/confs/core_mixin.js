@@ -251,6 +251,13 @@ core_mixin = {
             return jQuery.extend(true,{},obj);
         },
 
+        /**
+         * esegue il merge di due configurazione di view rispettando i criteri di priorità e di
+         * campi speciali.
+         * @param obj1
+         * @param obj2
+         * @return {*}
+         */
         confMerge : function(obj1,obj2) {
             var specialsKey = ['fields','fieldsConfig','customActions'];
             var c1 = this.cloneObj(obj1);
@@ -290,15 +297,8 @@ core_mixin = {
             return jQuery.extend(true,{},obj1,obj2);
         },
 
-        // routeFactory : function(routeName) {
-        //     var that = this;
-        //     if (! that.$crud.routes[routeName])
-        //         throw "routeName " + routeName + ' not found';
-        //     var r = new Route(that.$crud.routes[routeName]);
-        //     return r;
-        // },
         /**
-         * ritorna i parametri sotto forma di vettore associativo di un url altrimenti di location.search
+         * ritorna i parametri sotto forma di vettore associativo di un url o altrimenti di location.search
          * @param url
          */
         getAllUrlParams : function (url) {

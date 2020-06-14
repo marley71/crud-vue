@@ -1,6 +1,5 @@
-crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
+crud.components.widgets.coreWDatePicker = Vue.component('core-w-date-picker', {
     extends : crud.components.widgets.wBase,
-    template: '#w-date-picker-template',
     data : function() {
         var that = this;
         var _conf = that._getConf() || {};

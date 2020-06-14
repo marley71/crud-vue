@@ -1,12 +1,11 @@
-crud.components.widgets.wUpload = Vue.component('w-upload',{
+crud.components.widgets.coreWUpload = Vue.component('core-w-upload',{
     extends : crud.components.widgets.wBase,
-    template : '#w-upload-template',
     data : function () {
-        var d = this._loadConf();
-        d.conf = this.cConf;
-        console.log('w-upload data',d);
-        d.extensions = d.conf.extensions?d.conf.extensions:'';
-        d.maxFileSize = d.conf.maxFileSize?d.conf.maxFileSize:'';
+        var that = this;
+        var _conf = that._getConf() || {};
+        var d = {};
+        d.extensions = _conf.extensions?_conf.extensions:'';
+        d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
         d.error = false;
         d.errorMessage = '';
         return d;

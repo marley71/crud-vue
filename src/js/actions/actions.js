@@ -1,4 +1,4 @@
-crud.components.actions.actionBase = Vue.component('action-base', {
+crud.components.actions.crudActionBase = Vue.component('crud-action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
     mounted : function() {
@@ -115,47 +115,11 @@ crud.components.actions.actionBase = Vue.component('action-base', {
             adata.view = that.$parent;
         return that.merge(adata,d);
     },
-    template: '#action-template'
 });
 
-Vue.component('action-edit', {
-    extends : crud.components.actions.actionBase
-});
 
-Vue.component('action-view', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-save', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-insert', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-back', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-search', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-reset', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-delete', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-delete-selected', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-order', {
-    extends : crud.components.actions.actionBase,
+crud.components.actions.crudActionOrder = Vue.component('crud-action-order', {
+    extends : crud.components.actions.crudActionBase,
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
@@ -169,22 +133,10 @@ Vue.component('action-order', {
             if (this.hasTranslation(langKey+'.label'))
                 this.text = this.translate(langKey+'.label')
         }
-
-        //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);
     }
 })
 
-Vue.component('action-edit-mode',{
-    extends : crud.components.actions.actionBase
-});
 
-Vue.component('action-view-mode',{
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-save-row',{
-    extends : crud.components.actions.actionBase
-});
 
 
 Vue.component('action-dialog', {

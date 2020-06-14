@@ -1,4 +1,3 @@
-crud.components.widgets.wHidden = Vue.component('w-hidden', {
+crud.components.widgets.coreWHidden = Vue.component('core-w-hidden', {
     extends : crud.components.widgets.wBase,
-    template: '#w-hidden-template'
 });

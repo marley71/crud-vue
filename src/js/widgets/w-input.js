@@ -1,6 +1,5 @@
-crud.components.widgets.wInput = Vue.component('w-input', {
+crud.components.widgets.coreWInput = Vue.component('core-w-input', {
     extends : crud.components.widgets.wBase,
-    template: '#w-input-template',
     data : function () {
         var that = this;
         var _conf = that._getConf() || {};

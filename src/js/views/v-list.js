@@ -1,11 +1,9 @@
-crud.components.views.vList = Vue.component('v-list', {
+crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
-
-
     data :  function () {
         var that = this;
         //var d = this._loadConf(that.cModel,'list');
-        var _c = that.cConf || {};
+        var _c = that._getConf();
         var dList = {
             loading : true,
             widgets : {},
@@ -125,6 +123,5 @@ crud.components.views.vList = Vue.component('v-list', {
 
             }
         }
-    },
-    template : '#v-list-template'
+    }
 });

@@ -26,12 +26,16 @@ crud.lang = {
     'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
     'app.modifica' : 'Modifica',
     'app.nessun-elemento' : 'Nessun elemento trovato',
+    'app.no' : 'No',
     'app.nuovo' : 'Nuovo',
     'app.ok' : 'Ok',
     'app.ordina' : 'Ordina',
+    'app.reset' : 'Reset',
     'app.richiesta-conferma' : 'Richiesta di Conferma',
     'app.salva' : 'Salva',
     'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
+    'app.seleziona' : 'Seleziona',
+    'app.si' : 'Si',
     'app.vista' : 'Vista',
 };
 
@@ -48,6 +52,37 @@ crud.icons = {
         "txt": "fa fa-file-text-o",
     }
 };
+
+
+crud.mimetypes = {
+    icons : {
+        "default": 'fa fa-file-o',
+        "application/xls": 'fa fa-file-excel-o',
+        "xlsx": 'fa fa-file-excel-o',
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": 'fa fa-file-excel-o',
+        "zip": 'fa fa-file-archive-o',
+        "mp3": 'fa fa-audio-o',
+        "image/jpeg": "fa fa-image-o",
+        "application/pdf": "fa fa-file-pdf-o",
+        "txt": "fa fa-file-text-o",
+        "text/plain" : "fa fa-file-text-o",
+    },
+    docTypes : [
+        "application/xls",
+        "xlsx",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "zip",
+        "mp3",
+        "application/pdf",
+        "txt",
+        "csv",
+        "text/plain"
+    ],
+    imageTypes : [
+        "image/jpeg",
+        "image/png"
+    ]
+}
 
 crud.recordActions = {
     'action-edit' : {
@@ -525,7 +560,7 @@ crud.components = {
     actions : {
 
     },
-    libs :  {
+    misc :  {
 
     }
 };
@@ -541,7 +576,7 @@ const dialogs_mixin = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new crud.components.dMessage({
+            var d = new crud.components.misc.dMessage({
                 propsData : props,
                 methods : callbacks,
             });
@@ -557,7 +592,7 @@ const dialogs_mixin = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new crud.components.dError({
+            var d = new crud.components.misc.dError({
                 propsData : props,
                 methods : callbacks,
             });
@@ -574,7 +609,7 @@ const dialogs_mixin = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new crud.components.dConfirm({
+            var d = new crud.components.misc.dConfirm({
                 propsData : props,
                 methods : callbacks,
             });
@@ -591,7 +626,7 @@ const dialogs_mixin = {
                     cMessage : bodyProps,
                 }
             }
-            var d = new crud.components.dWarning({
+            var d = new crud.components.misc.dWarning({
                 propsData : props,
                 methods : callbacks,
             });
@@ -611,7 +646,7 @@ const dialogs_mixin = {
             } else
                 props.cCallbacks = callbacks;
 
-            var d = new crud.components.dCustom({
+            var d = new crud.components.misc.dCustom({
                 propsData : props,
                 //methods : callbacks,
             });
@@ -916,6 +951,13 @@ core_mixin = {
             return jQuery.extend(true,{},obj);
         },
 
+        /**
+         * esegue il merge di due configurazione di view rispettando i criteri di priorità e di
+         * campi speciali.
+         * @param obj1
+         * @param obj2
+         * @return {*}
+         */
         confMerge : function(obj1,obj2) {
             var specialsKey = ['fields','fieldsConfig','customActions'];
             var c1 = this.cloneObj(obj1);
@@ -955,15 +997,8 @@ core_mixin = {
             return jQuery.extend(true,{},obj1,obj2);
         },
 
-        // routeFactory : function(routeName) {
-        //     var that = this;
-        //     if (! that.$crud.routes[routeName])
-        //         throw "routeName " + routeName + ' not found';
-        //     var r = new Route(that.$crud.routes[routeName]);
-        //     return r;
-        // },
         /**
-         * ritorna i parametri sotto forma di vettore associativo di un url altrimenti di location.search
+         * ritorna i parametri sotto forma di vettore associativo di un url o altrimenti di location.search
          * @param url
          */
         getAllUrlParams : function (url) {
@@ -1539,8 +1574,7 @@ crud.components.cComponent = Vue.component('c-component',{
     }
 });
 
-Vue.component('c-loading',{
-    template : '#c-loading-template',
+crud.components.misc.crudCLoading = Vue.component('crud-c-loading',{
     props : {
         errorMsg : {
             defaulValue : ''
@@ -1553,28 +1587,7 @@ crud.components.tplBase = Vue.component('tpl-base',{
     template : '<span>template base</span>'
 });
 
-
-Vue.component('tpl-record',{
-    extends : crud.components.tplBase,
-    template : '#tpl-record-template'
-});
-
-Vue.component('tpl-record2',{
-    extends : crud.components.tplBase,
-    template : '#tpl-record2-template'
-});
-
-
-Vue.component('tpl-list', {
-    extends : crud.components.tplBase,
-    template : '#tpl-list-template'
-});
-Vue.component('tpl-no', {
-    extends : crud.components.tplBase,
-    template : '#tpl-no-template'
-});
-
-crud.components.actions.actionBase = Vue.component('action-base', {
+crud.components.actions.crudActionBase = Vue.component('crud-action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
     mounted : function() {
@@ -1691,47 +1704,11 @@ crud.components.actions.actionBase = Vue.component('action-base', {
             adata.view = that.$parent;
         return that.merge(adata,d);
     },
-    template: '#action-template'
 });
 
-Vue.component('action-edit', {
-    extends : crud.components.actions.actionBase
-});
 
-Vue.component('action-view', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-save', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-insert', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-back', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-search', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-reset', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-delete', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-delete-selected', {
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-order', {
-    extends : crud.components.actions.actionBase,
+crud.components.actions.crudActionOrder = Vue.component('crud-action-order', {
+    extends : crud.components.actions.crudActionBase,
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
@@ -1745,22 +1722,10 @@ Vue.component('action-order', {
             if (this.hasTranslation(langKey+'.label'))
                 this.text = this.translate(langKey+'.label')
         }
-
-        //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);
     }
 })
 
-Vue.component('action-edit-mode',{
-    extends : crud.components.actions.actionBase
-});
 
-Vue.component('action-view-mode',{
-    extends : crud.components.actions.actionBase
-});
-
-Vue.component('action-save-row',{
-    extends : crud.components.actions.actionBase
-});
 
 
 Vue.component('action-dialog', {
@@ -1773,10 +1738,9 @@ Vue.component('action-dialog', {
     }
 })
 
-Vue.component('c-paginator',{
+crud.components.misc.crudCPaginator = Vue.component('crud-c-paginator',{
     extends : crud.components.cComponent,
     props : ['c-pagination'],
-    template : '#c-paginator-template',
     data : function () {
         var that = this;
         //console.log('paginator',that.cPagination, that.$parent.pagination )
@@ -1842,12 +1806,6 @@ crud.components.dBase = Vue.component('d-base',{
         })
     },
     methods : {
-        defaultData : function () {
-            return {
-                message : this.cMessage,
-                title : this.cTitle,
-            }
-        },
         ok : function () {
             console.log('default ok')
         },
@@ -1860,11 +1818,14 @@ crud.components.dBase = Vue.component('d-base',{
         }
     },
     data :function () {
-        return this.defaultData();
+        return {
+            message : this.cMessage,
+            title : this.cTitle,
+        }
     }
 });
 
-crud.components.dConfirm = Vue.component('d-confirm', {
+crud.components.misc.crudDConfirm = Vue.component('crud-d-confirm', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
@@ -1872,14 +1833,15 @@ crud.components.dConfirm = Vue.component('d-confirm', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {
+
+        };
         d.selector = '[c-confirm-dialog]';
         return d;
     },
-    template : '#d-confirm-template'
 });
 
-crud.components.dMessage = Vue.component('d-message', {
+crud.components.misc.crudDMessage = Vue.component('crud-d-message', {
     extends : crud.components.dBase,
     props : {
         'cTitle': {
@@ -1887,14 +1849,13 @@ crud.components.dMessage = Vue.component('d-message', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-message-dialog]';
         return d;
     },
-    template : '#d-message-template'
 });
 
-crud.components.dError = Vue.component('d-error', {
+crud.components.misc.crudDError = Vue.component('crud-d-error', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
@@ -1902,13 +1863,12 @@ crud.components.dError = Vue.component('d-error', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-error-dialog]';
         return d;
     },
-    template : '#d-error-template'
 });
-crud.components.dWarning = Vue.component('d-warning', {
+crud.components.misc.crudDWarning = Vue.component('crud-d-warning', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
@@ -1916,14 +1876,13 @@ crud.components.dWarning = Vue.component('d-warning', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-warning-dialog]';
         return d;
     },
-    template : '#d-warning-template'
 });
 
-crud.components.dCustom = Vue.component('d-custom', {
+crud.components.misc.crudDCustom = Vue.component('d-custom', {
     extends : crud.components.dBase,
     props : {
         'c-title': {
@@ -1939,17 +1898,15 @@ crud.components.dCustom = Vue.component('d-custom', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-custom-dialog]';
         d.content = this.cContent;
         return d;
     },
-    template : '#d-custom-template'
 });
 
-crud.components.cWait = Vue.component('c-wait', {
+crud.components.crudCWait = Vue.component('crud-c-wait', {
     extends : crud.components.cComponent,
-    template: '#c-wait-template',
     props : ['cMsg','cGlobal'],
     data : function () {
         return {
@@ -2000,18 +1957,15 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         updateConf : function (conf) {
             this.conf = conf;
         },
-    },
-    template: '<div>render base</div>'
+    }
 });
 
-crud.components.widgets.wCustom = Vue.component('w-custom', {
+crud.components.widgets.coreWCustom = Vue.component('core-w-custom', {
     extends : crud.components.widgets.wBase,
-    template: '#w-custom-template',
 });
 
-crud.components.widgets.wInput = Vue.component('w-input', {
+crud.components.widgets.coreWInput = Vue.component('core-w-input', {
     extends : crud.components.widgets.wBase,
-    template: '#w-input-template',
     data : function () {
         var that = this;
         var _conf = that._getConf() || {};
@@ -2024,9 +1978,8 @@ crud.components.widgets.wInput = Vue.component('w-input', {
     }
 });
 
-crud.components.widgets.wInputHelped =  Vue.component('w-input-helped', {
+crud.components.widgets.coreWInputHelped =  Vue.component('core-w-input-helped', {
     extends : crud.components.widgets.wBase,
-    template: '#w-input-helped-template',
     data : function () {
         var d = {};
         if (!this.cConf.domainValuesOrder)
@@ -2037,24 +1990,20 @@ crud.components.widgets.wInputHelped =  Vue.component('w-input-helped', {
     }
 });
 
-crud.components.widgets.wHidden = Vue.component('w-hidden', {
+crud.components.widgets.coreWHidden = Vue.component('core-w-hidden', {
     extends : crud.components.widgets.wBase,
-    template: '#w-hidden-template'
 });
 
-crud.components.widgets.wText = Vue.component('w-text',{
+crud.components.widgets.coreWText = Vue.component('core-w-text',{
     extends : crud.components.widgets.wBase,
-    template: '#w-text-template'
 });
 
-crud.components.widgets.wImage = Vue.component('w-image',{
+crud.components.widgets.coreWImage = Vue.component('core-w-image',{
     extends : crud.components.widgets.wBase,
-    template: '#w-image-template'
 });
 
-crud.components.widgets.wDownload = Vue.component('w-download',{
+crud.components.widgets.coreWDownload = Vue.component('core-w-download',{
     extends : crud.components.widgets.wBase,
-    template: '#w-download-template',
     mounted : function() {
         var that  =this;
         var url = that.value;
@@ -2075,14 +2024,12 @@ crud.components.widgets.wDownload = Vue.component('w-download',{
     }
 });
 
-crud.components.widgets.wTextarea = Vue.component('w-textarea', {
+crud.components.widgets.coreWTextarea = Vue.component('core-w-textarea', {
     extends : crud.components.widgets.wBase,
-    template: '#w-textarea-template'
 });
 
-crud.components.widgets.wSelect = Vue.component('w-select',{
+crud.components.widgets.coreWSelect = Vue.component('core-w-select',{
     extends : crud.components.widgets.wBase,
-    template: '#w-select-template',
     data :  function () {
         var d = this._loadConf();
         d.domainValues = d.domainValues || {};
@@ -2100,9 +2047,8 @@ crud.components.widgets.wSelect = Vue.component('w-select',{
 });
 
 
-crud.components.widgets.wRadio = Vue.component('w-radio',{
+crud.components.widgets.coreWRadio = Vue.component('core-w-radio',{
     extends : crud.components.widgets.wBase,
-    template: '#w-radio-template',
     data : function() {
         var that = this;
         var _conf  = that._getConf() || {};
@@ -2114,7 +2060,7 @@ crud.components.widgets.wRadio = Vue.component('w-radio',{
 });
 
 
-crud.components.widgets.wCheckbox = Vue.component('w-checkbox',{
+crud.components.widgets.coreWCheckbox = Vue.component('core-w-checkbox',{
     extends : crud.components.widgets.wBase,
     data :  function () {
         var that = this;
@@ -2135,11 +2081,10 @@ crud.components.widgets.wCheckbox = Vue.component('w-checkbox',{
             return this.name + '[]';
         }
     },
-    template: '#w-checkbox-template',
 });
 
 
-crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
+crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete', {
     extends : crud.components.widgets.wBase,
     data : function() {
         var that = this;
@@ -2203,13 +2148,6 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
                     url+="field[]="+that.conf.fields[f]+"&";
                 }
             }
-            /* @TODO se metto la description diventa difficile cambiare la
-             if (that.model_description) {
-             for(var f in that.model_description) {
-             url+="description[]="+that.model_description[f]+"&";
-             }
-             }
-             */
             url += that.conf.separator ? '&separator=' + that.conf.separator : '';
             url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
             url += that.conf.method ? '&method=' + that.conf.method: '';
@@ -2239,18 +2177,15 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             }
             return s
         }
-    },
-    template: "#w-autocomplete-template",
+    }
 });
 
-crud.components.widgets.wBelongsto = Vue.component('w-belongsto', {
+crud.components.widgets.coreWBelongsto = Vue.component('core-w-belongsto', {
     extends : crud.components.widgets.wBase,
-    template: '#w-belongsto-template',
 });
 
-crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
+crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
     extends : crud.components.widgets.wBase,
-    template: '#w-date-select-template',
     data : function() {
         var that = this;
         var _conf = that._getConf() || {};
@@ -2373,9 +2308,8 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
     }
 });
 
-crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
+crud.components.widgets.coreWDatePicker = Vue.component('core-w-date-picker', {
     extends : crud.components.widgets.wBase,
-    template: '#w-date-picker-template',
     data : function() {
         var that = this;
         var _conf = that._getConf() || {};
@@ -2406,9 +2340,8 @@ crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
     }
 });
 
-crud.components.widgets.wTexthtml = Vue.component('w-texthtml',{
+crud.components.widgets.coreWTexthtml = Vue.component('core-w-texthtml',{
     extends : crud.components.widgets.wBase,
-    template: '#w-texthtml-template',
     data : function() {
         var d = this._loadConf();
         if (!( 'resources' in d.conf) ) {
@@ -2442,11 +2375,10 @@ crud.components.widgets.wTexthtml = Vue.component('w-texthtml',{
     }
 });
 
-crud.components.wHasmany =Vue.component('w-hasmany', {
+crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     extends : crud.components.widgets.wBase,
-    template: '#w-hasmany-template',
     mounted : function() {
-         var that = this;
+        var that = this;
         for (var i in that.value) {
             var _conf = that.getHasmanyConf(i,that.value[i]);
             that.confViews.push(_conf);
@@ -2504,7 +2436,7 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
 
         },
         deleteItem : function (index) {
-            //console.log('index',index,this.value[index].status,this.confViews[index]);
+            console.log('index',index,this.value[index].status,this.confViews[index],'hm-'+index,this.$crud.cRefs['hm-'+index]);
             if (this.value[index].status == 'new') {
                 this.value.splice(index, 1);
                 this.confViews.splice(index,1);
@@ -2513,7 +2445,7 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
                 //console.log('update status deleted ', index,this.confViews[index].data.value)
                 this.$set(this.value[index], 'status', 'deleted');
                 this.$set(this.confViews[index].value, 'status' , 'deleted');
-                this.$crud.cRefs['hm-'+index].setFieldValue('status','deleted');
+                this.$crud.cRefs['hm-'+index].setWidgetValue('status','deleted');
             }
             this.$forceUpdate();
         },
@@ -2536,14 +2468,12 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
     }
 });
 
-crud.components.widgets.wHasmanyView = Vue.component('w-hasmany-view', {
-    extends : crud.components.wHasmany,
-    template: '#w-hasmany-view-template',
+crud.components.widgets.coreWHasmanyView = Vue.component('core-w-hasmany-view', {
+    extends : crud.components.widgets.coreWHasmany,
 });
 
-crud.components.widgets.wSwap = Vue.component('w-swap', {
+crud.components.widgets.coreWSwap = Vue.component('core-w-swap', {
     extends : crud.components.widgets.wBase,
-    template: '#w-swap-template',
     data : function () {
         var that = this;
         var d = {};
@@ -2559,8 +2489,8 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
                 1 : 'fa fa-circle text-success'
             },
             text : {
-                0 : 'No',
-                1 : 'Si'
+                0 : that.translate('app.no'),
+                1 : that.translate('app.si')
             }
         }
         var value = _conf.value;
@@ -2573,7 +2503,6 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
             d.slot = dV[keys[0]];
         }
         d.domainValues = dV;
-        //console.log('dV',dV,'value',value,'keys',keys,'slot',d.slot,'conf',_conf);
         return d;
     },
     methods : {
@@ -2630,19 +2559,8 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
     }
 });
 
-crud.components.wHasmanyThrough =Vue.component('w-hasmany-through', {
+crud.components.widgets.coreWHasmanyThrough =Vue.component('core-w-hasmany-through', {
     extends : crud.components.widgets.wBase,
-    template: '#w-hasmany-through-template',
-    // data : function () {
-    //     var that = this;
-    //     var _conf = that.cConf || {};
-    //     var d = {
-    //         inputType : 'text'
-    //     };
-    //     if (_conf.inputType)
-    //         d.inputType = _conf.inputType;
-    //     return d;
-    // },
     methods : {
         getHasmanyConf : function (value) {
             var that = this;
@@ -2678,9 +2596,8 @@ crud.components.wHasmanyThrough =Vue.component('w-hasmany-through', {
     }
 });
 
-crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
+crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
     extends : crud.components.widgets.wBase,
-    template: '#w-b2-select2-template',
     data : function () {
         var that = this;
         var _conf = that._getConf() || {};
@@ -2799,9 +2716,8 @@ crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
 
 });
 
-crud.components.widgets.wB2mSelect2 = Vue.component('w-b2m-select2', {
-    extends : crud.components.widgets.wB2Select2,
-    template: '#w-b2m-select2-template',
+crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
+    extends : crud.components.widgets.coreWB2Select2,
     methods : {
         afterLoadResources : function () {
             var that = this;
@@ -2858,15 +2774,14 @@ crud.components.widgets.wB2mSelect2 = Vue.component('w-b2m-select2', {
 
 });
 
-crud.components.widgets.wUpload = Vue.component('w-upload',{
+crud.components.widgets.coreWUpload = Vue.component('core-w-upload',{
     extends : crud.components.widgets.wBase,
-    template : '#w-upload-template',
     data : function () {
-        var d = this._loadConf();
-        d.conf = this.cConf;
-        console.log('w-upload data',d);
-        d.extensions = d.conf.extensions?d.conf.extensions:'';
-        d.maxFileSize = d.conf.maxFileSize?d.conf.maxFileSize:'';
+        var that = this;
+        var _conf = that._getConf() || {};
+        var d = {};
+        d.extensions = _conf.extensions?_conf.extensions:'';
+        d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
         d.error = false;
         d.errorMessage = '';
         return d;
@@ -2901,18 +2816,19 @@ crud.components.widgets.wUpload = Vue.component('w-upload',{
     }
 })
 
-crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
+crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
     extends : crud.components.widgets.wBase,
-    template : '#w-upload-ajax-template',
     data : function () {
-        var d = this._loadConf();
-        d.extensions = d.extensions?d.extensions:[];
-        d.maxFileSize = d.maxFileSize?d.maxFileSize:'';
+        var that = this;
+        var _conf = that._getConf() || {};
+        var d = {};
+        d.extensions = _conf.extensions?_conf.extensions:[];
+        d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
         //d.uploadConf = d.conf;
-        if (! ("routeName" in d) )
+        if (! ("routeName" in _conf) )
             d.routeName = 'uploadfile';
 
-        var value = d.value || {};
+        var value = _conf.value || {};
         d.previewConf = {
             value : value,
             cRef : this._uid + 'preview'
@@ -2920,7 +2836,6 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
         d.value = JSON.stringify(value).replace(/\\"/g, '"');
         d.error = false;
         d.errorMessage = '';
-        console.log('w-upload data',d);
         return d;
     },
 
@@ -2977,9 +2892,7 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
 
             jQuery.ajax({
                 url: realUrl,
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                },
+                headers: Server.getHearders(),
                 type: 'POST',
                 data: fdata,
                 processData: false,
@@ -3025,9 +2938,8 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax',{
     }
 })
 
-crud.components.widgets.wPreview = Vue.component('w-preview',{
+crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
     extends : crud.components.widgets.wBase,
-    template : '#w-preview-template',
     data : function () {
         var that = this;
         var _conf = that._getConf() || {};
@@ -3044,55 +2956,19 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
             var that = this;
             if (!that.value.mimetype)
                 return null;
-
-
-            var docTypes = [
-                "application/xls",
-                "xlsx",
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "zip",
-                "mp3",
-                "application/pdf",
-                "txt",
-                "csv"
-            ];
-            var imageTypes = [
-                "image/jpeg","image/png"
-            ];
-
-            if (docTypes.indexOf(that.value.mimetype) >= 0) {
+            if (that.$crud.mimetypes.docTypes.indexOf(that.value.mimetype) >= 0) {
                 that.icon=true;
                 that.iconClass = that.$crud.icons.mimetypes['default'];
-                if (that.$crud.icons.mimetypes[that.value.mimetype])
-                    that.iconClass = that.$crud.icons.mimetypes[that.value.mimetype];
+                if (that.$crud.mimetypes.icons[that.value.mimetype])
+                    that.iconClass = that.$crud.mimetypes.icons[that.value.mimetype];
                 return 'doc';
             }
 
-            if (imageTypes.indexOf(that.value.mimetype) >= 0) {
+            if (that.$crud.mimetypes.imageTypes.indexOf(that.value.mimetype) >= 0) {
                 return 'image';
             }
-
             console.warn('mimetype invalid ' + that.value.mimetype)
             return null;
-
-
-
-
-
-            switch (that.value.mimetype) {
-                case 'image/jpeg':
-                case 'image/png':
-                    return 'image';
-                case 'application/pdf':
-                    that.icon=true;
-                    that.iconClass = that.$crud.icons.mimetypes['default'];
-                    if (that.$crud.icons.mimetypes[that.value.mimetype])
-                        that.iconClass = that.$crud.icons.mimetypes[that.value.mimetype];
-                    return 'doc';
-                default:
-                    console.warn('mimetype invalid ' + that.value.mimetype)
-                    return null;
-            }
         }
     }
 })
@@ -3129,20 +3005,6 @@ crud.components.views.vBase = Vue.component('v-base', {
         vWidget : Vue.component('v-widget', {
             props : ['cWidget'],
             data : function() {
-                // if (this.cKey) {
-                //     var ckeys = this.cKey.split(',');
-                //     var widget = null;
-                //     for (var i in ckeys) {
-                //         widget = this.$parent.widgets[ckeys[i]];
-                //     }
-                //     //var render = this.$parent.widgets[this.cKey];
-                //     //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
-                //     return {
-                //         type : widget.type,
-                //         conf : widget
-                //     }
-                // }
-
                 if (this.cWidget) {
                     var conf = null;
                     if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
@@ -3153,7 +3015,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                     } else
                         conf = this.cWidget;
 
-                    //console.log('V-RENDER2 ',conf,this.$parent.widgets);
+                    //console.log('cWidget ',conf);
                     return {
                         cTemplate : conf.template,
                         conf : conf
@@ -3311,16 +3173,13 @@ crud.components.views.vBase = Vue.component('v-base', {
 
             if (!c.template)
                 c.template = that.conf.widgetTemplate;
-            //c.metadata = this.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
-            //console.log('AAAAAAa',that);
             c = this.merge( c ,(that.metadata[key] || {}));
             return c;
         },
         getFieldName : function (key) {
             return key;
         }
-    },
-    template : '<div>view base</div>'
+    }
 });
 
 crud.components.views.vRecord = Vue.component('v-record', {
@@ -3368,6 +3227,9 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     methods : {
 
+        setRouteValues : function(route) {
+            return route;
+        },
         draw : function() {
             var that = this;
             that.createActions();
@@ -3478,8 +3340,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             console.log('getAction',name,rConf);
             return this.$crud.cRefs[rConf.cRef];
         }
-    },
-    template : '<div>view record base</div>'
+    }
 });
 
 crud.components.views.vCollection = Vue.component('v-collection', {
@@ -3654,17 +3515,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.collectionActions = collectionActions;
         },
     },
-    template : '<div>view collection base</div>'
 });
 
-crud.components.views.vList = Vue.component('v-list', {
+crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
-
-
     data :  function () {
         var that = this;
         //var d = this._loadConf(that.cModel,'list');
-        var _c = that.cConf || {};
+        var _c = that._getConf();
         var dList = {
             loading : true,
             widgets : {},
@@ -3784,12 +3642,11 @@ crud.components.views.vList = Vue.component('v-list', {
 
             }
         }
-    },
-    template : '#v-list-template'
+    }
 });
 
-crud.components.views.vListEdit = Vue.component('v-list-edit', {
-    extends : crud.components.views.vList,
+crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
+    extends : crud.components.views.coreVList,
     props : {
         'cModel' : {
             default: null
@@ -3799,8 +3656,6 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
         }
     },
     data : function() {
-        var that = this;
-        //var d = that._loadConf(that.cModel,'listEdit');
         var dListEdit = {
             widgetsEdit : {},
             editMode : []
@@ -3887,11 +3742,10 @@ crud.components.views.vListEdit = Vue.component('v-list-edit', {
 
             }
         }
-    },
-    template : '#v-list-edit-template'
+    }
 });
 
-crud.components.views.vEdit = Vue.component('v-edit', {
+crud.components.views.coreVEdit = Vue.component('core-v-edit', {
     extends : crud.components.views.vRecord,
     props : {
         cType : {
@@ -3899,14 +3753,11 @@ crud.components.views.vEdit = Vue.component('v-edit', {
         }
     },
     data :  function () {
-        var that = this;
-        var d = {
-            defaultWidgetType : 'w-input',
-        }
+        var _conf = this._getConf() || {};
+        var d = {}
+        d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
         return d;
-
     },
-
     methods : {
         setRouteValues : function (route) {
             var that  = this;
@@ -3919,10 +3770,9 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             return route;
         }
     },
-    template : '#v-edit-template'
 });
 
-crud.components.views.vView = Vue.component('v-view', {
+crud.components.views.coreVView = Vue.component('core-v-view', {
     extends : crud.components.views.vRecord,
     props : {
         cType : {
@@ -3930,12 +3780,10 @@ crud.components.views.vView = Vue.component('v-view', {
         }
     },
     data :  function () {
-        var that = this;
-        var d = {
-            defaultWidgetType : 'w-text',
-        }
+        var _conf = this._getConf() || {};
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
         return d;
-
     },
 
     methods : {
@@ -3949,11 +3797,10 @@ crud.components.views.vView = Vue.component('v-view', {
             }
             return route;
         }
-    },
-    template : '#v-view-template'
+    }
 });
 
-crud.components.views.vInsert = Vue.component('v-insert', {
+crud.components.views.coreVInsert = Vue.component('core-v-insert', {
     extends : crud.components.views.vRecord,
     props : {
         cType : {
@@ -3961,14 +3808,12 @@ crud.components.views.vInsert = Vue.component('v-insert', {
         }
     },
     data :  function () {
-        var that = this;
-        var d = {
-            defaultWidgetType : 'w-input',
-        }
+        var _conf = this._getConf() || {};
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
         return d;
 
     },
-
     methods : {
         setRouteValues : function (route) {
             var that  = this;
@@ -3979,11 +3824,10 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             }
             return route;
         }
-    },
-    template : '#v-insert-template'
+    }
 });
 
-crud.components.views.vSearch = Vue.component('v-search', {
+crud.components.views.coreVSearch = Vue.component('core-v-search', {
     extends : crud.components.views.vRecord,
     props : {
         cRouteConf : {},
@@ -3993,18 +3837,15 @@ crud.components.views.vSearch = Vue.component('v-search', {
     },
 
     data :  function () {
-        var that = this;
-        var d = {
-            defaultWidgetType : 'w-input',
-        }
+        var _conf = this._getConf() || {};
+        var d = {}
+        d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
         return d;
-
     },
 
     methods : {
         completed : function() {
             var that = this;
-            //console.log('COMPLETED',that.jQe().html())
             that.jQe('form').each(function() {
                 jQuery(this).find('input').keypress(function(e) {
                     // Enter pressed?
@@ -4015,15 +3856,6 @@ crud.components.views.vSearch = Vue.component('v-search', {
                 });
             });
         },
-        // doSearch : function (params) {
-        //     var that = this;
-        //     var oldP = this.cloneObj(this.cRouteConf.params);
-        //
-        //     for (var k in params) {
-        //         oldP[k] = params[k];
-        //     }
-        //     this.cRouteConf.params = oldP;
-        // },
         getFieldName : function (key) {
             return 's_' + key;
         },
@@ -4036,20 +3868,24 @@ crud.components.views.vSearch = Vue.component('v-search', {
             }
             return route;
         }
-    },
-    template : '#v-search-template'
+    }
 });
 
-crud.components.views.vHasmany = Vue.component('v-hasmany', {
+crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
     extends : crud.components.views.vRecord,
-    //props : ['c-conf'],
-    data :  function () {
-        var that = this;
-        var d =  {
-            defaultWidgetType : 'w-input',
+    props : {
+        cType : {
+            default : 'insert'
         }
+    },
+    data :  function () {
+        var _conf = this._getConf();
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
+        console.log('VHASMANY TYPE',d);
         return d;
     },
+
     methods : {
         fillData : function () {
             this.value = this.conf.value;
@@ -4058,22 +3894,10 @@ crud.components.views.vHasmany = Vue.component('v-hasmany', {
             var that = this;
             return that.cModel + "-" + key + '[]';
         }
-    },
-    // mounted : function () {
-    //     var that = this;
-    //     this.fetchData(null,function (json) {
-    //         that.fillData(null,null);
-    //         that.createActions();
-    //         that.createActionsClass();
-    //         that.createWidgets();
-    //         that.loading = false;
-    //         console.log('v-hasmany',that.loading);
-    //     });
-    // },
-    template : '#v-hasmany-template'
+    }
 });
 
-crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
+crud.components.views.coreVHasmanyView = Vue.component('core-v-hasmany-view', {
     extends : crud.components.views.vRecord,
     props : {
         cType : {
@@ -4081,50 +3905,27 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
         }
     },
     data :  function () {
-        var that = this;
-        var dHasmany = {
-            defaultWidgetType : 'w-text',
-        }
-        return dHasmany;
+        console.log('VHASMANYVIEW',this._getConf())
+        var _conf = this._getConf();
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
+        return d;
     },
-    methods : {
-        fillData : function () {
-            this.data = this.cConf.data;
-        },
-        renderKey : function (key) {
-            var that = this;
-            return that.cModel + "-" + key + '[]';
-        }
-    },
-    // mounted : function () {
-    //     var that = this;
-    //     this.fetchData(null,function (json) {
-    //         that.fillData(null,null);
-    //         that.createActions();
-    //         that.createActionsClass();
-    //         that.createWidgets();
-    //         that.loading = false;
-    //         console.log('v-hasmany',that.loading);
-    //     });
+    // methods : {
+    //     fillData : function () {
+    //         this.data = this.cConf.data;
+    //     }
     // },
-    template : '#v-hasmany-template'
 });
 
 const CrudApp = Vue.extend({
     mixins : [core_mixin,dialogs_mixin],
-    // filter : {
-    //     translate : function (value,context) {
-    //         var langKey = context?context+'.'+value:value;
-    //         return this.translate(langKey,1);
-    //         //console.log('translate global',value,context,langKey);
-    //         return crud.lang[langKey]?crud.lang[langKey]:value;
-    //     }
-    // },
     data : function() {
         var d = {
             templatesFile : '/crud-vue/crud-vue.html',
             el : '#app',
             appConfig : null,
+            appComponents : '/crud-vue/crud-vue-components.js',
         }
         return d;
     },
@@ -4145,28 +3946,31 @@ const CrudApp = Vue.extend({
             console.log('resources',resources)
             that.loadResources(resources,function () {
                 console.log('monto app');
-
                 that.$mount(that.el);
                 console.log('mounted');
             })
         }
+        console.log('load framework components.  ' + that.$data.appComponents);
+        if (!jQuery.isArray(that.$data.appComponents))
+            that.$data.appComponents = [that.$data.appComponents];
+        that.loadResources(that.$data.appComponents, function () {
+            console.log('appConfig',that.$data.appConfig);
+            if (that.$data.appConfig) {
+                if (!jQuery.isArray(that.$data.appConfig))
+                    that.$data.appConfig = [that.$data.appConfig];
 
-        console.log('appConfig',that.$data.appConfig);
-        if (that.$data.appConfig) {
-            that.loadResource(that.$data.appConfig, function () {
+                that.loadResources(that.$data.appConfig, function () {
+                    __loadResources();
+                })
+            } else
                 __loadResources();
-            })
-        } else
-            __loadResources();
+        });
     }
 });
 
 Vue.filter('translate', function (value,context,plural,params) {
-    //onsole.log('TRANSLATE',this);
     var langKey = context?context+'.'+value:value;
     if (crud.instance.hasTranslation(langKey))
         return crud.instance.translate(langKey,plural,params);
     return value;
-    //console.log('translate global',value,context,langKey);
-    //return crud.lang[langKey]?crud.lang[langKey]:value;
 })

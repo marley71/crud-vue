@@ -1,6 +1,5 @@
-crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
+crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
     extends : crud.components.widgets.wBase,
-    template: '#w-date-select-template',
     data : function() {
         var that = this;
         var _conf = that._getConf() || {};

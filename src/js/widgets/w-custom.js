@@ -1,4 +1,3 @@
-crud.components.widgets.wCustom = Vue.component('w-custom', {
+crud.components.widgets.coreWCustom = Vue.component('core-w-custom', {
     extends : crud.components.widgets.wBase,
-    template: '#w-custom-template',
 });

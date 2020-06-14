@@ -1,8 +1,7 @@
-crud.components.wHasmany =Vue.component('w-hasmany', {
+crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     extends : crud.components.widgets.wBase,
-    template: '#w-hasmany-template',
     mounted : function() {
-         var that = this;
+        var that = this;
         for (var i in that.value) {
             var _conf = that.getHasmanyConf(i,that.value[i]);
             that.confViews.push(_conf);
@@ -60,7 +59,7 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
 
         },
         deleteItem : function (index) {
-            //console.log('index',index,this.value[index].status,this.confViews[index]);
+            console.log('index',index,this.value[index].status,this.confViews[index],'hm-'+index,this.$crud.cRefs['hm-'+index]);
             if (this.value[index].status == 'new') {
                 this.value.splice(index, 1);
                 this.confViews.splice(index,1);
@@ -69,7 +68,7 @@ crud.components.wHasmany =Vue.component('w-hasmany', {
                 //console.log('update status deleted ', index,this.confViews[index].data.value)
                 this.$set(this.value[index], 'status', 'deleted');
                 this.$set(this.confViews[index].value, 'status' , 'deleted');
-                this.$crud.cRefs['hm-'+index].setFieldValue('status','deleted');
+                this.$crud.cRefs['hm-'+index].setWidgetValue('status','deleted');
             }
             this.$forceUpdate();
         },

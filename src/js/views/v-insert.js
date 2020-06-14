@@ -1,4 +1,4 @@
-crud.components.views.vInsert = Vue.component('v-insert', {
+crud.components.views.coreVInsert = Vue.component('core-v-insert', {
     extends : crud.components.views.vRecord,
     props : {
         cType : {
@@ -6,14 +6,12 @@ crud.components.views.vInsert = Vue.component('v-insert', {
         }
     },
     data :  function () {
-        var that = this;
-        var d = {
-            defaultWidgetType : 'w-input',
-        }
+        var _conf = this._getConf() || {};
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
         return d;
 
     },
-
     methods : {
         setRouteValues : function (route) {
             var that  = this;
@@ -24,6 +22,5 @@ crud.components.views.vInsert = Vue.component('v-insert', {
             }
             return route;
         }
-    },
-    template : '#v-insert-template'
+    }
 });

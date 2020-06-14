@@ -1,6 +1,5 @@
-crud.components.widgets.wSwap = Vue.component('w-swap', {
+crud.components.widgets.coreWSwap = Vue.component('core-w-swap', {
     extends : crud.components.widgets.wBase,
-    template: '#w-swap-template',
     data : function () {
         var that = this;
         var d = {};
@@ -16,8 +15,8 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
                 1 : 'fa fa-circle text-success'
             },
             text : {
-                0 : 'No',
-                1 : 'Si'
+                0 : that.translate('app.no'),
+                1 : that.translate('app.si')
             }
         }
         var value = _conf.value;
@@ -30,7 +29,6 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
             d.slot = dV[keys[0]];
         }
         d.domainValues = dV;
-        //console.log('dV',dV,'value',value,'keys',keys,'slot',d.slot,'conf',_conf);
         return d;
     },
     methods : {

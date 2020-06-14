@@ -1,6 +1,5 @@
-crud.components.widgets.wInputHelped =  Vue.component('w-input-helped', {
+crud.components.widgets.coreWInputHelped =  Vue.component('core-w-input-helped', {
     extends : crud.components.widgets.wBase,
-    template: '#w-input-helped-template',
     data : function () {
         var d = {};
         if (!this.cConf.domainValuesOrder)

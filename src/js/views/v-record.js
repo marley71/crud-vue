@@ -43,6 +43,9 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     methods : {
 
+        setRouteValues : function(route) {
+            return route;
+        },
         draw : function() {
             var that = this;
             that.createActions();
@@ -153,6 +156,5 @@ crud.components.views.vRecord = Vue.component('v-record', {
             console.log('getAction',name,rConf);
             return this.$crud.cRefs[rConf.cRef];
         }
-    },
-    template : '<div>view record base</div>'
+    }
 });

@@ -1,6 +1,5 @@
-crud.components.widgets.wDownload = Vue.component('w-download',{
+crud.components.widgets.coreWDownload = Vue.component('core-w-download',{
     extends : crud.components.widgets.wBase,
-    template: '#w-download-template',
     mounted : function() {
         var that  =this;
         var url = that.value;

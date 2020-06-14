@@ -1,4 +1,4 @@
-crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
+crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete', {
     extends : crud.components.widgets.wBase,
     data : function() {
         var that = this;
@@ -62,13 +62,6 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
                     url+="field[]="+that.conf.fields[f]+"&";
                 }
             }
-            /* @TODO se metto la description diventa difficile cambiare la
-             if (that.model_description) {
-             for(var f in that.model_description) {
-             url+="description[]="+that.model_description[f]+"&";
-             }
-             }
-             */
             url += that.conf.separator ? '&separator=' + that.conf.separator : '';
             url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
             url += that.conf.method ? '&method=' + that.conf.method: '';
@@ -98,6 +91,5 @@ crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
             }
             return s
         }
-    },
-    template: "#w-autocomplete-template",
+    }
 });

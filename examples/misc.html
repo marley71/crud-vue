@@ -236,11 +236,14 @@
                 return {
                     // default template  html della libreria basato su bootstrap4
                     templatesFile : '../dist/crud-vue.html',
-                    // -- path plugins se usi qualche particolare plugin
+                    // -- path plugins se usi qualche particolare plugin in locale
                     //pluginsPath : '/bootstrap4/plugins/',
+                    // -- path definizione componenti base della libreria
+                    //appComponents : '../dist/crud-vue-components.js'
                     // -- configurazioni personali per ridefinire o aggiungere comportamenti della libreria
                     appConfig : './extras/myconf.js',
-                    el : '#app'
+                    el : '#app',
+                    appComponents : '../dist/crud-vue-components.js',
                 };
             }
         });

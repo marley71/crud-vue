@@ -170,5 +170,4 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.collectionActions = collectionActions;
         },
     },
-    template : '<div>view collection base</div>'
 });

@@ -30,20 +30,6 @@ crud.components.views.vBase = Vue.component('v-base', {
         vWidget : Vue.component('v-widget', {
             props : ['cWidget'],
             data : function() {
-                // if (this.cKey) {
-                //     var ckeys = this.cKey.split(',');
-                //     var widget = null;
-                //     for (var i in ckeys) {
-                //         widget = this.$parent.widgets[ckeys[i]];
-                //     }
-                //     //var render = this.$parent.widgets[this.cKey];
-                //     //console.log('key',ckeys,'V-RENDER ',render,this.$parent.widgets);
-                //     return {
-                //         type : widget.type,
-                //         conf : widget
-                //     }
-                // }
-
                 if (this.cWidget) {
                     var conf = null;
                     if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
@@ -54,7 +40,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                     } else
                         conf = this.cWidget;
 
-                    //console.log('V-RENDER2 ',conf,this.$parent.widgets);
+                    //console.log('cWidget ',conf);
                     return {
                         cTemplate : conf.template,
                         conf : conf
@@ -212,14 +198,11 @@ crud.components.views.vBase = Vue.component('v-base', {
 
             if (!c.template)
                 c.template = that.conf.widgetTemplate;
-            //c.metadata = this.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
-            //console.log('AAAAAAa',that);
             c = this.merge( c ,(that.metadata[key] || {}));
             return c;
         },
         getFieldName : function (key) {
             return key;
         }
-    },
-    template : '<div>view base</div>'
+    }
 });

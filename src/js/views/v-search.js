@@ -1,4 +1,4 @@
-crud.components.views.vSearch = Vue.component('v-search', {
+crud.components.views.coreVSearch = Vue.component('core-v-search', {
     extends : crud.components.views.vRecord,
     props : {
         cRouteConf : {},
@@ -8,18 +8,15 @@ crud.components.views.vSearch = Vue.component('v-search', {
     },
 
     data :  function () {
-        var that = this;
-        var d = {
-            defaultWidgetType : 'w-input',
-        }
+        var _conf = this._getConf() || {};
+        var d = {}
+        d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
         return d;
-
     },
 
     methods : {
         completed : function() {
             var that = this;
-            //console.log('COMPLETED',that.jQe().html())
             that.jQe('form').each(function() {
                 jQuery(this).find('input').keypress(function(e) {
                     // Enter pressed?
@@ -30,15 +27,6 @@ crud.components.views.vSearch = Vue.component('v-search', {
                 });
             });
         },
-        // doSearch : function (params) {
-        //     var that = this;
-        //     var oldP = this.cloneObj(this.cRouteConf.params);
-        //
-        //     for (var k in params) {
-        //         oldP[k] = params[k];
-        //     }
-        //     this.cRouteConf.params = oldP;
-        // },
         getFieldName : function (key) {
             return 's_' + key;
         },
@@ -51,6 +39,5 @@ crud.components.views.vSearch = Vue.component('v-search', {
             }
             return route;
         }
-    },
-    template : '#v-search-template'
+    }
 });

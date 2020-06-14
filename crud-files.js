@@ -1,21 +1,13 @@
 
 var crudJsFiles = [
-    //'src/js/crud/OOP.js',
+
     'src/js/confs/Crud.js',
     'src/js/confs/dialogs_mixin.js',
     'src/js/confs/core_mixin.js',
 
-    //'src/js/interfaces/dialogs.js',
-    //'src/js/interfaces/core.js',
-    //'src/js/interfaces/translations.js',
-    //'src/js/interfaces/wait.js',
-
-    //'src/js/crud/Actions.js',
     'src/js/crud/Protocols.js',
     'src/js/crud/Routes.js',
-    //'src/js/crud/Utility.js',
     'src/js/crud/Server.js',
-    //'src/js/crud/App.js',
 
     'src/js/misc/c-component.js',
     'src/js/misc/c-loading.js',
@@ -48,11 +40,6 @@ var crudJsFiles = [
     'src/js/widgets/w-hasmany.js',
     'src/js/widgets/w-hasmany-view.js',
 
-    //'src/js/widgets/w-hasmany-image.js',
-    //'src/js/widgets/w-hasmany-image-edit.js',
-    //'src/js/widgets/w-hasmany-attachment.js',
-    //'src/js/widgets/w-hasmany-attachment-edit.js',
-    //'src/js/widgets/w-upload-image.js',
     'src/js/widgets/w-swap.js',
     'src/js/widgets/w-hasmany-through.js',
     'src/js/widgets/w-b2-select2.js',
@@ -106,11 +93,6 @@ var crudHtmlFiles = [
     'src/templates/widgets/w-hasmany.html',
     'src/templates/widgets/w-hasmany-view.html',
 
-    //'src/templates/widgets/w-hasmany-image.html',
-    //'src/templates/widgets/w-hasmany-image-edit.html',
-    //'src/templates/widgets/w-hasmany-attachment.html',
-    //'src/templates/widgets/w-hasmany-attachment-edit.html',
-    //'src/templates/widgets/w-upload-image.html',
     'src/templates/widgets/w-swap.html',
     'src/templates/widgets/w-hasmany-through.html',
     'src/templates/widgets/w-b2-select2.html',

@@ -1,4 +1,4 @@
-crud.components.views.vEdit = Vue.component('v-edit', {
+crud.components.views.coreVEdit = Vue.component('core-v-edit', {
     extends : crud.components.views.vRecord,
     props : {
         cType : {
@@ -6,14 +6,11 @@ crud.components.views.vEdit = Vue.component('v-edit', {
         }
     },
     data :  function () {
-        var that = this;
-        var d = {
-            defaultWidgetType : 'w-input',
-        }
+        var _conf = this._getConf() || {};
+        var d = {}
+        d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
         return d;
-
     },
-
     methods : {
         setRouteValues : function (route) {
             var that  = this;
@@ -26,5 +23,4 @@ crud.components.views.vEdit = Vue.component('v-edit', {
             return route;
         }
     },
-    template : '#v-edit-template'
 });

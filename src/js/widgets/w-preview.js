@@ -1,6 +1,5 @@
-crud.components.widgets.wPreview = Vue.component('w-preview',{
+crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
     extends : crud.components.widgets.wBase,
-    template : '#w-preview-template',
     data : function () {
         var that = this;
         var _conf = that._getConf() || {};
@@ -17,55 +16,19 @@ crud.components.widgets.wPreview = Vue.component('w-preview',{
             var that = this;
             if (!that.value.mimetype)
                 return null;
-
-
-            var docTypes = [
-                "application/xls",
-                "xlsx",
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "zip",
-                "mp3",
-                "application/pdf",
-                "txt",
-                "csv"
-            ];
-            var imageTypes = [
-                "image/jpeg","image/png"
-            ];
-
-            if (docTypes.indexOf(that.value.mimetype) >= 0) {
+            if (that.$crud.mimetypes.docTypes.indexOf(that.value.mimetype) >= 0) {
                 that.icon=true;
                 that.iconClass = that.$crud.icons.mimetypes['default'];
-                if (that.$crud.icons.mimetypes[that.value.mimetype])
-                    that.iconClass = that.$crud.icons.mimetypes[that.value.mimetype];
+                if (that.$crud.mimetypes.icons[that.value.mimetype])
+                    that.iconClass = that.$crud.mimetypes.icons[that.value.mimetype];
                 return 'doc';
             }
 
-            if (imageTypes.indexOf(that.value.mimetype) >= 0) {
+            if (that.$crud.mimetypes.imageTypes.indexOf(that.value.mimetype) >= 0) {
                 return 'image';
             }
-
             console.warn('mimetype invalid ' + that.value.mimetype)
             return null;
-
-
-
-
-
-            switch (that.value.mimetype) {
-                case 'image/jpeg':
-                case 'image/png':
-                    return 'image';
-                case 'application/pdf':
-                    that.icon=true;
-                    that.iconClass = that.$crud.icons.mimetypes['default'];
-                    if (that.$crud.icons.mimetypes[that.value.mimetype])
-                        that.iconClass = that.$crud.icons.mimetypes[that.value.mimetype];
-                    return 'doc';
-                default:
-                    console.warn('mimetype invalid ' + that.value.mimetype)
-                    return null;
-            }
         }
     }
 })

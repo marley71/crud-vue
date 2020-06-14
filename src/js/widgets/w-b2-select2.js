@@ -1,6 +1,5 @@
-crud.components.widgets.wB2Select2 = Vue.component('w-b2-select2', {
+crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
     extends : crud.components.widgets.wBase,
-    template: '#w-b2-select2-template',
     data : function () {
         var that = this;
         var _conf = that._getConf() || {};

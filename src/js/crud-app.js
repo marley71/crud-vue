@@ -1,18 +1,11 @@
 const CrudApp = Vue.extend({
     mixins : [core_mixin,dialogs_mixin],
-    // filter : {
-    //     translate : function (value,context) {
-    //         var langKey = context?context+'.'+value:value;
-    //         return this.translate(langKey,1);
-    //         //console.log('translate global',value,context,langKey);
-    //         return crud.lang[langKey]?crud.lang[langKey]:value;
-    //     }
-    // },
     data : function() {
         var d = {
             templatesFile : '/crud-vue/crud-vue.html',
             el : '#app',
             appConfig : null,
+            appComponents : '/crud-vue/crud-vue-components.js',
         }
         return d;
     },
@@ -33,28 +26,31 @@ const CrudApp = Vue.extend({
             console.log('resources',resources)
             that.loadResources(resources,function () {
                 console.log('monto app');
-
                 that.$mount(that.el);
                 console.log('mounted');
             })
         }
+        console.log('load framework components.  ' + that.$data.appComponents);
+        if (!jQuery.isArray(that.$data.appComponents))
+            that.$data.appComponents = [that.$data.appComponents];
+        that.loadResources(that.$data.appComponents, function () {
+            console.log('appConfig',that.$data.appConfig);
+            if (that.$data.appConfig) {
+                if (!jQuery.isArray(that.$data.appConfig))
+                    that.$data.appConfig = [that.$data.appConfig];
 
-        console.log('appConfig',that.$data.appConfig);
-        if (that.$data.appConfig) {
-            that.loadResource(that.$data.appConfig, function () {
+                that.loadResources(that.$data.appConfig, function () {
+                    __loadResources();
+                })
+            } else
                 __loadResources();
-            })
-        } else
-            __loadResources();
+        });
     }
 });
 
 Vue.filter('translate', function (value,context,plural,params) {
-    //onsole.log('TRANSLATE',this);
     var langKey = context?context+'.'+value:value;
     if (crud.instance.hasTranslation(langKey))
         return crud.instance.translate(langKey,plural,params);
     return value;
-    //console.log('translate global',value,context,langKey);
-    //return crud.lang[langKey]?crud.lang[langKey]:value;
 })

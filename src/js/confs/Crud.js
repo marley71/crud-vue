@@ -26,12 +26,16 @@ crud.lang = {
     'app.limite-raggiunto' : 'Non è più possibile aggiungere altri elementi',
     'app.modifica' : 'Modifica',
     'app.nessun-elemento' : 'Nessun elemento trovato',
+    'app.no' : 'No',
     'app.nuovo' : 'Nuovo',
     'app.ok' : 'Ok',
     'app.ordina' : 'Ordina',
+    'app.reset' : 'Reset',
     'app.richiesta-conferma' : 'Richiesta di Conferma',
     'app.salva' : 'Salva',
     'app.salvataggio-ok' : 'Salvataggio avvenuto con successo!',
+    'app.seleziona' : 'Seleziona',
+    'app.si' : 'Si',
     'app.vista' : 'Vista',
 };
 
@@ -48,6 +52,37 @@ crud.icons = {
         "txt": "fa fa-file-text-o",
     }
 };
+
+
+crud.mimetypes = {
+    icons : {
+        "default": 'fa fa-file-o',
+        "application/xls": 'fa fa-file-excel-o',
+        "xlsx": 'fa fa-file-excel-o',
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": 'fa fa-file-excel-o',
+        "zip": 'fa fa-file-archive-o',
+        "mp3": 'fa fa-audio-o',
+        "image/jpeg": "fa fa-image-o",
+        "application/pdf": "fa fa-file-pdf-o",
+        "txt": "fa fa-file-text-o",
+        "text/plain" : "fa fa-file-text-o",
+    },
+    docTypes : [
+        "application/xls",
+        "xlsx",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "zip",
+        "mp3",
+        "application/pdf",
+        "txt",
+        "csv",
+        "text/plain"
+    ],
+    imageTypes : [
+        "image/jpeg",
+        "image/png"
+    ]
+}
 
 crud.recordActions = {
     'action-edit' : {
@@ -525,7 +560,7 @@ crud.components = {
     actions : {
 
     },
-    libs :  {
+    misc :  {
 
     }
 };

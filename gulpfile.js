@@ -15,15 +15,15 @@ eval(fs.readFileSync('crud-files.js')+'');
 // var isProduction = (argv.production === undefined) ? false : true;
 //
 // if (!isProduction) {
-    gulp.task('default', function() {
-        gulp.src(crudJsFiles)
-            .pipe(concat('crud-vue.js'))
-            .pipe(gulp.dest('./dist/'));
-        return gulp.src(crudHtmlFiles)
-            .pipe(concat('crud-vue.html'))
-            .pipe(gulp.dest('./dist/'));
-        ;
-    });
+//     gulp.task('default', function() {
+//         gulp.src(crudJsFiles)
+//             .pipe(concat('crud-vue.js'))
+//             .pipe(gulp.dest('./dist/'));
+//         return gulp.src(crudHtmlFiles)
+//             .pipe(concat('crud-vue.html'))
+//             .pipe(gulp.dest('./dist/'));
+//         ;
+//     });
 //} else {
     gulp.task('production', function() {
         gulp.src(crudJsFiles)
@@ -42,6 +42,8 @@ function js(cb) {
     gulp.src(crudJsFiles)
         .pipe(concat('crud-vue.js'))
         .pipe(gulp.dest('./dist/'));
+    gulp.src('src/js/crud-vue-components.js')
+        .pipe(gulp.dest('./dist/'));
     console.log('ricompilazione js ...' + new Date().toDateString() + " " + new Date().toTimeString());
     cb();
 }
@@ -59,48 +61,7 @@ gulp.task('watch',function () {
         './src/js/*.js',
         './src/js/**/*.js',
         './src/templates/**/*.html',
-        // './src/templates/misc/*.html',
-        // './src/templates/widgets/*.html',
-        // './src/templates/views/*.html',
     ], {usePolling : true},gulp.series(js,html));
-})
+});
 
-// gulp.task('watch',function () {
-//     gulp.watch([
-//         './src/js/*.js',
-//         './src/js/**/*.js',
-//         // './src/js/interfaces/*.js',
-//         // './src/js/actions/*.js',
-//         // './src/js/confs/*.js',
-//         // './src/js/crud/*.js',
-//         // './src/js/misc/*.js',
-//         // './src/js/views/*.js',
-//         // './src/js/widgets/*.js',
-//         // './src/js/templates/*.js',
-//
-//         './src/templates/misc/*.html',
-//         './src/templates/widgets/*.html',
-//         './src/templates/views/*.html',
-//     ], function(done){
-//         // This function will be called each time a globbed file is changed
-//         // but is debounced with a 200ms delay (default) and queues subsequent calls
-//         console.log('ricompilazione...' + new Date().toDateString() + " " + new Date().toTimeString());
-//         gulp.src(crudJsFiles)
-//             .pipe(concat('crud-vue.js'))
-//             .pipe(gulp.dest('./dist/'));
-//         gulp.src(crudHtmlFiles)
-//             .pipe(concat('crud-vue.html'))
-//             .pipe(gulp.dest('./dist/'));
-//         // Make sure to signal async completion with the callback
-//         // or by returning a stream, promise, observable or child process
-//         done();
-//
-//         // if you need access to the `path` or `stat` object, listen
-//         // for the `change` event (see below)
-//
-//         // if you need to listen to specific events, use the returned
-//         // watcher instance (see below)
-//     });
-// })
-
-
+gulp.task('default',gulp.series(js,html));
