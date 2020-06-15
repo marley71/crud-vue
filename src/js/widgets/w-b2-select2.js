@@ -92,8 +92,8 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
         getLabel : function(value) {
             var that  =this;
             var label = "";
-            for (var i in that.fields) {
-                label += value[that.fields[i]] + " ";
+            for (var i in that.labelFields) {
+                label += value[that.labelFields[i]] + " ";
             }
             return label;
         },

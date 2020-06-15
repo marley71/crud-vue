@@ -57,9 +57,9 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
             var url = that.url?that.url:route.getUrl();
             url+= '?term='+term+'&';
 
-            if (that.conf.fields) {
-                for(var f in that.conf.fields) {
-                    url+="field[]="+that.conf.fields[f]+"&";
+            if (that.conf.labelFields) {
+                for(var f in that.conf.labelFields) {
+                    url+="field[]="+that.conf.labelFields[f]+"&";
                 }
             }
             url += that.conf.separator ? '&separator=' + that.conf.separator : '';
@@ -86,8 +86,8 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
         _getSuggestion: function(rowData) {
             var that = this;
             var s = "";
-            for (var k in that.conf.fields) {
-                s += (s?' ':'') + rowData[that.conf.fields[k]];
+            for (var k in that.conf.labelFields) {
+                s += (s?' ':'') + rowData[that.conf.labelFields[k]];
             }
             return s
         }

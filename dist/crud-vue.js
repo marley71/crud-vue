@@ -2143,9 +2143,9 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
             var url = that.url?that.url:route.getUrl();
             url+= '?term='+term+'&';
 
-            if (that.conf.fields) {
-                for(var f in that.conf.fields) {
-                    url+="field[]="+that.conf.fields[f]+"&";
+            if (that.conf.labelFields) {
+                for(var f in that.conf.labelFields) {
+                    url+="field[]="+that.conf.labelFields[f]+"&";
                 }
             }
             url += that.conf.separator ? '&separator=' + that.conf.separator : '';
@@ -2172,8 +2172,8 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
         _getSuggestion: function(rowData) {
             var that = this;
             var s = "";
-            for (var k in that.conf.fields) {
-                s += (s?' ':'') + rowData[that.conf.fields[k]];
+            for (var k in that.conf.labelFields) {
+                s += (s?' ':'') + rowData[that.conf.labelFields[k]];
             }
             return s
         }
@@ -2690,8 +2690,8 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
         getLabel : function(value) {
             var that  =this;
             var label = "";
-            for (var i in that.fields) {
-                label += value[that.fields[i]] + " ";
+            for (var i in that.labelFields) {
+                label += value[that.labelFields[i]] + " ";
             }
             return label;
         },
