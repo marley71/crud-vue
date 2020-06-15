@@ -1,4 +1,4 @@
-crud.components.dBase = Vue.component('d-base',{
+crud.components.misc.dBase = Vue.component('d-base',{
     props : ['cMessage'],
     extends : crud.components.cComponent,
     mounted : function () {
@@ -30,8 +30,8 @@ crud.components.dBase = Vue.component('d-base',{
     }
 });
 
-crud.components.misc.crudDConfirm = Vue.component('crud-d-confirm', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDConfirm = Vue.component('crud-d-confirm', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : 'app.richiesta-conferma'
@@ -46,8 +46,8 @@ crud.components.misc.crudDConfirm = Vue.component('crud-d-confirm', {
     },
 });
 
-crud.components.misc.crudDMessage = Vue.component('crud-d-message', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDMessage = Vue.component('crud-d-message', {
+    extends : crud.components.misc.dBase,
     props : {
         'cTitle': {
             default : 'app.informazione'
@@ -60,8 +60,8 @@ crud.components.misc.crudDMessage = Vue.component('crud-d-message', {
     },
 });
 
-crud.components.misc.crudDError = Vue.component('crud-d-error', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDError = Vue.component('crud-d-error', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : 'app.errore'
@@ -73,8 +73,8 @@ crud.components.misc.crudDError = Vue.component('crud-d-error', {
         return d;
     },
 });
-crud.components.misc.crudDWarning = Vue.component('crud-d-warning', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDWarning = Vue.component('crud-d-warning', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : 'app.attenzione'
@@ -87,8 +87,8 @@ crud.components.misc.crudDWarning = Vue.component('crud-d-warning', {
     },
 });
 
-crud.components.misc.crudDCustom = Vue.component('d-custom', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDCustom = Vue.component('d-custom', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : ''

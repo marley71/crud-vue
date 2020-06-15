@@ -1,4 +1,4 @@
-crud.components.misc.crudCLoading = Vue.component('crud-c-loading',{
+crud.components.misc.coreCLoading = Vue.component('crud-c-loading',{
     props : {
         errorMsg : {
             defaulValue : ''

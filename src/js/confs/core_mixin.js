@@ -5,7 +5,7 @@ core_mixin = {
             var c = container?container:'body';
             var id = that._createContainer(c);
 
-            var comp = new that.$crud.components.cWait({
+            var comp = new that.$crud.components.misc.cWait({
                 propsData: {
                     cMsg : msg,
                     cGlobal : (container==='body')?true:false,

@@ -1,4 +1,4 @@
-crud.components.misc.crudCPaginator = Vue.component('crud-c-paginator',{
+crud.components.misc.coreCPaginator = Vue.component('crud-c-paginator',{
     extends : crud.components.cComponent,
     props : ['c-pagination'],
     data : function () {

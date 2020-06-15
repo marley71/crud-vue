@@ -1,4 +1,4 @@
-crud.components.crudCWait = Vue.component('crud-c-wait', {
+crud.components.misc.coreCWait = Vue.component('crud-c-wait', {
     extends : crud.components.cComponent,
     props : ['cMsg','cGlobal'],
     data : function () {

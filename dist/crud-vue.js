@@ -705,7 +705,7 @@ core_mixin = {
             var c = container?container:'body';
             var id = that._createContainer(c);
 
-            var comp = new that.$crud.components.cWait({
+            var comp = new that.$crud.components.misc.cWait({
                 propsData: {
                     cMsg : msg,
                     cGlobal : (container==='body')?true:false,
@@ -1574,7 +1574,7 @@ crud.components.cComponent = Vue.component('c-component',{
     }
 });
 
-crud.components.misc.crudCLoading = Vue.component('crud-c-loading',{
+crud.components.misc.coreCLoading = Vue.component('crud-c-loading',{
     props : {
         errorMsg : {
             defaulValue : ''
@@ -1582,12 +1582,12 @@ crud.components.misc.crudCLoading = Vue.component('crud-c-loading',{
     }
 })
 
-crud.components.tplBase = Vue.component('tpl-base',{
+crud.components.misc.tplBase = Vue.component('tpl-base',{
     props : ['cWidget'],
     template : '<span>template base</span>'
 });
 
-crud.components.actions.crudActionBase = Vue.component('crud-action-base', {
+crud.components.actions.coreActionBase = Vue.component('crud-action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
     mounted : function() {
@@ -1707,8 +1707,8 @@ crud.components.actions.crudActionBase = Vue.component('crud-action-base', {
 });
 
 
-crud.components.actions.crudActionOrder = Vue.component('crud-action-order', {
-    extends : crud.components.actions.crudActionBase,
+crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
+    extends : crud.components.actions.coreActionBase,
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
@@ -1738,7 +1738,7 @@ Vue.component('action-dialog', {
     }
 })
 
-crud.components.misc.crudCPaginator = Vue.component('crud-c-paginator',{
+crud.components.misc.coreCPaginator = Vue.component('crud-c-paginator',{
     extends : crud.components.cComponent,
     props : ['c-pagination'],
     data : function () {
@@ -1793,7 +1793,7 @@ crud.components.misc.crudCPaginator = Vue.component('crud-c-paginator',{
     }
 })
 
-crud.components.dBase = Vue.component('d-base',{
+crud.components.misc.dBase = Vue.component('d-base',{
     props : ['cMessage'],
     extends : crud.components.cComponent,
     mounted : function () {
@@ -1825,8 +1825,8 @@ crud.components.dBase = Vue.component('d-base',{
     }
 });
 
-crud.components.misc.crudDConfirm = Vue.component('crud-d-confirm', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDConfirm = Vue.component('crud-d-confirm', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : 'app.richiesta-conferma'
@@ -1841,8 +1841,8 @@ crud.components.misc.crudDConfirm = Vue.component('crud-d-confirm', {
     },
 });
 
-crud.components.misc.crudDMessage = Vue.component('crud-d-message', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDMessage = Vue.component('crud-d-message', {
+    extends : crud.components.misc.dBase,
     props : {
         'cTitle': {
             default : 'app.informazione'
@@ -1855,8 +1855,8 @@ crud.components.misc.crudDMessage = Vue.component('crud-d-message', {
     },
 });
 
-crud.components.misc.crudDError = Vue.component('crud-d-error', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDError = Vue.component('crud-d-error', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : 'app.errore'
@@ -1868,8 +1868,8 @@ crud.components.misc.crudDError = Vue.component('crud-d-error', {
         return d;
     },
 });
-crud.components.misc.crudDWarning = Vue.component('crud-d-warning', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDWarning = Vue.component('crud-d-warning', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : 'app.attenzione'
@@ -1882,8 +1882,8 @@ crud.components.misc.crudDWarning = Vue.component('crud-d-warning', {
     },
 });
 
-crud.components.misc.crudDCustom = Vue.component('d-custom', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDCustom = Vue.component('d-custom', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : ''
@@ -1905,7 +1905,7 @@ crud.components.misc.crudDCustom = Vue.component('d-custom', {
     },
 });
 
-crud.components.crudCWait = Vue.component('crud-c-wait', {
+crud.components.misc.coreCWait = Vue.component('crud-c-wait', {
     extends : crud.components.cComponent,
     props : ['cMsg','cGlobal'],
     data : function () {

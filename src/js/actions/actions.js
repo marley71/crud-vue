@@ -1,4 +1,4 @@
-crud.components.actions.crudActionBase = Vue.component('crud-action-base', {
+crud.components.actions.coreActionBase = Vue.component('crud-action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
     mounted : function() {
@@ -118,8 +118,8 @@ crud.components.actions.crudActionBase = Vue.component('crud-action-base', {
 });
 
 
-crud.components.actions.crudActionOrder = Vue.component('crud-action-order', {
-    extends : crud.components.actions.crudActionBase,
+crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
+    extends : crud.components.actions.coreActionBase,
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
