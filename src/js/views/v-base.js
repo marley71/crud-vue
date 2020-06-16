@@ -4,24 +4,25 @@ crud.components.views.vBase = Vue.component('v-base', {
     components : {
         vAction : Vue.component('v-action', {
             //extends: crud.components.cComponent,
-            props: ['cName', 'cAction'],
+            props: ['cAction'],
             data: function () {
                 var that = this;
                 //console.log('v-action',this.cKey,this.cAction);
-                var aConf = {
-                    name: 'action-base',
-                    conf: {},
-                }
+                // var aConf = {
+                //     name: 'action-base',
+                //     conf: {},
+                // }
+                var aConf = {};
                 if (this.cAction) {
                     //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
                     aConf = {
-                        name: this.cName,
+                        name: this.cAction.name,
                         conf: this.cAction
                     }
                 } else {
                     console.warn('configurazione azione non valida', this.cName, this.cAction);
                 }
-                aConf.conf.view = that.$parent;
+                //aConf.conf.view = that.$parent;
                 console.log('v-action create', aConf);
                 return aConf;
             },
@@ -89,32 +90,37 @@ crud.components.views.vBase = Vue.component('v-base', {
         },
         getActionConfig : function(name,type) {
             //console.log('v-base.getActionConfig',name,type,this.conf);
+            // se non esiste il componente di azione lo creo al volo
+            if (!this.$options.components[name]) {
+                //console.log('estendo azioni ',name);
+                Vue.component(name, {
+                    extends : crud.components.actions.actionBase
+                });
+            }
+
+
             if (this.conf.customActions[name]) {
-                var aConf = {}
-                if (!this.$options.components[name]) {
-                    //console.log('estendo azioni ',name);
-                    Vue.component(name, {
-                        extends : crud.components.actions.actionBase
-                    });
-                } else {
-                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.collectionActions[name]?this.$crud.collectionActions[name]:{})
-                }
+                var aConf = this.$crud.actions[name] || {};
                 aConf = this.merge(aConf,this.conf.customActions[name]);
-                //console.log('CUSTOM',name,aConf);
                 return aConf;
             }
-            if (type == 'record') {
-                if (this.$crud.recordActions[name]) {
-                    return this.cloneObj(this.$crud.recordActions[name]);
-                } else
-                    throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
+
+            if (this.$crud.actions[name]) {
+                return this.cloneObj(this.$crud.actions[name]);
             }
-            if (type == 'collection') {
-                if (this.$crud.collectionActions[name]) {
-                    return this.cloneObj(this.$crud.collectionActions[name]);
-                } else
-                    throw "Azione " + name +  " di tipo collection non trovata nelle azioni generali";
-            }
+
+            // if (type == 'record') {
+            //     if (this.$crud.recordActions[name]) {
+            //         return this.cloneObj(this.$crud.recordActions[name]);
+            //     } else
+            //         throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
+            // }
+            // if (type == 'collection') {
+            //     if (this.$crud.collectionActions[name]) {
+            //         return this.cloneObj(this.$crud.collectionActions[name]);
+            //     } else
+            //         throw "Azione " + name +  " di tipo collection non trovata nelle azioni generali";
+            // }
             throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },
 

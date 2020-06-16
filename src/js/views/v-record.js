@@ -87,12 +87,22 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$crud.collectionActions[aName])
+                // if (that.$crud.collectionActions[aName])
+                //     actions.push(aName);
+                // if (!Vue.options.components[aName]) {
+                //     console.log('CREO AZIONE ',aName);
+                //     Vue.component(aName, {
+                //         extends : crud.components.actions.actionBase
+                //     });
+                // }
+                if (that.$crud.actions[aName])
                     actions.push(aName);
                 else if (that.conf.customActions[aName])
                     actions.push(aName);
                 else
-                    throw "Impossibile trovare la definizione di " + aName;
+                    console.warn("Impossibile trovare la definizione di " + aName);
+
+
             }
             that.actions = actions;
         },
@@ -102,11 +112,13 @@ crud.components.views.vRecord = Vue.component('v-record', {
             console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
-                var aConf = that.getActionConfig(aName,'collection');
+                var aConf = that.getActionConfig(aName,'record');
                 aConf.modelData = this.cloneObj(that.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
                 aConf.cRef = that.getRefId(that._uid,'a',aName);
+                aConf.name = aName;
+                aConf.view = that;
                 actions[aName] = aConf;
             }
             that.actionsClass = actions;

@@ -6,7 +6,7 @@
             <div class="float-none">
                 <div class="float-left" v-show="collectionActionsName.length">
                     <template v-for="name in collectionActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
+                        <v-action  :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
                 <div class="float-right">
@@ -43,7 +43,7 @@
                                 </div>
 
                                 <template v-for="(action,name) in recordActions[index]">
-                                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                                    <v-action  :c-action="action"></v-action>
                                 </template>
                             </div>
 
@@ -59,7 +59,7 @@
             <div class="clearfix">
                 <div class="float-left" v-show="collectionActionsName.length">
                     <template v-for="name in collectionActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
+                        <v-action  :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
                 <div class="float-right">

@@ -3,13 +3,11 @@
         <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <div v-else v-for="(widget, key) in widgets">
-<!--            <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>-->
-<!--            <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>-->
             <v-widget  :c-widget="widget"></v-widget>
         </div>
-        <div v-show="actions.length">
+        <div v-if="actions.length">
             <template v-for="(action,name) in actionsClass">
-                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                <v-action :c-action="action"></v-action>
             </template>
         </div>
     </div>

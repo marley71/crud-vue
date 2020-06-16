@@ -84,7 +84,7 @@ crud.mimetypes = {
     ]
 }
 
-crud.recordActions = {
+crud.actions = {
     'action-edit' : {
         type : 'record',
         title : 'app.modifica',
@@ -201,11 +201,7 @@ crud.recordActions = {
             var that = this;
             that.view.setViewMode(that.index);
         }
-    }
-};
-
-crud.collectionActions = {
-
+    },
     'action-insert' : {
         type : 'collection',
         visible : true,

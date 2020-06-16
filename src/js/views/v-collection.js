@@ -41,8 +41,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         draw : function() {
             var that = this;
             that.createActions();
+            that.createActionsClass();
             that.createWidgets();
-            that.createCollectionActions();
         },
 
         setWidgetValue : function(row,key,value) {
@@ -56,14 +56,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var that = this;
             //console.log('Vlist-create widgets',that.data);
             var widgets = [];
-            var recordActions = that.recordActions;
-            var recordActionsName = that.recordActionsName;
+            //var recordActions = that.recordActions;
+            //var recordActionsName = that.recordActionsName;
             var value = that.value;
             var keys = that.keys;
             console.log('keys',keys,value);
             for (var i in value) {
                 widgets.push({});
-                recordActions.push({});
+                //recordActions.push({});
                 for (var k in keys) {
                     var key = keys[k];
                     var dconf = that._defaultWidgetConfig(key);
@@ -78,11 +78,11 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     widgets[i][key] = dconf;
 
                 }
-                that.createRecordActions(i);
+                //that.createRecordActions(i);
             }
 
             that.widgets = widgets;
-            that.recordActionsName = recordActionsName;
+            //that.recordActionsName = recordActionsName;
         },
         getKeys : function () {
             var that = this;
@@ -106,23 +106,50 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                if (that.$crud.recordActions[aName])
-                    recordActionsName.push(that.conf.actions[i]);
-                else if (that.$crud.collectionActions[aName])
+                var aConf = {};
+                if (that.$crud.actions[aName]) {
+                    aConf = that.$crud.actions[aName];
+                } else if(that.conf.customActions[aName]) {
+                    aConf = that.conf.customActions[aName];
+                } else
+                    throw "Impossibile trovare la configurazione di " + aName;
+
+                if (aConf.type == 'collection') {
                     collectionActionsName.push(aName);
-                else if (that.conf.customActions[aName]) {
-                    Vue.component(aName, {
-                        extends : crud.components.actions.actionBase
-                    });
-                    if (that.conf.customActions[aName].type == 'collection')
-                        collectionActionsName.push(aName);
-                    else if (that.conf.customActions[aName].type == 'record')
-                        recordActionsName.push(aName);
-                    else
-                        throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,collection";
+                } else if (aConf.type == 'record') {
+                    recordActionsName.push(aName);
                 } else {
-                    throw "Impossibile trovare la definizione di " + aName;
+                    throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
                 }
+
+
+
+                // if (that.$crud.actions[aName].type == 'collection') {
+                //     collectionActionsName.push(aName);
+                // } else if (that.$crud.actions[aName].type == 'record') {
+                //     recordActionsName.push(aName);
+                // } else {
+                //     throw "tipo di action (" + that.$crud.actions[aName].type + ") non definito! valori accettati sono record,collection";
+                // }
+                //
+                //
+                // if (that.$crud.recordActions[aName])
+                //     recordActionsName.push(that.conf.actions[i]);
+                // else if (that.$crud.collectionActions[aName])
+                //     collectionActionsName.push(aName);
+                // else if (that.conf.customActions[aName]) {
+                //     Vue.component(aName, {
+                //         extends : crud.components.actions.actionBase
+                //     });
+                //     if (that.conf.customActions[aName].type == 'collection')
+                //         collectionActionsName.push(aName);
+                //     else if (that.conf.customActions[aName].type == 'record')
+                //         recordActionsName.push(aName);
+                //     else
+                //         throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,collection";
+                // } else {
+                //     throw "Impossibile trovare la definizione di " + aName;
+                // }
             }
             //console.log('data',data,'conf',conf,'keys',keys);
             that.collectionActionsName = collectionActionsName;
@@ -130,13 +157,20 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.collectionActions = {};
             that.recordActions = [];
         },
-        createRecordActions : function(row) {
-            //console.log('row',row);
+
+        createActionsClass : function() {
             var that = this;
+            that.createCollectionActions();
+            for (var i in that.value) {
+                that.recordActions.push({});
+                that.createRecordActions(i);
+            }
+        },
+        createRecordActions : function(row) {
+            var that = this;
+            //console.log('row',row,that.recordActionsName);
             var recordActionsName = that.recordActionsName;
             var recordActions = that.recordActions;
-
-
             for(var k in recordActionsName) {
                 var aName = recordActionsName[k];
                 var aConf = that.getActionConfig(aName,'record');
@@ -146,6 +180,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 aConf.modelName = that.cModel;
                 aConf.index = row;
                 aConf.cRef = that.getRefId(that._uid,'ra',row,aName);
+                aConf.name = aName;
+                aConf.view = that;
                 recordActions[row][aName] = aConf;
             }
         },
@@ -165,6 +201,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 aConf.rootElement = that.$el;
                 aConf.cRef = that.getRefId(that._uid,'ca',aName);
                 that.needSelection = that.needSelection || aConf.needSelection;
+                aConf.name = aName;
+                aConf.view = that;
                 collectionActions[aName] = aConf;
             }
             that.collectionActions = collectionActions;

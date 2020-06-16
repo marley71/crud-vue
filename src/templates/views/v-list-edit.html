@@ -4,9 +4,9 @@
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <div v-else>
             <div class="float-none">
-                <div class="float-left" v-show="collectionActionsName.length">
+                <div class="float-left" v-if="collectionActionsName.length">
                     <template v-for="name in collectionActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
+                        <v-action :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
                 <div class="float-right">
@@ -43,7 +43,7 @@
                                 </div>
 
                                 <template v-for="(action,name) in recordActions[index]">
-                                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                                    <v-action :c-action="action"></v-action>
                                 </template>
                             </div>
 
@@ -51,9 +51,6 @@
                         <td v-for="(widget, key) in row">
                             <v-widget  v-show="!editMode[index]" :c-widget="widget"></v-widget>
                             <v-widget  v-show="editMode[index]" :c-widget="widgetsEdit[index][key]"></v-widget>
-
-<!--                            <component v-if="!editMode[index]" :is="widget.type"            :c-conf="widget"            :c-key="key" :c-ref="'rv-'+index+'-'+key"></component>-->
-<!--                            <component v-if="editMode[index]" :is="widgetsEdit[index][key].type"  :c-conf="widgetsEdit[index][key]"  :c-key="key" :c-ref="'re-'+index+'-'+key"></component>-->
                         </td>
                     </tr>
                     </tbody>
@@ -62,7 +59,7 @@
             <div class="clearfix">
                 <div class="float-left" v-show="collectionActionsName.length">
                     <template v-for="name in collectionActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="collectionActions[name]"></component>
+                        <v-action  :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
                 <div class="float-right">
