@@ -3,7 +3,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
     data :  function () {
         var that = this;
         //var d = this._loadConf(that.cModel,'list');
-        var _c = that._getConf();
+        var _c = that._getConf() || {};
         var dList = {
             loading : true,
             widgets : {},

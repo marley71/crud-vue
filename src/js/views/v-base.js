@@ -3,27 +3,20 @@ crud.components.views.vBase = Vue.component('v-base', {
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
-            //extends: crud.components.cComponent,
             props: ['cAction'],
             data: function () {
                 var that = this;
-                //console.log('v-action',this.cKey,this.cAction);
-                // var aConf = {
-                //     name: 'action-base',
-                //     conf: {},
-                // }
                 var aConf = {};
-                if (this.cAction) {
+                if (that.cAction) {
                     //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
                     aConf = {
-                        name: this.cAction.name,
-                        conf: this.cAction
+                        name: that.cAction.name,
+                        conf: that.cAction
                     }
                 } else {
-                    console.warn('configurazione azione non valida', this.cName, this.cAction);
+                    console.warn('configurazione azione non valida', this.cAction);
                 }
-                //aConf.conf.view = that.$parent;
-                console.log('v-action create', aConf);
+                //console.log('v-action create', aConf);
                 return aConf;
             },
             template: '<component :is="name" :c-conf="conf"></component>'
