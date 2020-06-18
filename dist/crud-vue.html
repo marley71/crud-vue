@@ -399,6 +399,13 @@
     </button>
 </script>
 
+<script type="text/x-template" id="w-status-template">
+    <span>
+        <span v-if="statusType=='text'">{{ slot }}</span>
+        <i  v-if="statusType=='icon'" v-bind:class="slot"></i>
+    </span>
+</script>
+
 <template id="w-hasmany-through-template">
     <div class="card"  >
         <div class="card-body">

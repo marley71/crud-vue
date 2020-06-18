@@ -99,6 +99,11 @@ crud.components.widgets.wSwap = Vue.component('w-swap', {
     template: '#w-swap-template',
 });
 
+crud.components.widgets.wStatus = Vue.component('w-status', {
+    extends: crud.components.widgets.coreWStatus,
+    template: '#w-status-template',
+});
+
 crud.components.widgets.wText = Vue.component('w-text',{
     extends : crud.components.widgets.coreWText,
     template: '#w-text-template'

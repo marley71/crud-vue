@@ -41,6 +41,7 @@ var crudJsFiles = [
     'src/js/widgets/w-hasmany-view.js',
 
     'src/js/widgets/w-swap.js',
+    'src/js/widgets/w-status.js',
     'src/js/widgets/w-hasmany-through.js',
     'src/js/widgets/w-b2-select2.js',
     'src/js/widgets/w-b2m-select2.js',
@@ -94,6 +95,7 @@ var crudHtmlFiles = [
     'src/templates/widgets/w-hasmany-view.html',
 
     'src/templates/widgets/w-swap.html',
+    'src/templates/widgets/w-status.html',
     'src/templates/widgets/w-hasmany-through.html',
     'src/templates/widgets/w-b2-select2.html',
     'src/templates/widgets/w-b2m-select2.html',
