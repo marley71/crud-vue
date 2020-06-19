@@ -1322,6 +1322,15 @@ function Route(conf) {
             var re = new RegExp(find, 'g');
             finalUrl = finalUrl.replace(re,v[key]);
         }
+        for (var key in v) {
+            var find = '\{'+key+'\\?'+'\}';
+            //console.log(finalUrl,' find' + find)
+            var re = new RegExp(find, 'g');
+            finalUrl = finalUrl.replace(re,v[key]);
+        }
+        // tolgo eventuali parametri opzionali
+        var re = new RegExp('\/{\\w+'+'\\?'+'\}', 'g');
+        finalUrl = finalUrl.replace(re,'');
         return finalUrl;
     };
 
