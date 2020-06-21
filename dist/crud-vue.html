@@ -205,7 +205,7 @@
                 <div class="modal-body" v-html="content">
 
                 </div>
-                <div v-if="Object.keys(cCallbacks).length == 0" class="modal-footer">
+                <div v-if="Object.keys(cCallbacks).length > 0" class="modal-footer">
                     <template v-for="(cb,key) in cCallbacks">
                         <button type="button" class="btn btn-primary" v-on:click="callCb(key)">{{key | translate}}</button>
                     </template>
