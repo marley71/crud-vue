@@ -1737,10 +1737,10 @@ crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
 
 
 
-Vue.component('action-dialog', {
-    extends : crud.components.cComponent,
-    template : '#action-dialog-template'
-})
+// Vue.component('action-dialog', {
+//     extends : crud.components.cComponent,
+//     template : '#action-dialog-template'
+// })
 
 crud.components.misc.coreCPaginator = Vue.component('crud-c-paginator',{
     extends : crud.components.cComponent,

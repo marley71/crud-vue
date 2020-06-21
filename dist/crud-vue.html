@@ -21,16 +21,16 @@
 </script>
 
 
-<script type="text/x-template" id="action-dialog-template">
-    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
-        <i v-show="icon" :class="icon"></i>
-        <span>{{text | translate}}</span>
-    </button>
-    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >
-        <i v-show="icon" :class="icon"></i>
-        <span>{{text | translate}}</span>
-    </a>
-</script>
+<!--<script type="text/x-template" id="action-dialog-template">-->
+<!--    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">-->
+<!--        <i v-show="icon" :class="icon"></i>-->
+<!--        <span>{{text | translate}}</span>-->
+<!--    </button>-->
+<!--    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >-->
+<!--        <i v-show="icon" :class="icon"></i>-->
+<!--        <span>{{text | translate}}</span>-->
+<!--    </a>-->
+<!--</script>-->
 
 <template id="tpl-record-template">
     <div v-if="cWidget.type!='w-hidden'">
