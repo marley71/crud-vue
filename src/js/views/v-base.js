@@ -92,15 +92,17 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
 
 
-            if (this.conf.customActions[name]) {
-                var aConf = this.$crud.actions[name] || {};
-                aConf = this.merge(aConf,this.conf.customActions[name]);
-                return aConf;
-            }
+            var aConf = this.$crud.actions[name] || {};
 
-            if (this.$crud.actions[name]) {
-                return this.cloneObj(this.$crud.actions[name]);
+            if (this.conf.customActions[name]) {
+                aConf = this.merge(aConf,this.conf.customActions[name]);
             }
+            //console.log('getActionConfig',aConf);
+            return aConf;
+
+            // if (this.$crud.actions[name]) {
+            //     return this.cloneObj(this.$crud.actions[name]);
+            // }
 
             // if (type == 'record') {
             //     if (this.$crud.recordActions[name]) {

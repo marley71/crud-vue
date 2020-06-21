@@ -9,7 +9,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-default">{{message}}</div>
+                    <div class="alert alert-default">
+                        <div v-for="(msg,index) in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{ 'app.ok' | translate}}</button>
@@ -31,7 +33,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-info">{{message}}</div>
+                    <div class="alert alert-info">
+                        <div v-for="(msg,index) in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
@@ -52,7 +56,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger">{{message}}</div>
+                    <div class="alert alert-danger">
+                        <div v-for="msg in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
@@ -74,7 +80,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-warning">{{message}}</div>
+                    <div class="alert alert-warning">
+                        <div v-for="msg in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
@@ -97,9 +105,9 @@
                 <div class="modal-body" v-html="content">
 
                 </div>
-                <div class="modal-footer">
+                <div v-if="Object.keys(cCallbacks).length == 0" class="modal-footer">
                     <template v-for="(cb,key) in cCallbacks">
-                        <action-dialog :c-conf="cb" ></action-dialog>
+                        <button type="button" class="btn btn-primary" v-on:click="callCb(key)">{{key | translate}}</button>
                     </template>
                 </div>
             </div>

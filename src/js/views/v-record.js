@@ -112,7 +112,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
-                var aConf = that.getActionConfig(aName,'record');
+                var aConf = that.getActionConfig(aName);
                 aConf.modelData = this.cloneObj(that.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;

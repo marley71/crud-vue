@@ -567,7 +567,7 @@ const dialogs_mixin = {
         messageDialog : function (bodyProps,callbacks) {
             var that = this;
             var props = bodyProps;
-            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+            if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cMessage : bodyProps,
                 }
@@ -583,7 +583,7 @@ const dialogs_mixin = {
         },
         errorDialog : function (bodyProps,callbacks) {
             var props = bodyProps;
-            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+            if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cMessage : bodyProps,
                 }
@@ -600,7 +600,7 @@ const dialogs_mixin = {
         confirmDialog : function (bodyProps,callbacks) {
             var that = this;
             var props = bodyProps;
-            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+            if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cMessage : bodyProps,
                 }
@@ -617,7 +617,7 @@ const dialogs_mixin = {
         warningDialog : function (bodyProps,callbacks) {
             var that = this;
             var props = bodyProps;
-            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+            if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cMessage : bodyProps,
                 }
@@ -634,13 +634,17 @@ const dialogs_mixin = {
         customDialog : function (bodyProps,callbacks) {
             var that = this;
             var props = bodyProps;
-            if (!bodyProps || typeof bodyProps === 'string' || bodyProps instanceof String) {
+            var _cbs = callbacks?callbacks:{};
+            if (!bodyProps || typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cContent : bodyProps,
-                    cCallbacks : callbacks
+                    cCallbacks : _cbs,
                 }
-            } else
-                props.cCallbacks = callbacks;
+            } else {
+                props = bodyProps;
+                if (Object.keys(_cbs) > 0)
+                    props.cCallbacks = _cbs;
+            }
 
             var d = new crud.components.misc.dCustom({
                 propsData : props,
@@ -1734,13 +1738,8 @@ crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
 
 
 Vue.component('action-dialog', {
-    extends : crud.components.actions.actionBase,
-    data : function () {
-        var d = this.defaultData();
-        d.dialog = this.$parent;
-        return d;
-
-    }
+    extends : crud.components.cComponent,
+    template : '#action-dialog-template'
 })
 
 crud.components.misc.coreCPaginator = Vue.component('crud-c-paginator',{
@@ -1799,12 +1798,30 @@ crud.components.misc.coreCPaginator = Vue.component('crud-c-paginator',{
 })
 
 crud.components.misc.dBase = Vue.component('d-base',{
-    props : ['cMessage'],
+    props :  {
+        'cMessage' : {
+            default : ''
+        },
+        'cAutohide' : {
+            default : true
+        }
+    },
     extends : crud.components.cComponent,
     mounted : function () {
         var that = this;
         //console.log('message',this.cMessage,this.message)
-        that.jQe(that.selector).modal('show');
+        //that.jQe(that.selector).modal('show');
+        //that.jQe(that.selector).modal({backdrop: 'static', keyboard: false})
+        if (that.cAutohide) {
+            that.jQe(that.selector).modal('show');
+        } else {
+            that.jQe(that.selector).modal({
+                backdrop: 'static',
+                keyboard: false,
+                show : true
+            })
+        }
+
         that.jQe(that.selector).on('hidden.bs.modal', function (e) {
             that.jQe(that.selector).remove();
             that.$destroy();
@@ -1820,11 +1837,17 @@ crud.components.misc.dBase = Vue.component('d-base',{
         hide : function () {
             var that = this;
             that.jQe(that.selector).modal('hide');
+        },
+        callCb : function (key) {
+            var that = this;
+            that.cCallbacks[key].apply(that);
         }
     },
     data :function () {
+        var message = Array.isArray(this.cMessage)?this.cMessage:[this.cMessage];
+        console.log('DIALOG MSG',Array.isArray(this.cMessage),message,this.cMessage);
         return {
-            message : this.cMessage,
+            message : message,
             title : this.cTitle,
         }
     }
@@ -3113,15 +3136,17 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
 
 
-            if (this.conf.customActions[name]) {
-                var aConf = this.$crud.actions[name] || {};
-                aConf = this.merge(aConf,this.conf.customActions[name]);
-                return aConf;
-            }
+            var aConf = this.$crud.actions[name] || {};
 
-            if (this.$crud.actions[name]) {
-                return this.cloneObj(this.$crud.actions[name]);
+            if (this.conf.customActions[name]) {
+                aConf = this.merge(aConf,this.conf.customActions[name]);
             }
+            //console.log('getActionConfig',aConf);
+            return aConf;
+
+            // if (this.$crud.actions[name]) {
+            //     return this.cloneObj(this.$crud.actions[name]);
+            // }
 
             // if (type == 'record') {
             //     if (this.$crud.recordActions[name]) {
@@ -3341,7 +3366,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
-                var aConf = that.getActionConfig(aName,'record');
+                var aConf = that.getActionConfig(aName);
                 aConf.modelData = this.cloneObj(that.value); //jQuery.extend(true,{},that.data.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;
@@ -3521,6 +3546,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 } else if (aConf.type == 'record') {
                     recordActionsName.push(aName);
                 } else {
+                    console.log('action ',aConf);
                     throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
                 }
 
@@ -3575,7 +3601,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var recordActions = that.recordActions;
             for(var k in recordActionsName) {
                 var aName = recordActionsName[k];
-                var aConf = that.getActionConfig(aName,'record');
+                var aConf = that.getActionConfig(aName);
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
                 aConf.modelData = this.cloneObj(that.value[row]);
@@ -3595,7 +3621,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
             for (var i in collectionActionsName) {
                 var aName = collectionActionsName[i];
-                var aConf = that.getActionConfig(aName,'collection');
+                var aConf = that.getActionConfig(aName);
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
                 aConf.modelData = jQuery.extend(true,{},that.value);

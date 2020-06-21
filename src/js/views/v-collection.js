@@ -119,6 +119,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 } else if (aConf.type == 'record') {
                     recordActionsName.push(aName);
                 } else {
+                    console.log('action ',aConf);
                     throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
                 }
 
@@ -173,7 +174,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var recordActions = that.recordActions;
             for(var k in recordActionsName) {
                 var aName = recordActionsName[k];
-                var aConf = that.getActionConfig(aName,'record');
+                var aConf = that.getActionConfig(aName);
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
                 aConf.modelData = this.cloneObj(that.value[row]);
@@ -193,7 +194,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
             for (var i in collectionActionsName) {
                 var aName = collectionActionsName[i];
-                var aConf = that.getActionConfig(aName,'collection');
+                var aConf = that.getActionConfig(aName);
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
                 aConf.modelData = jQuery.extend(true,{},that.value);

@@ -140,11 +140,6 @@ crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
 
 
 Vue.component('action-dialog', {
-    extends : crud.components.actions.actionBase,
-    data : function () {
-        var d = this.defaultData();
-        d.dialog = this.$parent;
-        return d;
-
-    }
+    extends : crud.components.cComponent,
+    template : '#action-dialog-template'
 })

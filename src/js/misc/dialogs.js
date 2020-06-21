@@ -1,10 +1,28 @@
 crud.components.misc.dBase = Vue.component('d-base',{
-    props : ['cMessage'],
+    props :  {
+        'cMessage' : {
+            default : ''
+        },
+        'cAutohide' : {
+            default : true
+        }
+    },
     extends : crud.components.cComponent,
     mounted : function () {
         var that = this;
         //console.log('message',this.cMessage,this.message)
-        that.jQe(that.selector).modal('show');
+        //that.jQe(that.selector).modal('show');
+        //that.jQe(that.selector).modal({backdrop: 'static', keyboard: false})
+        if (that.cAutohide) {
+            that.jQe(that.selector).modal('show');
+        } else {
+            that.jQe(that.selector).modal({
+                backdrop: 'static',
+                keyboard: false,
+                show : true
+            })
+        }
+
         that.jQe(that.selector).on('hidden.bs.modal', function (e) {
             that.jQe(that.selector).remove();
             that.$destroy();
@@ -20,11 +38,17 @@ crud.components.misc.dBase = Vue.component('d-base',{
         hide : function () {
             var that = this;
             that.jQe(that.selector).modal('hide');
+        },
+        callCb : function (key) {
+            var that = this;
+            that.cCallbacks[key].apply(that);
         }
     },
     data :function () {
+        var message = Array.isArray(this.cMessage)?this.cMessage:[this.cMessage];
+        console.log('DIALOG MSG',Array.isArray(this.cMessage),message,this.cMessage);
         return {
-            message : this.cMessage,
+            message : message,
             title : this.cTitle,
         }
     }

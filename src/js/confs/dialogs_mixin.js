@@ -3,7 +3,7 @@ const dialogs_mixin = {
         messageDialog : function (bodyProps,callbacks) {
             var that = this;
             var props = bodyProps;
-            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+            if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cMessage : bodyProps,
                 }
@@ -19,7 +19,7 @@ const dialogs_mixin = {
         },
         errorDialog : function (bodyProps,callbacks) {
             var props = bodyProps;
-            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+            if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cMessage : bodyProps,
                 }
@@ -36,7 +36,7 @@ const dialogs_mixin = {
         confirmDialog : function (bodyProps,callbacks) {
             var that = this;
             var props = bodyProps;
-            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+            if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cMessage : bodyProps,
                 }
@@ -53,7 +53,7 @@ const dialogs_mixin = {
         warningDialog : function (bodyProps,callbacks) {
             var that = this;
             var props = bodyProps;
-            if (typeof bodyProps === 'string' || bodyProps instanceof String) {
+            if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cMessage : bodyProps,
                 }
@@ -70,13 +70,17 @@ const dialogs_mixin = {
         customDialog : function (bodyProps,callbacks) {
             var that = this;
             var props = bodyProps;
-            if (!bodyProps || typeof bodyProps === 'string' || bodyProps instanceof String) {
+            var _cbs = callbacks?callbacks:{};
+            if (!bodyProps || typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 props = {
                     cContent : bodyProps,
-                    cCallbacks : callbacks
+                    cCallbacks : _cbs,
                 }
-            } else
-                props.cCallbacks = callbacks;
+            } else {
+                props = bodyProps;
+                if (Object.keys(_cbs) > 0)
+                    props.cCallbacks = _cbs;
+            }
 
             var d = new crud.components.misc.dCustom({
                 propsData : props,
