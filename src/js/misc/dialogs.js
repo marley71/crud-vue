@@ -5,6 +5,14 @@ crud.components.misc.dBase = Vue.component('d-base',{
         },
         'cAutohide' : {
             default : true
+        },
+        cButtonConf : {
+            default : function() {
+                return {}
+            }
+        },
+        cBig : {
+            default : false
         }
     },
     extends : crud.components.cComponent,
@@ -54,7 +62,7 @@ crud.components.misc.dBase = Vue.component('d-base',{
     }
 });
 
-crud.components.misc.coreDConfirm = Vue.component('crud-d-confirm', {
+crud.components.misc.coreDConfirm = Vue.component('core-d-confirm', {
     extends : crud.components.misc.dBase,
     props : {
         'c-title': {
@@ -70,7 +78,7 @@ crud.components.misc.coreDConfirm = Vue.component('crud-d-confirm', {
     },
 });
 
-crud.components.misc.coreDMessage = Vue.component('crud-d-message', {
+crud.components.misc.coreDMessage = Vue.component('core-d-message', {
     extends : crud.components.misc.dBase,
     props : {
         'cTitle': {
@@ -84,7 +92,7 @@ crud.components.misc.coreDMessage = Vue.component('crud-d-message', {
     },
 });
 
-crud.components.misc.coreDError = Vue.component('crud-d-error', {
+crud.components.misc.coreDError = Vue.component('core-d-error', {
     extends : crud.components.misc.dBase,
     props : {
         'c-title': {
@@ -97,7 +105,7 @@ crud.components.misc.coreDError = Vue.component('crud-d-error', {
         return d;
     },
 });
-crud.components.misc.coreDWarning = Vue.component('crud-d-warning', {
+crud.components.misc.coreDWarning = Vue.component('core-d-warning', {
     extends : crud.components.misc.dBase,
     props : {
         'c-title': {
@@ -111,7 +119,7 @@ crud.components.misc.coreDWarning = Vue.component('crud-d-warning', {
     },
 });
 
-crud.components.misc.coreDCustom = Vue.component('d-custom', {
+crud.components.misc.coreDCustom = Vue.component('core-d-custom', {
     extends : crud.components.misc.dBase,
     props : {
         'c-title': {

@@ -1,6 +1,6 @@
 <template id="d-confirm-template">
     <div c-confirm-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title | translate }}</h5>
@@ -24,7 +24,7 @@
 
 <template id="d-message-template">
     <div c-message-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title | translate }}</h5>
@@ -47,7 +47,7 @@
 
 <template id="d-error-template">
     <div c-error-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title | translate}}</h5>
@@ -71,7 +71,7 @@
 
 <template id="d-warning-template">
     <div c-warning-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title | translate }}</h5>
@@ -94,8 +94,8 @@
 
 <template id="d-custom-template">
     <div c-custom-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
+            <div class="modal-content" >
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
