@@ -565,7 +565,7 @@
                     </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in widgets">
+                    <tr v-for="(row,index) in widgets" :key="index">
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group btn-group-sm" role="group">
@@ -573,8 +573,8 @@
                                     <input c-row-check type="checkbox">
                                 </div>
 
-                                <template v-for="(action,name) in recordActions[index]">
-                                    <v-action  :c-action="action"></v-action>
+                                <template v-for="(action,name) in recordActions[index]" >
+                                    <v-action  :c-action="action" :key="name"></v-action>
                                 </template>
                             </div>
 

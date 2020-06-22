@@ -3151,24 +3151,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
             //console.log('getActionConfig',aConf);
             return aConf;
-
-            // if (this.$crud.actions[name]) {
-            //     return this.cloneObj(this.$crud.actions[name]);
-            // }
-
-            // if (type == 'record') {
-            //     if (this.$crud.recordActions[name]) {
-            //         return this.cloneObj(this.$crud.recordActions[name]);
-            //     } else
-            //         throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
-            // }
-            // if (type == 'collection') {
-            //     if (this.$crud.collectionActions[name]) {
-            //         return this.cloneObj(this.$crud.collectionActions[name]);
-            //     } else
-            //         throw "Azione " + name +  " di tipo collection non trovata nelle azioni generali";
-            // }
-            throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },
 
         _loadConf : function() {
@@ -3275,11 +3257,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
         that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.draw();
-            that.loading = false;
-            setTimeout(function () {
-                that.completed();
-            },10)
-
         });
     },
 
@@ -3313,6 +3290,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
             that.createActions();
             that.createActionsClass();
             that.createWidgets();
+            that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10)
         },
         setWidgetValue : function(key,value) {
             var that = this;
@@ -3349,14 +3330,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                // if (that.$crud.collectionActions[aName])
-                //     actions.push(aName);
-                // if (!Vue.options.components[aName]) {
-                //     console.log('CREO AZIONE ',aName);
-                //     Vue.component(aName, {
-                //         extends : crud.components.actions.actionBase
-                //     });
-                // }
                 if (that.$crud.actions[aName])
                     actions.push(aName);
                 else if (that.conf.customActions[aName])
@@ -3454,10 +3427,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.fillData(that.route,json);
             that.keys = that.getKeys();
             that.draw();
-            that.loading = false;
-            setTimeout(function () {
-                that.completed();
-            },10);
         });
     },
 
@@ -3478,6 +3447,10 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.createActions();
             that.createActionsClass();
             that.createWidgets();
+            that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10);
         },
 
         setWidgetValue : function(row,key,value) {
@@ -3495,7 +3468,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             //var recordActionsName = that.recordActionsName;
             var value = that.value;
             var keys = that.keys;
-            console.log('keys',keys,value);
+            //console.log('keys',keys,value);
             for (var i in value) {
                 widgets.push({});
                 //recordActions.push({});
@@ -3557,35 +3530,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     console.log('action ',aConf);
                     throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
                 }
-
-
-
-                // if (that.$crud.actions[aName].type == 'collection') {
-                //     collectionActionsName.push(aName);
-                // } else if (that.$crud.actions[aName].type == 'record') {
-                //     recordActionsName.push(aName);
-                // } else {
-                //     throw "tipo di action (" + that.$crud.actions[aName].type + ") non definito! valori accettati sono record,collection";
-                // }
-                //
-                //
-                // if (that.$crud.recordActions[aName])
-                //     recordActionsName.push(that.conf.actions[i]);
-                // else if (that.$crud.collectionActions[aName])
-                //     collectionActionsName.push(aName);
-                // else if (that.conf.customActions[aName]) {
-                //     Vue.component(aName, {
-                //         extends : crud.components.actions.actionBase
-                //     });
-                //     if (that.conf.customActions[aName].type == 'collection')
-                //         collectionActionsName.push(aName);
-                //     else if (that.conf.customActions[aName].type == 'record')
-                //         recordActionsName.push(aName);
-                //     else
-                //         throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,collection";
-                // } else {
-                //     throw "Impossibile trovare la definizione di " + aName;
-                // }
             }
             //console.log('data',data,'conf',conf,'keys',keys);
             that.collectionActionsName = collectionActionsName;
@@ -3650,7 +3594,6 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
     data :  function () {
         var that = this;
-        //var d = this._loadConf(that.cModel,'list');
         var _c = that._getConf() || {};
         var dList = {
             loading : true,
@@ -3660,12 +3603,8 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             recordActions: [],
             collectionActions : {},
             collectionActionsName : [],
-            //routeConf : routeConf,
             route : null,
-            //value : [],
-            //metadata : {},
             maxPage : 0,
-            //conf : conf,
             pagination : {},
             viewTitle : '',
             defaultWidgetType : 'w-text',
@@ -3726,14 +3665,11 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
         },
         reload : function () {
             var that = this;
-            //that.route = that._getRoute(that.routeConf.values);
-            //var route = Route.factory('list',that.routeConf);
-            //that.route = new Route(that.routeConf);
             that.loading = true;
             that.fetchData(that.route,function (json) {
                 that.fillData(that.route,json);
                 that.draw();
-                that.loading = false;
+                //that.loading = false;
             });
         },
         selectAllRows : function () {
@@ -3801,7 +3737,10 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             that.createActionsClass();
             that.createWidgets();
             that.createWidgetsEdit();
-            //that.createCollectionActions();
+            that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10);
         },
 
         createWidgetsEdit : function () {
@@ -4012,7 +3951,7 @@ crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
         var _conf = this._getConf();
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
-        console.log('VHASMANY TYPE',d);
+        //console.log('VHASMANY TYPE',d);
         return d;
     },
 
@@ -4035,7 +3974,7 @@ crud.components.views.coreVHasmanyView = Vue.component('core-v-hasmany-view', {
         }
     },
     data :  function () {
-        console.log('VHASMANYVIEW',this._getConf())
+        //console.log('VHASMANYVIEW',this._getConf())
         var _conf = this._getConf();
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';

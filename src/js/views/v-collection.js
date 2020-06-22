@@ -19,10 +19,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.fillData(that.route,json);
             that.keys = that.getKeys();
             that.draw();
-            that.loading = false;
-            setTimeout(function () {
-                that.completed();
-            },10);
         });
     },
 
@@ -43,6 +39,10 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.createActions();
             that.createActionsClass();
             that.createWidgets();
+            that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10);
         },
 
         setWidgetValue : function(row,key,value) {
@@ -60,7 +60,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             //var recordActionsName = that.recordActionsName;
             var value = that.value;
             var keys = that.keys;
-            console.log('keys',keys,value);
+            //console.log('keys',keys,value);
             for (var i in value) {
                 widgets.push({});
                 //recordActions.push({});
@@ -122,35 +122,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     console.log('action ',aConf);
                     throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
                 }
-
-
-
-                // if (that.$crud.actions[aName].type == 'collection') {
-                //     collectionActionsName.push(aName);
-                // } else if (that.$crud.actions[aName].type == 'record') {
-                //     recordActionsName.push(aName);
-                // } else {
-                //     throw "tipo di action (" + that.$crud.actions[aName].type + ") non definito! valori accettati sono record,collection";
-                // }
-                //
-                //
-                // if (that.$crud.recordActions[aName])
-                //     recordActionsName.push(that.conf.actions[i]);
-                // else if (that.$crud.collectionActions[aName])
-                //     collectionActionsName.push(aName);
-                // else if (that.conf.customActions[aName]) {
-                //     Vue.component(aName, {
-                //         extends : crud.components.actions.actionBase
-                //     });
-                //     if (that.conf.customActions[aName].type == 'collection')
-                //         collectionActionsName.push(aName);
-                //     else if (that.conf.customActions[aName].type == 'record')
-                //         recordActionsName.push(aName);
-                //     else
-                //         throw  "tipo di action (" + that.conf.customActions[aName].type + ") non definito! valori accettati sono record,collection";
-                // } else {
-                //     throw "Impossibile trovare la definizione di " + aName;
-                // }
             }
             //console.log('data',data,'conf',conf,'keys',keys);
             that.collectionActionsName = collectionActionsName;

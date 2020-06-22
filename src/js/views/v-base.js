@@ -99,24 +99,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
             //console.log('getActionConfig',aConf);
             return aConf;
-
-            // if (this.$crud.actions[name]) {
-            //     return this.cloneObj(this.$crud.actions[name]);
-            // }
-
-            // if (type == 'record') {
-            //     if (this.$crud.recordActions[name]) {
-            //         return this.cloneObj(this.$crud.recordActions[name]);
-            //     } else
-            //         throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
-            // }
-            // if (type == 'collection') {
-            //     if (this.$crud.collectionActions[name]) {
-            //         return this.cloneObj(this.$crud.collectionActions[name]);
-            //     } else
-            //         throw "Azione " + name +  " di tipo collection non trovata nelle azioni generali";
-            // }
-            throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
         },
 
         _loadConf : function() {

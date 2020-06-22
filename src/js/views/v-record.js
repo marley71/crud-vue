@@ -13,11 +13,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
         that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             that.draw();
-            that.loading = false;
-            setTimeout(function () {
-                that.completed();
-            },10)
-
         });
     },
 
@@ -51,6 +46,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
             that.createActions();
             that.createActionsClass();
             that.createWidgets();
+            that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10)
         },
         setWidgetValue : function(key,value) {
             var that = this;
@@ -87,14 +86,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.conf.actions) {
                 var aName = that.conf.actions[i];
-                // if (that.$crud.collectionActions[aName])
-                //     actions.push(aName);
-                // if (!Vue.options.components[aName]) {
-                //     console.log('CREO AZIONE ',aName);
-                //     Vue.component(aName, {
-                //         extends : crud.components.actions.actionBase
-                //     });
-                // }
                 if (that.$crud.actions[aName])
                     actions.push(aName);
                 else if (that.conf.customActions[aName])

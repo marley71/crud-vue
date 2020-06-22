@@ -25,7 +25,10 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             that.createActionsClass();
             that.createWidgets();
             that.createWidgetsEdit();
-            //that.createCollectionActions();
+            that.loading = false;
+            setTimeout(function () {
+                that.completed();
+            },10);
         },
 
         createWidgetsEdit : function () {

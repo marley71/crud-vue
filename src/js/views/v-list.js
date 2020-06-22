@@ -2,7 +2,6 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
     data :  function () {
         var that = this;
-        //var d = this._loadConf(that.cModel,'list');
         var _c = that._getConf() || {};
         var dList = {
             loading : true,
@@ -12,12 +11,8 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             recordActions: [],
             collectionActions : {},
             collectionActionsName : [],
-            //routeConf : routeConf,
             route : null,
-            //value : [],
-            //metadata : {},
             maxPage : 0,
-            //conf : conf,
             pagination : {},
             viewTitle : '',
             defaultWidgetType : 'w-text',
@@ -78,14 +73,11 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
         },
         reload : function () {
             var that = this;
-            //that.route = that._getRoute(that.routeConf.values);
-            //var route = Route.factory('list',that.routeConf);
-            //that.route = new Route(that.routeConf);
             that.loading = true;
             that.fetchData(that.route,function (json) {
                 that.fillData(that.route,json);
                 that.draw();
-                that.loading = false;
+                //that.loading = false;
             });
         },
         selectAllRows : function () {
