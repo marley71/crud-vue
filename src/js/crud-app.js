@@ -28,6 +28,7 @@ const CrudApp = Vue.extend({
                 console.log('monto app');
                 that.$mount(that.el);
                 console.log('mounted');
+                document.dispatchEvent(new Event('crud-app-loaded'))
             })
         }
         console.log('load framework components.  ' + that.$data.appComponents);

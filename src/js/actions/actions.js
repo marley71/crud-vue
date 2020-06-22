@@ -61,7 +61,7 @@ crud.components.actions.coreActionBase = Vue.component('crud-action-base', {
             }
             that._beforeExecute(function () {
                 // controllo che execute abbia o no una callback per operazioni asincrone
-                var args = that.cConf.execute.toString()
+                var args = that.execute.toString()
                     .match(/\((?:.+(?=\s*\))|)/)[0]
                     .slice(1).split(/\s*,\s*/g);
                 args.forEach(function (e, i, a) {a[i] = e.trim();});
