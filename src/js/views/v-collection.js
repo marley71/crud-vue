@@ -22,6 +22,29 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         });
     },
 
+    beforeDestroy () {
+        //alert('collection destroy');
+        for (var row in this.widgets) {
+            for (var key in this.widgets[row]) {
+                var w = this.getWidget(row,key);
+                delete this.$crud.cRefs[w.cRef];
+                w.$destroy();
+            }
+        }
+        // for (var row in this.recordActions) {
+        //     for (var key in this.recordActions[row]) {
+        //         var a = this.getRecordAction(row,key);
+        //         delete this.$crud.cRefs[a.cRef];
+        //         a.$destroy();
+        //     }
+        // }
+        // for (var key in this.collectionActions) {
+        //     var a = this.getCollectionAction(key);
+        //     delete this.$crud.cRefs[a.cRef];
+        //     a.$destroy();
+        // }
+    },
+
     data : function () {
         var that = this;
         var d =  {};
@@ -50,7 +73,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             if (!that.widgets[row][key]) {
                 throw 'accesso a render con chiave inesistente '+ row + "," + key;
             }
-            that.widgets[row][key].setValue(value);
+            var wConf =  that.widgets[row][key];
+            that.$crud.cRefs[wConf.cRef].setValue(value);
         },
         createWidgets : function () {
             var that = this;
@@ -97,7 +121,17 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             return keys;
         },
         getWidget : function (row,key) {
-            return this.widgets[row][key];
+            var wConf =  this.widgets[row][key];
+            return this.$crud.cRefs[wConf.cRef];
+        },
+
+        getRecordAction : function(row,actionName) {
+            var aConf = this.recordActions[row][actionName];
+            return this.$crud.cRefs[aConf.cRef];
+        },
+        getCollectionAction : function(actionName) {
+            var aConf = this.collectionActions[actionName];
+            return this.$crud.cRefs[aConf.cRef];
         },
         createActions : function () {
             var that = this;

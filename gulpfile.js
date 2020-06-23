@@ -12,31 +12,18 @@ const watch = require('glob-watcher');
 // file is included here:
 eval(fs.readFileSync('crud-files.js')+'');
 
-// var isProduction = (argv.production === undefined) ? false : true;
-//
-// if (!isProduction) {
-//     gulp.task('default', function() {
-//         gulp.src(crudJsFiles)
-//             .pipe(concat('crud-vue.js'))
-//             .pipe(gulp.dest('./dist/'));
-//         return gulp.src(crudHtmlFiles)
-//             .pipe(concat('crud-vue.html'))
-//             .pipe(gulp.dest('./dist/'));
-//         ;
-//     });
-//} else {
-    gulp.task('production', function() {
-        gulp.src(crudJsFiles)
-            .pipe(concat('crud-vue.js'))
-            .pipe(minify({}))
-            .pipe(rename({suffix: '.min'}))
-            //.pipe(uglify())
-            .pipe(gulp.dest('./dist/'));
-        gulp.src(crudHtmlFiles)
-            .pipe(concat('crud-vue.html'))
-            .pipe(gulp.dest('./dist/'));
-    });
-//}
+gulp.task('production', function(cb) {
+    gulp.src(crudJsFiles)
+        .pipe(concat('crud-vue.js'))
+        .pipe(minify({}))
+        .pipe(rename({suffix: '.min'}))
+        //.pipe(uglify())
+        .pipe(gulp.dest('./dist/'));
+    gulp.src(crudHtmlFiles)
+        .pipe(concat('crud-vue.html'))
+        .pipe(gulp.dest('./dist/'));
+    cb();
+});
 
 function js(cb) {
     gulp.src(crudJsFiles)

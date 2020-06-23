@@ -59,6 +59,12 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             that.json = json;
         },
 
+        isOrderField : function(key) {
+            var that = this;
+            if (that.orderFields[key])
+                return true;
+            return false;
+        },
         getOrderConf : function (key) {
             var that = this;
             var conf = that.getActionConfig('action-order','collection');

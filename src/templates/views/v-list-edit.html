@@ -5,8 +5,8 @@
         <div v-else>
             <div class="float-none">
                 <div class="float-left" v-if="collectionActionsName.length">
-                    <template v-for="name in collectionActionsName">
-                        <v-action :c-action="collectionActions[name]"></v-action>
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action :c-action="collectionActions[name]" :key="index"></v-action>
                     </template>
                 </div>
                 <div class="float-right">
@@ -22,7 +22,7 @@
                             <input c-row-check-all v-on:change="selectAllRows" v-if="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
                             <span>{{"app.azioni" | translate }}</span>
                         </th>
-                        <th v-for="key in keys">
+                        <th v-for="(key,index) in keys" :key="index">
                             <action-order v-if="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
                             <span v-else>{{key+'.label' | translate(langContext) }}</span>
                         </th>
@@ -34,7 +34,7 @@
                     </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in widgets">
+                    <tr v-for="(row,index) in widgets" :key="index">
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group btn-group-sm" role="group">
@@ -43,14 +43,14 @@
                                 </div>
 
                                 <template v-for="(action,name) in recordActions[index]">
-                                    <v-action :c-action="action"></v-action>
+                                    <v-action :c-action="action" :key="name"></v-action>
                                 </template>
                             </div>
 
                         </td>
                         <td v-for="(widget, key) in row">
-                            <v-widget  v-show="!editMode[index]" :c-widget="widget"></v-widget>
-                            <v-widget  v-show="editMode[index]" :c-widget="widgetsEdit[index][key]"></v-widget>
+                            <v-widget  v-show="!editMode[index]" :c-widget="widget" :key="key"></v-widget>
+                            <v-widget  v-show="editMode[index]" :c-widget="widgetsEdit[index][key]" :key="key+'edit'"></v-widget>
                         </td>
                     </tr>
                     </tbody>
@@ -58,8 +58,8 @@
             </div>
             <div class="clearfix">
                 <div class="float-left" v-show="collectionActionsName.length">
-                    <template v-for="name in collectionActionsName">
-                        <v-action  :c-action="collectionActions[name]"></v-action>
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action  :c-action="collectionActions[name]" :key="index"></v-action>
                     </template>
                 </div>
                 <div class="float-right">
