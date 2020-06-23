@@ -3677,7 +3677,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
                 console.log('dati manuali',that.conf.data);
                 if (that.conf.value) {
                     that.value = that.conf.value;
-                    that.pagination = that.conf.data.pagination?that.conf.data.pagination:{};
+                    that.pagination = that.conf.pagination || {};
                 }
             } else {
                 //console.log('protocol',route.getProtocol());
