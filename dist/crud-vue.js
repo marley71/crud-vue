@@ -103,8 +103,7 @@ crud.actions = {
         icon : 'fa fa-eye',
         text : '',
         execute : function () {
-            var url = this.$crud.application.useRouter?'#':'';
-            url += "/view/" + this.view.modelName + "/" + this.modelData.id;
+            var url = "/view/" + this.view.modelName + "/" + this.modelData.id;
             document.location.href=url;
         }
     },
@@ -3145,10 +3144,10 @@ crud.components.views.vBase = Vue.component('v-base', {
 
 
             var aConf = this.$crud.actions[name] || {};
+            var customConf = this.conf.customActions[name] || {};
 
-            if (this.conf.customActions[name]) {
-                aConf = this.merge(aConf,this.conf.customActions[name]);
-            }
+            aConf = this.merge(aConf,customConf);
+
             //console.log('getActionConfig',aConf);
             return aConf;
         },
@@ -3258,6 +3257,22 @@ crud.components.views.vRecord = Vue.component('v-record', {
             that.fillData(that.route,json);
             that.draw();
         });
+    },
+
+    beforeDestroy () {
+        //alert('collection destroy');
+
+        for (var key in this.widgets) {
+            var w = this.getWidget(key);
+            delete this.$crud.cRefs[w.cRef];
+            w.$destroy();
+        }
+
+        for (var key in this.actionsClass) {
+            var a = this.getAction(key);
+            delete this.$crud.cRefs[a.cRef];
+            a.$destroy();
+        }
     },
 
     data : function () {
@@ -3439,18 +3454,18 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 w.$destroy();
             }
         }
-        // for (var row in this.recordActions) {
-        //     for (var key in this.recordActions[row]) {
-        //         var a = this.getRecordAction(row,key);
-        //         delete this.$crud.cRefs[a.cRef];
-        //         a.$destroy();
-        //     }
-        // }
-        // for (var key in this.collectionActions) {
-        //     var a = this.getCollectionAction(key);
-        //     delete this.$crud.cRefs[a.cRef];
-        //     a.$destroy();
-        // }
+        for (var row in this.recordActions) {
+            for (var key in this.recordActions[row]) {
+                var a = this.getRecordAction(row,key);
+                delete this.$crud.cRefs[a.cRef];
+                a.$destroy();
+            }
+        }
+        for (var key in this.collectionActions) {
+            var a = this.getCollectionAction(key);
+            delete this.$crud.cRefs[a.cRef];
+            a.$destroy();
+        }
     },
 
     data : function () {
@@ -3467,9 +3482,9 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
         draw : function() {
             var that = this;
+            that.createWidgets();
             that.createActions();
             that.createActionsClass();
-            that.createWidgets();
             that.loading = false;
             setTimeout(function () {
                 that.completed();
@@ -3768,6 +3783,15 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
         return dListEdit;
     },
 
+    beforeDestroy () {
+        for (var row in this.widgetsEdit) {
+            for (var key in this.widgetsEdit[row]) {
+                var w = this.getWidgetEdit(row,key);
+                delete this.$crud.cRefs[w.cRef];
+                w.$destroy();
+            }
+        }
+    },
     methods: {
 
         draw : function() {
@@ -3812,6 +3836,7 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
 
         setEditMode : function (index) {
             var that = this;
+            console.log('edit mode',index);
             that.hideRA(index,'action-delete');
             that.hideRA(index,'action-edit-mode');
             that.hideRA(index,'action-view');
@@ -3834,13 +3859,22 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
         },
         hideRA : function (index,name) {
             var that = this;
-            var n = that.getRefId(that._uid,'ra',index,name);
-            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
+            var a = that.getRecordAction(index,name);
+            a.setVisible(false);
+
+            //var n = that.getRefId(that._uid,'ra',index,name);
+            //this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var that = this;
-            var n = that.getRefId(that._uid,'ra',index,name);
-            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
+            var a = that.getRecordAction(index,name);
+            a.setVisible(true);
+            //var n = that.getRefId(that._uid,'ra',index,name);
+            //this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
+        },
+        getWidgetEdit : function (row,key) {
+            var wConf =  this.widgetsEdit[row][key];
+            return this.$crud.cRefs[wConf.cRef];
         },
     },
     watch : {

@@ -31,18 +31,18 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 w.$destroy();
             }
         }
-        // for (var row in this.recordActions) {
-        //     for (var key in this.recordActions[row]) {
-        //         var a = this.getRecordAction(row,key);
-        //         delete this.$crud.cRefs[a.cRef];
-        //         a.$destroy();
-        //     }
-        // }
-        // for (var key in this.collectionActions) {
-        //     var a = this.getCollectionAction(key);
-        //     delete this.$crud.cRefs[a.cRef];
-        //     a.$destroy();
-        // }
+        for (var row in this.recordActions) {
+            for (var key in this.recordActions[row]) {
+                var a = this.getRecordAction(row,key);
+                delete this.$crud.cRefs[a.cRef];
+                a.$destroy();
+            }
+        }
+        for (var key in this.collectionActions) {
+            var a = this.getCollectionAction(key);
+            delete this.$crud.cRefs[a.cRef];
+            a.$destroy();
+        }
     },
 
     data : function () {
@@ -59,9 +59,9 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
         draw : function() {
             var that = this;
+            that.createWidgets();
             that.createActions();
             that.createActionsClass();
-            that.createWidgets();
             that.loading = false;
             setTimeout(function () {
                 that.completed();

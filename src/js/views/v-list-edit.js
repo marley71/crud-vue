@@ -16,6 +16,15 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
         return dListEdit;
     },
 
+    beforeDestroy () {
+        for (var row in this.widgetsEdit) {
+            for (var key in this.widgetsEdit[row]) {
+                var w = this.getWidgetEdit(row,key);
+                delete this.$crud.cRefs[w.cRef];
+                w.$destroy();
+            }
+        }
+    },
     methods: {
 
         draw : function() {
@@ -60,6 +69,7 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
 
         setEditMode : function (index) {
             var that = this;
+            console.log('edit mode',index);
             that.hideRA(index,'action-delete');
             that.hideRA(index,'action-edit-mode');
             that.hideRA(index,'action-view');
@@ -82,13 +92,22 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
         },
         hideRA : function (index,name) {
             var that = this;
-            var n = that.getRefId(that._uid,'ra',index,name);
-            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
+            var a = that.getRecordAction(index,name);
+            a.setVisible(false);
+
+            //var n = that.getRefId(that._uid,'ra',index,name);
+            //this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var that = this;
-            var n = that.getRefId(that._uid,'ra',index,name);
-            this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
+            var a = that.getRecordAction(index,name);
+            a.setVisible(true);
+            //var n = that.getRefId(that._uid,'ra',index,name);
+            //this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(true):null;
+        },
+        getWidgetEdit : function (row,key) {
+            var wConf =  this.widgetsEdit[row][key];
+            return this.$crud.cRefs[wConf.cRef];
         },
     },
     watch : {

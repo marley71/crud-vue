@@ -25,7 +25,7 @@
                         <th v-for="(key,index) in keys" >
                             <action-order v-if="isOrderField(key)" v-bind:c-conf="getOrderConf(key)" :key="_uid+key"></action-order>
 <!--                            <span v-if="!isOrderField(key)" :key="_uid+key">{{key+'.label' | translate(langContext) }}</span>-->
-<!--                            <span v-else>{{key+'.label' | translate(langContext) }}</span>-->
+                            <span v-else>{{key+'.label' | translate(langContext) }}</span>
 
                         </th>
                     </tr>

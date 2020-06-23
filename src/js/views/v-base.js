@@ -93,10 +93,10 @@ crud.components.views.vBase = Vue.component('v-base', {
 
 
             var aConf = this.$crud.actions[name] || {};
+            var customConf = this.conf.customActions[name] || {};
 
-            if (this.conf.customActions[name]) {
-                aConf = this.merge(aConf,this.conf.customActions[name]);
-            }
+            aConf = this.merge(aConf,customConf);
+
             //console.log('getActionConfig',aConf);
             return aConf;
         },

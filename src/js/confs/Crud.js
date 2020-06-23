@@ -103,8 +103,7 @@ crud.actions = {
         icon : 'fa fa-eye',
         text : '',
         execute : function () {
-            var url = this.$crud.application.useRouter?'#':'';
-            url += "/view/" + this.view.modelName + "/" + this.modelData.id;
+            var url = "/view/" + this.view.modelName + "/" + this.modelData.id;
             document.location.href=url;
         }
     },
