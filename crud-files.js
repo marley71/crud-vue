@@ -65,6 +65,63 @@ var crudJsFiles = [
 
 ];
 
+var actionsHtmlFiles = [
+    'src/templates/misc/actions.html',
+];
+
+var miscHtmlFiles = [
+    'src/templates/misc/actions.html',
+    'src/templates/misc/cr-templates.html',
+    'src/templates/misc/c-paginator.html',
+    'src/templates/misc/dialogs.html',
+    'src/templates/misc/c-loading.html',
+    'src/templates/misc/c-wait.html',
+];
+
+var widgetsHtmlFiles = [
+    'src/templates/widgets/w-custom.html',
+    'src/templates/widgets/w-input.html',
+    'src/templates/widgets/w-input-helped.html',
+    'src/templates/widgets/w-hidden.html',
+    'src/templates/widgets/w-text.html',
+    'src/templates/widgets/w-image.html',
+    'src/templates/widgets/w-download.html',
+
+    'src/templates/widgets/w-textarea.html',
+    'src/templates/widgets/w-select.html',
+    'src/templates/widgets/w-radio.html',
+    'src/templates/widgets/w-checkbox.html',
+    'src/templates/widgets/w-autocomplete.html',
+    'src/templates/widgets/w-belongsto.html',
+    'src/templates/widgets/w-date-select.html',
+    'src/templates/widgets/w-date-picker.html',
+    'src/templates/widgets/w-texthtml.html',
+
+    'src/templates/widgets/w-hasmany.html',
+    'src/templates/widgets/w-hasmany-view.html',
+
+    'src/templates/widgets/w-swap.html',
+    'src/templates/widgets/w-status.html',
+    'src/templates/widgets/w-hasmany-through.html',
+    'src/templates/widgets/w-b2-select2.html',
+    'src/templates/widgets/w-b2m-select2.html',
+    'src/templates/widgets/w-upload.html',
+    'src/templates/widgets/w-upload-ajax.html',
+    'src/templates/widgets/w-preview.html',
+];
+
+var viewsHtmlFiles = [
+    'src/templates/views/v-list.html',
+    'src/templates/views/v-list-edit.html',
+    'src/templates/views/v-edit.html',
+    'src/templates/views/v-view.html',
+    'src/templates/views/v-insert.html',
+    'src/templates/views/v-search.html',
+    'src/templates/views/v-hasmany.html',
+    'src/templates/views/v-hasmany-view.html',
+];
+
+
 var crudHtmlFiles = [
     'src/templates/misc/actions.html',
     'src/templates/misc/cr-templates.html',

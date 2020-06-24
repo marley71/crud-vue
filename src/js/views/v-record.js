@@ -17,18 +17,11 @@ crud.components.views.vRecord = Vue.component('v-record', {
     },
 
     beforeDestroy () {
-        //alert('collection destroy');
-
         for (var key in this.widgets) {
-            var w = this.getWidget(key);
-            delete this.$crud.cRefs[w.cRef];
-            w.$destroy();
+            this.getWidget(key).$destroy();
         }
-
         for (var key in this.actionsClass) {
-            var a = this.getAction(key);
-            delete this.$crud.cRefs[a.cRef];
-            a.$destroy();
+            this.getAction(key).$destroy();
         }
     },
 

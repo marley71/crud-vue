@@ -23,25 +23,18 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     },
 
     beforeDestroy () {
-        //alert('collection destroy');
         for (var row in this.widgets) {
             for (var key in this.widgets[row]) {
-                var w = this.getWidget(row,key);
-                delete this.$crud.cRefs[w.cRef];
-                w.$destroy();
+                this.getWidget(row,key).$destroy();
             }
         }
         for (var row in this.recordActions) {
             for (var key in this.recordActions[row]) {
-                var a = this.getRecordAction(row,key);
-                delete this.$crud.cRefs[a.cRef];
-                a.$destroy();
+                this.getRecordAction(row,key).$destroy();
             }
         }
         for (var key in this.collectionActions) {
-            var a = this.getCollectionAction(key);
-            delete this.$crud.cRefs[a.cRef];
-            a.$destroy();
+            var a = this.getCollectionAction(key).$destroy();
         }
     },
 

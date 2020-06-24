@@ -44,6 +44,11 @@ crud.components.cComponent = Vue.component('c-component',{
             that.resourcesLoaded = true;
         }
     },
+    beforeDestroy () {
+        var cr = this.conf.cRef || this.compRef;
+        if (cr)
+            delete this.$crud.cRefs[cr];
+    },
     data : function() {
         var d =  this._loadConf();
         d.resourcesLoaded = false;

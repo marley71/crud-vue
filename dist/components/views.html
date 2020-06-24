@@ -1,0 +1,259 @@
+<script type="text/x-template" id="v-list-template">
+    <div class="float-end ">
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <div v-else>
+            <div class="float-none">
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action  :c-action="collectionActions[name]"></v-action>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <!-- v-bind:c-route-conf="routeConf" -->
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped" >
+                    <thead>
+                    <tr v-if="widgets.length > 0">
+                        <th v-show="recordActionsName.length">
+                            <input c-row-check-all v-on:change="selectAllRows" v-if="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                            <span>{{"app.azioni" | translate }}</span>
+                        </th>
+                        <th v-for="(key,index) in keys" >
+                            <action-order v-if="isOrderField(key)" v-bind:c-conf="getOrderConf(key)" :key="_uid+key"></action-order>
+<!--                            <span v-if="!isOrderField(key)" :key="_uid+key">{{key+'.label' | translate(langContext) }}</span>-->
+                            <span v-else>{{key+'.label' | translate(langContext) }}</span>
+
+                        </th>
+                    </tr>
+                    <tr v-if="widgets.length == 0">
+                        <th v-show="recordActionsName.length">
+                            {{"app.nessun-elemento" | translate }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr v-for="(row,index) in widgets">
+                        <td v-show="recordActionsName.length">
+
+                            <div class="btn-group btn-group-sm" role="group">
+                                <div v-if="needSelection" class="input-group-text bg-transparent">
+                                    <input c-row-check type="checkbox">
+                                </div>
+
+                                <template v-for="(action,name) in recordActions[index]" >
+                                    <v-action  :c-action="action"></v-action>
+                                </template>
+                            </div>
+
+                        </td>
+                        <td v-for="(widget, key) in row">
+                            <v-widget :c-widget="widget" :key="key"></v-widget>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action  :c-action="collectionActions[name]"></v-action>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="v-list-edit-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <div v-else>
+            <div class="float-none">
+                <div class="float-left" v-if="collectionActionsName.length">
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action :c-action="collectionActions[name]" :key="index"></v-action>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <!-- v-bind:c-route-conf="routeConf" -->
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped" >
+                    <thead>
+                    <tr v-if="widgets.length > 0">
+                        <th v-show="recordActionsName.length">
+                            <input c-row-check-all v-on:change="selectAllRows" v-if="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                            <span>{{"app.azioni" | translate }}</span>
+                        </th>
+                        <th v-for="(key,index) in keys" >
+                            <action-order v-if="isOrderField(key)" v-bind:c-conf="getOrderConf(key)" :key="index"></action-order>
+                            <span v-else>{{key+'.label' | translate(langContext) }}</span>
+                        </th>
+                    </tr>
+                    <tr v-if="widgets.length == 0">
+                        <th v-show="recordActionsName.length">
+                            {{"app.nessun-elemento" | translate }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <tr v-for="(row,index) in widgets" :key="index">
+                        <td v-show="recordActionsName.length">
+
+                            <div class="btn-group btn-group-sm" role="group">
+                                <div v-if="needSelection" class="input-group-text bg-transparent">
+                                    <input c-row-check type="checkbox">
+                                </div>
+
+                                <template v-for="(action,name) in recordActions[index]">
+                                    <v-action :c-action="action" :key="name"></v-action>
+                                </template>
+                            </div>
+
+                        </td>
+                        <td v-for="(widget, key) in row">
+                            <v-widget  v-show="!editMode[index]" :c-widget="widget" ></v-widget>
+                            <v-widget  v-show="editMode[index]" :c-widget="widgetsEdit[index][key]" ></v-widget>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action  :c-action="collectionActions[name]" :key="index"></v-action>
+                    </template>
+                </div>
+                <div class="float-right">
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="v-edit-template">
+    <div class="container-fluid">
+        <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <form v-else enctype="multipart/form-data">
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
+            </div>
+        </form>
+        <div class="p-3" v-show="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <v-action  :c-action="action"></v-action>
+            </template>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="v-view-template">
+    <div  class="container-fluid">
+        <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <div v-else v-for="(widget, key) in widgets">
+            <v-widget  :c-widget="widget"></v-widget>
+        </div>
+        <div v-if="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <v-action :c-action="action"></v-action>
+            </template>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="v-insert-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <form v-else  enctype="multipart/form-data">
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
+<!--                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>-->
+<!--                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>-->
+            </div>
+        </form>
+        <div class="p-3" v-if="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <v-action  :c-action="action"></v-action>
+            </template>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="v-search-template">
+    <div class="card-body" v-if="(widgets && Object.keys(widgets).length > 0)">
+        <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <form v-else>
+            <!-- campi nascosti -->
+            <v-widget v-for="(widget, key) in widgets" v-if="widget.type=='w-hidden'" :c-widget="widget"></v-widget>
+            <div class="row">
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col col-6" v-for="(widget, key) in widgets" v-if="widget.type!='w-hidden'">
+                            <v-widget  :c-widget="widget"></v-widget>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 align-middle">
+                    <div class="p-3" v-show="actions.length">
+                        <template v-for="(action,name) in actionsClass">
+                            <v-action :c-action="action"></v-action>
+<!--                            <component  v-bind:is="name" v-bind:c-conf="action"></component>-->
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+
+    </div>
+</script>
+
+<script type="text/x-template" id="v-hasmany-template">
+    <div>
+        <div>&nbsp;</div>
+        <c-loading v-if="loading"></c-loading>
+        <div v-else>
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="v-hasmany-view-template">
+    <div>
+        <div>&nbsp;</div>
+        <div v-if="loading">
+            loading
+        </div>
+        <div v-else>
+            <div>pippo</div>
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
+            </div>
+        </div>
+        <div v-show="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            </template>
+        </div>
+    </div>
+</script>

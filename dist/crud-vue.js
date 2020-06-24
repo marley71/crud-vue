@@ -1505,6 +1505,11 @@ crud.components.cComponent = Vue.component('c-component',{
             that.resourcesLoaded = true;
         }
     },
+    beforeDestroy () {
+        var cr = this.conf.cRef || this.compRef;
+        if (cr)
+            delete this.$crud.cRefs[cr];
+    },
     data : function() {
         var d =  this._loadConf();
         d.resourcesLoaded = false;
@@ -2459,7 +2464,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             }
             // if (!hmConf.data.value.status )
             //     hmConf.data.value.status = 'new';
-            console.log('HMS',hmConf,that.value)
+            //console.log('HMS',hmConf,that.value)
             return hmConf;
 
         },
@@ -3260,18 +3265,11 @@ crud.components.views.vRecord = Vue.component('v-record', {
     },
 
     beforeDestroy () {
-        //alert('collection destroy');
-
         for (var key in this.widgets) {
-            var w = this.getWidget(key);
-            delete this.$crud.cRefs[w.cRef];
-            w.$destroy();
+            this.getWidget(key).$destroy();
         }
-
         for (var key in this.actionsClass) {
-            var a = this.getAction(key);
-            delete this.$crud.cRefs[a.cRef];
-            a.$destroy();
+            this.getAction(key).$destroy();
         }
     },
 
@@ -3446,25 +3444,18 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     },
 
     beforeDestroy () {
-        //alert('collection destroy');
         for (var row in this.widgets) {
             for (var key in this.widgets[row]) {
-                var w = this.getWidget(row,key);
-                delete this.$crud.cRefs[w.cRef];
-                w.$destroy();
+                this.getWidget(row,key).$destroy();
             }
         }
         for (var row in this.recordActions) {
             for (var key in this.recordActions[row]) {
-                var a = this.getRecordAction(row,key);
-                delete this.$crud.cRefs[a.cRef];
-                a.$destroy();
+                this.getRecordAction(row,key).$destroy();
             }
         }
         for (var key in this.collectionActions) {
-            var a = this.getCollectionAction(key);
-            delete this.$crud.cRefs[a.cRef];
-            a.$destroy();
+            var a = this.getCollectionAction(key).$destroy();
         }
     },
 
@@ -3786,9 +3777,7 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
     beforeDestroy () {
         for (var row in this.widgetsEdit) {
             for (var key in this.widgetsEdit[row]) {
-                var w = this.getWidgetEdit(row,key);
-                delete this.$crud.cRefs[w.cRef];
-                w.$destroy();
+                this.getWidgetEdit(row,key).$destroy();
             }
         }
     },
@@ -4074,10 +4063,22 @@ const CrudApp = Vue.extend({
     mixins : [core_mixin,dialogs_mixin],
     data : function() {
         var d = {
-            templatesFile : '/crud-vue/crud-vue.html',
+            //templatesFile : '/crud-vue/crud-vue.html',
+            templatesFiles : [
+                '/crud-vue/components/actions.html',
+                '/crud-vue/components/misc.html',
+                '/crud-vue/components/widgets.html',
+                '/crud-vue/components/views.html',
+            ],
             el : '#app',
             appConfig : null,
-            appComponents : '/crud-vue/crud-vue-components.js',
+            componentsFiles : [
+                '/crud-vue/components/actions.js',
+                '/crud-vue/components/misc.js',
+                '/crud-vue/components/widgets.js',
+                '/crud-vue/components/views.js',
+            ]
+            //appComponents : '/crud-vue/crud-vue-components.js',
         }
         return d;
     },
@@ -4088,7 +4089,14 @@ const CrudApp = Vue.extend({
         that.$crud.pluginsPath = that.$data.pluginsPath?that.$data.pluginsPath:'/';
         var __loadResources = function () {
             var resources = [];
-            resources.push(that.$data.templatesFile);
+            // carico i template del core
+            if (!Array.isArray(that.$data.templatesFiles))
+                that.$data.templatesFiles = [that.$data.templatesFiles];
+            for (var k in that.$data.templatesFiles) {
+                resources.push(that.$data.templatesFiles[k]);
+            }
+            //resources.push(that.$data.templatesFiles);
+            // carico eventuali componenti applicativi esterni
             for (var k in that.$crud.components.libs) {
                 if (that.$crud.components.libs[k].tpl)
                     resources.push(that.$crud.components.libs[k].tpl);
@@ -4097,16 +4105,15 @@ const CrudApp = Vue.extend({
             }
             console.log('resources',resources)
             that.loadResources(resources,function () {
-                console.log('monto app');
                 that.$mount(that.el);
-                console.log('mounted');
+                // lancio l'evento che e' tutto caricato
                 document.dispatchEvent(new Event('crud-app-loaded'))
             })
         }
-        console.log('load framework components.  ' + that.$data.appComponents);
-        if (!jQuery.isArray(that.$data.appComponents))
-            that.$data.appComponents = [that.$data.appComponents];
-        that.loadResources(that.$data.appComponents, function () {
+        console.log('load framework components.  ' + that.$data.componentsFiles);
+        if (!jQuery.isArray(that.$data.componentsFiles))
+            that.$data.componentsFiles = [that.$data.componentsFiles];
+        that.loadResources(that.$data.componentsFiles, function () {
             console.log('appConfig',that.$data.appConfig);
             if (that.$data.appConfig) {
                 if (!jQuery.isArray(that.$data.appConfig))

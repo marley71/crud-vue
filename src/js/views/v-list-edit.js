@@ -19,9 +19,7 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
     beforeDestroy () {
         for (var row in this.widgetsEdit) {
             for (var key in this.widgetsEdit[row]) {
-                var w = this.getWidgetEdit(row,key);
-                delete this.$crud.cRefs[w.cRef];
-                w.$destroy();
+                this.getWidgetEdit(row,key).$destroy();
             }
         }
     },

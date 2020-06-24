@@ -47,7 +47,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             }
             // if (!hmConf.data.value.status )
             //     hmConf.data.value.status = 'new';
-            console.log('HMS',hmConf,that.value)
+            //console.log('HMS',hmConf,that.value)
             return hmConf;
 
         },

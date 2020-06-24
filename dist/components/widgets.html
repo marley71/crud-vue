@@ -1,0 +1,296 @@
+<script type="text/x-template" id="w-custom-template">
+    <div v-html="value">
+
+    </div>
+</script>
+
+<script type="text/x-template" id="w-input-template">
+    <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+</script>
+
+<script type="text/x-template" id="w-input-helped-template">
+    <div >
+        <input v-bind:readonly="!customValue"
+               class="form-control" type="text" name="getFieldName()" v-model="value"
+               v-bind:c-marker="cMarker" v-on:change="change" >
+        <div>
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <button v-for="dVal in domainValuesOrder" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{domainValues[dVal]}}</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="w-hidden-template">
+    <div>
+        <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
+    </div>
+</script>
+
+<script type="text/x-template" id="w-text-template">
+    <span>{{value}}</span>
+</script>
+
+<script type="text/x-template" id="w-image-template">
+    <img :src="value">
+</script>
+
+<script type="text/x-template" id="w-download-template">
+    <a :href="value" target="_blank"><i :class="icon"></i></a>
+</script>
+
+<script type="text/x-template" id="w-textarea-template">
+    <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
+                  v-bind:c-marker="cMarker" v-on:change="change"></textarea>
+</script>
+
+<script type="text/x-template" id="w-select-template">
+    <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
+            v-on:change="change">
+        <option v-for="key in domainValuesOrder" :value="key"
+                >{{domainValues[key]}}</option>
+    </select>
+</script>
+
+<script type="text/x-template" id="w-radio-template">
+    <div>
+        <div class="form-check-inline"  v-for="key in domainValuesOrder">
+            <label class="form-check-label">
+                <input class="form-control-input" v-bind:name="getFieldName()" type="radio"  :value="key"
+                       v-model="value"
+                       v-bind:c-marker="cMarker" v-on:change="change">&nbsp;&nbsp;{{domainValues[key]}}
+            </label>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="w-checkbox-template">
+    <div class="form-check-inline">
+        <div class="" v-for="key in domainValuesOrder">
+            <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
+                   v-model="value"
+                   v-bind:c-marker="cMarker" v-on:change="change" >
+            <label class="form-check-label" >{{domainValues[key]}}&nbsp;&nbsp;&nbsp;</label>
+        </div>
+    </div>
+</script>
+
+<template id="w-autocomplete-template">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">{{label}}</span>
+        </div>
+        <input type="text" c-autocomplete class="form-control">
+        <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary" v-on:click="clear">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
+    </div>
+</template>
+
+<template id="w-belongsto-template">
+    <div>
+        <span v-for="field in labelFields">{{value[field]}}&nbsp;</span>
+    </div>
+</template>
+
+<script type="text/x-template" id="w-date-select-template">
+    <div v-if="resourcesLoaded" class="input-group">
+        <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+        <w-select ref="day" v-bind:c-conf="cDay" c-marker="day"></w-select>
+        <w-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></w-select>
+        <w-select ref="year" v-bind:c-conf="cYear" c-marker="year"></w-select>
+    </div>
+</script>
+
+<script type="text/x-template" id="w-date-picker-template">
+    <div class="input-group">
+        <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+        <input c-picker >
+    </div>
+</script>
+
+<script type="text/x-template" id="w-texthtml-template">
+<!--    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>-->
+    <div>
+        <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" :c-marker="cMarker" v-on:change="change">
+        <div class="summernote" v-html="value">
+        </div>
+    </div>
+</script>
+
+<template id="w-hasmany-template">
+    <div class="card"  >
+        <div class="card-body">
+            <!--<input type="hidden" :name="cKey + '_exists'" value="1">-->
+            <div class="card">
+                <!--<div class="card-header" crud-hasmany_title>-->
+                    <!--{{cConf.metadata.modelName}}-->
+                <!--</div>-->
+                <div class="">
+                    <p crud-hasmany_title_msg></p>
+                    <ul class="list-inline"  >
+                        <!--  -- contenitore delle views hasmany -- -->
+                        <li v-for="(item,index) in confViews" v-show="showItem(index)" class="list-inline-item">
+                            <div class="card">
+                                <div class="card-header">
+                                    <small class="pull-left" crud-field="label" crud-trim="12" crud-attrs="{title:label}"></small>
+                                    <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button"  title="Cancella elemento"><i class="fa fa-times-circle"></i></button>
+<!--                                    {{cConf.metadata.modelName}}-->
+                                </div>
+                                <v-hasmany v-bind:c-model="name" v-bind:c-conf="item"></v-hasmany>
+
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="panel-footer">
+                    <div >
+                        <div v-if="outOfLimit()">
+                            <!-- Limite massimo raggiunto -->
+                            {{  'app.limite-raggiunto' | translate }}
+                        </div>
+                        <button v-else v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
+                            <span >{{ 'app.aggiungi' | translate }}</span>&nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/x-template" id="w-hasmany-view-template">
+    <div crud-render_element>
+        <div class="list-unstyled" crud-render_list >
+
+            <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
+            <ul class="list-unstyled" v-for="(item,index) in value">
+                <li>
+                    <v-hasmany-view v-bind:c-model="cConf.modelName" v-bind:c-conf="getHasmanyConf(index,item)"></v-hasmany-view>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="w-swap-template">
+    <button type="button" class="btn btn-outline-secondary btn-sm" v-bind:title="title" v-on:click="swap">
+        <span v-show="swapType=='text'">{{ slot }}</span>
+        <i  v-show="swapType=='icon'" v-bind:class="slot"></i>
+    </button>
+</script>
+
+<script type="text/x-template" id="w-status-template">
+    <span>
+        <span v-if="statusType=='text'">{{ slot }}</span>
+        <i  v-if="statusType=='icon'" v-bind:class="slot"></i>
+    </span>
+</script>
+
+<template id="w-hasmany-through-template">
+    <div class="card"  >
+        <div class="card-body">
+            <div class="panel panel-warning">
+                <div class="panel-heading" crud-hasmany_title>
+                </div>
+                <div class="panel-body">
+                    <p crud-hasmany_title_msg></p>
+                    <ul class="list-group list-group-horizontal"  >
+                        <!--  -- contenitore hasmany -- -->
+                        <li v-for="item in value"  class="list-group-item" >
+                            <v-hasmany v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany>
+                            <hr />
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="panel-footer">
+                    <div >
+                        <div crud-render_limit class="hide">
+                            <!-- Limite massimo raggiunto -->
+                            {{'app.limite-raggiunto' | translate }}
+                        </div>
+                        <button v-on:click="addItem" type="button" class="btn btn-primary btn-sm">
+                            <span >{{'app.aggiungi' | translate}}</span>&nbsp;
+<!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/x-template" id="w-b2-select2-template">
+    <select c-select2 class="form-control m-select2"
+            v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
+    </select>
+</script>
+
+<template id="w-b2m-select2-template">
+    <div>
+        <select c-select2 class="form-control m-select2" name="" multiple="true"
+                v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
+
+        </select>
+        <div c-selected-items>
+            <!-- hidden input for selected items -->
+        </div>
+    </div>
+</template>
+
+<template id="w-upload-template">
+    <div>
+        <div v-show="extensions">
+            <span crud-label="app.accepted-extensions">{{'app.estensioni-accettate' | translate}} </span>
+            <span v-show="extensions">{{extensions.join(',')}}</span>
+        </div>
+        <div v-show="maxFileSize">
+            Dimensione massima: <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
+        </div>
+        <div>
+            <input :name="getFieldName()" c-file class="btn btn-outline-secondary" type="file" v-on:change="validate()" v-bind:c-marker="cMarker">
+        </div>
+    </div>
+</template>
+
+<script type="text/x-template" id="w-upload-ajax-template">
+    <div class="row">
+        <div class="col-8">
+            <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
+            <input type="hidden" v-model="value" :name="getFieldName()" >
+            <div>
+                <div v-show="extensions">
+                    <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
+                    <span v-show="extensions">{{extensions.join(',')}}</span>
+                </div>
+                <div v-show="maxFileSize">
+                    Dimensione massima: <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
+                </div>
+                <div>
+                    <input c-file class="btn btn-outline-secondary" type="file" v-on:change="validate()" v-bind:c-marker="cMarker">
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <w-preview :c-conf="previewConf"></w-preview>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="w-preview-template">
+    <div>
+        <img v-if="getType()=='image'" :src="value.url">
+        <a v-else-if="getType()=='doc'" :href="value.url">
+            <i :class="iconClass"></i>
+        </a>
+        <small v-else class="text-danger">
+            <span v-if="value.url">{{getType()}} mimetype non riconosciuto</span>
+        </small>
+    </div>
+</script>
