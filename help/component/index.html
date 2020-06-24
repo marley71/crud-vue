@@ -172,6 +172,8 @@ sostanzialmente il comportamento della classe a basso livello.</p>
 <ul>
 <li><code>cConf</code> : rappresenta la configurazione iniziale del componente. E&rsquo; formata da un vettore associativo. Tutte le 
 proprietà di cConf vengono spalmate flat nel <code>data</code> del componente vue.</li>
+<li><code>compRef</code> : chiave per marcare il componente creato per poi poterlo riprendere successivamente attraverso il vettore
+delle componenti marcate $crud.cRefs[compRef].</li>
 </ul>
 <h4 id="metodi">Metodi</h4>
 <ul>
@@ -184,11 +186,12 @@ del container.</p>
 <p><code>_loadConf()</code> : Carica l&rsquo;oggetto cConf e spalma le proprietà nell&rsquo;oggetto.</p>
 </li>
 <li>
-<p><code>_getConf</code> : risolve il nome cConf, cConf può essere un array associativo o una stringa. In caso di stringa ricerca
-la configurazione nella window o nella configurazione generale dell&rsquo;applicazione chiamata crud. Può essere usato il
-punto per configurazioni gerarchiche. Esempio potrei creare una configurazione tipo:</p>
+<p><code>_getConf</code> : risolve il nome cConf, cConf può essere un array associativo o una stringa. In caso di stringa,
+ la configurazione viene ricercata nell&rsquo;oggetto window o nella configurazione generale dell&rsquo;applicazione chiamata 
+ $crud.conf</p>
 </li>
 </ul>
+<p>Può essere usato il punto per configurazioni gerarchiche. Esempio potrei creare una configurazione tipo:</p>
 <pre><code class="javascript">window.conf1 = {
     paginax : {
         elementoa: {

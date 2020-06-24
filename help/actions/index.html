@@ -194,39 +194,51 @@
 <p>Le actions sono dei componenti che agiscono su delle view. Attraverso le azioni possiamo agire sulle view. Esempi
 standard di azioni sono la save, insert, stampa, ecc.</p>
 <h2 id="action-base">action-base</h2>
-<p>Classe principale delle azioni. Estende la classe principale <code>c-component</code> Le azioni rappresentano l&rsquo;aggancio per le interazioni con 
-l&rsquo;utente sulle views, dashboard oppure semplici bottoni html. Da questa classe
-sono state definite altri due azioni generali la <code>RecordAction</code> e la <code>CollectionAction</code> che
-fondamentalmente dividono il comportamento in azioni che agiscono sul singolo record
-e azioni che agiscono su una collezione di record.</p>
+<p>Classe principale delle azioni. Estende la classe principale <code>c-component</code>. Definisce le proprietà comuni e di default
+per tutte le azioni. Estendere questa classe se volete creare una nuova azione.</p>
 <h4 id="data">data</h4>
 <ul>
-<li><code>type</code> : default collection può essere <code>record</code> o <code>collection</code></li>
-<li><code>controlType</code> : default &lsquo;button&rsquo;,</li>
+<li><code>type</code> : default null, le views di tipo collection richiedono questa proprietà per discriminare le azioni che agiscono
+sul singolo record o collection. Il type puo&rsquo; essere: <code>record</code> o <code>collection</code></li>
+<li><code>controlType</code> : button o link, default &lsquo;button&rsquo;,</li>
 <li><code>text</code> : &lsquo;&rsquo;,</li>
 <li><code>icon</code> : &lsquo;&rsquo;,</li>
 <li><code>css</code> : &lsquo;btn btn-outline-secondary&rsquo;,</li>
 <li><code>target</code> : &lsquo;&rsquo;,</li>
-<li><code>href</code> : &lsquo;&rsquo;,</li>
+<li><code>href</code> : &lsquo;_self&rsquo;,</li>
 <li><code>enabled</code> : true,</li>
 <li><code>visible</code> : true,</li>
 <li><code>title</code> : &lsquo;&rsquo;,</li>
-<li><code>view</code> : default this.$parent</li>
+<li><code>needSelection</code>  : default false, indica se l&rsquo;azione lavora su un set selezionati di elementi. Utilizzato dalla view di 
+tipo collection.</li>
+<li><code>view</code> : default null, view associata all&rsquo;azione, viene iniettata dalla view al momento della creazione dell&rsquo;action</li>
 </ul>
 <h4 id="metodi">Metodi</h4>
 <ul>
-<li><code>_beforeExecute(callback)</code> : metodo chiamato quando l&rsquo;azione viene cliccata, prima di essere eseguita</li>
+<li><code>_beforeExecute(callback)</code> : metodo chiamato quando l&rsquo;azione viene cliccata, prima di essere eseguita. Se viene passata
+una callback viene chiamata a fine esecuzione. Serve per operazioni asincrone.</li>
 <li><code>_execute</code> : esecuzione dell&rsquo;azione </li>
 <li><code>_afterExecute</code> : metodo chiamato dopo che l&rsquo;azione è stata eseguita.</li>
 <li><code>setEnabled(enable)</code> : abilita o disablita l&rsquo;azione</li>
 <li><code>setVisible(visible)</code> : se definita viene chiamata al termi dell&rsquo;execute</li>
 </ul>
+<h4 id="template">template</h4>
+<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;action-template&quot;&gt;&lt;button v-if=&quot;controlType=='button'&quot; type=&quot;button&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; v-on:click=&quot;_execute&quot; v-bind:disabled=&quot;_disabled&quot;&gt;
+        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;{{text | translate}}&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;a v-else :target=&quot;target&quot; :href=&quot;href&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; :disabled=&quot;_disabled&quot;&gt;
+        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;{{text | translate}}&lt;/span&gt;
+    &lt;/a&gt;
+&lt;/template&gt;
+</code></pre>
+
 <h1 id="actions-implementate">Actions Implementate</h1>
 <p>La libreria, come per tutti gli altri componenti, mette a disposizione delle azioni già predefinite, 
-utilizzabili immediamente. Queste azioni rappresentano le azioni più comuni in una libreria crud. Ovviamente
+utilizzabili immediamente. Queste azioni rappresentano le azioni più comuni del framework crud-vue. Ovviamente
 possono essere estese o definite delle nuove. Le configurazioni di tale azioni le potete trovare sotto
-crud.recordActions e crud.collectionActions. Potete ridefinire qui le varie opzioni grafiche o del metodo
-execute.</p>
+$crud.actions. Potete ridefinire qui le varie opzioni grafiche o del metodo execute.</p>
 <h2 id="action-edit">action-edit</h2>
 <p>Azione di tipo record pensata per l&rsquo;utilizzo dentro una view list e rappresenta l&rsquo;edit di un record 
 all&rsquo;interno della lista. </p>
@@ -269,7 +281,7 @@ all&rsquo;interno della lista. </p>
 </li>
 </ul>
 <h2 id="action-back">action-back</h2>
-<p>Estende <code>RecordAction</code>. Azione pensata per l&rsquo;utilizzo dentro una view edit ritorna alla pagina di provienienza</p>
+<p>Azione pensata per l&rsquo;utilizzo dentro una view edit ritorna alla pagina di provienienza</p>
 <ul>
 <li><code>title</code> : &lsquo;Indietro&rsquo;,</li>
 <li>
@@ -293,7 +305,7 @@ all&rsquo;interno della lista. </p>
 <li><code>execute</code> - utilizza al route per una pagina in view per richiamare la pagina nuova</li>
 </ul>
 <h2 id="action-delete">action-delete</h2>
-<p>Estende <code>RecordAction</code>. Azione pensata per l&rsquo;utilizzo dentro una view list  per la cancellazione di un record all&rsquo;interno della lista.</p>
+<p>Azione pensata per l&rsquo;utilizzo dentro una view list  per la cancellazione di un record all&rsquo;interno della lista.</p>
 <h3 id="data_4">data</h3>
 <ul>
 <li><code>title</code> : &lsquo;Cancella&rsquo;,</li>
@@ -305,7 +317,7 @@ all&rsquo;interno della lista. </p>
 <li><code>execute</code> - utilizza al route delete per eseguire la richiesta di cancellazione. Prima chiede conferma</li>
 </ul>
 <h2 id="action-delete-selected">action-delete-selected</h2>
-<p>Estende <code>CollectionAction</code>. Azione pensata per l&rsquo;utilizzo dentro una view list  per la cancellazione di tutti i record selezionati nella lista.</p>
+<p>Azione pensata per l&rsquo;utilizzo dentro una view list  per la cancellazione di tutti i record selezionati nella lista.</p>
 <h3 id="data_5">data</h3>
 <ul>
 <li><code>className</code> : &lsquo;ActionMultiDelete&rsquo;,</li>
@@ -316,7 +328,7 @@ all&rsquo;interno della lista. </p>
 <li><code>needSelection</code> : true,     </li>
 </ul>
 <h2 id="action-search">action-search</h2>
-<p>Estende <code>CollectionAction</code>. Azione pensata per l&rsquo;utilizzo dentro una view search  per la ricerca dei record con i filtri della view.</p>
+<p>Azione pensata per l&rsquo;utilizzo dentro una view search  per la ricerca dei record con i filtri della view.</p>
 <h3 id="data_6">data</h3>
 <ul>
 <li><code>className</code> : &lsquo;ActionSearch&rsquo;,</li>
@@ -330,9 +342,19 @@ all&rsquo;interno della lista. </p>
 <li><code>execute</code> - richiama la pagina con i parametri in get presenti nella form della vista</li>
 </ul>
 <h2 id="action-order">action-order</h2>
+<p>Azione pensata per l&rsquo;ordinamento di una lista.</p>
+<h3 id="data_7">data</h3>
+<ul>
+<li>iconSortUp : icona per l&rsquo;ordinamento ASC,</li>
+<li>iconSortDown :  icon per l&rsquo;ordinamento desc,</li>
+<li>iconSort : icon per definire il campo che si puo&rsquo; ordinare ma nessun ordinamento attivo.</li>
+</ul>
 <h2 id="action-edit-mode">action-edit-mode</h2>
+<p>Azione pensata per modalità editMode in una v-list-edit. La lista che permette l&rsquo;editing al volo di una riga</p>
 <h2 id="action-view-mode">action-view-mode</h2>
+<p>Azione per passare in modalità viewMode in una v-list-edit.</p>
 <h2 id="action-save-row">action-save-row</h2>
+<p>Azione per salvare la riga corrente dopo la modifica</p>
               
             </div>
           </div>

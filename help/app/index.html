@@ -166,15 +166,37 @@
                 <h1 id="crudapp">CrudApp</h1>
 <p>CrudApp è la classe per la gestione dell&rsquo;applicazione. Estende Vue, definisce due mixin
 - <code>core_mixin</code> : qui vengono definiti metodi di utilità generale.
-- <code>dialogs_mixin</code> : metodi generali per la gestione di dialog.</p>
+- <code>dialogs_mixin</code> : metodi generali per la gestione di dialog.
+quando CrudApp ha caricato tutto emette un evento &lsquo;crud-app-loaded&rsquo;, in questo modo siamo sicuri
+che tutto sia stato caricato.</p>
 <h4 id="data">data</h4>
 <ul>
-<li><code>templatesFile</code> : defaul &lsquo;/crud-vue/crud-vue.html&rsquo; file html dove si trovano tutti i template dei vari
-widgets,views e componenti in generale. </li>
-<li><code>el</code> : default &lsquo;#app&rsquo;, contenitore della nostra applicazione</li>
-<li><code>appConfig</code> = null  : eventuale file javascript per le modifiche della configurazione iniziale <code>crud</code></li>
+<li><code>templatesFiles</code> : files html dove si trovano tutti i template dei vari widgets,views e componenti in generale. default </li>
 </ul>
+<pre><code class="javascript">[
+    '/crud-vue/components/actions.html',
+    '/crud-vue/components/misc.html',
+    '/crud-vue/components/widgets.html',
+    '/crud-vue/components/views.html',
+]
+</code></pre>
+
+<ul>
+<li><code>el</code> : default &lsquo;#app&rsquo;, contenitore della nostra applicazione</li>
+<li><code>appConfig</code> = null  : eventuale file javascript per le modifiche delle varie configurazioni iniziali e defaults di <code>crud</code></li>
+<li><code>componentsFiles</code>: files js dove si trovano le definizioni dei componenti per poterli estendere facilimente. Default:</li>
+</ul>
+<pre><code class="javascript">componentsFiles : 
+[
+    '/crud-vue/components/actions.js',
+    '/crud-vue/components/misc.js',
+    '/crud-vue/components/widgets.js',
+    '/crud-vue/components/views.js',
+]
+</code></pre>
+
 <h3 id="core_mixin">core_mixin</h3>
+<p>contiene metodi di utilizzo generale.</p>
 <h4 id="metodi">metodi</h4>
 <ul>
 <li><code>waitStart : function (msg,container)</code></li>
@@ -233,6 +255,7 @@ pluginsPath quando lo script e&rsquo; stato caricato chiama la callback
 </li>
 </ul>
 <h3 id="dialogs_mixin">dialogs_mixin</h3>
+<p>contiene metodo per la generazione di popup o modal </p>
 <h4 id="metodi_1">metodi</h4>
 <ul>
 <li><code>messageDialog : function (bodyProps,callbacks)</code></li>
