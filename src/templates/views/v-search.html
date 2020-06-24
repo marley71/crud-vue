@@ -1,4 +1,4 @@
-<script type="text/x-template" id="v-search-template">
+<template  id="v-search-template">
     <div class="card-body" v-if="(widgets && Object.keys(widgets).length > 0)">
         <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
@@ -28,4 +28,4 @@
 
 
     </div>
-</script>
+</template>

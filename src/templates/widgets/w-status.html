@@ -1,6 +1,6 @@
-<script type="text/x-template" id="w-status-template">
+<template id="w-status-template">
     <span>
         <span v-if="statusType=='text'">{{ slot }}</span>
         <i  v-if="statusType=='icon'" v-bind:class="slot"></i>
     </span>
-</script>
+</template>

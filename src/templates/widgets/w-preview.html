@@ -1,4 +1,4 @@
-<script type="text/x-template" id="w-preview-template">
+<template id="w-preview-template">
     <div>
         <img v-if="getType()=='image'" :src="value.url">
         <a v-else-if="getType()=='doc'" :href="value.url">
@@ -8,4 +8,4 @@
             <span v-if="value.url">{{getType()}} mimetype non riconosciuto</span>
         </small>
     </div>
-</script>
+</template>

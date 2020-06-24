@@ -1,4 +1,4 @@
-<script type="text/x-template" id="v-view-template">
+<template id="v-view-template">
     <div  class="container-fluid">
         <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
@@ -11,4 +11,4 @@
             </template>
         </div>
     </div>
-</script>
+</template>

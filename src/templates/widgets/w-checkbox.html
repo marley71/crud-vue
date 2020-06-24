@@ -1,4 +1,4 @@
-<script type="text/x-template" id="w-checkbox-template">
+<template id="w-checkbox-template">
     <div class="form-check-inline">
         <div class="" v-for="key in domainValuesOrder">
             <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
@@ -7,4 +7,4 @@
             <label class="form-check-label" >{{domainValues[key]}}&nbsp;&nbsp;&nbsp;</label>
         </div>
     </div>
-</script>
+</template>
