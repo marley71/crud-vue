@@ -62,7 +62,7 @@
 </template>
 
 <script type="text/x-template" id="c-paginator-template">
-    <div>
+    <div v-if="last_page">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-end">
                 <li v-show="(parseInt(current_page) > 1)" class="page-item"> <!-- disabled -->
@@ -98,6 +98,7 @@
         </nav>
     </div>
 </script>
+
 <template id="d-confirm-template">
     <div c-confirm-dialog class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">

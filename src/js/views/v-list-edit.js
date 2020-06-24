@@ -70,25 +70,34 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
         setEditMode : function (index) {
             var that = this;
             console.log('edit mode',index);
-            that.hideRA(index,'action-delete');
-            that.hideRA(index,'action-edit-mode');
-            that.hideRA(index,'action-view');
+            if (that.actions.indexOf('action-delete') >= 0)
+                that.hideRA(index,'action-delete');
+            if (that.actions.indexOf('action-edit-mode') >= 0)
+                that.hideRA(index,'action-edit-mode');
+            if (that.actions.indexOf('action-view') >= 0)
+                that.hideRA(index,'action-view');
 
-
-            that.showRA(index,'action-view-mode');
-            that.showRA(index,'action-save-row');
+            if (that.actions.indexOf('action-view-mode') >= 0)
+                that.showRA(index,'action-view-mode');
+            if (that.actions.indexOf('action-save-row') >= 0)
+                that.showRA(index,'action-save-row');
             //that.recordActions[index]['action-delete'].setVisible(false);
             that.$set(that.editMode,index, true);
         },
         setViewMode : function (index) {
             var that = this;
             that.$set(that.editMode,index, false);
-            that.showRA(index,'action-delete');
-            that.showRA(index,'action-edit-mode');
-            that.showRA(index,'action-view');
+            if (that.actions.indexOf('action-delete') >= 0)
+                that.showRA(index,'action-delete');
+            if (that.actions.indexOf('action-edit-mode') >= 0)
+                that.showRA(index,'action-edit-mode');
+            if (that.actions.indexOf('action-view') >= 0)
+                that.showRA(index,'action-view');
 
-            that.hideRA(index,'action-view-mode');
-            that.hideRA(index,'action-save-row');
+            if (that.actions.indexOf('action-view-mode') >= 0)
+                that.hideRA(index,'action-view-mode');
+            if (that.actions.indexOf('action-save-row') >= 0)
+                that.hideRA(index,'action-save-row');
         },
         hideRA : function (index,name) {
             var that = this;
