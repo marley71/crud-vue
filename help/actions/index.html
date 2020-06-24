@@ -349,6 +349,18 @@ all&rsquo;interno della lista. </p>
 <li>iconSortDown :  icon per l&rsquo;ordinamento desc,</li>
 <li>iconSort : icon per definire il campo che si puo&rsquo; ordinare ma nessun ordinamento attivo.</li>
 </ul>
+<h4 id="template_1">template</h4>
+<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;action-order-template&quot;&gt;&lt;button v-if=&quot;controlType=='button'&quot; type=&quot;button&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; v-on:click=&quot;_execute&quot; v-bind:disabled=&quot;_disabled&quot;&gt;
+        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;{{text | translate}}&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;a v-else :target=&quot;target&quot; :href=&quot;href&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; :disabled=&quot;_disabled&quot;&gt;
+        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;{{text | translate}}&lt;/span&gt;
+    &lt;/a&gt;
+&lt;/template&gt;
+</code></pre>
+
 <h2 id="action-edit-mode">action-edit-mode</h2>
 <p>Azione pensata per modalità editMode in una v-list-edit. La lista che permette l&rsquo;editing al volo di una riga</p>
 <h2 id="action-view-mode">action-view-mode</h2>
