@@ -1,4 +1,4 @@
-<script type="text/x-template" id="action-template">
+<template id="action-template">
     <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
         <i v-show="icon" :class="icon"></i>
         <span>{{text | translate}}</span>
@@ -7,9 +7,9 @@
         <i v-show="icon" :class="icon"></i>
         <span>{{text | translate}}</span>
     </a>
-</script>
+</template>
 
-<script type="text/x-template" id="action-order-template">
+<template id="action-order-template">
     <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
         <i v-show="icon" :class="icon"></i>
         <span>{{text | translate}}</span>
@@ -18,7 +18,7 @@
         <i v-show="icon" :class="icon"></i>
         <span>{{text | translate}}</span>
     </a>
-</script>
+</template>
 
 
 <!--<script type="text/x-template" id="action-dialog-template">-->

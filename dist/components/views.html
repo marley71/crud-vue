@@ -1,4 +1,4 @@
-<script type="text/x-template" id="v-list-template">
+<template id="v-list-template">
     <div class="float-end ">
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
@@ -69,9 +69,9 @@
             </div>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-list-edit-template">
+<template  id="v-list-edit-template">
     <div>
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
@@ -141,9 +141,9 @@
             </div>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-edit-template">
+<template id="v-edit-template">
     <div class="container-fluid">
         <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
@@ -158,9 +158,9 @@
             </template>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-view-template">
+<template id="v-view-template">
     <div  class="container-fluid">
         <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
@@ -173,9 +173,9 @@
             </template>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-insert-template">
+<template id="v-insert-template">
     <div>
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
@@ -192,9 +192,9 @@
             </template>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-search-template">
+<template  id="v-search-template">
     <div class="card-body" v-if="(widgets && Object.keys(widgets).length > 0)">
         <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
@@ -224,9 +224,9 @@
 
 
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-hasmany-template">
+<template id="v-hasmany-template">
     <div>
         <div>&nbsp;</div>
         <c-loading v-if="loading"></c-loading>
@@ -236,9 +236,9 @@
             </div>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-hasmany-view-template">
+<template id="v-hasmany-view-template">
     <div>
         <div>&nbsp;</div>
         <div v-if="loading">
@@ -256,4 +256,4 @@
             </template>
         </div>
     </div>
-</script>
+</template>

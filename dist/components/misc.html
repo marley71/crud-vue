@@ -1,4 +1,4 @@
-<script type="text/x-template" id="action-template">
+<template id="action-template">
     <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
         <i v-show="icon" :class="icon"></i>
         <span>{{text | translate}}</span>
@@ -7,9 +7,9 @@
         <i v-show="icon" :class="icon"></i>
         <span>{{text | translate}}</span>
     </a>
-</script>
+</template>
 
-<script type="text/x-template" id="action-order-template">
+<template id="action-order-template">
     <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
         <i v-show="icon" :class="icon"></i>
         <span>{{text | translate}}</span>
@@ -18,7 +18,7 @@
         <i v-show="icon" :class="icon"></i>
         <span>{{text | translate}}</span>
     </a>
-</script>
+</template>
 
 
 <!--<script type="text/x-template" id="action-dialog-template">-->
@@ -61,7 +61,7 @@
     <component :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
-<script type="text/x-template" id="c-paginator-template">
+<template id="c-paginator-template">
     <div v-if="last_page">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-end">
@@ -97,7 +97,7 @@
             </ul>
         </nav>
     </div>
-</script>
+</template>
 
 <template id="d-confirm-template">
     <div c-confirm-dialog class="modal" tabindex="-1" role="dialog">
@@ -216,14 +216,14 @@
     </div>
 </template>
 
-<script type="text/x-template" id="c-loading-template">
+<template id="c-loading-template">
     <div v-if="!errorMsg" class="spinner-border text-primary" role="status">
         <span class="sr-only">{{'app.carico'|translate}}</span>
     </div>
     <div v-else>
         <span class="text-danger text-2xl">{{errorMsg}}</span>
     </div>
-</script>
+</template>
 
 <template id="c-wait-template">
     <div c-wait :class="{'crud-overlay-body': global, 'crud-overlay' : !global}">

@@ -3409,12 +3409,12 @@ crud.components.views.vRecord = Vue.component('v-record', {
         },
         getWidget : function (key) {
             var rConf = this.widgets[key];
-            console.log('getWidget',key,rConf);
+            //console.log('getWidget',key,rConf);
             return this.$crud.cRefs[rConf.cRef];
         },
         getAction : function (name) {
             var rConf = this.actionsClass[name];
-            console.log('getAction',name,rConf);
+            //console.log('getAction',name,rConf);
             return this.$crud.cRefs[rConf.cRef];
         }
     }

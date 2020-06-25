@@ -1,14 +1,14 @@
-<script type="text/x-template" id="w-custom-template">
+<template  id="w-custom-template">
     <div v-html="value">
 
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="w-input-template">
+<template id="w-input-template">
     <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
-</script>
+</template>
 
-<script type="text/x-template" id="w-input-helped-template">
+<template  id="w-input-helped-template">
     <div >
         <input v-bind:readonly="!customValue"
                class="form-control" type="text" name="getFieldName()" v-model="value"
@@ -19,40 +19,38 @@
             </div>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="w-hidden-template">
-    <div>
-        <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
-    </div>
-</script>
+<template id="w-hidden-template">
+    <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
+</template>
 
-<script type="text/x-template" id="w-text-template">
+<template id="w-text-template">
     <span>{{value}}</span>
-</script>
+</template>
 
-<script type="text/x-template" id="w-image-template">
+<template id="w-image-template">
     <img :src="value">
-</script>
+</template>
 
-<script type="text/x-template" id="w-download-template">
+<template id="w-download-template">
     <a :href="value" target="_blank"><i :class="icon"></i></a>
-</script>
+</template>
 
-<script type="text/x-template" id="w-textarea-template">
+<template id="w-textarea-template">
     <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
                   v-bind:c-marker="cMarker" v-on:change="change"></textarea>
-</script>
+</template>
 
-<script type="text/x-template" id="w-select-template">
+<template id="w-select-template">
     <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
             v-on:change="change">
         <option v-for="key in domainValuesOrder" :value="key"
                 >{{domainValues[key]}}</option>
     </select>
-</script>
+</template>
 
-<script type="text/x-template" id="w-radio-template">
+<template id="w-radio-template">
     <div>
         <div class="form-check-inline"  v-for="key in domainValuesOrder">
             <label class="form-check-label">
@@ -62,9 +60,9 @@
             </label>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="w-checkbox-template">
+<template id="w-checkbox-template">
     <div class="form-check-inline">
         <div class="" v-for="key in domainValuesOrder">
             <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
@@ -73,7 +71,7 @@
             <label class="form-check-label" >{{domainValues[key]}}&nbsp;&nbsp;&nbsp;</label>
         </div>
     </div>
-</script>
+</template>
 
 <template id="w-autocomplete-template">
     <div class="input-group mb-3">
@@ -96,30 +94,30 @@
     </div>
 </template>
 
-<script type="text/x-template" id="w-date-select-template">
+<template  id="w-date-select-template">
     <div v-if="resourcesLoaded" class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
         <w-select ref="day" v-bind:c-conf="cDay" c-marker="day"></w-select>
         <w-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></w-select>
         <w-select ref="year" v-bind:c-conf="cYear" c-marker="year"></w-select>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="w-date-picker-template">
+<template id="w-date-picker-template">
     <div class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
         <input c-picker >
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="w-texthtml-template">
+<template id="w-texthtml-template">
 <!--    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>-->
     <div>
         <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" :c-marker="cMarker" v-on:change="change">
         <div class="summernote" v-html="value">
         </div>
     </div>
-</script>
+</template>
 
 <template id="w-hasmany-template">
     <div class="card"  >
@@ -163,7 +161,7 @@
     </div>
 </template>
 
-<script type="text/x-template" id="w-hasmany-view-template">
+<template id="w-hasmany-view-template">
     <div crud-render_element>
         <div class="list-unstyled" crud-render_list >
 
@@ -176,21 +174,21 @@
             </ul>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="w-swap-template">
+<template id="w-swap-template">
     <button type="button" class="btn btn-outline-secondary btn-sm" v-bind:title="title" v-on:click="swap">
         <span v-show="swapType=='text'">{{ slot }}</span>
         <i  v-show="swapType=='icon'" v-bind:class="slot"></i>
     </button>
-</script>
+</template>
 
-<script type="text/x-template" id="w-status-template">
+<template id="w-status-template">
     <span>
         <span v-if="statusType=='text'">{{ slot }}</span>
         <i  v-if="statusType=='icon'" v-bind:class="slot"></i>
     </span>
-</script>
+</template>
 
 <template id="w-hasmany-through-template">
     <div class="card"  >
@@ -226,11 +224,11 @@
     </div>
 </template>
 
-<script type="text/x-template" id="w-b2-select2-template">
+<template id="w-b2-select2-template">
     <select c-select2 class="form-control m-select2"
             v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
     </select>
-</script>
+</template>
 
 <template id="w-b2m-select2-template">
     <div>
@@ -259,7 +257,7 @@
     </div>
 </template>
 
-<script type="text/x-template" id="w-upload-ajax-template">
+<template id="w-upload-ajax-template">
     <div class="row">
         <div class="col-8">
             <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
@@ -281,9 +279,9 @@
             <w-preview :c-conf="previewConf"></w-preview>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="w-preview-template">
+<template id="w-preview-template">
     <div>
         <img v-if="getType()=='image'" :src="value.url">
         <a v-else-if="getType()=='doc'" :href="value.url">
@@ -293,4 +291,4 @@
             <span v-if="value.url">{{getType()}} mimetype non riconosciuto</span>
         </small>
     </div>
-</script>
+</template>
