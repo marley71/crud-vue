@@ -132,7 +132,7 @@ crud.actions = {
                             that.errorDialog(json.msg);
                             return ;
                         }
-                        that.popoverSuccess('app.cancellazione-successo')
+                        that.alertSuccess('app.cancellazione-successo')
                         that.view.reload();
                     });
                 }
@@ -172,7 +172,7 @@ crud.actions = {
                     that.errorDialog(json.msg);
                     return;
                 }
-                that.popoverSuccess(that.translate('app.salvataggio-ok'))
+                that.alertSuccess(that.translate('app.salvataggio-ok'))
                 that.view.reload();
             })
             console.log('values', values);
@@ -248,7 +248,7 @@ crud.actions = {
                     that.errorDialog(json.msg)
                     return ;
                 }
-                that.popoverSuccess('app.salvataggio-ok');
+                that.alertSuccess('app.salvataggio-ok');
                 callback();
             })
         }

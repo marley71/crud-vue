@@ -132,7 +132,7 @@ crud.actions = {
                             that.errorDialog(json.msg);
                             return ;
                         }
-                        that.popoverSuccess('app.cancellazione-successo')
+                        that.alertSuccess('app.cancellazione-successo')
                         that.view.reload();
                     });
                 }
@@ -172,7 +172,7 @@ crud.actions = {
                     that.errorDialog(json.msg);
                     return;
                 }
-                that.popoverSuccess(that.translate('app.salvataggio-ok'))
+                that.alertSuccess(that.translate('app.salvataggio-ok'))
                 that.view.reload();
             })
             console.log('values', values);
@@ -248,7 +248,7 @@ crud.actions = {
                     that.errorDialog(json.msg)
                     return ;
                 }
-                that.popoverSuccess('app.salvataggio-ok');
+                that.alertSuccess('app.salvataggio-ok');
                 callback();
             })
         }
@@ -654,24 +654,24 @@ const dialogs_mixin = {
             d.$mount('#'+id);
         },
 
-        popover : function (message,classes,time) {
-            this._popover(message,classes,time);
+        alert : function (message,classes,time) {
+            this._alert(message,classes,time);
         },
 
-        popoverSuccess : function (message,time) {
-            this._popover(message,'alert alert-success',time);
+        alertSuccess : function (message,time) {
+            this._alert(message,'alert alert-success',time);
         },
-        popoverError : function (message,time) {
-            this._popover(message,'alert alert-danger',time);
+        alertError : function (message,time) {
+            this._alert(message,'alert alert-danger',time);
         },
-        popoverInfo : function (message,time) {
-            this._popover(message,'alert alert-info',time);
+        alertInfo : function (message,time) {
+            this._alert(message,'alert alert-info',time);
         },
-        popoverWarning : function (message,time) {
-            this._popover(message,'alert alert-warning',time);
+        alertWarning : function (message,time) {
+            this._alert(message,'alert alert-warning',time);
         },
 
-        _popover : function (message,classes,time) {
+        _alert : function (message,classes,time) {
             var that = this;
             var id= 'pop' + (new Date().getTime());
             _cls = 'alert alert-primary ' + (classes?classes:'');
@@ -693,6 +693,15 @@ const dialogs_mixin = {
                 }, _t);
             }
             jQuery('#'+id).popover('show');
+        },
+        popover : function (element,content,title) {
+            jQuery(element).popover({
+                html : true,
+                content : content,
+                title : title,
+
+            });
+            jQuery(element).popover('show');
         }
     }
 }
