@@ -178,37 +178,41 @@
             <div class="section">
               
                 <h1 id="crud-vue-v10">CRUD-Vue v1.0</h1>
-<p>Libreria CRUD per la realizzazione di interfacce professionali basate su chiamate REST con 
+<p>Framework CRUD per la realizzazione di interfacce professionali basate su chiamate REST con 
 metodi CREATE,READ,UPDATE,DELETE. Il protocollo utilizzato per la comunicazione è il json. 
 La libreria utilizza il concetto di componente. La pagina è formata da componenti ed esse
 sono gestite attraverso l&rsquo;oggetto principale <code>CrudApp</code>. 
-Nella libreria è definito un oggetto globale crud, accedibile con this.$crud dove sono definiti
+Nel framework è definito un oggetto globale crud, accedibile con this.$crud dove sono definiti
 dei comportamenti principali delle componenti e che può essere esteso e modificato per le
 proprie personalizzazioni.
 Il concetto di base è quello di creare una logica e una grafica delle componenti
 in modo che ci sia una versione base implementata dalla libreria, ma che sia customizzabile
-a piacere nella propria applicazione sia come layout grafico sia come logica. La libreria poggia sul
-framework vuejs.</p>
+a piacere nella propria applicazione sia come layout grafico sia come logica. Il framework poggia su 
+<a href="https://vuejs.org/" target="_blank">vuejs</a>.
+Per la gestione della grafica ci siamo appoggiati a bootstrap4, percio&rsquo; il framework puo&rsquo; essere esteso con qualsiasi altra
+gestione grafica basata su bootstrap. Ovviamente può essere appoggiato anche su altre framework css a patto di riscrivere
+alcune componenti.</p>
 <h2 id="component">Component</h2>
 <p>Abbiamo creato un componente principale vue per tutte le componenti presenti nella libreria, si chiama<br />
-<a href="c-component"><code>c-component</code></a>. Va considerato come una classe astratta. L&rsquo;oggetto c-component
+<a href="component/">Component</a>. Va considerato come una classe astratta. L&rsquo;oggetto c-component
 crea un componente vue che è stato definito per permettere una facile simulazione
 dell&rsquo;ereditarietà di un normale linguaggio ad oggetti. Non andrebbe mai istanziato</p>
 <h2 id="widget">Widget</h2>
 <p>Una componente <code>Widget</code> si prende il compito di gestire il singolo dato secondo controlli standard html o plugins 
-di varia complessità. Alcuni widget di utilità generale sono stati realizzati nella libreria, ma si possono creare
-widgets secondo le nostre esigenze o estendendo quelli presenti o crearne di nuovi.
+di varia complessità. Alcuni widget di utilità generale sono stati realizzati nel framework. Si possono creare
+widgets secondo le nostre esigenze o estendendo quelli presenti.
 <a href="widgets/">Widgets</a></p>
 <h2 id="view">View</h2>
 <p>La componente <code>View</code> rappresenta una collezione di dati. A questi dati 
 vengono associati dei componenti di tipo <code>Widget</code> per la loro gestione. Sono state create delle view di utilizzo 
-standard ma, anche qui, se ne possono creare di nuove per venire incontro alle nostre esigenze.
+standard ma, anche qui, se ne possono creare di nuove o estendere quelle esistenti per venire incontro alle nostre 
+esigenze.
 <a href="views/">Views</a></p>
 <h2 id="template">Template</h2>
 <p>Il componente <code>Template</code> permette di costruire un template html di contorno per l&rsquo;oggetto <code>Widget</code>. 
 Viene utilizzato dalle views e permette di poter customizzare i templates per i widgets presenti nella view.
-Questo permette per esempio di enfatizzare alcuni campi la dove serve e di evitare di creare viste monotone.
-Tuto questo per avere un minimo di variabilità nelle visualizzazioni delle viste, che altrimenti risulterebbero 
+Attraverso il template si puo&rsquo;, per esempio, enfatizzare alcuni campi la dove serve ed evitare di creare viste monotone.
+Tutto questo per avere un minimo di variabilità nelle visualizzazioni delle viste, che altrimenti risulterebbero 
 troppo vincolate.
 <a href="templates/">Templates</a></p>
 <h2 id="action">Action</h2>
@@ -220,7 +224,7 @@ alcune actions standard, ma possono essere definite delle nuove per ogni vista.
 di un componente e specializzarlo dove serve in modo da potersi discostare dal comportamento di default. 
 <a href="confs/">Confs</a></p>
 <h2 id="route">Route</h2>
-<p>La classe <code>Route</code> incapsula l&rsquo;interazione con il server sia per il recupero sia per la spedizione 
+<p>La classe <code>Route</code> incapsula l&rsquo;interazione con il server sia per il recupero, sia per la spedizione 
 dei dati. In genere viene utilizzata da una view e dalle azioni ed è possibile parametrizzarla secondo specifiche
 regole.
 <a href="routes/">Routes</a></p>
@@ -232,7 +236,7 @@ regole.
 javascript.
 <a href="app/">App</a></p>
 <h2 id="dashboard">Dashboard</h2>
-<p>Le dashboards sono modi di utilizzare combinando più views che interagiscono tra loro. Una dashboarda fondamentale 
+<p>Le dashboards sono modi di utilizzare combinando più views che interagiscono tra loro. Una dashboard fondamentale 
 è stata creata già nella libreria e che serve come esempio ed è la <code>c-manage</code>.
 <a href="dashboards/">Dashboards</a></p>
               
@@ -286,5 +290,5 @@ javascript.
 
 <!--
 MkDocs version : 0.17.5
-Build Date UTC : 2020-06-24 15:41:06
+Build Date UTC : 2020-06-26 08:27:49
 -->

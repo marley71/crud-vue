@@ -164,8 +164,8 @@
                 <h1 id="c-component">c-component</h1>
 <p>La classe principale di tutte le componenti grafiche è <code>c-component</code>, definisce il comportamento
 generale che un componente deve avere nella visualizzazione di un html e della gestione dei dati. Definisce
-la proprietà cConf per la configurazione del componente, la carica ed estende l&rsquo;oggetto con tutte le proprietà
-trovate in cConf.</p>
+la proprietà fondamentale cConf che server per la configurazione del componente.
+Viene caricata ed estende il component con tutte le proprietà trovate in cConf.</p>
 <p>Per convenzione i metodi preceduti da &ldquo;_&rdquo; sono da considerarsi privati e non andrebbero mai ridefiniti se non per cambiare
 sostanzialmente il comportamento della classe a basso livello.</p>
 <h4 id="proprieta">Proprietà</h4>
@@ -179,7 +179,7 @@ delle componenti marcate $crud.cRefs[compRef].</li>
 <ul>
 <li>
 <p><code>jQe(selector)</code> : shortcut jquery, ritorna l&rsquo;oggetto jquery associato al container del componente, se viene
-passato il parametro <em>selector</em> allora si posiziona all&rsquo;elemento puntato dal selector all&rsquo;interno
+passato il parametro <strong>selector</strong> allora si posiziona all&rsquo;elemento puntato dal selector all&rsquo;interno
 del container.</p>
 </li>
 <li>

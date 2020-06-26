@@ -245,45 +245,31 @@ La definizione del template è nel container con id <code>w-input-template</code
 <li><code>inputType</code> : rappresenta il type del controllo input html. Può essere tutti quelli accettati dal type input html</li>
 </ul>
 <h4 id="template">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-input-template&quot;&gt;&lt;input class=&quot;form-control&quot; :type=&quot;inputType&quot; v-model=&quot;value&quot; v-bind:name=&quot;getFieldName()&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;/template&gt;
+<pre><code class="html">&lt;template id=&quot;w-input-template&quot;&gt;&lt;input class=&quot;form-control&quot; :type=&quot;inputType&quot; v-model=&quot;value&quot; v-bind:name=&quot;getFieldName()&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;/template&gt;
 </code></pre>
 
-<pre><code class="javascript">{{{example_render_input_edit}}}
-</code></pre>
-
-<p><a href="http://www.pierpaolociullo.it/example?f=example_render_input_edit" target="_blank">Provalo online</a></p>
 <hr />
 <h2 id="w-hidden">w-hidden</h2>
 <p>Componente per la gestione di input di tipo hidden, è stato creato un tipo apposta per avere una gestione separata
 degli hidden</p>
 <h4 id="template_1">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-hidden-template&quot;&gt;&lt;div&gt;
-        &lt;input v-model=&quot;value&quot; :name=&quot;getFieldName()&quot; type=&quot;hidden&quot; :c-marker=&quot;cMarker&quot;&gt;
-&lt;/div&gt;
-&lt;/template&gt;
+<pre><code class="html">&lt;template id=&quot;w-hidden-template&quot;&gt;&lt;input v-model=&quot;value&quot; :name=&quot;getFieldName()&quot; type=&quot;hidden&quot; :c-marker=&quot;cMarker&quot;&gt;&lt;/template&gt;
 </code></pre>
 
 <h2 id="w-text">w-text</h2>
 <p>Componente per la visualizzazione di un testo. La sua definizione è in <code>crud.components.widgets.wText</code>
 La definizione del template è nel container con id  <code>w-text-template</code></p>
 <h4 id="template_2">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-text-template&quot;&gt;&lt;span&gt;{{value}}&lt;/span&gt;
+<pre><code class="html">&lt;template id=&quot;w-text-template&quot;&gt;&lt;span&gt;{{value}}&lt;/span&gt;
 &lt;/template&gt;
 </code></pre>
 
-<ul>
-<li>esempio</li>
-</ul>
-<pre><code class="javascript">{{{example_render_text_view}}}
-</code></pre>
-
-<p><a href="http://www.pierpaolociullo.it/example?f=example_render_text_view" target="_blank">provalo online</a></p>
 <hr />
 <h2 id="w-textarea">w-textarea</h2>
 <p>Componente per la gestione di una textarea. La sua definizione è in <code>crud.components.widgets.wTextarea</code>
 La definizione del template è nel container con id <code>w-textarea-template</code></p>
 <h4 id="template_3">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-textarea-template&quot;&gt;&lt;textarea class=&quot;form-control&quot; v-model=&quot;value&quot; v-bind:name=&quot;getFieldName()&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;/textarea&gt;&lt;/template&gt;
+<pre><code class="html">&lt;template id=&quot;w-textarea-template&quot;&gt;&lt;textarea class=&quot;form-control&quot; v-model=&quot;value&quot; v-bind:name=&quot;getFieldName()&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;/textarea&gt;&lt;/template&gt;
 </code></pre>
 
 <hr />
@@ -296,7 +282,7 @@ La definizione del template è nel container con id <code>w-select-template</cod
 <li><code>domainValueOrder</code> : array, facoltativo,eventuale ordinamento dei domainValues.</li>
 </ul>
 <h4 id="template_4">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-select-template&quot;&gt;&lt;select class=&quot;form-control&quot; v-bind:name=&quot;getFieldName()&quot; v-model=&quot;value&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;option v-for=&quot;key in domainValuesOrder&quot; :value=&quot;key&quot;&gt;{{domainValues[key]}}&lt;/option&gt;&lt;/select&gt;&lt;/template&gt;
+<pre><code class="html">&lt;template id=&quot;w-select-template&quot;&gt;&lt;select class=&quot;form-control&quot; v-bind:name=&quot;getFieldName()&quot; v-model=&quot;value&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;option v-for=&quot;key in domainValuesOrder&quot; :value=&quot;key&quot;&gt;{{domainValues[key]}}&lt;/option&gt;&lt;/select&gt;&lt;/template&gt;
 </code></pre>
 
 <hr />
@@ -311,7 +297,7 @@ La definizione del template è nel container con id <code>w-input-helped-templat
 <li><code>domainValueOrder</code> : array, facoltativo,eventuale ordinamento dei domainValues.</li>
 </ul>
 <h4 id="template_5">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-input-helped-template&quot;&gt;&lt;div&gt;
+<pre><code class="html">&lt;template id=&quot;w-input-helped-template&quot;&gt;&lt;div&gt;
         &lt;input v-bind:readonly=&quot;!customValue&quot; class=&quot;form-control&quot; type=&quot;text&quot; name=&quot;getFieldName()&quot; v-model=&quot;value&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;div&gt;
             &lt;div class=&quot;btn-group btn-group-sm&quot; role=&quot;group&quot; aria-label=&quot;...&quot;&gt;
                 &lt;button v-for=&quot;dVal in domainValuesOrder&quot; type=&quot;button&quot; class=&quot;btn btn-outline-secondary&quot; v-on:click=&quot;setValue(dVal)&quot;&gt;{{domainValues[dVal]}}&lt;/button&gt;
@@ -331,7 +317,7 @@ La definizione del template è nel container con id <code>w-radio-template</code
 <li><code>domainValueOrder</code> : array, facoltativo,eventuale ordinamento dei domainValues.</li>
 </ul>
 <h4 id="template_6">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-radio-template&quot;&gt;&lt;div&gt;
+<pre><code class="html">&lt;template id=&quot;w-radio-template&quot;&gt;&lt;div&gt;
         &lt;div class=&quot;form-check-inline&quot; v-for=&quot;key in domainValuesOrder&quot;&gt;
             &lt;label class=&quot;form-check-label&quot;&gt;
                 &lt;input class=&quot;form-control-input&quot; v-bind:name=&quot;getFieldName()&quot; type=&quot;radio&quot; :value=&quot;key&quot; v-model=&quot;value&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;  {{domainValues[key]}}
@@ -351,7 +337,7 @@ La definizione del template è nel container con id <code>w-checkbox-template</c
 <li><code>domainValueOrder</code> : array, facoltativo,eventuale ordinamento dei domainValues.</li>
 </ul>
 <h4 id="template_7">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-checkbox-template&quot;&gt;&lt;div class=&quot;form-check-inline&quot;&gt;
+<pre><code class="html">&lt;template id=&quot;w-checkbox-template&quot;&gt;&lt;div class=&quot;form-check-inline&quot;&gt;
         &lt;div class=&quot;&quot; v-for=&quot;key in domainValuesOrder&quot;&gt;
             &lt;input class=&quot;form-check-input&quot; v-bind:name=&quot;getFieldName()&quot; type=&quot;checkbox&quot; :value=&quot;key&quot; v-model=&quot;value&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;label class=&quot;form-check-label&quot;&gt;{{domainValues[key]}}   &lt;/label&gt;
         &lt;/div&gt;
@@ -365,7 +351,7 @@ La definizione del template è nel container con id <code>w-checkbox-template</c
 La sua definizione è in <code>crud.components.widgets.wCustom</code>
 La definizione del template è nel container con id <code>w-custom-template</code></p>
 <h4 id="template_8">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-custom-template&quot;&gt;&lt;div v-html=&quot;value&quot;&gt;
+<pre><code class="html">&lt;template id=&quot;w-custom-template&quot;&gt;&lt;div v-html=&quot;value&quot;&gt;
 
     &lt;/div&gt;
 &lt;/template&gt;
@@ -380,27 +366,33 @@ La sua definizione è in <code>crud.components.widgets.wAutocomplete</code>
 La definizione del template è nel container con id <code>w-autocomplete-template</code></p>
 <h4 id="data_6">data</h4>
 <ul>
-<li><code>routeName</code> : &lsquo;autocomplete&rsquo; - nome della route da utilizzare per reperire i dati dal server</li>
-<li><code>resources</code> : &lsquo;[
-                    &lsquo;https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css&rsquo;,
-                    &lsquo;https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js&rsquo;         <br />
-                 ]</li>
-<li><code>primaryKey</code> : &lsquo;id&rsquo; - nome campo da salvare nel campo nascosto.</li>
-<li><code>fields</code> : [], vettore dei campi da visualizzare nella tendina degli elementi trovati</li>
-<li><code>modelName</code> : &lsquo;nome modello dati da passare alla route&rsquo;</li>
+<li><code>routeName</code> : default <code>autocomplete</code> - nome della route da utilizzare per reperire i dati dal server</li>
+<li><code>resources</code> :
+ ```javascript
+ [
+    &lsquo;https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css&rsquo;,
+    &lsquo;https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js&rsquo;         <br />
+ ]</li>
 </ul>
-<h4 id="metodi_1">Metodi</h4>
-<ul>
-<li><code>afterLoadResources()</code> : Questo metodo viene chiamato in automatico e viene utilizzato per
-instanziare il plugin.</li>
-<li><code>setRouteValues</code> : metodo per settare i parametri della route. In caso di route personalizzata, usare
-questo metodo per instanziarla e inserire i parametri giusti.</li>
-<li><code>clear</code> : metodo per cancellare eventuale valore selezionato.</li>
-<li><code>_getLabel</code> : politica per il riempimento della label che visualizza l&rsquo;elemento scelto</li>
-<li><code>_getSuggestion</code> : metodo per il riempimento dei valori trovati mostrati dal widget</li>
-</ul>
-<h4 id="template_9">template</h4>
-<pre><code class="html">&lt;template id=&quot;w-autocomplete-template&quot;&gt;&lt;div class=&quot;input-group mb-3&quot;&gt;
+<pre><code>
+- `primaryKey` : 'id' - nome campo da salvare nel campo nascosto.
+- `labelFields` : [], vettore dei campi da visualizzare nella tendina degli elementi trovati
+- `modelName` : 'nome modello dati da passare alla route'
+
+
+#### Metodi
+
+- `afterLoadResources()` : Questo metodo viene chiamato in automatico e viene utilizzato per
+instanziare il plugin.
+- `setRouteValues` : metodo per settare i parametri della route. In caso di route personalizzata, usare
+questo metodo per instanziarla e inserire i parametri giusti.
+- `clear` : metodo per cancellare eventuale valore selezionato.
+- `_getLabel` : politica per il riempimento della label che visualizza l'elemento scelto
+- `_getSuggestion` : metodo per il riempimento dei valori trovati mostrati dal widget
+
+####template
+```html
+&lt;template id=&quot;w-autocomplete-template&quot;&gt;&lt;div class=&quot;input-group mb-3&quot;&gt;
         &lt;div class=&quot;input-group-prepend&quot;&gt;
             &lt;span class=&quot;input-group-text&quot;&gt;{{label}}&lt;/span&gt;
         &lt;/div&gt;
@@ -425,7 +417,7 @@ La definizione del template è nel container con id <code>w-belongsto-template</
 <ul>
 <li>labelFields: [], vettore nomi dei campi da visualizzare</li>
 </ul>
-<h4 id="template_10">template</h4>
+<h4 id="template_9">template</h4>
 <pre><code class="html">&lt;template id=&quot;w-belongsto-template&quot;&gt;&lt;div&gt;
         &lt;span v-for=&quot;field in labelFields&quot;&gt;{{value[field]}} &lt;/span&gt;
     &lt;/div&gt;
@@ -434,20 +426,23 @@ La definizione del template è nel container con id <code>w-belongsto-template</
 
 <hr />
 <h2 id="w-date-select">w-date-select</h2>
-<p>Questo widget è per l&rsquo;inserimento di una data. Questo widget utilizza tre componenti w-select per 
+<p>Questo widget è per l&rsquo;inserimento di una data. Utilizza tre componenti w-select per 
 l&rsquo;inserimento di una data. Il valore viene salvato in un input nascosto nel formato yyyy-mm-dd;
-Usa moment per il controllo di validità della data.
+Usa moment.js per il controllo di validità della data.
 La sua definizione è in <code>crud.components.widgets.wDateSelect</code>
 La definizione del template è nel container con id <code>w-date-select-template</code></p>
 <h4 id="data_8">data</h4>
 <ul>
 <li>minYear    : null, anno minimo se non settatto viene preso l&rsquo;anno corrente - 5 ,</li>
 <li>maxYear    : null, anno massimo se non settato viene preso l&rsquo;anno corrente + 5,</li>
-<li>resources :[
-    &lsquo;moment-with-locales.min.js&rsquo;,
-]</li>
+<li>resources :</li>
 </ul>
-<h4 id="metodi_2">Metodi</h4>
+<pre><code class="javascript">[
+    'moment-with-locales.min.js',
+]
+</code></pre>
+
+<h4 id="metodi_1">Metodi</h4>
 <ul>
 <li>_updateSelect : function () - </li>
 <li>_getValidDate : function () - </li>
@@ -461,8 +456,8 @@ La definizione del template è nel container con id <code>w-date-select-template
 <li>cMonth : crea la configurazione iniziale per la select mesi</li>
 <li>cYear : crea la configurazione iniziale per la select anni</li>
 </ul>
-<h4 id="template_11">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-date-select-template&quot;&gt;&lt;div v-if=&quot;resourcesLoaded&quot; class=&quot;input-group&quot;&gt;
+<h4 id="template_10">template</h4>
+<pre><code class="html">&lt;template id=&quot;w-date-select-template&quot;&gt;&lt;div v-if=&quot;resourcesLoaded&quot; class=&quot;input-group&quot;&gt;
         &lt;input type=&quot;hidden&quot; v-model=&quot;value&quot; v-bind:name=&quot;getFieldName()&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;w-select ref=&quot;day&quot; v-bind:c-conf=&quot;cDay&quot; c-marker=&quot;day&quot;&gt;&lt;/w-select&gt;&lt;w-select ref=&quot;month&quot; v-bind:c-conf=&quot;cMonth&quot; c-marker=&quot;month&quot;&gt;&lt;/w-select&gt;&lt;w-select ref=&quot;year&quot; v-bind:c-conf=&quot;cYear&quot; c-marker=&quot;year&quot;&gt;&lt;/w-select&gt;
 &lt;/div&gt;
 &lt;/template&gt;
@@ -486,8 +481,8 @@ La definizione del template è nel container con id <code>w-date-picker-template
 ]
 </code></pre>
 
-<h4 id="template_12">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-date-picker-template&quot;&gt;&lt;div class=&quot;input-group&quot;&gt;
+<h4 id="template_11">template</h4>
+<pre><code class="html">&lt;template id=&quot;w-date-picker-template&quot;&gt;&lt;div class=&quot;input-group&quot;&gt;
         &lt;input type=&quot;hidden&quot; v-model=&quot;value&quot; v-bind:name=&quot;getFieldName()&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;input c-picker&gt;
 &lt;/div&gt;
 &lt;/template&gt;
@@ -507,7 +502,7 @@ La definizione del template è nel container con id <code>w-hasmany-template</co
     sono considerate le azioni.</li>
 <li>limit : default 100, limite massimo del numero di record hasmany</li>
 </ul>
-<h4 id="metodi_3">metodi</h4>
+<h4 id="metodi_2">metodi</h4>
 <ul>
 <li>getHasmanyConf(index,value),</li>
 <li>addItem() </li>
@@ -515,7 +510,7 @@ La definizione del template è nel container con id <code>w-hasmany-template</co
 <li>showItem(index)</li>
 <li>outOfLimit()</li>
 </ul>
-<h4 id="template_13">template</h4>
+<h4 id="template_12">template</h4>
 <pre><code class="html">&lt;template id=&quot;w-hasmany-template&quot;&gt;&lt;div class=&quot;card&quot;&gt;
         &lt;div class=&quot;card-body&quot;&gt;
             &lt;!--&lt;input type=&quot;hidden&quot; :name=&quot;cKey + '_exists'&quot; value=&quot;1&quot;&gt;--&gt;
@@ -560,8 +555,8 @@ La definizione del template è nel container con id <code>w-hasmany-template</co
 <p>Componente per la visualizzazione di dati in una relazione esterna di tipo hasmany 
 La sua definizione è in <code>crud.components.widgets.wHasmanyView</code>
 La definizione del template è nel container con id <code>w-hasmany-view-template</code></p>
-<h4 id="template_14">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-hasmany-view-template&quot;&gt;&lt;div crud-render_element&gt;
+<h4 id="template_13">template</h4>
+<pre><code class="html">&lt;template id=&quot;w-hasmany-view-template&quot;&gt;&lt;div crud-render_element&gt;
         &lt;div class=&quot;list-unstyled&quot; crud-render_list&gt;
 
             &lt;!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- --&gt;
@@ -617,7 +612,7 @@ La definizione del template è nel container con id <code>w-hasmany-view-templat
   },</p>
 </li>
 </ul>
-<h4 id="metodi_4">metodi</h4>
+<h4 id="metodi_3">metodi</h4>
 <ul>
 <li>_populateItem : function(values,container) {</li>
 <li>_populate : function (filter) {</li>
@@ -627,7 +622,7 @@ La definizione del template è nel container con id <code>w-hasmany-view-templat
 <li>resources : [ &lsquo;jquery-sortable.js&rsquo;]</li>
 <li>_views : [],</li>
 </ul>
-<h4 id="metodi_5">metodi</h4>
+<h4 id="metodi_4">metodi</h4>
 <ul>
 <li>itemExist : function (values) {</li>
 <li>addItem : function (values) {</li>
@@ -651,7 +646,7 @@ La definizione del template è nel container con id</code>w-upload-ajax-template
 <li>ajaxFields : vettore associativo di eventuali campi nascosti da mandare in ajax insieme al file,</li>
 <li>lastUpload : contiene la risposta json dell&rsquo;ultima chiamata ajax.</li>
 </ul>
-<h4 id="metodi_6">metodi</h4>
+<h4 id="metodi_5">metodi</h4>
 <ul>
 <li>setRouteValues(route) : metodo per configurare i parametri della route</li>
 <li>_getFileValue():ritorna il valore del controllo file</li>
@@ -661,8 +656,8 @@ La definizione del template è nel container con id</code>w-upload-ajax-template
 <li>_setUploadFieldsType : function () {</li>
 <li>_setFieldsType : function () {</li>
 </ul>
-<h4 id="template_15">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-upload-ajax-template&quot;&gt;&lt;div class=&quot;row&quot;&gt;
+<h4 id="template_14">template</h4>
+<pre><code class="html">&lt;template id=&quot;w-upload-ajax-template&quot;&gt;&lt;div class=&quot;row&quot;&gt;
         &lt;div class=&quot;col-8&quot;&gt;
             &lt;div v-show=&quot;error&quot; class=&quot;alert alert-danger&quot;&gt;{{errorMessage}}&lt;/div&gt;
             &lt;input type=&quot;hidden&quot; v-model=&quot;value&quot; :name=&quot;getFieldName()&quot;&gt;&lt;div&gt;
@@ -696,7 +691,7 @@ La definizione del template è nel container con id</code>w-upload-template`</p>
 <li>extensions : [] estensioni del file accettate,</li>
 <li>maxFileSize : &lsquo;&rsquo; dimensione massimo del file da uploadare,</li>
 </ul>
-<h4 id="metodi_7">metodi</h4>
+<h4 id="metodi_6">metodi</h4>
 <ul>
 <li>_showItemUploadedPreview : function (container,values) {</li>
 <li>_bindActions : function () {</li>
@@ -709,7 +704,7 @@ La definizione del template è nel container con id</code>w-upload-template`</p>
 <li>_setFieldsType : function () {</li>
 <li>afterUpload : function (data) {</li>
 </ul>
-<h4 id="template_16">template</h4>
+<h4 id="template_15">template</h4>
 <pre><code class="html">&lt;template id=&quot;w-upload-template&quot;&gt;&lt;div&gt;
         &lt;div v-show=&quot;extensions&quot;&gt;
             &lt;span crud-label=&quot;app.accepted-extensions&quot;&gt;{{'app.estensioni-accettate' | translate}} &lt;/span&gt;
@@ -733,8 +728,8 @@ La definizione del template è nel container con id</code>w-upload-template`</p>
 </code></pre>
 
 <p><a href="http://www.pierpaolociullo.it/example?f=example_render_hasmany_upload_image_view" target="_blank">provalo online</a></p>
-<h4 id="template_17">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-preview-template&quot;&gt;&lt;div&gt;
+<h4 id="template_16">template</h4>
+<pre><code class="html">&lt;template id=&quot;w-preview-template&quot;&gt;&lt;div&gt;
         &lt;img v-if=&quot;getType()=='image'&quot; :src=&quot;value.url&quot;&gt;&lt;a v-else-if=&quot;getType()=='doc'&quot; :href=&quot;value.url&quot;&gt;
             &lt;i :class=&quot;iconClass&quot;&gt;&lt;/i&gt;
         &lt;/a&gt;
@@ -762,15 +757,15 @@ La definizione del template è nel container con id</code>w-swap-template`</p>
             1: &lsquo;attivo&rsquo;
         }
     },</p>
-<h4 id="metodi_8">metodi</h4>
+<h4 id="metodi_7">metodi</h4>
 <ul>
 <li>_setHtmlData :function() {</li>
 <li>_swap : function () {</li>
 <li>_callback : function (json) {</li>
 </ul>
 <p><a href="http://www.pierpaolociullo.it/example?f=example_render_swap_edit" target="_blank">provalo online</a></p>
-<h4 id="template_18">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-swap-template&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary btn-sm&quot; v-bind:title=&quot;title&quot; v-on:click=&quot;swap&quot;&gt;
+<h4 id="template_17">template</h4>
+<pre><code class="html">&lt;template id=&quot;w-swap-template&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary btn-sm&quot; v-bind:title=&quot;title&quot; v-on:click=&quot;swap&quot;&gt;
         &lt;span v-show=&quot;swapType=='text'&quot;&gt;{{ slot }}&lt;/span&gt;
         &lt;i v-show=&quot;swapType=='icon'&quot; v-bind:class=&quot;slot&quot;&gt;&lt;/i&gt;
     &lt;/button&gt;
@@ -794,8 +789,8 @@ rappresentazione ed editing di testo html</p>
       pluginOptions : {},
       _pluginObject : null,</li>
 </ul>
-<h4 id="template_19">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-texthtml-template&quot;&gt;&lt;!--    &lt;textarea v-bind:c-key=&quot;getFieldName&quot; c-summernote v-model=&quot;value&quot; class=&quot;summernote form-control&quot; c-lang=&quot;it-IT&quot;&gt;&lt;/textarea&gt;--&gt;&lt;div&gt;
+<h4 id="template_18">template</h4>
+<pre><code class="html">&lt;template id=&quot;w-texthtml-template&quot;&gt;&lt;!--    &lt;textarea v-bind:c-key=&quot;getFieldName&quot; c-summernote v-model=&quot;value&quot; class=&quot;summernote form-control&quot; c-lang=&quot;it-IT&quot;&gt;&lt;/textarea&gt;--&gt;&lt;div&gt;
         &lt;input c-summernote type=&quot;hidden&quot; v-model=&quot;value&quot; :name=&quot;getFieldName()&quot; :c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;div class=&quot;summernote&quot; v-html=&quot;value&quot;&gt;
         &lt;/div&gt;
     &lt;/div&gt;
@@ -805,13 +800,13 @@ rappresentazione ed editing di testo html</p>
 <hr />
 <h2 id="w-b2-select2">w-b2-select2</h2>
 <p>DAFINIRE</p>
-<h4 id="template_20">template</h4>
-<pre><code class="html">&lt;template type=&quot;text/x-template&quot; id=&quot;w-b2-select2-template&quot;&gt;&lt;select c-select2 class=&quot;form-control m-select2&quot; v-bind:name=&quot;getFieldName()&quot; v-model=&quot;value&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;/select&gt;&lt;/template&gt;
+<h4 id="template_19">template</h4>
+<pre><code class="html">&lt;template id=&quot;w-b2-select2-template&quot;&gt;&lt;select c-select2 class=&quot;form-control m-select2&quot; v-bind:name=&quot;getFieldName()&quot; v-model=&quot;value&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;/select&gt;&lt;/template&gt;
 </code></pre>
 
 <h2 id="w-b2m-select2">w-b2m-select2</h2>
 <p>DAFINIRE</p>
-<h4 id="template_21">template</h4>
+<h4 id="template_20">template</h4>
 <pre><code class="html">&lt;template id=&quot;w-b2m-select2-template&quot;&gt;&lt;div&gt;
         &lt;select c-select2 class=&quot;form-control m-select2&quot; name=&quot;&quot; multiple v-model=&quot;value&quot; v-bind:c-marker=&quot;cMarker&quot; v-on:change=&quot;change&quot;&gt;&lt;/select&gt;&lt;div c-selected-items&gt;
             &lt;!-- hidden input for selected items --&gt;
