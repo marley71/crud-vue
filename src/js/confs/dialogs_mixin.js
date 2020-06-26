@@ -136,9 +136,14 @@ const dialogs_mixin = {
                 html : true,
                 content : content,
                 title : title,
+                trigger : 'click'
 
             });
             jQuery(element).popover('show');
+            jQuery(element).click(function () {
+                console.log('aaaa');
+                jQuery(element).popover('hide');
+            })
         }
     }
 }
