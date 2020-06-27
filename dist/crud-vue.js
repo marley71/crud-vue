@@ -3714,14 +3714,17 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
         },
         getOrderConf : function (key) {
             var that = this;
+            var translateKey = that.langContext?that.langContext+'.':'';
+            translateKey += key+'.label';
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = that.translate('app.ordina') + ' ' + key;
-            conf.text = key;
+            conf.title = that.translate('app.ordina') + ' ' + that.translate(translateKey);
+            conf.text = that.translate(translateKey);
             conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
             //if (that.data.order_field)
             var order = that.metadata.order || {};
             //console.log('GETORDERCONF CALLED',key,order);
             conf.orderDirection = (order.field == conf.orderField)?order.direction:null;
+            conf.view = that;
             return conf;
         },
         reload : function () {
