@@ -46,7 +46,7 @@ const CrudApp = Vue.extend({
             that.loadResources(resources,function () {
                 that.$mount(that.el);
                 // lancio l'evento che e' tutto caricato
-                document.dispatchEvent(new Event('crud-app-loaded'))
+                window.dispatchEvent(new Event('crud-app-loaded'))
             })
         }
         console.log('load framework components.  ' + that.$data.componentsFiles);
