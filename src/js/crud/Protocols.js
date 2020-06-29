@@ -86,7 +86,7 @@ class ProtocolList extends Protocol {
             if (json.metadata[field].options_order)
                 this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
             if (this.metadata[field].referred_data)
-                this.metadata[field].modelData = fieldsMetadata[field].referred_data
+                this.metadata[field].referredData = fieldsMetadata[field].referred_data
         }
     }
 }
