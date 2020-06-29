@@ -66,7 +66,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
                 data.push({
                     id : that.value,
                     selected : true,
-                    text : that.getLabel(that.modelData)
+                    text : that.getLabel(that.referredData)
                 });
             }
 

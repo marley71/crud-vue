@@ -79,8 +79,8 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
         },
         getLabel : function () {
             var that = this;
-            if (that.modelData) {
-                that.label = that._getSuggestion(that.modelData);
+            if (that.referredData) {
+                that.label = that._getSuggestion(that.referredData);
             }
         },
         _getSuggestion: function(rowData) {

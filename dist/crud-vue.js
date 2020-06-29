@@ -2220,8 +2220,8 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
         },
         getLabel : function () {
             var that = this;
-            if (that.modelData) {
-                that.label = that._getSuggestion(that.modelData);
+            if (that.referredData) {
+                that.label = that._getSuggestion(that.referredData);
             }
         },
         _getSuggestion: function(rowData) {
@@ -2760,7 +2760,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
                 data.push({
                     id : that.value,
                     selected : true,
-                    text : that.getLabel(that.modelData)
+                    text : that.getLabel(that.referredData)
                 });
             }
 
