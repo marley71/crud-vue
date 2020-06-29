@@ -55,6 +55,15 @@ class ProtocolRecord extends Protocol {
                 this.metadata[field].domainValues = relationsMetadata[field].options;
             if (relationsMetadata[field].options_order)
                 this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
+            if (this.metadata[field].fields) {
+                for(var f in this.metadata[field].fields) {
+                    this.metadata[field].fields[f].metadata = {};
+                    if (this.metadata[field].fields[f].options)
+                        this.metadata[field].fields[f].metadata.domainValues = this.metadata[field].fields[f].options;
+                    if (this.metadata[field].fields[f].options_order)
+                        this.metadata[field].fields[f].metadata.domainValuesOrder = this.metadata[field].fields[f].options_order;
+                }
+            }
         }
     }
 }

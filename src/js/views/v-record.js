@@ -110,7 +110,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
         createActionsClass : function () {
             var that = this;
             var actions = {};
-            console.log('confff',that.actions,that);
+            //console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName);

@@ -1245,6 +1245,15 @@ class ProtocolRecord extends Protocol {
                 this.metadata[field].domainValues = relationsMetadata[field].options;
             if (relationsMetadata[field].options_order)
                 this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
+            if (this.metadata[field].fields) {
+                for(var f in this.metadata[field].fields) {
+                    this.metadata[field].fields[f].metadata = {};
+                    if (this.metadata[field].fields[f].options)
+                        this.metadata[field].fields[f].metadata.domainValues = this.metadata[field].fields[f].options;
+                    if (this.metadata[field].fields[f].options_order)
+                        this.metadata[field].fields[f].metadata.domainValuesOrder = this.metadata[field].fields[f].options_order;
+                }
+            }
         }
     }
 }
@@ -1982,6 +1991,9 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             d.value = null;
         if (! ('defaultValue') in _conf)
             d.defaultValue = null;
+        if (! 'isHasmany' in _conf) {
+            d.isHasmany = false;
+        }
         return d;
     },
     methods : {
@@ -2446,6 +2458,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
         d.confViews = [];
         if (!("limit" in _conf) )
             d.limit = 100;
+        d.isHasmany = true;
         return d;
     },
 
@@ -2479,7 +2492,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             }
             // if (!hmConf.data.value.status )
             //     hmConf.data.value.status = 'new';
-            //console.log('HMS',hmConf,that.value)
+            console.log('HMS',that.hasmanyConf,that.value)
             return hmConf;
 
         },
@@ -3222,7 +3235,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 d[k] = finalConf[k];
             }
             d.conf = finalConf;
-            console.log('finalConf',finalConf);
+            //console.log('finalConf',finalConf);
             return d;
         },
         /**
@@ -3253,6 +3266,8 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!c.template)
                 c.template = that.conf.widgetTemplate;
             c = this.merge( c ,(that.metadata[key] || {}));
+            //console.log('that.metadata',that.metadata);
+            //console.log('_defaultWidgetConfig',key,c,that.conf[configName][key]);
             return c;
         },
         getFieldName : function (key) {
@@ -3373,7 +3388,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
         createActionsClass : function () {
             var that = this;
             var actions = {};
-            console.log('confff',that.actions,that);
+            //console.log('confff',that.actions,that);
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName);

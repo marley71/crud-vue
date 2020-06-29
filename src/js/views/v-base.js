@@ -151,7 +151,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 d[k] = finalConf[k];
             }
             d.conf = finalConf;
-            console.log('finalConf',finalConf);
+            //console.log('finalConf',finalConf);
             return d;
         },
         /**
@@ -182,6 +182,8 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!c.template)
                 c.template = that.conf.widgetTemplate;
             c = this.merge( c ,(that.metadata[key] || {}));
+            //console.log('that.metadata',that.metadata);
+            //console.log('_defaultWidgetConfig',key,c,that.conf[configName][key]);
             return c;
         },
         getFieldName : function (key) {

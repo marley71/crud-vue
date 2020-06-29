@@ -9,6 +9,9 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             d.value = null;
         if (! ('defaultValue') in _conf)
             d.defaultValue = null;
+        if (! 'isHasmany' in _conf) {
+            d.isHasmany = false;
+        }
         return d;
     },
     methods : {

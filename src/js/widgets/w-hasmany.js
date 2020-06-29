@@ -14,6 +14,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
         d.confViews = [];
         if (!("limit" in _conf) )
             d.limit = 100;
+        d.isHasmany = true;
         return d;
     },
 
@@ -47,7 +48,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             }
             // if (!hmConf.data.value.status )
             //     hmConf.data.value.status = 'new';
-            //console.log('HMS',hmConf,that.value)
+            console.log('HMS',that.hasmanyConf,that.value)
             return hmConf;
 
         },
