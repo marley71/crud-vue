@@ -44,7 +44,7 @@ class ProtocolRecord extends Protocol {
             if (fieldsMetadata[field].options_order)
                 this.metadata[field].domainValuesOrder = fieldsMetadata[field].options_order;
             if (fieldsMetadata[field].referred_data)
-                this.metadata[field].modelData = fieldsMetadata[field].referred_data
+                this.metadata[field].referredData = fieldsMetadata[field].referred_data
             //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
             //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
         }
