@@ -77,6 +77,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'r',key);
                 widgets[key].value = null;
+                widgets[key].modelData = that.value;
                 if (that.value && (key in that.value) )
                     widgets[key].value = that.value[key];
 
