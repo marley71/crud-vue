@@ -27,14 +27,17 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     data : function () {
         var that = this;
+        var _conf = that._getConf();
+        var modelName = that.cModel || _conf.modelName;
+        var langContext = _conf.langContext || modelName;
         var d =  {};
-        if (that.cModel)
-            d.modelName = that.cModel;
+
+        d.modelName = modelName;
         if (that.cPk)
             d.pk = that.cPk;
         d.value = {};
         d.metadata = {};
-        d.langContext = d.modelName;
+        d.langContext = langContext;
         d.route = null;
         d.loading = true;
         d.widgets = {};
