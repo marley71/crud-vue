@@ -2,9 +2,13 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     extends : crud.components.widgets.wBase,
     mounted : function() {
         var that = this;
+        //var count = 0;
         for (var i in that.value) {
+            //if (count >= that.limit)
+            //    break;
             var _conf = that.getHasmanyConf(i,that.value[i]);
             that.confViews.push(_conf);
+            //count++;
         }
     },
     data : function () {
@@ -14,7 +18,6 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
         d.confViews = [];
         if (!("limit" in _conf) )
             d.limit = 100;
-        d.isHasmany = true;
         return d;
     },
 
@@ -23,13 +26,13 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
         getHasmanyConf : function (index,value) {
             var that = this;
             var hmConf = that.hasmanyConf || {};
-
+            var relationConf = that.relationConf || {};
             hmConf = this.confMerge({
                 fields : [],
                 fieldsConfig : {},
                 routeName : null,
                 value : {},
-                metadata : {}
+                metadata : relationConf
             },hmConf);
             hmConf.cRef = 'hm-' + index;
 

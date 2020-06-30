@@ -9,7 +9,7 @@ crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
         var _conf = this._getConf();
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
-        //console.log('VHASMANY TYPE',d);
+        //console.log('VHASMANY CONF',_conf);
         return d;
     },
 

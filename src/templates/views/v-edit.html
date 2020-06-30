@@ -3,7 +3,11 @@
         <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <form v-else enctype="multipart/form-data">
-            <div  v-for="(widget, key) in widgets">
+            <!-- campi nascosti -->
+            <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
+                <v-widget :c-widget="widget" :key="key"></v-widget>
+            </template>
+            <div  v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
                 <v-widget :c-widget="widget"></v-widget>
             </div>
         </form>

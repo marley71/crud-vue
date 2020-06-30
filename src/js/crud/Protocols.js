@@ -56,12 +56,16 @@ class ProtocolRecord extends Protocol {
             if (relationsMetadata[field].options_order)
                 this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
             if (this.metadata[field].fields) {
-                for(var f in this.metadata[field].fields) {
-                    this.metadata[field].fields[f].metadata = {};
-                    if (this.metadata[field].fields[f].options)
-                        this.metadata[field].fields[f].metadata.domainValues = this.metadata[field].fields[f].options;
-                    if (this.metadata[field].fields[f].options_order)
-                        this.metadata[field].fields[f].metadata.domainValuesOrder = this.metadata[field].fields[f].options_order;
+                var fields = this.metadata[field].fields;
+                delete this.metadata[field].fields;
+                this.metadata[field].relationConf = {};
+                for(var f in fields) {
+                    //this.metadata[field].relationConf.fields.push(f);
+                    this.metadata[field].relationConf[f] = {};
+                    if (fields[f].options)
+                        this.metadata[field].relationConf[f].domainValues = fields[f].options;
+                    if (fields[f].options_order)
+                        this.metadata[field].relationConf[f].domainValuesOrder = fields[f].options_order;
                 }
             }
         }
@@ -96,6 +100,29 @@ class ProtocolList extends Protocol {
                 this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
             if (this.metadata[field].referred_data)
                 this.metadata[field].referredData = fieldsMetadata[field].referred_data
+        }
+
+
+        var relationsMetadata = json.metadata?(json.metadata.relations || {}):{};
+        for (var field in relationsMetadata) {
+            this.metadata[field] = relationsMetadata[field];
+            if (relationsMetadata[field].options)
+                this.metadata[field].domainValues = relationsMetadata[field].options;
+            if (relationsMetadata[field].options_order)
+                this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
+            if (this.metadata[field].fields) {
+                var fields = this.metadata[field].fields;
+                delete this.metadata[field].fields;
+                this.metadata[field].relationConf = {};
+                for(var f in fields) {
+                    //this.metadata[field].relationConf.fields.push(f);
+                    this.metadata[field].relationConf[f] = {};
+                    if (fields[f].options)
+                        this.metadata[field].relationConf[f].domainValues = fields[f].options;
+                    if (fields[f].options_order)
+                        this.metadata[field].relationConf[f].domainValuesOrder = fields[f].options_order;
+                }
+            }
         }
     }
 }

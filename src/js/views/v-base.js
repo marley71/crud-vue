@@ -188,6 +188,19 @@ crud.components.views.vBase = Vue.component('v-base', {
         },
         getFieldName : function (key) {
             return key;
+        },
+        isHiddenField : function(key) {
+            if (this.fieldsConfig[key]) {
+                var type = this.defaultWidgetType;
+                if (typeof this.fieldsConfig[key] === 'string' || this.fieldsConfig[key] instanceof String)
+                    type = this.fieldsConfig[key];
+                else
+                    type == 'w-hidden';
+
+                if (type == 'w-hidden')
+                    return true;
+            }
+            return false;
         }
     }
 });

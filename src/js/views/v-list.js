@@ -65,6 +65,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
                 return true;
             return false;
         },
+
         getOrderConf : function (key) {
             var that = this;
             var translateKey = that.langContext?that.langContext+'.':'';

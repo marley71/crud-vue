@@ -3,10 +3,12 @@
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <form v-else  enctype="multipart/form-data">
-            <div  v-for="(widget, key) in widgets">
+            <!-- campi nascosti -->
+            <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
+                <v-widget :c-widget="widget" :key="key"></v-widget>
+            </template>
+            <div  v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
                 <v-widget :c-widget="widget"></v-widget>
-<!--                <component v-if="item.type!='w-hidden'" :is="item.template" :c-type="item.type" :c-widget="item" :c-key="getFieldName(key)"></component>-->
-<!--                <component v-if="item.type=='w-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>-->
             </div>
         </form>
         <div class="p-3" v-if="actions.length">

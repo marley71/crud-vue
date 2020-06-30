@@ -4,9 +4,9 @@
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <div v-else>
             <div class="float-none">
-                <div class="float-left" v-show="collectionActionsName.length">
+                <div class="float-left" v-if="collectionActionsName.length">
                     <template v-for="(name,index) in collectionActionsName">
-                        <v-action  :c-action="collectionActions[name]"></v-action>
+                        <v-action :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
                 <div class="float-right">
@@ -17,23 +17,21 @@
             <div class="table-responsive">
                 <table class="table table-striped" >
                     <thead>
-                    <tr v-if="widgets.length > 0">
-                        <th v-show="recordActionsName.length">
-                            <input c-row-check-all v-on:change="selectAllRows" v-if="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>{{"app.azioni" | translate }}</span>
-                        </th>
-                        <th v-for="(key,index) in keys" >
-                            <action-order v-if="isOrderField(key)" v-bind:c-conf="getOrderConf(key)" :key="_uid+key"></action-order>
-<!--                            <span v-if="!isOrderField(key)" :key="_uid+key">{{key+'.label' | translate(langContext) }}</span>-->
-                            <span v-else>{{key+'.label' | translate(langContext) }}</span>
-
-                        </th>
-                    </tr>
-                    <tr v-if="widgets.length == 0">
-                        <th v-show="recordActionsName.length">
-                            {{"app.nessun-elemento" | translate }}
-                        </th>
-                    </tr>
+                        <tr v-if="widgets.length > 0">
+                            <th v-show="recordActionsName.length">
+                                <input c-row-check-all v-on:change="selectAllRows" v-if="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                                <span>{{"app.azioni" | translate }}</span>
+                            </th>
+                            <th v-for="(key,index) in keys" v-if="!isHiddenField(key)">
+                                <action-order v-if="isOrderField(key)" v-bind:c-conf="getOrderConf(key)" :key="_uid+key"></action-order>
+                                <span v-else>{{key+'.label' | translate(langContext) }}</span>
+                            </th>
+                        </tr>
+                        <tr v-if="widgets.length == 0">
+                            <th v-show="recordActionsName.length">
+                                {{"app.nessun-elemento" | translate }}
+                            </th>
+                        </tr>
                     </thead>
                     <tbody >
                     <tr v-for="(row,index) in widgets">
@@ -50,9 +48,12 @@
                             </div>
 
                         </td>
-                        <td v-for="(widget, key) in row">
+                        <td v-for="(widget, key) in row" v-if="!isHiddenField(key)">
                             <v-widget :c-widget="widget" :key="key"></v-widget>
                         </td>
+                        <template v-for="(widget, key) in row" v-if="isHiddenField(key)">
+                            <v-widget :c-widget="widget" :key="key"></v-widget>
+                        </template>
                     </tr>
                     </tbody>
                 </table>

@@ -1246,12 +1246,16 @@ class ProtocolRecord extends Protocol {
             if (relationsMetadata[field].options_order)
                 this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
             if (this.metadata[field].fields) {
-                for(var f in this.metadata[field].fields) {
-                    this.metadata[field].fields[f].metadata = {};
-                    if (this.metadata[field].fields[f].options)
-                        this.metadata[field].fields[f].metadata.domainValues = this.metadata[field].fields[f].options;
-                    if (this.metadata[field].fields[f].options_order)
-                        this.metadata[field].fields[f].metadata.domainValuesOrder = this.metadata[field].fields[f].options_order;
+                var fields = this.metadata[field].fields;
+                delete this.metadata[field].fields;
+                this.metadata[field].relationConf = {};
+                for(var f in fields) {
+                    //this.metadata[field].relationConf.fields.push(f);
+                    this.metadata[field].relationConf[f] = {};
+                    if (fields[f].options)
+                        this.metadata[field].relationConf[f].domainValues = fields[f].options;
+                    if (fields[f].options_order)
+                        this.metadata[field].relationConf[f].domainValuesOrder = fields[f].options_order;
                 }
             }
         }
@@ -1286,6 +1290,29 @@ class ProtocolList extends Protocol {
                 this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
             if (this.metadata[field].referred_data)
                 this.metadata[field].referredData = fieldsMetadata[field].referred_data
+        }
+
+
+        var relationsMetadata = json.metadata?(json.metadata.relations || {}):{};
+        for (var field in relationsMetadata) {
+            this.metadata[field] = relationsMetadata[field];
+            if (relationsMetadata[field].options)
+                this.metadata[field].domainValues = relationsMetadata[field].options;
+            if (relationsMetadata[field].options_order)
+                this.metadata[field].domainValuesOrder = relationsMetadata[field].options_order;
+            if (this.metadata[field].fields) {
+                var fields = this.metadata[field].fields;
+                delete this.metadata[field].fields;
+                this.metadata[field].relationConf = {};
+                for(var f in fields) {
+                    //this.metadata[field].relationConf.fields.push(f);
+                    this.metadata[field].relationConf[f] = {};
+                    if (fields[f].options)
+                        this.metadata[field].relationConf[f].domainValues = fields[f].options;
+                    if (fields[f].options_order)
+                        this.metadata[field].relationConf[f].domainValuesOrder = fields[f].options_order;
+                }
+            }
         }
     }
 }
@@ -1991,9 +2018,6 @@ crud.components.widgets.wBase = Vue.component('w-base', {
             d.value = null;
         if (! ('defaultValue') in _conf)
             d.defaultValue = null;
-        if (! 'isHasmany' in _conf) {
-            d.isHasmany = false;
-        }
         return d;
     },
     methods : {
@@ -2446,9 +2470,13 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     extends : crud.components.widgets.wBase,
     mounted : function() {
         var that = this;
+        //var count = 0;
         for (var i in that.value) {
+            //if (count >= that.limit)
+            //    break;
             var _conf = that.getHasmanyConf(i,that.value[i]);
             that.confViews.push(_conf);
+            //count++;
         }
     },
     data : function () {
@@ -2458,7 +2486,6 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
         d.confViews = [];
         if (!("limit" in _conf) )
             d.limit = 100;
-        d.isHasmany = true;
         return d;
     },
 
@@ -2467,13 +2494,13 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
         getHasmanyConf : function (index,value) {
             var that = this;
             var hmConf = that.hasmanyConf || {};
-
+            var relationConf = that.relationConf || {};
             hmConf = this.confMerge({
                 fields : [],
                 fieldsConfig : {},
                 routeName : null,
                 value : {},
-                metadata : {}
+                metadata : relationConf
             },hmConf);
             hmConf.cRef = 'hm-' + index;
 
@@ -3272,6 +3299,19 @@ crud.components.views.vBase = Vue.component('v-base', {
         },
         getFieldName : function (key) {
             return key;
+        },
+        isHiddenField : function(key) {
+            if (this.fieldsConfig[key]) {
+                var type = this.defaultWidgetType;
+                if (typeof this.fieldsConfig[key] === 'string' || this.fieldsConfig[key] instanceof String)
+                    type = this.fieldsConfig[key];
+                else
+                    type == 'w-hidden';
+
+                if (type == 'w-hidden')
+                    return true;
+            }
+            return false;
         }
     }
 });
@@ -3728,6 +3768,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
                 return true;
             return false;
         },
+
         getOrderConf : function (key) {
             var that = this;
             var translateKey = that.langContext?that.langContext+'.':'';
@@ -4057,7 +4098,7 @@ crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
         var _conf = this._getConf();
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
-        //console.log('VHASMANY TYPE',d);
+        //console.log('VHASMANY CONF',_conf);
         return d;
     },
 
