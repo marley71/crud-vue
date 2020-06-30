@@ -3306,9 +3306,9 @@ crud.components.views.vBase = Vue.component('v-base', {
                 if (typeof this.fieldsConfig[key] === 'string' || this.fieldsConfig[key] instanceof String)
                     type = this.fieldsConfig[key];
                 else
-                    type = 'w-hidden';
+                    type = this.fieldsConfig[key].type?this.fieldsConfig[key].type:type;
 
-                if (type == 'w-hidden')
+                if (type === 'w-hidden')
                     return true;
             }
             return false;
