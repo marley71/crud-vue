@@ -357,7 +357,6 @@
 <template id="w-hasmany-template">
     <div class="card"  >
         <div class="card-body">
-            <!--<input type="hidden" :name="cKey + '_exists'" value="1">-->
             <div class="card">
                 <!--<div class="card-header" crud-hasmany_title>-->
                     <!--{{cConf.metadata.modelName}}-->
@@ -401,9 +400,15 @@
         <div class="list-unstyled" crud-render_list >
 
             <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
-            <ul class="list-unstyled" v-for="(item,index) in value">
-                <li>
-                    <v-hasmany-view v-bind:c-model="cConf.modelName" v-bind:c-conf="getHasmanyConf(index,item)"></v-hasmany-view>
+<!--            <ul class="list-unstyled" v-for="(item,index) in value">-->
+<!--                <li>-->
+<!--                    <v-hasmany-view v-bind:c-model="cConf.modelName" v-bind:c-conf="getHasmanyConf(index,item)"></v-hasmany-view>-->
+
+<!--                </li>-->
+<!--            </ul>-->
+            <ul class="list-unstyled">
+                <li v-for="(item,index) in confViews">
+                    <v-hasmany-view v-bind:c-model="name" v-bind:c-conf="getHasmanyConf(index,item)"></v-hasmany-view>
 
                 </li>
             </ul>
