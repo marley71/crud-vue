@@ -34,7 +34,7 @@ crud.components.views.coreVSearch = Vue.component('core-v-search', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName
+                    modelName : that.modelName
                 });
             }
             return route;

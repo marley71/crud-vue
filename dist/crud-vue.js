@@ -3866,7 +3866,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName
+                    modelName : that.modelName
                 });
                 console.log('setRouteValues',that);
                 if (that.routeConf) {
@@ -4042,8 +4042,8 @@ crud.components.views.coreVEdit = Vue.component('core-v-edit', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName,
-                    pk :that.conf.pk,
+                    modelName : that.modelName,
+                    pk :that.pk,
                 });
             }
             return route;
@@ -4070,8 +4070,8 @@ crud.components.views.coreVView = Vue.component('core-v-view', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName,
-                    pk :that.conf.pk,
+                    modelName : that.modelName,
+                    pk :that.pk,
                 });
             }
             return route;
@@ -4098,7 +4098,7 @@ crud.components.views.coreVInsert = Vue.component('core-v-insert', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName
+                    modelName : that.modelName
                 });
             }
             return route;
@@ -4142,7 +4142,7 @@ crud.components.views.coreVSearch = Vue.component('core-v-search', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName
+                    modelName : that.modelName
                 });
             }
             return route;

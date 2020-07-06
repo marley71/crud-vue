@@ -111,7 +111,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName
+                    modelName : that.modelName
                 });
                 console.log('setRouteValues',that);
                 if (that.routeConf) {

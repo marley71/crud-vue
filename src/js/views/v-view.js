@@ -17,8 +17,8 @@ crud.components.views.coreVView = Vue.component('core-v-view', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName,
-                    pk :that.conf.pk,
+                    modelName : that.modelName,
+                    pk :that.pk,
                 });
             }
             return route;

@@ -17,7 +17,7 @@ crud.components.views.coreVInsert = Vue.component('core-v-insert', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName
+                    modelName : that.modelName
                 });
             }
             return route;

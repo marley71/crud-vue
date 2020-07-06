@@ -16,8 +16,8 @@ crud.components.views.coreVEdit = Vue.component('core-v-edit', {
             var that  = this;
             if (route) {
                 route.setValues({
-                    modelName : that.conf.modelName,
-                    pk :that.conf.pk,
+                    modelName : that.modelName,
+                    pk :that.pk,
                 });
             }
             return route;
