@@ -33,6 +33,30 @@ core_mixin = {
             }
         },
 
+        createModalView : function(viewName,conf,title) {
+            var that = this;
+            var divId = 'd' + (new Date().getTime());
+            //var dialogComp = new that.$crud.components.views[viewName]({
+            var dialogComp = new that.$options.components[viewName]({
+                propsData: conf
+            });
+
+            // creo la dialog custom
+            that.customDialog({
+                cContent: '<div id="' + divId + '"></div>',
+                cTitle: title,
+                //cBig : true,
+                cCallbacks: {
+                    ok: function () {
+                        dialogComp.$destroy();
+                        this.hide();
+                    }
+                }
+            });
+            // visualizzo la view
+            dialogComp.$mount('#' + divId);
+            return dialogComp;
+        },
         _createContainer : function (container) {
             var id= 'd' + (new Date().getTime());
             jQuery(container).append('<div id="'+id+'" ></div>');

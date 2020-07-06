@@ -1,5 +1,5 @@
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cFields','cTargetRef'],
+    props : ['cFields','cTargetRef','cRouteConf'],
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
@@ -53,11 +53,13 @@ crud.components.views.vBase = Vue.component('v-base', {
         }),
     },
     data : function () {
+        console.log('that.cRouteConf',this.cRouteConf);
         return {
             viewTitle : '',
             langContext : '',
             targetRef : this.cTargetRef,
             errorMsg : '',
+            routeConf : this.cRouteConf || null
         }
     },
     methods : {
@@ -153,6 +155,21 @@ crud.components.views.vBase = Vue.component('v-base', {
             d.conf = finalConf;
             //console.log('finalConf',finalConf);
             return d;
+        },
+
+        _loadRouteConf : function() {
+            var that = this;
+            var conf = null;
+            var d = {};
+            console.log('_load routeConf',that.routeConf,'cConf',this.cConf);
+            if (that.routeConf) {
+                if (typeof that.routeConf === 'string' || that.routeConf instanceof String) {
+                    conf = this.getDescendantProp(that.$crud, that.routeConf);
+                }
+                else
+                    conf = that.routeConf;
+            }
+            return conf;
         },
         /**
          * ritorna la configurazione minimale di base di un widget rispettando le priorita' tra le configurazioni

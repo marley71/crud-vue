@@ -746,6 +746,30 @@ core_mixin = {
             }
         },
 
+        createModalView : function(viewName,conf,title) {
+            var that = this;
+            var divId = 'd' + (new Date().getTime());
+            //var dialogComp = new that.$crud.components.views[viewName]({
+            var dialogComp = new that.$options.components[viewName]({
+                propsData: conf
+            });
+
+            // creo la dialog custom
+            that.customDialog({
+                cContent: '<div id="' + divId + '"></div>',
+                cTitle: title,
+                //cBig : true,
+                cCallbacks: {
+                    ok: function () {
+                        dialogComp.$destroy();
+                        this.hide();
+                    }
+                }
+            });
+            // visualizzo la view
+            dialogComp.$mount('#' + divId);
+            return dialogComp;
+        },
         _createContainer : function (container) {
             var id= 'd' + (new Date().getTime());
             jQuery(container).append('<div id="'+id+'" ></div>');
@@ -3110,7 +3134,7 @@ crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
 })
 
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cFields','cTargetRef'],
+    props : ['cFields','cTargetRef','cRouteConf'],
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
@@ -3164,11 +3188,13 @@ crud.components.views.vBase = Vue.component('v-base', {
         }),
     },
     data : function () {
+        console.log('that.cRouteConf',this.cRouteConf);
         return {
             viewTitle : '',
             langContext : '',
             targetRef : this.cTargetRef,
             errorMsg : '',
+            routeConf : this.cRouteConf || null
         }
     },
     methods : {
@@ -3265,6 +3291,21 @@ crud.components.views.vBase = Vue.component('v-base', {
             //console.log('finalConf',finalConf);
             return d;
         },
+
+        _loadRouteConf : function() {
+            var that = this;
+            var conf = null;
+            var d = {};
+            console.log('_load routeConf',that.routeConf,'cConf',this.cConf);
+            if (that.routeConf) {
+                if (typeof that.routeConf === 'string' || that.routeConf instanceof String) {
+                    conf = this.getDescendantProp(that.$crud, that.routeConf);
+                }
+                else
+                    conf = that.routeConf;
+            }
+            return conf;
+        },
         /**
          * ritorna la configurazione minimale di base di un widget rispettando le priorita' tra le configurazioni
          * @param key : nome del campo di cui vogliamo la configurazione
@@ -3321,11 +3362,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
     props : ['cModel','cPk'],
     mounted : function() {
         var that = this;
-        if (that.cModel)
-            that.conf.modelName = that.cModel;
-        if (that.cPk)
-            that.conf.pk = that.cPk;
-
         that.route = that._getRoute();
         that.setRouteValues(that.route);
         that.fetchData(that.route,function (json) {
@@ -3345,14 +3381,15 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     data : function () {
         var that = this;
-        var _conf = that._getConf();
+        var _conf = that._getConf() || {};
         var modelName = that.cModel || _conf.modelName;
         var langContext = _conf.langContext || modelName;
         var d =  {};
 
         d.modelName = modelName;
-        if (that.cPk)
-            d.pk = that.cPk;
+
+        d.pk = that.cPk || 0;
+
         d.value = {};
         d.metadata = {};
         d.langContext = langContext;
@@ -3362,13 +3399,25 @@ crud.components.views.vRecord = Vue.component('v-record', {
         d.actionsClass = [];
         d.actions = {};
         d.defaultWidgetType = 'w-input';
-
+        console.log('d v-record',d);
         return d;
     },
 
     methods : {
 
         setRouteValues : function(route) {
+            var that = this;
+            console.log('setRouteValues',that);
+            if (that.routeConf) {
+                var _conf = that._loadRouteConf();
+                console.log('routeConf params',_conf);
+                var params = route.getParams();
+                var p2 = _conf.params || {};
+                for (var k in p2) {
+                    params[k] = p2[k];
+                }
+                route.setParams(params);
+            }
             return route;
         },
         draw : function() {
@@ -3819,6 +3868,17 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
                 route.setValues({
                     modelName : that.conf.modelName
                 });
+                console.log('setRouteValues',that);
+                if (that.routeConf) {
+                    var _conf = that._loadRouteConf() || {};
+                    console.log('routeConf params',_conf);
+                    var params = route.getParams();
+                    var p2 = _conf.params || {};
+                    for (var k in p2) {
+                        params[k] = p2[k];
+                    }
+                    route.setParams(params);
+                }
             }
             return route;
         }

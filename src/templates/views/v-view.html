@@ -2,17 +2,20 @@
     <div  class="container-fluid">
         <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
-        <div v-else v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
-            <v-widget  :c-widget="widget"></v-widget>
-        </div>
-        <!-- campi nascosti -->
-        <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
-            <v-widget :c-widget="widget" :key="key"></v-widget>
-        </template>
-        <div v-if="actions.length">
-            <template v-for="(action,name) in actionsClass">
-                <v-action :c-action="action"></v-action>
+        <div v-else >
+            <div  v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
+                <v-widget  :c-widget="widget"></v-widget>
+            </div>
+            <!-- campi nascosti -->
+            <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
+                <v-widget :c-widget="widget" :key="key"></v-widget>
             </template>
+            <div v-if="actions.length">
+                <template v-for="(action,name) in actionsClass">
+                    <v-action :c-action="action"></v-action>
+                </template>
+            </div>
         </div>
+
     </div>
 </template>

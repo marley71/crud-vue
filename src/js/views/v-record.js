@@ -3,11 +3,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
     props : ['cModel','cPk'],
     mounted : function() {
         var that = this;
-        if (that.cModel)
-            that.conf.modelName = that.cModel;
-        if (that.cPk)
-            that.conf.pk = that.cPk;
-
         that.route = that._getRoute();
         that.setRouteValues(that.route);
         that.fetchData(that.route,function (json) {
@@ -27,14 +22,15 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     data : function () {
         var that = this;
-        var _conf = that._getConf();
+        var _conf = that._getConf() || {};
         var modelName = that.cModel || _conf.modelName;
         var langContext = _conf.langContext || modelName;
         var d =  {};
 
         d.modelName = modelName;
-        if (that.cPk)
-            d.pk = that.cPk;
+
+        d.pk = that.cPk || 0;
+
         d.value = {};
         d.metadata = {};
         d.langContext = langContext;
@@ -44,13 +40,25 @@ crud.components.views.vRecord = Vue.component('v-record', {
         d.actionsClass = [];
         d.actions = {};
         d.defaultWidgetType = 'w-input';
-
+        console.log('d v-record',d);
         return d;
     },
 
     methods : {
 
         setRouteValues : function(route) {
+            var that = this;
+            console.log('setRouteValues',that);
+            if (that.routeConf) {
+                var _conf = that._loadRouteConf();
+                console.log('routeConf params',_conf);
+                var params = route.getParams();
+                var p2 = _conf.params || {};
+                for (var k in p2) {
+                    params[k] = p2[k];
+                }
+                route.setParams(params);
+            }
             return route;
         },
         draw : function() {

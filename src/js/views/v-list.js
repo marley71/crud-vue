@@ -113,6 +113,17 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
                 route.setValues({
                     modelName : that.conf.modelName
                 });
+                console.log('setRouteValues',that);
+                if (that.routeConf) {
+                    var _conf = that._loadRouteConf() || {};
+                    console.log('routeConf params',_conf);
+                    var params = route.getParams();
+                    var p2 = _conf.params || {};
+                    for (var k in p2) {
+                        params[k] = p2[k];
+                    }
+                    route.setParams(params);
+                }
             }
             return route;
         }
