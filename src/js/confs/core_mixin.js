@@ -461,7 +461,7 @@ core_mixin = {
                 script.src 		= scriptName;
                 script.onload = _callback;
                 script.onerror = function() {
-                    that.log.error("cannot load script " + scriptName);
+                    console.error("cannot load script " + scriptName);
                 }
                 // fire the loading
                 body.appendChild(script);
