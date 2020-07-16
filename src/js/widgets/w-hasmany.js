@@ -23,6 +23,11 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
 
     methods : {
 
+        getView : function(index) {
+            var that = this;
+            var vConf = that.confViews[index];
+            return that.$crud.cRefs[vConf.cRef];
+        },
         getHasmanyConf : function (index,value) {
             var that = this;
             var hmConf = that.hasmanyConf || {};
@@ -34,8 +39,8 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
                 value : {},
                 metadata : relationConf
             },hmConf);
-            hmConf.cRef = 'hm-' + index;
-
+            hmConf.cRef = that.getRefId(that._uid,'hm',index);
+            //alert(hmConf.cRef)
             if (value && Object.keys(value).length > 0) {
                 hmConf.value = value;
                 if (!hmConf.fields || !hmConf.fields.length) {
@@ -63,16 +68,19 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
 
         },
         deleteItem : function (index) {
-            console.log('index',index,this.value[index].status,this.confViews[index],'hm-'+index,this.$crud.cRefs['hm-'+index]);
+            var that = this;
+            var refId = that.getRefId(that._uid,'hm',index);
+            console.log('index',index,this.value[index].status,this.confViews[index],refId,this.$crud.cRefs[refId]);
             if (this.value[index].status == 'new') {
                 this.value.splice(index, 1);
                 this.confViews.splice(index,1);
+                this.$crud.cRefs[refId].$destroy();
             }
             else {
                 //console.log('update status deleted ', index,this.confViews[index].data.value)
                 this.$set(this.value[index], 'status', 'deleted');
                 this.$set(this.confViews[index].value, 'status' , 'deleted');
-                this.$crud.cRefs['hm-'+index].setWidgetValue('status','deleted');
+                this.$crud.cRefs[refId].setWidgetValue('status','deleted');
             }
             this.$forceUpdate();
         },
