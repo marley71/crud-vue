@@ -327,7 +327,7 @@ core_mixin = {
          */
         getAllUrlParams : function (url) {
             var params = {};
-            var tmp = url?url.split('?'):location.search.split("?");
+            var tmp = url?url.split('?'):location.href.split("?");
 
 
             if (tmp.length != 2)
