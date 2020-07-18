@@ -40,12 +40,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
     data : function () {
         var that = this;
+        //var _conf = that._getConf() || {};
         var d =  {};
         if (that.cModel)
             d.modelName = that.cModel;
         d.value = [];
         d.metadata = {};
         d.needSelection = false;
+
         return d;
     },
     methods : {

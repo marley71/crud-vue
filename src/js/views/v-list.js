@@ -2,7 +2,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
     data :  function () {
         var that = this;
-        var _c = that._getConf() || {};
+        var _conf = that._loadConf() || {};
         var dList = {
             loading : true,
             widgets : {},
@@ -19,9 +19,12 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             langContext : that.cModel,
             json : {},
         };
-        if (_c.viewTitle) {
-            dList.viewTitle = _c.viewTitle;
+        if (_conf.viewTitle) {
+            dList.viewTitle = _conf.viewTitle;
         }
+        if (!('paginator' in _conf))
+            dList.paginator = true;
+        console.log('_CONFFFFFF',_conf)
         return dList;
     },
 
