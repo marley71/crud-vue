@@ -6,7 +6,7 @@ crud.components.views.coreVView = Vue.component('core-v-view', {
         }
     },
     data :  function () {
-        var _conf = this._getConf() || {};
+        var _conf = this._loadConf() || {};
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
         return d;

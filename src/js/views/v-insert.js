@@ -6,7 +6,7 @@ crud.components.views.coreVInsert = Vue.component('core-v-insert', {
         }
     },
     data :  function () {
-        var _conf = this._getConf() || {};
+        var _conf = this._loadConf() || {};
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
         return d;

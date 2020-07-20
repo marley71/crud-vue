@@ -24,7 +24,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
         }
         if (!('paginator' in _conf))
             dList.paginator = true;
-        console.log('_CONFFFFFF',_conf)
+        //console.log('_CONFFFFFF',_conf)
         return dList;
     },
 

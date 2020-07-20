@@ -22,14 +22,14 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     data : function () {
         var that = this;
-        var _conf = that._getConf() || {};
+        var _conf = that._loadConf() || {}; //that._getConf() || {};
         var modelName = that.cModel || _conf.modelName;
         var langContext = _conf.langContext || modelName;
         var d =  {};
 
         d.modelName = modelName;
 
-        d.pk = that.cPk || 0;
+        d.pk = that.cPk || _conf.pk || 0;
 
         d.value = {};
         d.metadata = {};

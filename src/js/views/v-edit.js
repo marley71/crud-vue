@@ -6,7 +6,7 @@ crud.components.views.coreVEdit = Vue.component('core-v-edit', {
         }
     },
     data :  function () {
-        var _conf = this._getConf() || {};
+        var _conf = this._loadConf() || {};
         var d = {}
         d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
         return d;

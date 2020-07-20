@@ -3402,14 +3402,14 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     data : function () {
         var that = this;
-        var _conf = that._getConf() || {};
+        var _conf = that._loadConf() || {}; //that._getConf() || {};
         var modelName = that.cModel || _conf.modelName;
         var langContext = _conf.langContext || modelName;
         var d =  {};
 
         d.modelName = modelName;
 
-        d.pk = that.cPk || 0;
+        d.pk = that.cPk || _conf.pk || 0;
 
         d.value = {};
         d.metadata = {};
@@ -3802,7 +3802,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
         }
         if (!('paginator' in _conf))
             dList.paginator = true;
-        console.log('_CONFFFFFF',_conf)
+        //console.log('_CONFFFFFF',_conf)
         return dList;
     },
 
@@ -4058,7 +4058,7 @@ crud.components.views.coreVEdit = Vue.component('core-v-edit', {
         }
     },
     data :  function () {
-        var _conf = this._getConf() || {};
+        var _conf = this._loadConf() || {};
         var d = {}
         d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
         return d;
@@ -4085,7 +4085,7 @@ crud.components.views.coreVView = Vue.component('core-v-view', {
         }
     },
     data :  function () {
-        var _conf = this._getConf() || {};
+        var _conf = this._loadConf() || {};
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
         return d;
@@ -4113,7 +4113,7 @@ crud.components.views.coreVInsert = Vue.component('core-v-insert', {
         }
     },
     data :  function () {
-        var _conf = this._getConf() || {};
+        var _conf = this._loadConf() || {};
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
         return d;
@@ -4142,7 +4142,7 @@ crud.components.views.coreVSearch = Vue.component('core-v-search', {
     },
 
     data :  function () {
-        var _conf = this._getConf() || {};
+        var _conf = this._loadConf() || {};
         var d = {}
         d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
         return d;
@@ -4184,7 +4184,7 @@ crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
         }
     },
     data :  function () {
-        var _conf = this._getConf();
+        var _conf = this._loadConf();
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
         //console.log('VHASMANY CONF',_conf);
@@ -4211,7 +4211,7 @@ crud.components.views.coreVHasmanyView = Vue.component('core-v-hasmany-view', {
     },
     data :  function () {
         //console.log('VHASMANYVIEW',this._getConf())
-        var _conf = this._getConf();
+        var _conf = this._loadConf();
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
         return d;

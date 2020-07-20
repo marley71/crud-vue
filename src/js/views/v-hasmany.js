@@ -6,7 +6,7 @@ crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
         }
     },
     data :  function () {
-        var _conf = this._getConf();
+        var _conf = this._loadConf();
         var d =  {}
         d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
         //console.log('VHASMANY CONF',_conf);
