@@ -580,7 +580,7 @@ const dialogs_mixin = {
             var id= 'd' + (new Date().getTime());
             jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
-            return ;
+            return d;
         },
         errorDialog : function (bodyProps,callbacks) {
             var props = bodyProps;
@@ -596,6 +596,7 @@ const dialogs_mixin = {
             var id= 'd' + (new Date().getTime());
             jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
+            return d;
         },
 
         confirmDialog : function (bodyProps,callbacks) {
@@ -613,6 +614,7 @@ const dialogs_mixin = {
             var id= 'd' + (new Date().getTime());
             jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
+            return d;
         },
 
         warningDialog : function (bodyProps,callbacks) {
@@ -630,6 +632,7 @@ const dialogs_mixin = {
             var id= 'd' + (new Date().getTime());
             jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
+            return d;
         },
 
         customDialog : function (bodyProps,callbacks) {
@@ -654,6 +657,7 @@ const dialogs_mixin = {
             var id= 'd' + (new Date().getTime());
             jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
+            return d;
         },
 
         alert : function (message,classes,time) {
