@@ -1307,14 +1307,27 @@ class ProtocolList extends Protocol {
             total : json.result.total,
 
         }
-        for (var field in json.metadata) {
-            if (json.metadata[field].options)
-                this.metadata[field].domainValues = json.metadata[field].options;
-            if (json.metadata[field].options_order)
-                this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
-            if (this.metadata[field].referred_data)
+        var fieldsMetadata = json.metadata?(json.metadata.fields || {}):{};
+        for (var field in fieldsMetadata) {
+            this.metadata[field] = {};
+            if (fieldsMetadata[field].options)
+                this.metadata[field].domainValues = fieldsMetadata[field].options;
+            if (fieldsMetadata[field].options_order)
+                this.metadata[field].domainValuesOrder = fieldsMetadata[field].options_order;
+            if (fieldsMetadata[field].referred_data)
                 this.metadata[field].referredData = fieldsMetadata[field].referred_data
+            //this.metadata[field].domainValues = json.metadata[field].options?json.metadata[field].options:null;
+            //this.metadata[field].domainValuesOrder = json.metadata[field].options_order?json.metadata[field].options_order:null;
         }
+
+        // for (var field in json.metadata) {
+        //     if (json.metadata[field].options)
+        //         this.metadata[field].domainValues = json.metadata[field].options;
+        //     if (json.metadata[field].options_order)
+        //         this.metadata[field].domainValuesOrder = json.metadata[field].options_order;
+        //     if (this.metadata[field].referred_data)
+        //         this.metadata[field].referredData = fieldsMetadata[field].referred_data
+        // }
 
 
         var relationsMetadata = json.metadata?(json.metadata.relations || {}):{};
