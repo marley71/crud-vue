@@ -222,10 +222,11 @@ crud.actions = {
         text : 'app.salva',
         setRouteValues : function(route) {
             var that = this;
-            if (that.view.cPk) {
+            var pk = that.view.cPk || that.view.pk || 0;
+            if (pk) {
                 route.setValues({
                     modelName: that.view.modelName,
-                    pk : this.view.cPk
+                    pk : pk
                 });
             } else {
                 route.setValues({
@@ -239,7 +240,8 @@ crud.actions = {
             var that = this;
             console.log('action save',this);
             var rName = 'create';
-            if (that.view.cPk)
+            var pk = that.view.cPk || that.view.pk || 0;
+            if (pk)
                 rName = 'update';
             var r = that._getRoute(rName);
             that.setRouteValues(r);
