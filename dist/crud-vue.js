@@ -1040,7 +1040,7 @@ core_mixin = {
          */
         getAllUrlParams : function (url) {
             var params = {};
-            var tmp = url?url.split('?'):location.search.split("?");
+            var tmp = url?url.split('?'):location.href.split("?");
 
 
             if (tmp.length != 2)
@@ -3309,7 +3309,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 d[k] = finalConf[k];
             }
             d.conf = finalConf;
-            //console.log('finalConf',finalConf);
+            console.log('finalConf',finalConf);
             return d;
         },
 
@@ -3605,12 +3605,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
     data : function () {
         var that = this;
+        //var _conf = that._getConf() || {};
         var d =  {};
         if (that.cModel)
             d.modelName = that.cModel;
         d.value = [];
         d.metadata = {};
         d.needSelection = false;
+
         return d;
     },
     methods : {
@@ -3778,7 +3780,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
     data :  function () {
         var that = this;
-        var _c = that._getConf() || {};
+        var _conf = that._loadConf() || {};
         var dList = {
             loading : true,
             widgets : {},
@@ -3795,9 +3797,12 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             langContext : that.cModel,
             json : {},
         };
-        if (_c.viewTitle) {
-            dList.viewTitle = _c.viewTitle;
+        if (_conf.viewTitle) {
+            dList.viewTitle = _conf.viewTitle;
         }
+        if (!('paginator' in _conf))
+            dList.paginator = true;
+        console.log('_CONFFFFFF',_conf)
         return dList;
     },
 

@@ -153,7 +153,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 d[k] = finalConf[k];
             }
             d.conf = finalConf;
-            //console.log('finalConf',finalConf);
+            console.log('finalConf',finalConf);
             return d;
         },
 
