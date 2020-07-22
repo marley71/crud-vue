@@ -3225,6 +3225,18 @@ crud.components.views.vBase = Vue.component('v-base', {
         }
     },
     methods : {
+        reload : function () {
+            var that = this;
+            that.loading = true;
+            that.setRouteValues(that.route);
+            that.fetchData(that.route,function (json) {
+                that.fillData(that.route,json);
+                that.draw();
+                //that.loading = false;
+            });
+        },
+
+
         // evento chiamato quando la view ha caricato i dati e disegnato tutti i controlli e azioni
         completed : function() {
 
@@ -3431,6 +3443,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
     },
 
     methods : {
+
 
         setRouteValues : function(route) {
             var that = this;
@@ -3868,15 +3881,15 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             conf.view = that;
             return conf;
         },
-        reload : function () {
-            var that = this;
-            that.loading = true;
-            that.fetchData(that.route,function (json) {
-                that.fillData(that.route,json);
-                that.draw();
-                //that.loading = false;
-            });
-        },
+        // reload : function () {
+        //     var that = this;
+        //     that.loading = true;
+        //     that.fetchData(that.route,function (json) {
+        //         that.fillData(that.route,json);
+        //         that.draw();
+        //         //that.loading = false;
+        //     });
+        // },
         selectAllRows : function () {
             var that = this;
             var sel = that.jQe('[c-row-check-all]').prop('checked');
@@ -4045,15 +4058,15 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             return this.$crud.cRefs[wConf.cRef];
         },
     },
-    watch : {
-        routeConf : {
-            deep : true,
-            handler() {
-                this.reload();
-
-            }
-        }
-    }
+    // watch : {
+    //     routeConf : {
+    //         deep : true,
+    //         handler() {
+    //             this.reload();
+    //
+    //         }
+    //     }
+    // }
 });
 
 crud.components.views.coreVEdit = Vue.component('core-v-edit', {

@@ -46,6 +46,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     methods : {
 
+
         setRouteValues : function(route) {
             var that = this;
             console.log('setRouteValues',that);

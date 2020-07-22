@@ -63,6 +63,18 @@ crud.components.views.vBase = Vue.component('v-base', {
         }
     },
     methods : {
+        reload : function () {
+            var that = this;
+            that.loading = true;
+            that.setRouteValues(that.route);
+            that.fetchData(that.route,function (json) {
+                that.fillData(that.route,json);
+                that.draw();
+                //that.loading = false;
+            });
+        },
+
+
         // evento chiamato quando la view ha caricato i dati e disegnato tutti i controlli e azioni
         completed : function() {
 

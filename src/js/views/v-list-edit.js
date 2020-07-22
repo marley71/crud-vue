@@ -117,13 +117,13 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             return this.$crud.cRefs[wConf.cRef];
         },
     },
-    watch : {
-        routeConf : {
-            deep : true,
-            handler() {
-                this.reload();
-
-            }
-        }
-    }
+    // watch : {
+    //     routeConf : {
+    //         deep : true,
+    //         handler() {
+    //             this.reload();
+    //
+    //         }
+    //     }
+    // }
 });
