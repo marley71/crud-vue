@@ -40,14 +40,15 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
 
         createWidgetsEdit : function () {
             var that = this;
+            that.setKeys();
             //console.log('Vlist-create widgets',that.data);
             var widgetsEdit = [];
             //var data = that.data;
-            var keys = that.keys;
+            //var keys = that.getKeys();
             for (var i in that.value) {
                 widgetsEdit.push({});
                 for (var k in that.keys) {
-                    var key = keys[k];
+                    var key = that.keys[k];
                     var dconf = that._defaultWidgetConfig(key,'fieldsConfigEditMode');
                     // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
                     if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])

@@ -73,13 +73,21 @@ function Route(conf) {
     }
     /**
      * ritorna tutti parametri passati in get o post in base al tipo di metodo della route
-     * mergiando i parametri presenti in params e extra_params
+     * mergiando i parametri presenti in params e commonParams
      * @returns {*}
      */
     this.getParams = function() {
         var that = this;
         return jQuery.extend(routeConf.params,routeConf.commonParams);
     };
+
+    this.getParam = function (key) {
+        return routeConf.params[key];
+    }
+
+    this.getCommonParam = function (key) {
+        return routeConf.commonParams[key];
+    }
 
     /**
      * setta  parametri passati in get o post in base al tipo di metodo della route
@@ -93,9 +101,18 @@ function Route(conf) {
         }
     };
 
+    this.setParam = function (key,value) {
+        routeConf.params[key] = value;
+    }
+
+    this.setCommonParam = function (key,value) {
+        routeConf.commonParams[key] = value;
+    }
+
     this.getValues  = function() {
         return routeConf.values;
     }
+    
     this.setValues = function(values) {
         for (var k in values) {
             routeConf.values[k] = values[k];

@@ -17,7 +17,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
         that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
-            that.keys = that.getKeys();
+            //that.keys = that.getKeys();
             that.draw();
         });
     },
@@ -73,18 +73,19 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         },
         createWidgets : function () {
             var that = this;
+            that.setKeys();
             //console.log('Vlist-create widgets',that.data);
             var widgets = [];
             //var recordActions = that.recordActions;
             //var recordActionsName = that.recordActionsName;
             var value = that.value;
-            var keys = that.keys;
+            //var keys = that.getKeys();
             //console.log('keys',keys,value);
             for (var i in value) {
                 widgets.push({});
                 //recordActions.push({});
-                for (var k in keys) {
-                    var key = keys[k];
+                for (var k in that.keys) {
+                    var key = that.keys[k];
                     var dconf = that._defaultWidgetConfig(key);
                     dconf.cRef = that.getRefId(that._uid,'r',i,key);
                     dconf.modelData = value[i];
@@ -103,7 +104,11 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.widgets = widgets;
             //that.recordActionsName = recordActionsName;
         },
-        getKeys : function () {
+        /**
+         * valorizza i campi correnti calcolandoli o dai dati o dalla configurazione nella proprietà fields.
+         * il risulato viene memorizzato in keys
+         */
+        setKeys : function () {
             var that = this;
             var keys = [];
             if (that.conf.fields && that.conf.fields.length > 0)
@@ -113,7 +118,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             }
             if (keys.length == 0 && that.value.length)
                 keys =Object.keys(that.value[0]);
-            return keys;
+            that.keys = keys;
         },
         getWidget : function (row,key) {
             var wConf =  this.widgets[row][key];
