@@ -132,7 +132,8 @@ crud.actions = {
                             that.errorDialog(json.msg);
                             return ;
                         }
-                        that.alertSuccess('app.cancellazione-successo')
+                        var msg = json.msg?json.msg:that.translate('app.cancellazione-successo');
+                        that.alertSuccess(msg);
                         that.view.reload();
                     });
                 }
@@ -172,7 +173,8 @@ crud.actions = {
                     that.errorDialog(json.msg);
                     return;
                 }
-                that.alertSuccess(that.translate('app.salvataggio-ok'))
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.alertSuccess(msg);
                 that.view.reload();
             })
             console.log('values', values);
@@ -250,7 +252,8 @@ crud.actions = {
                     that.errorDialog(json.msg)
                     return ;
                 }
-                that.alertSuccess('app.salvataggio-ok');
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.alertSuccess(msg);
                 callback();
             })
         }

@@ -38,7 +38,7 @@ crud.lang = {
     'app.si' : 'Si',
     'app.vista' : 'Vista',
 };
-
+ 
 crud.icons = {
     mimetypes: {
         "default": 'fa fa-file-o',
@@ -132,7 +132,8 @@ crud.actions = {
                             that.errorDialog(json.msg);
                             return ;
                         }
-                        that.alertSuccess('app.cancellazione-successo')
+                        var msg = json.msg?json.msg:that.translate('app.cancellazione-successo');
+                        that.alertSuccess(msg);
                         that.view.reload();
                     });
                 }
@@ -172,7 +173,8 @@ crud.actions = {
                     that.errorDialog(json.msg);
                     return;
                 }
-                that.alertSuccess(that.translate('app.salvataggio-ok'))
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.alertSuccess(msg);
                 that.view.reload();
             })
             console.log('values', values);
@@ -250,7 +252,8 @@ crud.actions = {
                     that.errorDialog(json.msg)
                     return ;
                 }
-                that.alertSuccess('app.salvataggio-ok');
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.alertSuccess(msg);
                 callback();
             })
         }
@@ -1474,7 +1477,7 @@ function Route(conf) {
     this.getValues  = function() {
         return routeConf.values;
     }
-    
+
     this.setValues = function(values) {
         for (var k in values) {
             routeConf.values[k] = values[k];

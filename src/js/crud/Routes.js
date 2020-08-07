@@ -112,7 +112,7 @@ function Route(conf) {
     this.getValues  = function() {
         return routeConf.values;
     }
-    
+
     this.setValues = function(values) {
         for (var k in values) {
             routeConf.values[k] = values[k];
