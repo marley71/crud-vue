@@ -111,6 +111,7 @@ crud.components.actions.coreActionBase = Vue.component('crud-action-base', {
             target: '_self',
             needSelection  : false,
             view : null,
+            alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
         };
         if (!('view' in adata) )
             adata.view = that.$parent;

@@ -38,7 +38,7 @@ crud.lang = {
     'app.si' : 'Si',
     'app.vista' : 'Vista',
 };
- 
+
 crud.icons = {
     mimetypes: {
         "default": 'fa fa-file-o',
@@ -174,7 +174,7 @@ crud.actions = {
                     return;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.alertSuccess(msg);
+                that.alertSuccess(msg,that.alertTime);
                 that.view.reload();
             })
             console.log('values', values);
@@ -253,7 +253,7 @@ crud.actions = {
                     return ;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.alertSuccess(msg);
+                that.alertSuccess(msg,that.alertTime);
                 callback();
             })
         }
@@ -1826,6 +1826,7 @@ crud.components.actions.coreActionBase = Vue.component('crud-action-base', {
             target: '_self',
             needSelection  : false,
             view : null,
+            alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
         };
         if (!('view' in adata) )
             adata.view = that.$parent;

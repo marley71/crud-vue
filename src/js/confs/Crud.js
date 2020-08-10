@@ -174,7 +174,7 @@ crud.actions = {
                     return;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.alertSuccess(msg);
+                that.alertSuccess(msg,that.alertTime);
                 that.view.reload();
             })
             console.log('values', values);
@@ -253,7 +253,7 @@ crud.actions = {
                     return ;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.alertSuccess(msg);
+                that.alertSuccess(msg,that.alertTime);
                 callback();
             })
         }
