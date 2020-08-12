@@ -3592,11 +3592,19 @@ crud.components.views.vRecord = Vue.component('v-record', {
         },
         getWidget : function (key) {
             var rConf = this.widgets[key];
+            if (!rConf) {
+                console.warn('attenzione widget non trovato key ' + key);
+                return null;
+            }
             //console.log('getWidget',key,rConf);
             return this.$crud.cRefs[rConf.cRef];
         },
         getAction : function (name) {
             var rConf = this.actionsClass[name];
+            if (!rConf) {
+                console.warn('attenzione action non trovata nome ' + name);
+                return null;
+            }
             //console.log('getAction',name,rConf);
             return this.$crud.cRefs[rConf.cRef];
         }
@@ -3727,15 +3735,27 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         },
         getWidget : function (row,key) {
             var wConf =  this.widgets[row][key];
+            if (!wConf) {
+                console.warn('attenzione widget non trovato per riga ' + row +  " key " + key);
+                return null;
+            }
             return this.$crud.cRefs[wConf.cRef];
         },
 
         getRecordAction : function(row,actionName) {
             var aConf = this.recordActions[row][actionName];
+            if (!aConf) {
+                console.warn('attenzione recordAction non trovata per riga ' + row +  " nome " + actionName);
+                return null;
+            }
             return this.$crud.cRefs[aConf.cRef];
         },
         getCollectionAction : function(actionName) {
             var aConf = this.collectionActions[actionName];
+            if (!aConf) {
+                console.warn('attenzione action non trovata nome ' + actionName);
+                return null;
+            }
             return this.$crud.cRefs[aConf.cRef];
         },
         createActions : function () {

@@ -173,11 +173,19 @@ crud.components.views.vRecord = Vue.component('v-record', {
         },
         getWidget : function (key) {
             var rConf = this.widgets[key];
+            if (!rConf) {
+                console.warn('attenzione widget non trovato key ' + key);
+                return null;
+            }
             //console.log('getWidget',key,rConf);
             return this.$crud.cRefs[rConf.cRef];
         },
         getAction : function (name) {
             var rConf = this.actionsClass[name];
+            if (!rConf) {
+                console.warn('attenzione action non trovata nome ' + name);
+                return null;
+            }
             //console.log('getAction',name,rConf);
             return this.$crud.cRefs[rConf.cRef];
         }

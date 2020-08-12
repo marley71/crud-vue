@@ -122,15 +122,27 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         },
         getWidget : function (row,key) {
             var wConf =  this.widgets[row][key];
+            if (!wConf) {
+                console.warn('attenzione widget non trovato per riga ' + row +  " key " + key);
+                return null;
+            }
             return this.$crud.cRefs[wConf.cRef];
         },
 
         getRecordAction : function(row,actionName) {
             var aConf = this.recordActions[row][actionName];
+            if (!aConf) {
+                console.warn('attenzione recordAction non trovata per riga ' + row +  " nome " + actionName);
+                return null;
+            }
             return this.$crud.cRefs[aConf.cRef];
         },
         getCollectionAction : function(actionName) {
             var aConf = this.collectionActions[actionName];
+            if (!aConf) {
+                console.warn('attenzione action non trovata nome ' + actionName);
+                return null;
+            }
             return this.$crud.cRefs[aConf.cRef];
         },
         createActions : function () {
