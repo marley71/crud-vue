@@ -2534,13 +2534,9 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     extends : crud.components.widgets.wBase,
     mounted : function() {
         var that = this;
-        //var count = 0;
         for (var i in that.value) {
-            //if (count >= that.limit)
-            //    break;
             var _conf = that.getHasmanyConf(i,that.value[i]);
             that.confViews.push(_conf);
-            //count++;
         }
     },
     data : function () {
@@ -2554,10 +2550,16 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     },
 
     methods : {
-
+        /**
+         * ritorna la subview associata hai campi dell'hasmany
+         * @param index: indice della view richiesta
+         * @return {null|*}
+         */
         getView : function(index) {
             var that = this;
             var vConf = that.confViews[index];
+            if (!vConf)
+                return null;
             return that.$crud.cRefs[vConf.cRef];
         },
         getHasmanyConf : function (index,value) {
@@ -3459,6 +3461,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
         d.actionsClass = [];
         d.actions = {};
         d.defaultWidgetType = 'w-input';
+        d.fields = _conf.fields || [];
+        d.fieldsConfig = _conf.fieldsConfig || {};
         console.log('d v-record',d);
         return d;
     },
@@ -3501,7 +3505,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
         createWidgets : function() {
             var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
+            var keys = (that.fields && that.fields.length > 0)?that.fields:Object.keys(that.value);
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
@@ -3724,8 +3728,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         setKeys : function () {
             var that = this;
             var keys = [];
-            if (that.conf.fields && that.conf.fields.length > 0)
-                keys = that.conf.fields;
+            if (that.fields && that.fields.length > 0)
+                keys = that.fields;
             if (that.cFields) {
                 keys = that.cFields.split(',');
             }
@@ -4038,7 +4042,7 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
                     var key = that.keys[k];
                     var dconf = that._defaultWidgetConfig(key,'fieldsConfigEditMode');
                     // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
-                    if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
+                    if (!that.fieldsConfigEditMode || !that.fieldsConfigEditMode[key])
                         dconf.type = 'w-input';
                     dconf.cRef = that.getRefId(that._uid,'redit',i,key);
                     dconf.modelData = that.value[i];

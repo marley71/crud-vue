@@ -40,6 +40,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
         d.actionsClass = [];
         d.actions = {};
         d.defaultWidgetType = 'w-input';
+        d.fields = _conf.fields || [];
+        d.fieldsConfig = _conf.fieldsConfig || {};
         console.log('d v-record',d);
         return d;
     },
@@ -82,7 +84,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
         createWidgets : function() {
             var that = this;
-            var keys = (that.conf.fields && that.conf.fields.length > 0)?that.conf.fields:Object.keys(that.value);
+            var keys = (that.fields && that.fields.length > 0)?that.fields:Object.keys(that.value);
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];

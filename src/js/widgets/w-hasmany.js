@@ -2,13 +2,9 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     extends : crud.components.widgets.wBase,
     mounted : function() {
         var that = this;
-        //var count = 0;
         for (var i in that.value) {
-            //if (count >= that.limit)
-            //    break;
             var _conf = that.getHasmanyConf(i,that.value[i]);
             that.confViews.push(_conf);
-            //count++;
         }
     },
     data : function () {
@@ -22,10 +18,16 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     },
 
     methods : {
-
+        /**
+         * ritorna la subview associata hai campi dell'hasmany
+         * @param index: indice della view richiesta
+         * @return {null|*}
+         */
         getView : function(index) {
             var that = this;
             var vConf = that.confViews[index];
+            if (!vConf)
+                return null;
             return that.$crud.cRefs[vConf.cRef];
         },
         getHasmanyConf : function (index,value) {

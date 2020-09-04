@@ -111,8 +111,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         setKeys : function () {
             var that = this;
             var keys = [];
-            if (that.conf.fields && that.conf.fields.length > 0)
-                keys = that.conf.fields;
+            if (that.fields && that.fields.length > 0)
+                keys = that.fields;
             if (that.cFields) {
                 keys = that.cFields.split(',');
             }

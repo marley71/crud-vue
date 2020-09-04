@@ -51,7 +51,7 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
                     var key = that.keys[k];
                     var dconf = that._defaultWidgetConfig(key,'fieldsConfigEditMode');
                     // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
-                    if (!that.conf.fieldsConfigEditMode || !that.conf.fieldsConfigEditMode[key])
+                    if (!that.fieldsConfigEditMode || !that.fieldsConfigEditMode[key])
                         dconf.type = 'w-input';
                     dconf.cRef = that.getRefId(that._uid,'redit',i,key);
                     dconf.modelData = that.value[i];
