@@ -3382,7 +3382,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 value : null,
             };
             configName = configName?configName:'fieldsConfig';
-            var conf = (that.conf[configName] && that.conf[configName][key])?that.conf[configName][key]:null;
+            var conf = (that[configName] && that[configName][key])?that[configName][key]:null;
             //console.log('CONF',key,conf,configName,that.conf[configName]);
             if (conf) {
                 // in caso di stringa lo considero come il type del render
@@ -3394,7 +3394,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
 
             if (!c.template)
-                c.template = that.conf.widgetTemplate;
+                c.template = that.widgetTemplate;
             c = this.merge( c ,(that.metadata[key] || {}));
             //console.log('that.metadata',that.metadata);
             //console.log('_defaultWidgetConfig',key,c,that.conf[configName][key]);
@@ -3883,7 +3883,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             var that = this;
             //var value = {};
             if (!route) {
-                console.log('dati manuali',that.conf.data);
+                console.log('dati manuali',that.conf.value);
                 if (that.conf.value) {
                     that.value = that.conf.value;
                     that.pagination = that.conf.pagination || {};

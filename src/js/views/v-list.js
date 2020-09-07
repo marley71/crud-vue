@@ -36,7 +36,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             var that = this;
             //var value = {};
             if (!route) {
-                console.log('dati manuali',that.conf.data);
+                console.log('dati manuali',that.conf.value);
                 if (that.conf.value) {
                     that.value = that.conf.value;
                     that.pagination = that.conf.pagination || {};
