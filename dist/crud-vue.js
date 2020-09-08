@@ -1114,7 +1114,7 @@ core_mixin = {
             //console.log('App.loadResourece',fileName)
             var _callback = callback?callback:function () {};
             if (!fileName) {
-                that.log.warn('App.loadResorce fileName non definito!');
+                console.warn('App.loadResorce fileName non definito!');
                 _callback();
                 return ;
             }
