@@ -1,0 +1,12 @@
+<template  id="w-input-helped-template">
+    <div >
+        <input v-bind:readonly="!customValue"
+               class="form-control" type="text" name="getFieldName()" v-model="value"
+               v-bind:c-marker="cMarker" v-on:change="change" >
+        <div>
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <button v-for="dVal in domainValuesOrder" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{domainValues[dVal]}}</button>
+            </div>
+        </div>
+    </div>
+</template>

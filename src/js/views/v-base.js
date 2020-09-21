@@ -1,137 +1,95 @@
-Vue.component('v-action', {
-    extends : crud.components.cComponent,
-    props : ['cName','cAction'],
-    data : function () {
-        var that = this;
-        //console.log('v-action',this.cKey,this.cAction);
-        var aConf =  {
-            name: 'action-base',
-            conf: {},
-        }
-        if (this.cAction) {
-            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
-            aConf =  {
-                name : this.cName,
-                conf : this.cAction
-            }
-        } else {
-            console.warn('configurazione azione non valida', this.cName, this.cAction);
-        }
-        aConf.conf.view = that.$parent;
-        console.log('v-action create',aConf);
-        return aConf;
-    },
-    template : '<component :is="name" :c-conf="conf"></component>'
-})
-
-Vue.component('v-render', {
-    extends : crud.components.cComponent,
-    props : ['cKey','cRender'],
-    // When the bound element is inserted into the DOM...
-    mounted: function () {
-        //console.log('v-render',this.cConf);
-    },
-    data : function() {
-        if (this.cKey) {
-            var ckeys = this.cKey.split(',');
-            var render = null;
-            for (var i in ckeys) {
-                render = this.$parent.renders[ckeys[i]];
-            }
-            //var render = this.$parent.renders[this.cKey];
-            console.log('key',ckeys,'V-RENDER ',render,this.$parent.renders);
-            return {
-                type : render.type,
-                conf : render
-            }
-        }
-
-        if (this.cRender) {
-            //console.log('V-RENDER2 ',this.cRender,this.$parent.renders);
-            return {
-                type : this.cRender.type,
-                conf : this.cRender
-            }
-        }
-        console.warn('configurazione non valida',this.cKey,this.cRender);
-        return {
-            type : 'r-text',
-            conf : {},
-        }
-
-    },
-    template : '<component :is="type" :c-conf="conf"></component>'
-})
-
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cConf','cFields'],
+    props : ['cFields','cTargetRef','cRouteConf'],
     extends : crud.components.cComponent,
-    // created : function() {
-    //     var that = this;
-    //     var _conf = that.getConf(that.cConf) || {};
-    //     for (var k in _conf.methods) {
-    //         console.log('v-base implements methods',k);
-    //         that[k] = function () {
-    //             var arguments = this.arguments;
-    //             console.log('arguments');
-    //             _conf.methods[k].apply(that,arguments);
-    //         }
-    //     }
-    // },
-    data : function () {
-        return this.defaultData();
-    },
-    mounted : function() {
-        var that = this;
-        //var methods = that.conf?that.conf.methods:{};
-        // for (var k in methods) {
-        //     console.log('v-base implements methods',k);
-        //     that.methods[k] = function () {
-        //         methods.apply(that,this.arguments);
-        //     }
-        // }
-        var __call = function (lk) {
-            that[lk] = function () {
-                var localk = new String(lk);
-                //var arguments = this.arguments;
-                console.log(localk,'arguments',arguments);
-                return that.conf.methods[localk].apply(that,arguments);
-            }
-        }
-        for (var k in that.conf.methods) {
-            //console.log('v-base implements methods',k);
-            __call(k);
-            // that[k] = function () {
-            //     var localk = new String(k);
-            //     //var arguments = this.arguments;
-            //     console.log(localk,'arguments',arguments);
-            //     return that.conf.methods[k].apply(that,arguments);
-            // }
-        }
+    components : {
+        vAction : Vue.component('v-action', {
+            props: ['cAction'],
+            data: function () {
+                var that = this;
+                var aConf = {};
+                if (that.cAction) {
+                    //console.log('V-RENDER2 ',this.cRender,this.$parent.widgets);
+                    aConf = {
+                        name: that.cAction.name,
+                        conf: that.cAction
+                    }
+                } else {
+                    console.warn('configurazione azione non valida', this.cAction);
+                }
+                //console.log('v-action create', aConf);
+                return aConf;
+            },
+            template: '<component :is="name" :c-conf="conf"></component>'
+        }),
+        vWidget : Vue.component('v-widget', {
+            props : ['cWidget'],
+            data : function() {
+                if (this.cWidget) {
+                    var conf = null;
+                    if (typeof this.cWidget === 'string' || this.cWidget instanceof String) {
+                        conf = this.getDescendantProp(window, this.cWidget);
+                        if (!conf) {
+                            conf = this.getDescendantProp(this.$crud.conf, this.cWidget);
+                        }
+                    } else
+                        conf = this.cWidget;
 
-        if ( that.conf.mounted ) {
-            that.conf.mounted.apply(that);
+                    //console.log('cWidget ',conf);
+                    return {
+                        cTemplate : conf.template,
+                        conf : conf
+                    }
+                }
+                console.warn('configurazione non valida',this.cWidget);
+                return {
+                    cTemplate : 'tpl-no',
+                    conf : {
+                        type : 'w-text'
+                    },
+                }
+
+            },
+            template : '<component :is="cTemplate" :c-widget="conf"></component>'
+        }),
+    },
+    data : function () {
+        console.log('that.cRouteConf',this.cRouteConf);
+        return {
+            viewTitle : '',
+            langContext : '',
+            targetRef : this.cTargetRef,
+            errorMsg : '',
+            routeConf : this.cRouteConf || null
         }
     },
     methods : {
-        defaultData : function () {
-            var _c = this.cConf || {};
-            return {
-                viewTitle : '',
-                conf : _c,
-            }
+        reload : function () {
+            var that = this;
+            that.loading = true;
+            that.setRouteValues(that.route);
+            that.fetchData(that.route,function (json) {
+                that.fillData(that.route,json);
+                that.draw();
+                //that.loading = false;
+            });
         },
 
+
+        // evento chiamato quando la view ha caricato i dati e disegnato tutti i controlli e azioni
+        completed : function() {
+
+        },
         fetchData: function (route,callback) {
             var that = this;
-            console.log('fetchData',route);
             if (!route) {
                 callback({});
                 return;
             }
+            //console.log('fetchData',route.getConf());
             Server.route(route,function (json) {
                 if (json.error) {
-                    that.$crud.errorDialog(json.msg);
+                    that.errorDialog(json.msg);
+                    that.errorMsg = json.msg;
                     return
                 }
                 callback(json);
@@ -139,120 +97,139 @@ crud.components.views.vBase = Vue.component('v-base', {
         },
         getActionConfig : function(name,type) {
             //console.log('v-base.getActionConfig',name,type,this.conf);
-            if (this.conf.customActions[name]) {
-                var aConf = {}
-                if (!this.$options.components[name]) {
-                    //console.log('estendo azioni ',name);
-                    Vue.component(name, {
-                        extends : actionBase
-                    });
-                } else {
-                    aConf = this.$crud.recordActions[name]?this.$crud.recordActions[name]:(this.$crud.globalActions[name]?this.$crud.globalActions[name]:{})
-                }
-                aConf = Utility.merge(aConf,this.conf.customActions[name]);
-                //console.log('CUSTOM',name,aConf);
-                return aConf;
+            // se non esiste il componente di azione lo creo al volo
+            if (!this.$options.components[name]) {
+                //console.log('estendo azioni ',name);
+                Vue.component(name, {
+                    extends : crud.components.actions.actionBase
+                });
             }
-            if (type == 'record') {
-                if (this.$crud.recordActions[name]) {
-                    return Utility.cloneObj(this.$crud.recordActions[name]);
-                } else
-                    throw "Azione " + name +  " di tipo record non trovata nelle azioni generali";
-            }
-            if (type == 'global') {
-                if (this.$crud.globalActions[name]) {
-                    return Utility.cloneObj(this.$crud.globalActions[name]);
-                } else
-                    throw "Azione " + name +  " di tipo global non trovata nelle azioni generali";
-            }
-            throw "tipo azione type " + type +  " con nome " + name + " non trovata!";
-        },
-        /**
-         * prende la configurazione assegnata alla view
-         * @param modelName
-         * @param type
-         */
-        getConf : function (modelName,type) {
-            var conf = null;
-            var defaltConf = this.$crud.conf[type];
 
+
+            var aConf = this.$crud.actions[name] || {};
+            var customConf = this.conf.customActions[name] || {};
+
+            aConf = this.merge(aConf,customConf);
+
+            //console.log('getActionConfig',aConf);
+            return aConf;
+        },
+
+        _loadConf : function() {
+            var that = this;
+            var conf = null;
+            var d = {};
+            var type = that.cType;
+            var modelName = that.cModel;
+            var defaultConf = this.$crud.conf[type];
+            console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
             if (this.cConf) {
-                if (typeof this.cConf === 'string' || this.cConf instanceof String)
-                    conf = window[this.cConf]?window[this.cConf]:(this.$crud.conf[this.cConf]?this.$crud.conf[this.cConf]:null);
+                if (typeof this.cConf === 'string' || this.cConf instanceof String) {
+                    conf = this.getDescendantProp(window, this.cConf);
+                    if (!conf) {
+                        conf = this.getDescendantProp(this.$crud.conf, this.cConf);
+                    }
+                }
                 else
                     conf = this.cConf;
             } else {
-                if (window['Model'+Utility.upperCaseFirst(modelName)]) {
-                    var cm = window['Model'+Utility.upperCaseFirst(modelName)];
+                console.log('Check exist default conf '+ 'Model'+this.pascalCase(modelName));
+                if (window['Model'+this.pascalCase(modelName)]) {
+                    var cm = window['Model'+this.pascalCase(modelName)];
                     if (cm[type])
                         conf = cm[type];
-                    if (type == 'insert' && cm['edit'])
-                        conf = cm['edit'];
+                    else {
+                        if (type == 'insert' && cm['edit'])
+                            conf = cm['edit'];
+                        else {
+                            conf = this.$crud.conf[type];
+                        }
+                    }
+
+                } else {
+                    //onsole.log('get default crud conf ',type)
+                    conf = this.$crud.conf[type];
                 }
             }
-            if (!conf && !defaltConf)
+            if (!conf) {
+                console.trace();
                 throw "Nessuna configurazione trovata per questa view";
+            }
+            //console.log('merge confs',defaultConf,conf);
+            var finalConf = this.confMerge(defaultConf,conf);
 
-            var finalConf = Utility.confMerge(defaltConf,conf);
-            console.log('viewConf',finalConf,defaltConf,conf);
-            return finalConf;
+            for (var k in finalConf) {
+                if (k == 'methods')
+                    continue;
+                d[k] = finalConf[k];
+            }
+            d.conf = finalConf;
+            console.log('finalConf',finalConf);
+            return d;
         },
 
-        _getRoute : function (values) {
+        _loadRouteConf : function() {
             var that = this;
-            var route = null;
-            console.log('_getRoute',that.conf);
-            if (!that.conf)
-                return null;
-            if (that.conf.routeName == null)
-                return null;
-            if (!that.route) {
-                if (crud.routes[that.conf.routeName]) {
-                    route =  new Route(crud.routes[that.conf.routeName]);
-                } else {
-                    route = Route.factory(that.conf.routeName);
+            var conf = null;
+            var d = {};
+            console.log('_load routeConf',that.routeConf,'cConf',this.cConf);
+            if (that.routeConf) {
+                if (typeof that.routeConf === 'string' || that.routeConf instanceof String) {
+                    conf = this.getDescendantProp(that.$crud, that.routeConf);
                 }
-                route.fillValues(that.conf);
-                console.log('ROUTEN ',route.values);
-                //route.values = values;
+                else
+                    conf = that.routeConf;
             }
-            // if (!that.route)
-            //     route = Route.factory(that.conf.routeName);
-            // route.values = values;
-            return route;
+            return conf;
         },
         /**
-         * ritorna la configurazione minimale di un render rispettando le priorita' tra le configurazioni
-         * @param key
+         * ritorna la configurazione minimale di base di un widget rispettando le priorita' tra le configurazioni
+         * @param key : nome del campo di cui vogliamo la configurazione
+         * @param confiName : nome variabile configurazione nell'oggetto conf. opzionale
          * @returns {{type: *}}
          * @private
          */
-        _defaultRenderConfig : function(key) {
+        _defaultWidgetConfig : function(key,configName) {
             var that = this;
             var c = {
-                type:that.defaultRenderType,
+                type:that.defaultWidgetType,
                 value : null,
-                operator : null,
             };
-            if (that.conf.fieldsConfig[key]) {
+            configName = configName?configName:'fieldsConfig';
+            var conf = (that[configName] && that[configName][key])?that[configName][key]:null;
+            //console.log('CONF',key,conf,configName,that.conf[configName]);
+            if (conf) {
                 // in caso di stringa lo considero come il type del render
-                if (typeof that.conf.fieldsConfig[key] === 'string' || that.conf.fieldsConfig[key] instanceof String) {
-                    c.type = that.conf.fieldsConfig[key];
+                if (typeof conf === 'string' || conf instanceof String) {
+                    c.type = conf;
                 } else {
-                    c = Utility.merge(c,that.conf.fieldsConfig[key]);
+                    c = this.merge(c,conf);
                 }
             }
 
             if (!c.template)
-                c.template = that.conf.renderTemplate;
-            c.metadata = Utility.merge( (c.metadata || {}),(that.data.metadata[key] || {}));
-
+                c.template = that.widgetTemplate;
+            c = this.merge( c ,(that.metadata[key] || {}));
+            //console.log('that.metadata',that.metadata);
+            //console.log('_defaultWidgetConfig',key,c,that.conf[configName][key]);
             return c;
         },
         getFieldName : function (key) {
             return key;
+        },
+        isHiddenField : function(key) {
+            var type = this.defaultWidgetType;
+            if (this.fieldsConfig[key]) {
+                if (typeof this.fieldsConfig[key] === 'string' || this.fieldsConfig[key] instanceof String)
+                    type = this.fieldsConfig[key];
+                else
+                    type = this.fieldsConfig[key].type?this.fieldsConfig[key].type:type;
+
+                if (type === 'w-hidden')
+                    return true;
+            }
+            return false;
         }
-    },
-    template : '<div>view base</div>'
+    }
 });

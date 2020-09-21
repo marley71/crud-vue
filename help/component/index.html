@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Component - CRUD-VUE</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Component";
+    var mkdocs_page_input_path = "component.md";
+    var mkdocs_page_url = "/component/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CRUD-VUE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Component</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#c-component">c-component</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#proprieta">Proprietà</a></li>
+        
+            <li><a class="toctree-l3" href="#metodi">Metodi</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../widgets/">Widgets</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../views/">Views</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../templates/">Templates</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../actions/">Actions</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../confs/">Confs</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../routes/">Routes</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../server/">Server</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../app/">App</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dashboards/">Dashboards</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../protocollo_dati/">Protocols</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../esempi_views/">Esempi Views</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CRUD-VUE</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Component</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/marley71/crud#root/docs/component.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="c-component">c-component</h1>
+<p>La classe principale di tutte le componenti grafiche è <code>c-component</code>, definisce il comportamento
+generale che un componente deve avere nella visualizzazione di un html e della gestione dei dati. Definisce
+la proprietà fondamentale cConf che server per la configurazione del componente.
+Viene caricata ed estende il component con tutte le proprietà trovate in cConf.</p>
+<p>Per convenzione i metodi preceduti da &ldquo;_&rdquo; sono da considerarsi privati e non andrebbero mai ridefiniti se non per cambiare
+sostanzialmente il comportamento della classe a basso livello.</p>
+<h4 id="proprieta">Proprietà</h4>
+<ul>
+<li><code>cConf</code> : rappresenta la configurazione iniziale del componente. E&rsquo; formata da un vettore associativo. Tutte le 
+proprietà di cConf vengono spalmate flat nel <code>data</code> del componente vue.</li>
+<li><code>compRef</code> : chiave per marcare il componente creato per poi poterlo riprendere successivamente attraverso il vettore
+delle componenti marcate $crud.cRefs[compRef].</li>
+</ul>
+<h4 id="metodi">Metodi</h4>
+<ul>
+<li>
+<p><code>jQe(selector)</code> : shortcut jquery, ritorna l&rsquo;oggetto jquery associato al container del componente, se viene
+passato il parametro <strong>selector</strong> allora si posiziona all&rsquo;elemento puntato dal selector all&rsquo;interno
+del container.</p>
+</li>
+<li>
+<p><code>_loadConf()</code> : Carica l&rsquo;oggetto cConf e spalma le proprietà nell&rsquo;oggetto.</p>
+</li>
+<li>
+<p><code>_getConf</code> : risolve il nome cConf, cConf può essere un array associativo o una stringa. In caso di stringa,
+ la configurazione viene ricercata nell&rsquo;oggetto window o nella configurazione generale dell&rsquo;applicazione chiamata 
+ $crud.conf</p>
+</li>
+</ul>
+<p>Può essere usato il punto per configurazioni gerarchiche. Esempio potrei creare una configurazione tipo:</p>
+<pre><code class="javascript">window.conf1 = {
+    paginax : {
+        elementoa: {
+            var1 :'v1',
+            var2 :'v2'
+        }   
+    }
+}
+</code></pre>
+
+<p>posso passare come attributo del componente c-conf=&rdquo;conf1.paginax.elementoa&rdquo;;</p>
+<ul>
+<li>
+<p><code>_getRoute(routeName)</code> : Crea l&rsquo;oggetto Route di nome routeName. La definizione della route viene cercata nell&rsquo;oggetto
+$crud.routes[routeName];</p>
+</li>
+<li>
+<p><code>beforeLoadResources()</code> : metodo chiamato prima di caricare risorse esterne di particolari plugins di terze parti </p>
+</li>
+<li><code>afterLoadResources()</code> : metodo chiamato dopo aver caricato risorse esterne di plugins. Questo permette di eseguire
+eventuali azioni del plugins dopo che le risorse siano state caricate.</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../widgets/" class="btn btn-neutral float-right" title="Widgets">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/marley71/crud" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../widgets/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<template id="w-hasmany-template">
+    <div class="card"  >
+        <div class="card-body">
+            <div class="card">
+                <!--<div class="card-header" crud-hasmany_title>-->
+                    <!--{{cConf.metadata.modelName}}-->
+                <!--</div>-->
+                <div class="">
+                    <p crud-hasmany_title_msg></p>
+                    <ul class="list-inline"  >
+                        <!--  -- contenitore delle views hasmany -- -->
+                        <li v-for="(item,index) in confViews" v-show="showItem(index)" class="list-inline-item">
+                            <div class="card">
+                                <div class="card-header">
+                                    <small class="pull-left" crud-field="label" crud-trim="12" crud-attrs="{title:label}"></small>
+                                    <button v-on:click="deleteItem(index)" class="btn-danger btn-sm pull-right" type="button"  title="Cancella elemento"><i class="fa fa-times-circle"></i></button>
+<!--                                    {{cConf.metadata.modelName}}-->
+                                </div>
+                                <v-hasmany v-bind:c-model="name" v-bind:c-conf="item"></v-hasmany>
+
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="panel-footer">
+                    <div >
+                        <div v-if="outOfLimit()">
+                            <!-- Limite massimo raggiunto -->
+                            {{  'app.limite-raggiunto' | translate }}
+                        </div>
+                        <button v-else v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
+                            <span >{{ 'app.aggiungi' | translate }}</span>&nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Trucchi/Convenzioni - CRUD</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Trucchi/Convenzioni";
+    var mkdocs_page_input_path = "tricks.md";
+    var mkdocs_page_url = "/tricks/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CRUD</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../component/">Component</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../widgets/">Widgets</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../views/">Views</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dashboards/">Dashboards</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../templates/">Templates</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../actions/">Actions</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../confs/">Confs</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../routes/">Routes</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../server/">Server</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../app/">App</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../protocollo_dati/">Protocols</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../esempi_views/">Esempi Views</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../html/">Utilizzo html</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Trucchi/Convenzioni</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#trucchi-e-convenzioni-utilizzate-nella-libreria">Trucchi e convenzioni utilizzate nella libreria</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#definizione-di-una-nuova-classe">Definizione di una nuova classe</a></li>
+        
+            <li><a class="toctree-l3" href="#definizione-sottoclasse">Definizione sottoclasse</a></li>
+        
+            <li><a class="toctree-l3" href="#overloading-dei-metodi">Overloading dei metodi</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CRUD</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Trucchi/Convenzioni</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/marley71/crud#root/docs/tricks.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="trucchi-e-convenzioni-utilizzate-nella-libreria">Trucchi e convenzioni utilizzate nella libreria</h2>
+<p>Javascript non e&rsquo; un linguaggio ad oggetti. In questa libreria si è voluto utilizzare
+una function javascript chiamata <code>Class</code> creata da <a href="http://ejohn.org/" target="_blank">John Resig</a> 
+che simula l&rsquo;ereditarietà e l&rsquo;overloading dei metodi.
+Vediamo in dettaglio il suo utilizzo e trucchi. Nella definizione di queste classi esiste il metodo speciale
+<code>init</code> che rappresenta il costruttore.</p>
+<h3 id="definizione-di-una-nuova-classe">Definizione di una nuova classe</h3>
+<p>Questo codice abbiamo creato una classe chiama <code>A</code>;</p>
+<pre><code class="javascript">var A = Class.extend({
+    prop1 : 'prop1 ',
+    prop2 : 'prop2 ',
+    // costruttore
+    init : function(prop1,prop2) {
+        this.prop1 = prop1;
+        this.prop2 = prop2;
+    },
+
+    metodo1 : function() {
+        console.log(&quot;dump delle props &quot; + this.prop1 + this.prop2);
+    },
+    metodo2 : function(stringa) {
+        this.prop1 = stringa;
+    }
+})
+</code></pre>
+
+<p>Utilizzo della classe. Nel codice sotto, creo un oggetto di tipo A e chiamo i vari metodi</p>
+<pre><code class="javascript">var a = new A('prop passata ','bo ');
+a.metodo1();
+// verrà stampato
+// dump delle props prop passata bo
+a.metodo2('as');
+a.metodo1();
+// verrà stampato
+// dump delle props as bo
+</code></pre>
+
+<h3 id="definizione-sottoclasse">Definizione sottoclasse</h3>
+<p>Per definire una sottoclasse che eredita dalla classe A basta scrivere questo codice.</p>
+<pre><code class="javascript">var B = A.extend({
+    prop3 : 'prop3 ',
+    metodo3 : function() {
+        console.log(this.prop1 + this.prop2 + this.prop3);
+    }
+})
+</code></pre>
+
+<p>Utilizzo della classe. </p>
+<pre><code class="javascript">var b = new B('prop1','prop2');
+b.metodo3();
+// verrà stampato
+//prop1 prop2 prop3
+</code></pre>
+
+<h3 id="overloading-dei-metodi">Overloading dei metodi</h3>
+<p>supponiamo che vogliamo ridefinire un metodo della nostra classe <code>A</code></p>
+<pre><code class="javascript">var C = A.extend({
+    metodo1 : function() {
+        this.prop1 += ' concatenata ';
+        this._super(); // richiamo il metodo1 della classe padre
+    }
+})
+</code></pre>
+
+<p>Utilizzo della classe</p>
+<pre><code class="javascript">var c = new C('prop1 ', 'prop2 ');
+c.metodo1();
+// verrà stampato
+//prop1 prop2  concatenata 
+
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../html/" class="btn btn-neutral" title="Utilizzo html"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/marley71/crud" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../html/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

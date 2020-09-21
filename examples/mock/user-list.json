@@ -1,0 +1,193 @@
+{
+    "error": 0,
+    "msg": "",
+    "result": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": 1,
+                "name": "Super user",
+                "email": "super-user@gmail.com",
+                "email_verified_at": 0,
+                "banned": 0,
+                "mainrole": "Superutente",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 2,
+                "name": "Super user2",
+                "email": "super-user2@gmail.com",
+                "email_verified_at": 0,
+                "banned": 0,
+                "mainrole": "Superutente",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 3,
+                "name": "Amministratore",
+                "email": "amministratore@amministratore.it",
+                "email_verified_at": 0,
+                "banned": 0,
+                "mainrole": "Admin",
+                "fotos": [
+                    {
+                        "id": "temp_foto_158764716149160.png",
+                        "mimetype": "image/png",
+                        "url": "./mock/image.png"
+                    }
+                ],
+                "attachments": []
+            },
+            {
+                "id": 4,
+                "name": "Rubye Gleason",
+                "email": "nitzsche.terrance@example.com",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Operatore",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 5,
+                "name": "Daisy Zboncak II",
+                "email": "kertzmann.jaron@example.net",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Cliente",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 6,
+                "name": "Vito Jaskolski I",
+                "email": "murl07@example.com",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Cliente",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 7,
+                "name": "Morton Spinka",
+                "email": "kemmer.rosalinda@example.net",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Operatore",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 8,
+                "name": "Dulce Rice",
+                "email": "gaston.moore@example.org",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Operatore",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 9,
+                "name": "Mr. Tyree Schoen DDS",
+                "email": "lwelch@example.org",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Cliente",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 10,
+                "name": "Mr. Jonathon Block",
+                "email": "tess.bartoletti@example.net",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Cliente",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 11,
+                "name": "Raheem Ortiz",
+                "email": "msauer@example.net",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Cliente",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 12,
+                "name": "Darien Cronin I",
+                "email": "boehm.rod@example.com",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Cliente",
+                "fotos": [],
+                "attachments": []
+            },
+            {
+                "id": 13,
+                "name": "Francisco Senger",
+                "email": "miller.ardith@example.com",
+                "email_verified_at": 1,
+                "banned": 0,
+                "mainrole": "Cliente",
+                "fotos": [],
+                "attachments": []
+            }
+        ],
+        "first_page_url": "http:\/\/mysite.dev.it\/foorm\/user?page=1",
+        "from": 1,
+        "last_page": 1,
+        "last_page_url": "http:\/\/mysite.dev.it\/foorm\/user?page=1",
+        "next_page_url": null,
+        "path": "http:\/\/mysite.dev.it\/foorm\/user",
+        "per_page": 15,
+        "prev_page_url": null,
+        "to": 13,
+        "total": 13
+    },
+    "metadata": {
+        "fields": {
+            "id": {
+                "default": 1
+            },
+            "name": [],
+            "email": [],
+            "email_verified_at": [],
+            "banned": [],
+            "mainrole": []
+        },
+        "relations": {
+            "fotos": {
+                "max_items": 0,
+                "min_items": 0,
+                "modelRelativeName": "Foto",
+                "fields": {
+                    "nome": [],
+                    "descrizione": [],
+                    "resource": []
+                }
+            },
+            "attachments": {
+                "max_items": 0,
+                "min_items": 0,
+                "modelRelativeName": "Attachment",
+                "fields": {
+                    "nome": [],
+                    "descrizione": [],
+                    "resource": []
+                }
+            }
+        },
+        "order": {
+            "field": "id",
+            "direction": "ASC"
+        }
+    }
+}

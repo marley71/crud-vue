@@ -1,0 +1,77 @@
+{
+    "error": 0,
+    "msg": "",
+    "result": {
+        "mainrole": -1,
+        "fotos": [],
+        "attachments": [],
+        "id": null,
+        "name": null,
+        "banned": -1,
+        "email": null,
+        "password": null,
+        "password_confirmation": null
+    },
+    "metadata": {
+        "fields": {
+            "id": [],
+            "name": [],
+            "banned": {
+                "options": [
+                    "No",
+                    "S\u00ec"
+                ],
+                "options_order": [
+                    0,
+                    1
+                ]
+            },
+            "email": [],
+            "password": [],
+            "password_confirmation": [],
+            "mainrole": {
+                "options": {
+                    "-1": "Seleziona...",
+                    "2": "Admin",
+                    "4": "Cliente",
+                    "3": "Operatore",
+                    "1": "Superutente"
+                },
+                "options_order": [
+                    -1,
+                    2,
+                    4,
+                    3,
+                    1
+                ]
+            }
+        },
+        "relations": {
+            "fotos": {
+                "max_items": 0,
+                "min_items": 0,
+                "modelRelativeName": "Foto",
+                "fields": {
+                    "id": [],
+                    "nome": [],
+                    "descrizione": [],
+                    "resource": []
+                },
+                "orderKey": "ordine"
+            },
+            "attachments": {
+                "max_items": 0,
+                "min_items": 0,
+                "modelRelativeName": "Attachment",
+                "fields": {
+                    "id": [],
+                    "nome": [],
+                    "descrizione": [],
+                    "resource": []
+                },
+                "orderKey": "ordine"
+            }
+        },
+        "is_auth": false
+    }
+}

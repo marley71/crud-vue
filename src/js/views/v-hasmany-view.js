@@ -1,43 +1,20 @@
-Vue.component('v-hasmany-view', {
+crud.components.views.coreVHasmanyView = Vue.component('core-v-hasmany-view', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf'],
+    props : {
+        cType : {
+            default : 'view'
+        }
+    },
     data :  function () {
-        var that = this;
-        that.conf = that.getConf(that.cModel,'edit');
-        //that.createActions();
-
-        //that.loading = true;
-
-        return {
-            loading : true,
-            renders : {},
-            actionsClass : [],
-            actions : {},
-            data : {},
-            conf : that.conf,//jQuery.extend(true,{},ModelTest.edit),
-            defaultRenderType : 'r-text',
-        }
-
+        //console.log('VHASMANYVIEW',this._getConf())
+        var _conf = this._loadConf();
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
+        return d;
     },
-    methods : {
-        fillData : function () {
-            this.data = this.cConf.data;
-        },
-        renderKey : function (key) {
-            var that = this;
-            return that.cModel + "-" + key + '[]';
-        }
-    },
-    mounted : function () {
-        var that = this;
-        this.fetchData(null,function (json) {
-            that.fillData(null,null);
-            that.createActions();
-            that.createActionsClass();
-            that.createRenders();
-            that.loading = false;
-            console.log('v-hasmany',that.loading);
-        });
-    },
-    template : '#v-hasmany-template'
+    // methods : {
+    //     fillData : function () {
+    //         this.data = this.cConf.data;
+    //     }
+    // },
 });

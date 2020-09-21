@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Actions - CRUD-VUE</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Actions";
+    var mkdocs_page_input_path = "actions.md";
+    var mkdocs_page_url = "/actions/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CRUD-VUE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../component/">Component</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../widgets/">Widgets</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../views/">Views</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../templates/">Templates</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Actions</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#actions">Actions</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#action-base">action-base</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#actions-implementate">Actions Implementate</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#action-edit">action-edit</a></li>
+        
+            <li><a class="toctree-l3" href="#action-insert">action-insert</a></li>
+        
+            <li><a class="toctree-l3" href="#action-save">action-save</a></li>
+        
+            <li><a class="toctree-l3" href="#action-back">action-back</a></li>
+        
+            <li><a class="toctree-l3" href="#action-view">action-view</a></li>
+        
+            <li><a class="toctree-l3" href="#action-delete">action-delete</a></li>
+        
+            <li><a class="toctree-l3" href="#action-delete-selected">action-delete-selected</a></li>
+        
+            <li><a class="toctree-l3" href="#action-search">action-search</a></li>
+        
+            <li><a class="toctree-l3" href="#action-order">action-order</a></li>
+        
+            <li><a class="toctree-l3" href="#action-edit-mode">action-edit-mode</a></li>
+        
+            <li><a class="toctree-l3" href="#action-view-mode">action-view-mode</a></li>
+        
+            <li><a class="toctree-l3" href="#action-save-row">action-save-row</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../confs/">Confs</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../routes/">Routes</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../server/">Server</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../app/">App</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dashboards/">Dashboards</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../protocollo_dati/">Protocols</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../esempi_views/">Esempi Views</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CRUD-VUE</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Actions</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/marley71/crud#root/docs/actions.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="actions">Actions</h1>
+<p>Le actions sono dei componenti che agiscono su delle view. Attraverso le azioni possiamo agire sulle view. Esempi
+standard di azioni sono la save, insert, stampa, ecc.</p>
+<h2 id="action-base">action-base</h2>
+<p>Classe principale delle azioni. Estende la classe principale <code>c-component</code>. Definisce le proprietà comuni e di default
+per tutte le azioni. Estendere questa classe se volete creare una nuova azione.</p>
+<h4 id="data">data</h4>
+<ul>
+<li><code>type</code> : default null, le views di tipo collection richiedono questa proprietà per discriminare le azioni che agiscono
+sul singolo record o collection. Il type puo&rsquo; essere: <code>record</code> o <code>collection</code></li>
+<li><code>controlType</code> : button o link, default &lsquo;button&rsquo;,</li>
+<li><code>text</code> : &lsquo;&rsquo;,</li>
+<li><code>icon</code> : &lsquo;&rsquo;,</li>
+<li><code>css</code> : &lsquo;btn btn-outline-secondary&rsquo;,</li>
+<li><code>target</code> : &lsquo;&rsquo;,</li>
+<li><code>href</code> : &lsquo;_self&rsquo;,</li>
+<li><code>enabled</code> : true,</li>
+<li><code>visible</code> : true,</li>
+<li><code>title</code> : &lsquo;&rsquo;,</li>
+<li><code>needSelection</code>  : default false, indica se l&rsquo;azione lavora su un set selezionati di elementi. Utilizzato dalla view di 
+tipo collection.</li>
+<li><code>view</code> : default null, view associata all&rsquo;azione, viene iniettata dalla view al momento della creazione dell&rsquo;action</li>
+</ul>
+<h4 id="metodi">Metodi</h4>
+<ul>
+<li><code>_beforeExecute(callback)</code> : metodo chiamato quando l&rsquo;azione viene cliccata, prima di essere eseguita. Se viene passata
+una callback viene chiamata a fine esecuzione. Serve per operazioni asincrone.</li>
+<li><code>_execute</code> : esecuzione dell&rsquo;azione </li>
+<li><code>_afterExecute</code> : metodo chiamato dopo che l&rsquo;azione è stata eseguita.</li>
+<li><code>setEnabled(enable)</code> : abilita o disablita l&rsquo;azione</li>
+<li><code>setVisible(visible)</code> : se definita viene chiamata al termi dell&rsquo;execute</li>
+</ul>
+<h4 id="template">template</h4>
+<pre><code class="html">&lt;template id=&quot;action-template&quot;&gt;&lt;button v-if=&quot;controlType=='button'&quot; type=&quot;button&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; v-on:click=&quot;_execute&quot; v-bind:disabled=&quot;_disabled&quot;&gt;
+        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;{{text | translate}}&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;a v-else :target=&quot;target&quot; :href=&quot;href&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; :disabled=&quot;_disabled&quot;&gt;
+        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;{{text | translate}}&lt;/span&gt;
+    &lt;/a&gt;
+&lt;/template&gt;
+</code></pre>
+
+<h1 id="actions-implementate">Actions Implementate</h1>
+<p>La libreria, come per tutti gli altri componenti, mette a disposizione delle azioni già predefinite, 
+utilizzabili immediamente. Queste azioni rappresentano le azioni più comuni del framework crud-vue. Ovviamente
+possono essere estese o definite delle nuove. Le configurazioni di tale azioni le potete trovare sotto
+$crud.actions. Potete ridefinire qui le varie opzioni grafiche o del metodo execute.</p>
+<h2 id="action-edit">action-edit</h2>
+<p>Azione di tipo record pensata per l&rsquo;utilizzo dentro una view list e rappresenta l&rsquo;edit di un record 
+all&rsquo;interno della lista. </p>
+<h4 id="data_1">data</h4>
+<ul>
+<li><code>type</code> : &lsquo;record&rsquo;</li>
+<li><code>title</code> : &lsquo;app.modifica&rsquo;,</li>
+<li><code>icon</code> : &lsquo;fa fa-edit&rsquo;,</li>
+<li><code>css</code> : &lsquo;btn btn-outline-secondary btn-sm&rsquo;</li>
+<li><code>modelName</code> : nome modello dati della view,</li>
+<li><code>modelData</code> : l&rsquo;intera record del modello dati</li>
+</ul>
+<h4 id="metodi_1">Metodi</h4>
+<ul>
+<li><code>execute</code> - carica una pagina con url &ldquo;/edit/&rdquo; + this.modelName + &ldquo;/&rdquo; + this.modelData[this.view.primaryKey];</li>
+</ul>
+<h2 id="action-insert">action-insert</h2>
+<p>Azione di tipo  <code>collection</code>. Azione pensata per l&rsquo;utilizzo dentro una view list  per l&rsquo;inserimento di un record all&rsquo;interno della lista.</p>
+<h4 id="data_2">data</h4>
+<ul>
+<li><code>title</code> : &lsquo;Inserisci&rsquo;,</li>
+<li><code>icon</code> : &lsquo;fa fa-plus text-success&rsquo;,</li>
+<li><code>css</code> : &lsquo;btn btn-default btn-xs text-success&rsquo;,</li>
+<li><code>text</code> : &lsquo;Nuovo&rsquo;,</li>
+</ul>
+<h4 id="metodi_2">metodi</h4>
+<ul>
+<li><code>execute</code> - utilizza al route per una pagina in insert per richiamare la pagina nuova</li>
+</ul>
+<h2 id="action-save">action-save</h2>
+<p>Azione di tipo record pensata per l&rsquo;utilizzo dentro una view edit per salvare le modifiche</p>
+<ul>
+<li><code>title</code> : &lsquo;Salva&rsquo;,</li>
+<li><code>text</code> : &lsquo;Salva&rsquo;,</li>
+<li>
+<p><code>multiText</code> : &lsquo;Salva&rsquo;,</p>
+</li>
+<li>
+<p><code>execute</code> - utilizza le route update o save a seconda se il modello dati è in modifica o insert</p>
+</li>
+</ul>
+<h2 id="action-back">action-back</h2>
+<p>Azione pensata per l&rsquo;utilizzo dentro una view edit ritorna alla pagina di provienienza</p>
+<ul>
+<li><code>title</code> : &lsquo;Indietro&rsquo;,</li>
+<li>
+<p><code>text</code> : &lsquo;Torna indietro&rsquo;,</p>
+</li>
+<li>
+<p><code>execute</code> esegue sostanzialmente un history.back();</p>
+</li>
+</ul>
+<h2 id="action-view">action-view</h2>
+<p>Estende <code>RecordAction</code>. Azione pensata per l&rsquo;utilizzo dentro una view list  per la visualizzazione di un record all&rsquo;interno della lista.</p>
+<h3 id="data_3">data</h3>
+<ul>
+<li><code>title</code> :&rsquo;Visualizza&rsquo;,</li>
+<li><code>icon</code>:  &lsquo;fa fa-list-alt&rsquo;,</li>
+<li><code>multiText</code> : &lsquo;Visualizza&rsquo;,</li>
+<li><code>routeName</code> : &lsquo;page_view&rsquo;,</li>
+</ul>
+<h3 id="metodi_3">Metodi</h3>
+<ul>
+<li><code>execute</code> - utilizza al route per una pagina in view per richiamare la pagina nuova</li>
+</ul>
+<h2 id="action-delete">action-delete</h2>
+<p>Azione pensata per l&rsquo;utilizzo dentro una view list  per la cancellazione di un record all&rsquo;interno della lista.</p>
+<h3 id="data_4">data</h3>
+<ul>
+<li><code>title</code> : &lsquo;Cancella&rsquo;,</li>
+<li><code>icon</code>:  &lsquo;fa fa-remove text-danger&rsquo;,</li>
+<li><code>multiText</code> : &lsquo;Cancella&rsquo;,</li>
+</ul>
+<h3 id="metodi_4">Metodi</h3>
+<ul>
+<li><code>execute</code> - utilizza al route delete per eseguire la richiesta di cancellazione. Prima chiede conferma</li>
+</ul>
+<h2 id="action-delete-selected">action-delete-selected</h2>
+<p>Azione pensata per l&rsquo;utilizzo dentro una view list  per la cancellazione di tutti i record selezionati nella lista.</p>
+<h3 id="data_5">data</h3>
+<ul>
+<li><code>className</code> : &lsquo;ActionMultiDelete&rsquo;,</li>
+<li><code>title</code> : &lsquo;Cancella selezionati&rsquo;,</li>
+<li><code>icon</code>:  &lsquo;fa fa-trash text-danger&rsquo;,</li>
+<li><code>cssClass</code> : &lsquo;btn btn-default btn-xs text-danger&rsquo;,</li>
+<li><code>text</code> : &lsquo;Selezionati&rsquo;,</li>
+<li><code>needSelection</code> : true,     </li>
+</ul>
+<h2 id="action-search">action-search</h2>
+<p>Azione pensata per l&rsquo;utilizzo dentro una view search  per la ricerca dei record con i filtri della view.</p>
+<h3 id="data_6">data</h3>
+<ul>
+<li><code>className</code> : &lsquo;ActionSearch&rsquo;,</li>
+<li><code>title</code> : &lsquo;Ricerca&rsquo;,</li>
+<li><code>icon</code>:  &lsquo;fa fa-search&rsquo;,</li>
+<li><code>cssClass</code> : &lsquo;btn btn-xs btn-default text-info&rsquo;,</li>
+<li><code>text</code> : &lsquo;Cerca&rsquo;,</li>
+</ul>
+<h3 id="metodi_5">Metodi</h3>
+<ul>
+<li><code>execute</code> - richiama la pagina con i parametri in get presenti nella form della vista</li>
+</ul>
+<h2 id="action-order">action-order</h2>
+<p>Azione pensata per l&rsquo;ordinamento di una lista.</p>
+<h3 id="data_7">data</h3>
+<ul>
+<li>iconSortUp : icona per l&rsquo;ordinamento ASC,</li>
+<li>iconSortDown :  icon per l&rsquo;ordinamento desc,</li>
+<li>iconSort : icon per definire il campo che si puo&rsquo; ordinare ma nessun ordinamento attivo.</li>
+</ul>
+<h4 id="template_1">template</h4>
+<pre><code class="html">&lt;template id=&quot;action-order-template&quot;&gt;&lt;button v-if=&quot;controlType=='button'&quot; type=&quot;button&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; v-on:click=&quot;_execute&quot; v-bind:disabled=&quot;_disabled&quot;&gt;
+        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;{{text | translate}}&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;a v-else :target=&quot;target&quot; :href=&quot;href&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; :disabled=&quot;_disabled&quot;&gt;
+        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;{{text | translate}}&lt;/span&gt;
+    &lt;/a&gt;
+&lt;/template&gt;
+</code></pre>
+
+<h2 id="action-edit-mode">action-edit-mode</h2>
+<p>Azione pensata per modalità editMode in una v-list-edit. La lista che permette l&rsquo;editing al volo di una riga</p>
+<h2 id="action-view-mode">action-view-mode</h2>
+<p>Azione per passare in modalità viewMode in una v-list-edit.</p>
+<h2 id="action-save-row">action-save-row</h2>
+<p>Azione per salvare la riga corrente dopo la modifica</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../confs/" class="btn btn-neutral float-right" title="Confs">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../templates/" class="btn btn-neutral" title="Templates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/marley71/crud" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../templates/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../confs/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

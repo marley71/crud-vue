@@ -1,0 +1,8 @@
+<template  id="w-date-select-template">
+    <div v-if="resourcesLoaded" class="input-group">
+        <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+        <w-select ref="day" v-bind:c-conf="cDay" c-marker="day"></w-select>
+        <w-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></w-select>
+        <w-select ref="year" v-bind:c-conf="cYear" c-marker="year"></w-select>
+    </div>
+</template>

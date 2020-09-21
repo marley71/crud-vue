@@ -12,65 +12,65 @@ const watch = require('glob-watcher');
 // file is included here:
 eval(fs.readFileSync('crud-files.js')+'');
 
-// var isProduction = (argv.production === undefined) ? false : true;
-//
-// if (!isProduction) {
-    gulp.task('default', function() {
-        gulp.src(crudJsFiles)
-            .pipe(concat('crud-vue.js'))
-            .pipe(gulp.dest('./dist/'));
-        return gulp.src(crudHtmlFiles)
-            .pipe(concat('crud-vue.html'))
-            .pipe(gulp.dest('./dist/'));
-        ;
-    });
-//} else {
-    gulp.task('production', function() {
-        gulp.src(crudJsFiles)
-            .pipe(concat('crud-vue.js'))
-            .pipe(minify({}))
-            .pipe(rename({suffix: '.min'}))
-            //.pipe(uglify())
-            .pipe(gulp.dest('./dist/'));
-        gulp.src(crudHtmlFiles)
-            .pipe(concat('crud-vue.html'))
-            .pipe(gulp.dest('./dist/'));
-    });
-//}
+gulp.task('production', function(cb) {
+    gulp.src(crudJsFiles)
+        .pipe(concat('crud-vue.js'))
+        .pipe(minify({}))
+        .pipe(rename({suffix: '.min'}))
+        //.pipe(uglify())
+        .pipe(gulp.dest('./dist/'));
+    gulp.src(crudHtmlFiles)
+        .pipe(concat('crud-vue.html'))
+        .pipe(gulp.dest('./dist/'));
+    cb();
+});
+
+function js(cb) {
+    gulp.src(crudJsFiles)
+        .pipe(concat('crud-vue.js'))
+        .pipe(gulp.dest('./dist/'));
+    gulp.src('src/js/crud-vue-components.js')
+        .pipe(gulp.dest('./dist/'));
+
+    gulp.src('src/js/actions.js')
+        .pipe(gulp.dest('./dist/components/'));
+    gulp.src('src/js/misc.js')
+        .pipe(gulp.dest('./dist/components/'));
+    gulp.src('src/js/widgets.js')
+        .pipe(gulp.dest('./dist/components/'));
+    gulp.src('src/js/views.js')
+        .pipe(gulp.dest('./dist/components/'));
+
+    console.log('ricompilazione js ...' + new Date().toDateString() + " " + new Date().toTimeString());
+    cb();
+}
+
+function html(cb) {
+    gulp.src(crudHtmlFiles)
+        .pipe(concat('crud-vue.html'))
+        .pipe(gulp.dest('./dist/'));
+    gulp.src(actionsHtmlFiles)
+        .pipe(concat('actions.html'))
+        .pipe(gulp.dest('./dist/components/'))
+    gulp.src(miscHtmlFiles)
+        .pipe(concat('misc.html'))
+        .pipe(gulp.dest('./dist/components/'))
+    gulp.src(widgetsHtmlFiles)
+        .pipe(concat('widgets.html'))
+        .pipe(gulp.dest('./dist/components/'))
+    gulp.src(viewsHtmlFiles)
+        .pipe(concat('views.html'))
+        .pipe(gulp.dest('./dist/components/'))
+    console.log('ricompilazione html ...' + new Date().toDateString() + " " + new Date().toTimeString());
+    cb();
+}
 
 gulp.task('watch',function () {
-    watch([
+    gulp.watch([
         './src/js/*.js',
-        './src/js/interfaces/*.js',
-        './src/js/actions/*.js',
-        './src/js/confs/*.js',
-        './src/js/crud/*.js',
-        './src/js/misc/*.js',
-        './src/js/views/*.js',
-        './src/js/renders/*.js',
-        './src/js/templates/*.js',
+        './src/js/**/*.js',
+        './src/templates/**/*.html',
+    ], {usePolling : true},gulp.series(js,html));
+});
 
-        './src/templates/misc/*.html',
-        './src/templates/renders/*.html',
-        './src/templates/views/*.html',
-    ], function(done){
-        // This function will be called each time a globbed file is changed
-        // but is debounced with a 200ms delay (default) and queues subsequent calls
-        console.log('ricompilazione...' + new Date().toDateString() + " " + new Date().toTimeString());
-        gulp.src(crudJsFiles)
-            .pipe(concat('crud-vue.js'))
-            .pipe(gulp.dest('./dist/'));
-        gulp.src(crudHtmlFiles)
-            .pipe(concat('crud-vue.html'))
-            .pipe(gulp.dest('./dist/'));
-        // Make sure to signal async completion with the callback
-        // or by returning a stream, promise, observable or child process
-        done();
-
-        // if you need access to the `path` or `stat` object, listen
-        // for the `change` event (see below)
-
-        // if you need to listen to specific events, use the returned
-        // watcher instance (see below)
-    });
-})
+gulp.task('default',gulp.series(js,html));

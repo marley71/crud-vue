@@ -1,56 +1,68 @@
-<script type="text/x-template" id="action-template">
-    <button type="button" v-show="_visible" v-bind:title="title" v-bind:class="css" v-on:click="_execute" v-bind:disabled="_disabled">
-        <i v-show="icon" v-bind:class="icon"></i>
-        <span v-html="text"></span>
+<template id="action-template">
+    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
+        <i v-show="icon" :class="icon"></i>
+        <span>{{text | translate}}</span>
     </button>
-</script>
-<template id="c-tpl-record-template">
-    <div>
-        <label>{{cKey}}</label>
-        <div>
-            <component
-                    :is="cType"
-                    :c-conf="cRender"
-                    :c-key="cKey"
-                    :c-ref="cRef">
-            </component>
-        </div>
-    </div>
+    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >
+        <i v-show="icon" :class="icon"></i>
+        <span>{{text | translate}}</span>
+    </a>
 </template>
 
-<template id="c-tpl-record2-template">
-    <div class="row">
-        <div class="col col-sm-6">{{cKey}}</div>
+<template id="action-order-template">
+    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
+        <i v-show="icon" :class="icon"></i>
+        <span>{{text | translate}}</span>
+    </button>
+    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >
+        <i v-show="icon" :class="icon"></i>
+        <span>{{text | translate}}</span>
+    </a>
+</template>
+
+
+<!--<script type="text/x-template" id="action-dialog-template">-->
+<!--    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">-->
+<!--        <i v-show="icon" :class="icon"></i>-->
+<!--        <span>{{text | translate}}</span>-->
+<!--    </button>-->
+<!--    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >-->
+<!--        <i v-show="icon" :class="icon"></i>-->
+<!--        <span>{{text | translate}}</span>-->
+<!--    </a>-->
+<!--</script>-->
+
+<template id="tpl-record-template">
+    <div v-if="cWidget.type!='w-hidden'">
+        <label>{{cWidget.label}}</label>
+        <component :is="cWidget.type" :c-conf="cWidget"></component>
+    </div>
+    <component v-else :is="cWidget.type" :c-conf="cWidget"></component>
+</template>
+
+<template id="tpl-record2-template">
+    <div v-if="cWidget.type!='w-hidden'" class="row">
+        <div class="col col-sm-6">{{cWidget.label}}</div>
         <div class="col col-sm-6">
-            <component
-                    :is="cType"
-                    :c-conf="cRender"
-                    :c-key="cKey"
-                    :c-ref="cRef">
-            </component>
+<!--            <v-widget :c-widget="cWidget"></v-widget>-->
+            <component :is="cWidget.type" :c-conf="cWidget"></component>
         </div>
     </div>
+    <component v-else :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
-<template id="c-tpl-list-template">
-    <component
-            :is="cType"
-            :c-conf="cRender"
-            :c-key="cKey"
-            :c-ref="cRef">
-    </component>
+<template id="tpl-list-template">
+<!--    <v-widget :c-widget="cWidget"></v-widget>-->
+    <component :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
-<template id="c-tpl-no-template">
-    <component
-            :is="cType"
-            :c-conf="cRender"
-            :c-key="cKey"
-            :c-ref="cRef">
-    </component>
+<template id="tpl-no-template">
+<!--    <v-widget :c-widget="cWidget"></v-widget>-->
+    <component :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
-<script type="text/x-template" id="c-paginator-template">
-    <div>
+
+<template id="c-paginator-template">
+    <div v-if="last_page">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-end">
                 <li v-show="(parseInt(current_page) > 1)" class="page-item"> <!-- disabled -->
@@ -85,23 +97,26 @@
             </ul>
         </nav>
     </div>
-</script>
+</template>
+
 <template id="d-confirm-template">
     <div c-confirm-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-default">{{message}}</div>
+                    <div class="alert alert-default">
+                        <div v-for="(msg,index) in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">Annulla</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{ 'app.ok' | translate}}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">{{'app.annulla' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -110,19 +125,21 @@
 
 <template id="d-message-template">
     <div c-message-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-info">{{message}}</div>
+                    <div class="alert alert-info">
+                        <div v-for="(msg,index) in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -131,19 +148,21 @@
 
 <template id="d-error-template">
     <div c-error-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger">{{message}}</div>
+                    <div class="alert alert-danger">
+                        <div v-for="msg in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -153,19 +172,21 @@
 
 <template id="d-warning-template">
     <div c-warning-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-warning">{{message}}</div>
+                    <div class="alert alert-warning">
+                        <div v-for="msg in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -174,10 +195,10 @@
 
 <template id="d-custom-template">
     <div c-custom-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
+            <div class="modal-content" >
+                <div v-if="title" class="modal-header">
+                    <h5  class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -185,67 +206,86 @@
                 <div class="modal-body" v-html="content">
 
                 </div>
-                <div class="modal-footer">
+                <div v-if="Object.keys(cCallbacks).length > 0" class="modal-footer">
                     <template v-for="(cb,key) in cCallbacks">
-                        <action-dialog :c-conf="cb" ></action-dialog>
+                        <button type="button" class="btn btn-primary" v-on:click="callCb(key)">{{key | translate}}</button>
                     </template>
                 </div>
             </div>
         </div>
     </div>
 </template>
-<script type="text/x-template" id="r-render-template">
-    <component :is="type" :c-conf="item" :c-key="key"></component>
-</script>
-<script type="text/x-template" id="r-input-template">
-    <div>
-        <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+
+<template id="c-loading-template">
+    <div v-if="!errorMsg" class="spinner-border text-primary" role="status">
+        <span class="sr-only">{{'app.carico'|translate}}</span>
     </div>
-</script>
-<script type="text/x-template" id="r-input-helped-template">
-    <div>
-        <div crud-render_element>
-            <input v-bind:readonly="!customValue"
-                   class="form-control" type="text" name="getFieldName()" v-model="value"
-                   v-bind:c-marker="cMarker" v-on:change="change" >
-            <div>
-                <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-for="(label,dVal) in metadata.domainValues" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{label}}</button>
-                </div>
+    <div v-else>
+        <span class="text-danger text-2xl">{{errorMsg}}</span>
+    </div>
+</template>
+
+<template id="c-wait-template">
+    <div c-wait :class="{'crud-overlay-body': global, 'crud-overlay' : !global}">
+        <span class="crud-wait-msg">
+            {{msg | translate}}
+        </span>
+    </div>
+</template>
+
+<template  id="w-custom-template">
+    <div v-html="value">
+
+    </div>
+</template>
+
+<template id="w-input-template">
+    <input class="form-control" :type="inputType" v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
+</template>
+
+<template  id="w-input-helped-template">
+    <div >
+        <input v-bind:readonly="!customValue"
+               class="form-control" type="text" name="getFieldName()" v-model="value"
+               v-bind:c-marker="cMarker" v-on:change="change" >
+        <div>
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <button v-for="dVal in domainValuesOrder" type="button" class="btn btn-outline-secondary" v-on:click="setValue(dVal)">{{domainValues[dVal]}}</button>
             </div>
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
-</script>
-<script type="text/x-template" id="r-hidden-template">
-    <div>
-        <input v-model="value" v-bind:name="getFieldName()" type="hidden" v-bind:c-marker="cMarker">
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
-    </div>
-</script>
-<script type="text/x-template" id="r-text-template">
-    <div>{{value}}</div>
-</script>
-<script type="text/x-template" id="r-textarea-template">
-    <div>
-        <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
-                  v-bind:c-marker="cMarker" v-on:change="change"></textarea>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
-    </div>
+</template>
 
-</script>
-<script type="text/x-template" id="r-select-template">
-    <div>
-        <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
-                v-on:change="change">
-            <option v-for="key in domainValuesOrder" :value="key"
-                    >{{domainValues[key]}}</option>
-        </select>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
-    </div>
-</script>
-<script type="text/x-template" id="r-radio-template">
+<template id="w-hidden-template">
+    <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
+</template>
+
+<template id="w-text-template">
+    <span>{{value}}</span>
+</template>
+
+<template id="w-image-template">
+    <img :src="value">
+</template>
+
+<template id="w-download-template">
+    <a :href="value" target="_blank"><i :class="icon"></i></a>
+</template>
+
+<template id="w-textarea-template">
+    <textarea class="form-control" v-model="value" v-bind:name="getFieldName()"
+                  v-bind:c-marker="cMarker" v-on:change="change"></textarea>
+</template>
+
+<template id="w-select-template">
+    <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
+            v-on:change="change">
+        <option v-for="key in domainValuesOrder" :value="key"
+                >{{domainValues[key]}}</option>
+    </select>
+</template>
+
+<template id="w-radio-template">
     <div>
         <div class="form-check-inline"  v-for="key in domainValuesOrder">
             <label class="form-check-label">
@@ -254,10 +294,10 @@
                        v-bind:c-marker="cMarker" v-on:change="change">&nbsp;&nbsp;{{domainValues[key]}}
             </label>
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
     </div>
-</script>
-<script type="text/x-template" id="r-checkbox-template">
+</template>
+
+<template id="w-checkbox-template">
     <div class="form-check-inline">
         <div class="" v-for="key in domainValuesOrder">
             <input class="form-check-input" v-bind:name="getFieldName()" type="checkbox"  :value="key"
@@ -265,50 +305,58 @@
                    v-bind:c-marker="cMarker" v-on:change="change" >
             <label class="form-check-label" >{{domainValues[key]}}&nbsp;&nbsp;&nbsp;</label>
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden"/>
-    </div>
-</script>
-<template id="r-autocomplete-template">
-    <div class="md-form">
-        <input type="search" c-autocomplete class="form-control mdb-autocomplete">
-        <button class="mdb-autocomplete-clear">
-            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="https://www.w3.org/2000/svg">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                <path d="M0 0h24v24H0z" fill="none" />
-            </svg>
-        </button>
-        <label for="form-autocomplete" class="active">What is your favorite US state?</label>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
-<template id="r-belongsto-template">
+
+<template id="w-autocomplete-template">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">{{label}}</span>
+        </div>
+        <input type="text" c-autocomplete class="form-control">
+        <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary" v-on:click="clear">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <input v-model="value" :name="getFieldName()" type="hidden" :c-marker="cMarker">
+    </div>
+</template>
+
+<template id="w-belongsto-template">
     <div>
-        <span v-for="field in fields">{{value[field]}}&nbsp;</span>
+        <span v-for="field in labelFields">{{value[field]}}&nbsp;</span>
     </div>
 </template>
-<template id="r-date-select-template">
-    <div class="input-group">
+
+<template  id="w-date-select-template">
+    <div v-if="resourcesLoaded" class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
-        <r-select ref="day" v-bind:c-conf="cDay" c-marker="day"></r-select>
-        <r-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></r-select>
-        <r-select ref="year" v-bind:c-conf="cYear" c-marker="year"></r-select>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
+        <w-select ref="day" v-bind:c-conf="cDay" c-marker="day"></w-select>
+        <w-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></w-select>
+        <w-select ref="year" v-bind:c-conf="cYear" c-marker="year"></w-select>
     </div>
 </template>
-<script type="text/x-template" id="r-date-picker-template">
+
+<template id="w-date-picker-template">
     <div class="input-group">
         <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
         <input c-picker >
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
-</script>
-<script type="text/x-template" id="r-texthtml-template">
-    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>
-</script>
-<template id="r-hasmany-template">
+</template>
+
+<template id="w-texthtml-template">
+<!--    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>-->
+    <div>
+        <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" :c-marker="cMarker" v-on:change="change">
+        <div class="summernote" v-html="value">
+        </div>
+    </div>
+</template>
+
+<template id="w-hasmany-template">
     <div class="card"  >
         <div class="card-body">
-            <!--<input type="hidden" :name="cKey + '_exists'" value="1">-->
             <div class="card">
                 <!--<div class="card-header" crud-hasmany_title>-->
                     <!--{{cConf.metadata.modelName}}-->
@@ -317,7 +365,7 @@
                     <p crud-hasmany_title_msg></p>
                     <ul class="list-inline"  >
                         <!--  -- contenitore delle views hasmany -- -->
-                        <li v-for="(item,index) in confViews"  :class="{'list-inline-item':true, 'd-none' : item.data.value.status == 'deleted'}">
+                        <li v-for="(item,index) in confViews" v-show="showItem(index)" class="list-inline-item">
                             <div class="card">
                                 <div class="card-header">
                                     <small class="pull-left" crud-field="label" crud-trim="12" crud-attrs="{title:label}"></small>
@@ -333,13 +381,12 @@
                 </div>
                 <div class="panel-footer">
                     <div >
-                        <div crud-render_limit class="hide">
+                        <div v-if="outOfLimit()">
                             <!-- Limite massimo raggiunto -->
-                            {{$LANG.app.limite_raggiunto}}
+                            {{  'app.limite-raggiunto' | translate }}
                         </div>
-                        <button v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
-                            <span >{{$LANG.app.add}}</span>&nbsp;
-                            <span crud-label="modelMetadata.singular"></span>&nbsp;
+                        <button v-else v-on:click="addItem" type="button" class="btn btn-outline-primary btn-sm">
+                            <span >{{ 'app.aggiungi' | translate }}</span>&nbsp;
                         </button>
                     </div>
                 </div>
@@ -347,40 +394,43 @@
         </div>
     </div>
 </template>
-<script type="text/x-template" id="r-hasmany-view-template">
+
+<template id="w-hasmany-view-template">
     <div crud-render_element>
         <div class="list-unstyled" crud-render_list >
+
             <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
-            <ul class="list-unstyled" v-for="item in value">
-                <li>
-                    <v-hasmany-view v-bind:c-model="cConf.metadata.modelName" v-bind:c-conf="getHasmanyConf(item)"></v-hasmany-view>
+<!--            <ul class="list-unstyled" v-for="(item,index) in value">-->
+<!--                <li>-->
+<!--                    <v-hasmany-view v-bind:c-model="cConf.modelName" v-bind:c-conf="getHasmanyConf(index,item)"></v-hasmany-view>-->
+
+<!--                </li>-->
+<!--            </ul>-->
+            <ul class="list-unstyled">
+                <li v-for="(item,index) in confViews">
+                    <v-hasmany-view v-bind:c-model="name" v-bind:c-conf="getHasmanyConf(index,item)"></v-hasmany-view>
 
                 </li>
             </ul>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="r-hasmany-view-template1">
-    <div crud-render_element>
-        <div class="list-unstyled" crud-render_list >
-            <!--  -- contenitore lista hasmany data dal template  default_hasmany_view_items_tpl-- -->
-            <ul class="list-unstyled" v-for="item in value">
-                <li>
-                    elemento1
-                    <span crud-field="label" ></span>
-                </li>
-            </ul>
-        </div>
-    </div>
-</script>
-<script type="text/x-template" id="r-swap-template">
+<template id="w-swap-template">
     <button type="button" class="btn btn-outline-secondary btn-sm" v-bind:title="title" v-on:click="swap">
         <span v-show="swapType=='text'">{{ slot }}</span>
         <i  v-show="swapType=='icon'" v-bind:class="slot"></i>
     </button>
-</script>
-<template id="r-hasmany-through-template">
+</template>
+
+<template id="w-status-template">
+    <span>
+        <span v-if="statusType=='text'">{{ slot }}</span>
+        <i  v-if="statusType=='icon'" v-bind:class="slot"></i>
+    </span>
+</template>
+
+<template id="w-hasmany-through-template">
     <div class="card"  >
         <div class="card-body">
             <div class="panel panel-warning">
@@ -401,11 +451,11 @@
                     <div >
                         <div crud-render_limit class="hide">
                             <!-- Limite massimo raggiunto -->
-                            {{$LANG.app.limite_raggiunto}}
+                            {{'app.limite-raggiunto' | translate }}
                         </div>
                         <button v-on:click="addItem" type="button" class="btn btn-primary btn-sm">
-                            <span >{{$LANG.app.add}}</span>&nbsp;
-                            <span crud-label="modelMetadata.singular"></span>&nbsp;
+                            <span >{{'app.aggiungi' | translate}}</span>&nbsp;
+<!--                            <span crud-label="modelMetadata.singular"></span>&nbsp;-->
                         </button>
                     </div>
                 </div>
@@ -413,15 +463,14 @@
         </div>
     </div>
 </template>
-<template id="r-b2-select2-template">
-    <div>
-        <select c-select2 class="form-control m-select2"
-                v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
-        </select>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
-    </div>
+
+<template id="w-b2-select2-template">
+    <select c-select2 class="form-control m-select2"
+            v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
+    </select>
 </template>
-<template id="r-b2m-select2-template">
+
+<template id="w-b2m-select2-template">
     <div>
         <select c-select2 class="form-control m-select2" name="" multiple="true"
                 v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
@@ -430,13 +479,13 @@
         <div c-selected-items>
             <!-- hidden input for selected items -->
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
-<template id="r-upload-template">
+
+<template id="w-upload-template">
     <div>
         <div v-show="extensions">
-            <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
+            <span crud-label="app.accepted-extensions">{{'app.estensioni-accettate' | translate}} </span>
             <span v-show="extensions">{{extensions.join(',')}}</span>
         </div>
         <div v-show="maxFileSize">
@@ -445,13 +494,14 @@
         <div>
             <input :name="getFieldName()" c-file class="btn btn-outline-secondary" type="file" v-on:change="validate()" v-bind:c-marker="cMarker">
         </div>
-        <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
     </div>
 </template>
-<template id="r-upload-ajax-template">
+
+<template id="w-upload-ajax-template">
     <div class="row">
         <div class="col-8">
             <div v-show="error" class="alert alert-danger">{{errorMessage}}</div>
+            <input type="hidden" v-model="value" :name="getFieldName()" >
             <div>
                 <div v-show="extensions">
                     <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
@@ -463,249 +513,288 @@
                 <div>
                     <input c-file class="btn btn-outline-secondary" type="file" v-on:change="validate()" v-bind:c-marker="cMarker">
                 </div>
-                <input c-operator v-model="operator" v-bind:name="getOperatorName()" type="hidden" />
             </div>
         </div>
-        <div class="col-4" v-show="!uploadConf.noPreview">
-            <r-preview :c-conf="previewConf"></r-preview>
+        <div class="col-4">
+            <w-preview :c-conf="previewConf"></w-preview>
         </div>
     </div>
 </template>
-<script type="text/x-template" id="r-preview-template">
+
+<template id="w-preview-template">
     <div>
-        <img v-show="value" :src="value">
-        <i v-show="icon" :class="iconClass"></i>
+        <img v-if="getType()=='image'" :src="value.url">
+        <a v-else-if="getType()=='doc'" :href="value.url">
+            <i :class="iconClass"></i>
+        </a>
+        <small v-else class="text-danger">
+            <span v-if="value.url">{{getType()}} mimetype non riconosciuto</span>
+        </small>
     </div>
-</script>
-<script type="text/x-template" id="v-list-template">
-    <div>
+</template>
+
+<template id="v-list-template">
+    <div class="float-end ">
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <div v-else>
             <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                <div class="float-left" v-if="collectionActionsName.length">
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
-                <div class="float-right">
-                    <c-paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                <div v-if="paginator" class="float-right">
+                    <!-- v-bind:c-route-conf="routeConf" -->
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" >
                     <thead>
-                    <tr>
-                        <th v-show="recordActionsName.length">
-                            <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>Actions</span>
-                        </th>
-                        <th v-for="key in keys">
-                            <span v-show="!conf.orderFields[key]">{{key}}</span>
-                            <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
-                        </th>
-                    </tr>
+                        <tr v-if="widgets.length > 0">
+                            <th v-show="recordActionsName.length">
+                                <input c-row-check-all v-on:change="selectAllRows" v-if="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                                <span>{{"app.azioni" | translate }}</span>
+                            </th>
+                            <th v-for="(key,index) in keys" v-if="!isHiddenField(key)">
+                                <action-order v-if="isOrderField(key)" v-bind:c-conf="getOrderConf(key)" :key="_uid+key"></action-order>
+                                <span v-else>{{key+'.label' | translate(langContext) }}</span>
+                            </th>
+                        </tr>
+                        <tr v-if="widgets.length == 0">
+                            <th v-show="recordActionsName.length">
+                                {{"app.nessun-elemento" | translate }}
+                            </th>
+                        </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in renders">
+                    <tr v-for="(row,index) in widgets">
                         <td v-show="recordActionsName.length">
 
-                            <div class="btn-group" role="group">
-                                <div class="input-group-text bg-transparent">
-                                    <input c-row-check v-show="needSelection"  type="checkbox">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <div v-if="needSelection" class="input-group-text bg-transparent">
+                                    <input c-row-check type="checkbox">
                                 </div>
 
-                                <template v-for="(action,name) in recordActions[index]">
-                                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                                <template v-for="(action,name) in recordActions[index]" >
+                                    <v-action  :c-action="action"></v-action>
                                 </template>
                             </div>
 
                         </td>
-                        <td v-for="(render, key) in row">
-                            <component :is="render.template" :c-type="render.type" :c-render="render" :c-key="key"></component>
-
-<!--                            <component v-bind:is="render.type" v-bind:c-conf="render" v-bind:c-key="key"></component>-->
+                        <td v-for="(widget, key) in row" v-if="!isHiddenField(key)">
+                            <v-widget :c-widget="widget" :key="key"></v-widget>
                         </td>
+                        <template v-for="(widget, key) in row" v-if="isHiddenField(key)">
+                            <v-widget :c-widget="widget" :key="key"></v-widget>
+                        </template>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+            <div class="clearfix">
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action  :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
-                <div class="float-right">
-                    <c-paginator v-show="pagination" v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                <div v-if="paginator" class="float-right">
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-list-edit-template">
-    <div>
+<template  id="v-list-edit-template">
+    <div  class="float-end ">
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <div v-else>
             <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+                <div class="float-left" v-if="collectionActionsName.length">
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
-                <div class="float-right">
-                    <c-paginator v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                <div v-if="paginator" class="float-right">
+                    <!-- v-bind:c-route-conf="routeConf" -->
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" >
                     <thead>
-                    <tr>
-                        <th v-show="recordActionsName.length">
-                            <input c-row-check-all v-on:change="selectAllRows" v-show="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
-                            <span>Actions</span>
-                        </th>
-                        <th v-for="key in keys">
-                            <span v-show="!conf.orderFields[key]">{{key}}</span>
-                            <action-order v-show="conf.orderFields[key]" v-bind:c-conf="getOrderConf(key)"></action-order>
-                        </th>
-                    </tr>
+                        <tr v-if="widgets.length > 0">
+                            <th v-show="recordActionsName.length">
+                                <input c-row-check-all v-on:change="selectAllRows" v-if="needSelection" class="btn btn-sm btn-outline-secondary" type="checkbox" >
+                                <span>{{"app.azioni" | translate }}</span>
+                            </th>
+                            <th v-for="(key,index) in keys" v-if="!isHiddenField(key)">
+                                <action-order v-if="isOrderField(key)" v-bind:c-conf="getOrderConf(key)" :key="_uid+key"></action-order>
+                                <span v-else>{{key+'.label' | translate(langContext) }}</span>
+                            </th>
+                        </tr>
+                        <tr v-if="widgets.length == 0">
+                            <th v-show="recordActionsName.length">
+                                {{"app.nessun-elemento" | translate }}
+                            </th>
+                        </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in renders">
+                    <tr v-for="(row,index) in widgets">
                         <td v-show="recordActionsName.length">
 
-                            <div class="btn-group" role="group">
-                                <div class="input-group-text bg-transparent">
-                                    <input c-row-check v-show="needSelection"  type="checkbox">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <div v-if="needSelection" class="input-group-text bg-transparent">
+                                    <input c-row-check type="checkbox">
                                 </div>
 
-                                <template v-for="(action,name) in recordActions[index]">
-                                    <component  v-bind:is="name" :c-ref="'ra-'+index+'-'+name"  v-bind:c-conf="action"></component>
+                                <template v-for="(action,name) in recordActions[index]" >
+                                    <v-action  :c-action="action"></v-action>
                                 </template>
                             </div>
 
                         </td>
-                        <td v-for="(render, key) in row">
-                            <component v-if="!editMode[index]" :is="render.type"            :c-conf="render"            :c-key="key" :c-ref="'rv-'+index+'-'+key"></component>
-                            <component v-if="editMode[index]" :is="rendersEdit[index][key].type"  :c-conf="rendersEdit[index][key]"  :c-key="key" :c-ref="'re-'+index+'-'+key"></component>
+                        <td v-for="(widget, key) in row" v-if="!isHiddenField(key)">
+                            <v-widget  v-show="!editMode[index]" :c-widget="widget" ></v-widget>
+                            <v-widget  v-show="editMode[index]" :c-widget="widgetsEdit[index][key]" ></v-widget>
                         </td>
+                        <template v-for="(widget, key) in row" v-if="isHiddenField(key)">
+                            <v-widget :c-widget="widget" :key="key"></v-widget>
+                        </template>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="float-none">
-                <div class="float-left" v-show="globalActionsName.length">
-                    <template v-for="name in globalActionsName">
-                        <component  v-bind:is="name" v-bind:c-conf="globalActions[name]"></component>
+            <div class="clearfix">
+                <div class="float-left" v-show="collectionActionsName.length">
+                    <template v-for="(name,index) in collectionActionsName">
+                        <v-action  :c-action="collectionActions[name]"></v-action>
                     </template>
                 </div>
-                <div class="float-right">
-                    <c-paginator v-bind:c-route-conf="routeConf" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                <div v-if="paginator" class="float-right">
+                    <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
                 </div>
             </div>
         </div>
     </div>
-</script>
+</template>
 
-<script type="text/x-template" id="v-edit-template">
+<template id="v-edit-template">
     <div class="container-fluid">
         <slot><h4 card-title v-show="viewTitle">{{viewTitle}}</h4></slot>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <form v-else enctype="multipart/form-data">
-            <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+            <!-- campi nascosti -->
+            <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
+                <v-widget :c-widget="widget" :key="key"></v-widget>
+            </template>
+            <div  v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
+                <v-widget :c-widget="widget"></v-widget>
             </div>
         </form>
         <div class="p-3" v-show="actions.length">
             <template v-for="(action,name) in actionsClass">
-                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                <v-action  :c-action="action"></v-action>
             </template>
         </div>
     </div>
-</script>
-<script type="text/x-template" id="v-view-template">
-    <div>
-        <div>View View</div>
-        <c-loading v-if="loading"></c-loading>
-        <div v-else v-for="(item, key) in renders">
-            <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-            <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+</template>
 
-<!--            <component :is="item.template" :c-type="item.type" :c-render="item" :c-key="key"></component>-->
-        </div>
-        <div v-show="actionsName.length">
-            <template v-for="(action,name) in actions">
-                <component  v-bind:is="name" v-bind:c-conf="action"></component>
-            </template>
-        </div>
-    </div>
-</script>
-<script type="text/x-template" id="v-insert-template">
-    <div>
-        <h4 v-show="viewTitle">{{viewTitle}}</h4>
-        <c-loading v-if="loading"></c-loading>
-        <form v-else  enctype="multipart/form-data">
-            <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+<template id="v-view-template">
+    <div  class="container-fluid">
+        <slot  card-title><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <div v-else >
+            <div  v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
+                <v-widget  :c-widget="widget"></v-widget>
             </div>
-        </form>
-        <div class="p-3" v-show="actions.length">
-            <template v-for="(action,name) in actionsClass">
-                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+            <!-- campi nascosti -->
+            <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
+                <v-widget :c-widget="widget" :key="key"></v-widget>
             </template>
-        </div>
-    </div>
-</script>
-<script type="text/x-template" id="v-search-template">
-    <div v-if="(renders && Object.keys(renders).length > 0)">
-        <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
-        <c-loading v-if="loading"></c-loading>
-        <form v-else>
-            <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
-            </div>
-        </form>
-        <div class="clearfix">
-            <div class="p-3 pull-right" v-show="actions.length">
+            <div v-if="actions.length">
                 <template v-for="(action,name) in actionsClass">
-                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                    <v-action :c-action="action"></v-action>
                 </template>
             </div>
         </div>
 
     </div>
-</script>
+</template>
+
+<template id="v-insert-template">
+    <div>
+        <h4 v-show="viewTitle">{{viewTitle}}</h4>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <form v-else  enctype="multipart/form-data">
+            <!-- campi nascosti -->
+            <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
+                <v-widget :c-widget="widget" :key="key"></v-widget>
+            </template>
+            <div  v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
+                <v-widget :c-widget="widget"></v-widget>
+            </div>
+        </form>
+        <div class="p-3" v-if="actions.length">
+            <template v-for="(action,name) in actionsClass">
+                <v-action  :c-action="action"></v-action>
+            </template>
+        </div>
+    </div>
+</template>
+
+<template  id="v-search-template">
+    <div class="card-body" v-if="(widgets && Object.keys(widgets).length > 0)">
+        <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
+        <form v-else>
+            <!-- campi nascosti -->
+            <v-widget v-for="(widget, key) in widgets" v-if="isHiddenField(key)" :c-widget="widget"></v-widget>
+            <div class="row">
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col col-6" v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
+                            <v-widget  :c-widget="widget"></v-widget>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 align-middle">
+                    <div class="p-3" v-show="actions.length">
+                        <template v-for="(action,name) in actionsClass">
+                            <v-action :c-action="action"></v-action>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</template>
+
 <template id="v-hasmany-template">
     <div>
         <div>&nbsp;</div>
         <c-loading v-if="loading"></c-loading>
         <div v-else>
-            <div  v-for="(item, key) in renders">
-                <!--<component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>-->
-                <!--<component :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>-->
-
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
-
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
             </div>
         </div>
     </div>
 </template>
-<script type="text/x-template" id="v-hasmany-view-template">
+
+<template id="v-hasmany-view-template">
     <div>
         <div>&nbsp;</div>
         <div v-if="loading">
             loading
         </div>
         <div v-else>
-            <div  v-for="(item, key) in this.renders">
-                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>
+            <div>pippo</div>
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
             </div>
         </div>
         <div v-show="actions.length">
@@ -714,4 +803,4 @@
             </template>
         </div>
     </div>
-</script>
+</template>

@@ -1,17 +1,20 @@
-<script type="text/x-template" id="v-insert-template">
+<template id="v-insert-template">
     <div>
         <h4 v-show="viewTitle">{{viewTitle}}</h4>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <form v-else  enctype="multipart/form-data">
-            <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+            <!-- campi nascosti -->
+            <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
+                <v-widget :c-widget="widget" :key="key"></v-widget>
+            </template>
+            <div  v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
+                <v-widget :c-widget="widget"></v-widget>
             </div>
         </form>
-        <div class="p-3" v-show="actions.length">
+        <div class="p-3" v-if="actions.length">
             <template v-for="(action,name) in actionsClass">
-                <component  v-bind:is="name" v-bind:c-conf="action"></component>
+                <v-action  :c-action="action"></v-action>
             </template>
         </div>
     </div>
-</script>
+</template>

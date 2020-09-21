@@ -1,20 +1,26 @@
-<script type="text/x-template" id="v-search-template">
-    <div v-if="(renders && Object.keys(renders).length > 0)">
+<template  id="v-search-template">
+    <div class="card-body" v-if="(widgets && Object.keys(widgets).length > 0)">
         <slot><h4 v-show="viewTitle">{{viewTitle}}</h4></slot>
-        <c-loading v-if="loading"></c-loading>
+        <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <form v-else>
-            <div  v-for="(item, key) in renders">
-                <component v-if="item.type!='r-hidden'" :is="item.template" :c-type="item.type" :c-render="item" :c-key="getFieldName(key)"></component>
-                <component v-if="item.type=='r-hidden'" :is="item.type" :c-conf="item" :c-key="getFieldName(key)"></component>
+            <!-- campi nascosti -->
+            <v-widget v-for="(widget, key) in widgets" v-if="isHiddenField(key)" :c-widget="widget"></v-widget>
+            <div class="row">
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col col-6" v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
+                            <v-widget  :c-widget="widget"></v-widget>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 align-middle">
+                    <div class="p-3" v-show="actions.length">
+                        <template v-for="(action,name) in actionsClass">
+                            <v-action :c-action="action"></v-action>
+                        </template>
+                    </div>
+                </div>
             </div>
         </form>
-        <div class="clearfix">
-            <div class="p-3 pull-right" v-show="actions.length">
-                <template v-for="(action,name) in actionsClass">
-                    <component  v-bind:is="name" v-bind:c-conf="action"></component>
-                </template>
-            </div>
-        </div>
-
     </div>
-</script>
+</template>

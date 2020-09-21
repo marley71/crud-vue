@@ -1,0 +1,16 @@
+{
+    "msg" : "Ok",
+    "error" : 0,
+    "result" : [
+        {
+            "id" : 1,
+            "name" : "name1",
+            "email" : "name1@sito.it"
+        },
+        {
+            "id" : 2,
+            "name" : "name2",
+            "email" : "name2@sito.it"
+        }
+    ]
+}

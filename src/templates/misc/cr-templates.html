@@ -1,45 +1,28 @@
-<template id="c-tpl-record-template">
-    <div>
-        <label>{{cKey}}</label>
-        <div>
-            <component
-                    :is="cType"
-                    :c-conf="cRender"
-                    :c-key="cKey"
-                    :c-ref="cRef">
-            </component>
-        </div>
+<template id="tpl-record-template">
+    <div v-if="cWidget.type!='w-hidden'">
+        <label>{{cWidget.label}}</label>
+        <component :is="cWidget.type" :c-conf="cWidget"></component>
     </div>
+    <component v-else :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
-<template id="c-tpl-record2-template">
-    <div class="row">
-        <div class="col col-sm-6">{{cKey}}</div>
+<template id="tpl-record2-template">
+    <div v-if="cWidget.type!='w-hidden'" class="row">
+        <div class="col col-sm-6">{{cWidget.label}}</div>
         <div class="col col-sm-6">
-            <component
-                    :is="cType"
-                    :c-conf="cRender"
-                    :c-key="cKey"
-                    :c-ref="cRef">
-            </component>
+<!--            <v-widget :c-widget="cWidget"></v-widget>-->
+            <component :is="cWidget.type" :c-conf="cWidget"></component>
         </div>
     </div>
+    <component v-else :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
-<template id="c-tpl-list-template">
-    <component
-            :is="cType"
-            :c-conf="cRender"
-            :c-key="cKey"
-            :c-ref="cRef">
-    </component>
+<template id="tpl-list-template">
+<!--    <v-widget :c-widget="cWidget"></v-widget>-->
+    <component :is="cWidget.type" :c-conf="cWidget"></component>
 </template>
 
-<template id="c-tpl-no-template">
-    <component
-            :is="cType"
-            :c-conf="cRender"
-            :c-key="cKey"
-            :c-ref="cRef">
-    </component>
+<template id="tpl-no-template">
+<!--    <v-widget :c-widget="cWidget"></v-widget>-->
+    <component :is="cWidget.type" :c-conf="cWidget"></component>
 </template>

@@ -1,0 +1,234 @@
+<template id="action-template">
+    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
+        <i v-show="icon" :class="icon"></i>
+        <span>{{text | translate}}</span>
+    </button>
+    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >
+        <i v-show="icon" :class="icon"></i>
+        <span>{{text | translate}}</span>
+    </a>
+</template>
+
+<template id="action-order-template">
+    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
+        <i v-show="icon" :class="icon"></i>
+        <span>{{text | translate}}</span>
+    </button>
+    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >
+        <i v-show="icon" :class="icon"></i>
+        <span>{{text | translate}}</span>
+    </a>
+</template>
+
+
+<!--<script type="text/x-template" id="action-dialog-template">-->
+<!--    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">-->
+<!--        <i v-show="icon" :class="icon"></i>-->
+<!--        <span>{{text | translate}}</span>-->
+<!--    </button>-->
+<!--    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css" :disabled="_disabled" >-->
+<!--        <i v-show="icon" :class="icon"></i>-->
+<!--        <span>{{text | translate}}</span>-->
+<!--    </a>-->
+<!--</script>-->
+
+<template id="tpl-record-template">
+    <div v-if="cWidget.type!='w-hidden'">
+        <label>{{cWidget.label}}</label>
+        <component :is="cWidget.type" :c-conf="cWidget"></component>
+    </div>
+    <component v-else :is="cWidget.type" :c-conf="cWidget"></component>
+</template>
+
+<template id="tpl-record2-template">
+    <div v-if="cWidget.type!='w-hidden'" class="row">
+        <div class="col col-sm-6">{{cWidget.label}}</div>
+        <div class="col col-sm-6">
+<!--            <v-widget :c-widget="cWidget"></v-widget>-->
+            <component :is="cWidget.type" :c-conf="cWidget"></component>
+        </div>
+    </div>
+    <component v-else :is="cWidget.type" :c-conf="cWidget"></component>
+</template>
+
+<template id="tpl-list-template">
+<!--    <v-widget :c-widget="cWidget"></v-widget>-->
+    <component :is="cWidget.type" :c-conf="cWidget"></component>
+</template>
+
+<template id="tpl-no-template">
+<!--    <v-widget :c-widget="cWidget"></v-widget>-->
+    <component :is="cWidget.type" :c-conf="cWidget"></component>
+</template>
+
+<template id="c-paginator-template">
+    <div v-if="last_page">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                <li v-show="(parseInt(current_page) > 1)" class="page-item"> <!-- disabled -->
+                    <a class="page-link" href="javascript:void(0)" tabindex="-1" v-on:click="firstPage()" >&laquo;</a>
+                </li>
+                <li v-show="(current_page - 2) > 0 " class="page-item">
+                    <a v-on:click="setPage(current_page - 2)" class="page-link" href="javascript:void(0)" >
+                        {{ current_page - 2 }}
+                    </a>
+                </li>
+                <li v-show="(current_page - 1) > 0 " class="page-item">
+                    <a v-on:click="setPage(current_page - 1)" class="page-link" href="javascript:void(0)">
+                        {{  current_page - 1 }}
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link">
+                        pag. {{ current_page }} / {{ last_page }} <small>({{ from + '-' + to + " di " + total }} elementi)</small>
+                    </a></li>
+                <li v-show="(current_page + 1) <=  last_page " class="page-item">
+                    <a  v-on:click="setPage(current_page + 1)" class="page-link" href="javascript:void(0)">
+                        {{ current_page + 1 }}
+                    </a>
+                </li>
+                <li v-show="(current_page + 2) <=  last_page "  class="page-item">
+                    <a  v-on:click="setPage(current_page + 2)" class="page-link" href="javascript:void(0)">
+                        {{ current_page + 2 }}
+                    </a>
+                </li>
+                <li v-show="(parseInt(current_page) < last_page)" class="page-item">
+                    <a class="page-link" href="javascript:void(0)" v-on:click="lastPage()">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</template>
+
+<template id="d-confirm-template">
+    <div c-confirm-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title | translate }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-default">
+                        <div v-for="(msg,index) in message" v-html="msg"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{ 'app.ok' | translate}}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">{{'app.annulla' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-message-template">
+    <div c-message-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title | translate }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <div v-for="(msg,index) in message" v-html="msg"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-error-template">
+    <div c-error-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title | translate}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <div v-for="msg in message" v-html="msg"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<template id="d-warning-template">
+    <div c-warning-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title | translate }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <div v-for="msg in message" v-html="msg"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="d-custom-template">
+    <div c-custom-dialog class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
+            <div class="modal-content" >
+                <div v-if="title" class="modal-header">
+                    <h5  class="modal-title">{{ title | translate }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" v-html="content">
+
+                </div>
+                <div v-if="Object.keys(cCallbacks).length > 0" class="modal-footer">
+                    <template v-for="(cb,key) in cCallbacks">
+                        <button type="button" class="btn btn-primary" v-on:click="callCb(key)">{{key | translate}}</button>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="c-loading-template">
+    <div v-if="!errorMsg" class="spinner-border text-primary" role="status">
+        <span class="sr-only">{{'app.carico'|translate}}</span>
+    </div>
+    <div v-else>
+        <span class="text-danger text-2xl">{{errorMsg}}</span>
+    </div>
+</template>
+
+<template id="c-wait-template">
+    <div c-wait :class="{'crud-overlay-body': global, 'crud-overlay' : !global}">
+        <span class="crud-wait-msg">
+            {{msg | translate}}
+        </span>
+    </div>
+</template>

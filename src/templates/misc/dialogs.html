@@ -1,19 +1,21 @@
 <template id="d-confirm-template">
     <div c-confirm-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-default">{{message}}</div>
+                    <div class="alert alert-default">
+                        <div v-for="(msg,index) in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">Annulla</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{ 'app.ok' | translate}}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="cancel">{{'app.annulla' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -22,19 +24,21 @@
 
 <template id="d-message-template">
     <div c-message-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-info">{{message}}</div>
+                    <div class="alert alert-info">
+                        <div v-for="(msg,index) in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -43,19 +47,21 @@
 
 <template id="d-error-template">
     <div c-error-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger">{{message}}</div>
+                    <div class="alert alert-danger">
+                        <div v-for="msg in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -65,19 +71,21 @@
 
 <template id="d-warning-template">
     <div c-warning-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-warning">{{message}}</div>
+                    <div class="alert alert-warning">
+                        <div v-for="msg in message" v-html="msg"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">Ok</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="ok">{{'app.ok' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -86,10 +94,10 @@
 
 <template id="d-custom-template">
     <div c-custom-dialog class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+        <div class="modal-dialog" :class="{'modal-dialog-big':cBig}" role="document">
+            <div class="modal-content" >
+                <div v-if="title" class="modal-header">
+                    <h5  class="modal-title">{{ title | translate }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -97,9 +105,9 @@
                 <div class="modal-body" v-html="content">
 
                 </div>
-                <div class="modal-footer">
+                <div v-if="Object.keys(cCallbacks).length > 0" class="modal-footer">
                     <template v-for="(cb,key) in cCallbacks">
-                        <action-dialog :c-conf="cb" ></action-dialog>
+                        <button type="button" class="btn btn-primary" v-on:click="callCb(key)">{{key | translate}}</button>
                     </template>
                 </div>
             </div>

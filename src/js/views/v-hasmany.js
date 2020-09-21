@@ -1,43 +1,25 @@
-Vue.component('v-hasmany', {
+crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf'],
-    data :  function () {
-        var that = this;
-        var conf = that.getConf(that.cModel,'edit');
-        return {
-            loading : true,
-            renders : {},
-            actionsClass : [],
-            actions : {},
-            data : {},
-            conf : conf,//jQuery.extend(true,{},ModelTest.edit),
-            defaultRenderType : 'r-input',
+    props : {
+        cType : {
+            default : 'insert'
         }
-
     },
+    data :  function () {
+        var _conf = this._loadConf();
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
+        //console.log('VHASMANY CONF',_conf);
+        return d;
+    },
+
     methods : {
         fillData : function () {
-            this.data = this.conf.data;
+            this.value = this.conf.value;
         },
-        // renderKey : function (key) {
-        //     var that = this;
-        //     return that.cModel + "-" + key + '[]';
-        // },
         getFieldName : function (key) {
             var that = this;
             return that.cModel + "-" + key + '[]';
         }
-    },
-    mounted : function () {
-        var that = this;
-        this.fetchData(null,function (json) {
-            that.fillData(null,null);
-            that.createActions();
-            that.createActionsClass();
-            that.createRenders();
-            that.loading = false;
-            console.log('v-hasmany',that.loading);
-        });
-    },
-    template : '#v-hasmany-template'
+    }
 });

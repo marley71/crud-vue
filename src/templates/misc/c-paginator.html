@@ -1,5 +1,5 @@
-<script type="text/x-template" id="c-paginator-template">
-    <div>
+<template id="c-paginator-template">
+    <div v-if="last_page">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-end">
                 <li v-show="(parseInt(current_page) > 1)" class="page-item"> <!-- disabled -->
@@ -34,4 +34,4 @@
             </ul>
         </nav>
     </div>
-</script>
+</template>

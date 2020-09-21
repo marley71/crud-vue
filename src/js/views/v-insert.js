@@ -1,40 +1,26 @@
-Vue.component('v-insert', {
+crud.components.views.coreVInsert = Vue.component('core-v-insert', {
     extends : crud.components.views.vRecord,
-    props : ['c-conf','c-model'],
-
-    mounted : function() {
-        var that = this;
-        var route = that._getRoute({
-            modelName: this.cModel,
-        });
-
-        that.route = route;
-        that.fetchData(that.route,function (json) {
-            that.fillData(that.route,json);
-            that.createActions();
-            that.createActionsClass();
-            that.createRenders();
-            that.loading = false;
-        });
-    },
-
-    data :  function () {
-        var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'insert');
-
-        var dInsert = {
-            loading : true,
-            renders : {},
-            actionsClass : [],
-            actions : {},
-            data : {},
-            conf : that.conf,
-            defaultRenderType : 'r-input',
+    props : {
+        cType : {
+            default : 'insert'
         }
-        return Utility.merge(d,dInsert);
+    },
+    data :  function () {
+        var _conf = this._loadConf() || {};
+        var d =  {}
+        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
+        return d;
 
     },
-    template : '#v-insert-template'
-
+    methods : {
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.modelName
+                });
+            }
+            return route;
+        }
+    }
 });

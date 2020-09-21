@@ -1,0 +1,7 @@
+<template id="w-select-template">
+    <select class="form-control" v-bind:name="getFieldName()" v-model="value" v-bind:c-marker="cMarker"
+            v-on:change="change">
+        <option v-for="key in domainValuesOrder" :value="key"
+                >{{domainValues[key]}}</option>
+    </select>
+</template>

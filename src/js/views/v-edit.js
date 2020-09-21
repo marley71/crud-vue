@@ -1,46 +1,26 @@
-Vue.component('v-edit', {
+crud.components.views.coreVEdit = Vue.component('core-v-edit', {
     extends : crud.components.views.vRecord,
-    //props : ['cModel','cPk'],
-
-    mounted : function() {
-        var that = this;
-        var route = that._getRoute({
-            modelName: this.cModel,
-            pk: this.cPk
-        });
-        that.route = route;
-
-        this.fetchData(that.route,function (json) {
-            that.fillData(that.route,json);
-            that.createActions();
-            that.createActionsClass();
-            that.createRenders();
-            that.loading = false;
-        });
+    props : {
+        cType : {
+            default : 'edit'
+        }
     },
     data :  function () {
-        var that = this;
-        var d = this.defaultData();
-        d.conf = that.getConf(that.cModel,'edit');
-
-
-        var dEdit = {
-            loading : true,
-            renders : {},
-            actionsClass : [],
-            actions : {},
-            data : {},
-            route : null,
-            viewTitle : d.conf.viewTitle,
-            defaultRenderType : 'r-input',
-        }
-        return Utility.merge(d,dEdit);
-
+        var _conf = this._loadConf() || {};
+        var d = {}
+        d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
+        return d;
     },
     methods : {
-       getFormData : function () {
-
-       }
+        setRouteValues : function (route) {
+            var that  = this;
+            if (route) {
+                route.setValues({
+                    modelName : that.modelName,
+                    pk :that.pk,
+                });
+            }
+            return route;
+        }
     },
-    template : '#v-edit-template'
 });

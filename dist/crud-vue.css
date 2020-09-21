@@ -5,7 +5,7 @@
     position: fixed;
     right: 0;
     top: 0;
-    z-index:10000;
+    z-index:100000;
     cursor : wait;
 }
 .crud-overlay {
@@ -15,7 +15,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    z-index:10000;
+    z-index:100000;
     cursor : wait;
 }
 
@@ -25,4 +25,8 @@
     top:50%;
     text-align:center;
     color:white
+}
+
+body .modal-dialog-big { /* Width */
+    max-width: 90%;
 }

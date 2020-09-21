@@ -1,7 +1,12 @@
-const actionBase = Vue.component('action-base', {
+crud.components.actions.coreActionBase = Vue.component('crud-action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
-
+    mounted : function() {
+        var that = this;
+        if (that.controlType == 'link') {
+            that._execute();
+        }
+    },
     computed :  {
         _disabled : function () {
             var that = this;
@@ -23,49 +28,29 @@ const actionBase = Vue.component('action-base', {
         }
     },
     methods : {
-        defaultData : function () {
-            var that = this;
-            var adata = {
-                type : 'global',
-                visible : true,
-                enabled : true,
-                title : '',
-                css: 'btn btn-outline-secondary',
-                icon : 'fa fa-help',
-                text : '',
-                //view : that.$parent,
-                // execute : function () {
-                //     alert('definire execute')
-                // }
-            };
-            for (var c in this.cConf) {
-                // if (c ===  'execute') {
-                //     var f = this.cConf[c];
-                //     adata[c] = function () {
-                //         f.apply(that);
-                //     }
-                // } else
-                //if (jQuery.inArray(c,['execute','beforeExecute','afterExecute','enabled','visible']) < 0)
-                    adata[c] = this.cConf[c];
-            }
-            if (!('view' in adata) )
-                adata.view = that.$parent;
-            //console.log('action ',adata);
-            return adata;
-        },
+
         _beforeExecute : function (callback) {
             var that =this;
+            //console.log('_beforeExecute')
             if (!that.beforeExecute || !jQuery.isFunction(that.beforeExecute)) {
                 callback();
                 return ;
             }
-            // controllo se la funzione before execute ha una callback per controlli asincroni.
-            if (that.cConf.length > 0) {
-                that.cConf.beforeExecute.apply(that,[callback]);;
+
+            var args = that.cConf.beforeExecute.toString()
+                .match(/\((?:.+(?=\s*\))|)/)[0]
+                .slice(1).split(/\s*,\s*/g);
+            args.forEach(function (e, i, a) {a[i] = e.trim();});
+            // se before execute ha un parametro allora e' la callback che verrà chiamata in caso di esisto positivo
+            if (args[0]) {
+                that.cConf.beforeExecute.apply(that,[callback]);
+            } else {
+                // altrimenti continuo solo se before execute mi ritorna true.
+                if (that.cConf.beforeExecute.apply(that) ) {
+                    callback();
+                }
             }
-            if (that.cConf.beforeExecute.apply(that) ) {
-                callback();
-            }
+
 
         },
         _execute : function () {
@@ -75,9 +60,21 @@ const actionBase = Vue.component('action-base', {
                 return ;
             }
             that._beforeExecute(function () {
-                //console.log('call execute')
-                that.execute.apply(that);
-                that._afterExecute();
+                // controllo che execute abbia o no una callback per operazioni asincrone
+                var args = that.execute.toString()
+                    .match(/\((?:.+(?=\s*\))|)/)[0]
+                    .slice(1).split(/\s*,\s*/g);
+                args.forEach(function (e, i, a) {a[i] = e.trim();});
+                if (args[0]) {
+                    var __cb = function() {
+                        that._afterExecute();
+                    }
+                    that.execute.apply(that,[__cb]);
+                } else {
+                    that.execute.apply(that);
+                    that._afterExecute();
+                }
+
             })
         },
         _afterExecute : function () {
@@ -88,8 +85,8 @@ const actionBase = Vue.component('action-base', {
             that.afterExecute.apply(that);
         },
 
-        setEnabled : function (enabled) {
-            this.enabled = enabled;
+        setEnabled : function (enable) {
+            this.enabled = enable;
         },
 
         setVisible : function (visible) {
@@ -97,76 +94,54 @@ const actionBase = Vue.component('action-base', {
         }
     },
     data :  function () {
-        return this.defaultData();
+        var that = this;
+        //console.log('action-base')
+        //var d =  that._loadConf();
+        var d = that._getConf();
+        var adata = {
+            type : null,
+            visible : true,
+            enabled : true,
+            title : '',
+            css: 'btn btn-outline-secondary',
+            icon : '',
+            text : '',
+            controlType : 'button',
+            href : '',
+            target: '_self',
+            needSelection  : false,
+            view : null,
+            alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
+        };
+        if (!('view' in adata) )
+            adata.view = that.$parent;
+        return that.merge(adata,d);
     },
-    template: '#action-template'
 });
 
-Vue.component('action-edit', {
-    extends : actionBase
-});
 
-Vue.component('action-view', {
-    extends : actionBase
-});
-
-Vue.component('action-save', {
-    extends : actionBase
-});
-
-Vue.component('action-insert', {
-    extends : actionBase
-});
-
-Vue.component('action-back', {
-    extends : actionBase
-});
-
-Vue.component('action-search', {
-    extends : actionBase
-});
-
-Vue.component('action-delete', {
-    extends : actionBase
-});
-
-Vue.component('action-delete-selected', {
-    extends : actionBase
-});
-
-Vue.component('action-order', {
-    extends : actionBase,
+crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
+    extends : crud.components.actions.coreActionBase,
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
-            this.icon = this.cConf.iconDown;
+            this.icon = this.cConf.iconSortDesc;
         else if (direction == 'asc')
-            this.icon = this.cConf.iconUp
+            this.icon = this.cConf.iconSortAsc
         else
-            this.icon = null;
-        //this.icon = (this.cConf.orderDirection === null)?null:(this.cConf.orderDirection.toLowerCase()=='asc'?this.cConf.iconUp:this.cConf.iconDown);
+            this.icon = this.cConf.iconSort;
+        if (this.text) {
+            var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
+            if (this.hasTranslation(langKey+'.label'))
+                this.text = this.translate(langKey+'.label')
+        }
     }
 })
 
-Vue.component('action-edit-mode',{
-    extends : actionBase
-});
-
-Vue.component('action-view-mode',{
-    extends : actionBase
-});
-
-Vue.component('action-save-row',{
-    extends : actionBase
-});
 
 
-Vue.component('action-dialog', {
-    extends : actionBase,
-    data : function () {
-        var d = this.defaultData();
-        d.dialog = this.$parent;
-        return d;
 
-    }
-})
+// Vue.component('action-dialog', {
+//     extends : crud.components.cComponent,
+//     template : '#action-dialog-template'
+// })

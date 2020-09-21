@@ -1,12 +1,13 @@
-<script type="text/x-template" id="v-hasmany-view-template">
+<template id="v-hasmany-view-template">
     <div>
         <div>&nbsp;</div>
         <div v-if="loading">
             loading
         </div>
         <div v-else>
-            <div  v-for="(item, key) in this.renders">
-                <component v-bind:is="item.type" v-bind:c-conf="item" v-bind:c-key="renderKey(key)"></component>
+            <div>pippo</div>
+            <div  v-for="(widget, key) in widgets">
+                <v-widget :c-widget="widget"></v-widget>
             </div>
         </div>
         <div v-show="actions.length">
@@ -15,4 +16,4 @@
             </template>
         </div>
     </div>
-</script>
+</template>

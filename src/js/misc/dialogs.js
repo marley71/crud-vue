@@ -1,22 +1,42 @@
-crud.components.dBase = Vue.component('d-base',{
-    props : ['cMessage'],
+crud.components.misc.dBase = Vue.component('d-base',{
+    props :  {
+        'cMessage' : {
+            default : ''
+        },
+        'cAutohide' : {
+            default : true
+        },
+        cButtonConf : {
+            default : function() {
+                return {}
+            }
+        },
+        cBig : {
+            default : false
+        }
+    },
     extends : crud.components.cComponent,
     mounted : function () {
         var that = this;
-        console.log('message',this.cMessage,this.message)
-        that.jQe(that.selector).modal('show');
+        //console.log('message',this.cMessage,this.message)
+        //that.jQe(that.selector).modal('show');
+        //that.jQe(that.selector).modal({backdrop: 'static', keyboard: false})
+        if (that.cAutohide) {
+            that.jQe(that.selector).modal('show');
+        } else {
+            that.jQe(that.selector).modal({
+                backdrop: 'static',
+                keyboard: false,
+                show : true
+            })
+        }
+
         that.jQe(that.selector).on('hidden.bs.modal', function (e) {
             that.jQe(that.selector).remove();
             that.$destroy();
         })
     },
     methods : {
-        defaultData : function () {
-            return {
-                message : this.cMessage,
-                title : this.cTitle,
-            }
-        },
         ok : function () {
             console.log('default ok')
         },
@@ -26,89 +46,81 @@ crud.components.dBase = Vue.component('d-base',{
         hide : function () {
             var that = this;
             that.jQe(that.selector).modal('hide');
+        },
+        callCb : function (key) {
+            var that = this;
+            that.cCallbacks[key].apply(that);
         }
     },
     data :function () {
-        return this.defaultData();
+        var message = Array.isArray(this.cMessage)?this.cMessage:[this.cMessage];
+        console.log('DIALOG MSG',Array.isArray(this.cMessage),message,this.cMessage);
+        return {
+            message : message,
+            title : this.cTitle,
+        }
     }
 });
 
-crud.components.dConfirm = Vue.component('d-confirm', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDConfirm = Vue.component('core-d-confirm', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
-            default : 'Richiesta di Conferma'
+            default : 'app.richiesta-conferma'
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {
+
+        };
         d.selector = '[c-confirm-dialog]';
         return d;
     },
-    template : '#d-confirm-template'
 });
 
-crud.components.dMessage = Vue.component('d-message', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDMessage = Vue.component('core-d-message', {
+    extends : crud.components.misc.dBase,
     props : {
         'cTitle': {
-            default : 'Informazione'
+            default : 'app.informazione'
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-message-dialog]';
         return d;
     },
-    template : '#d-message-template'
 });
 
-crud.components.dError = Vue.component('d-error', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDError = Vue.component('core-d-error', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
-            default : 'Errore'
+            default : 'app.errore'
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-error-dialog]';
         return d;
     },
-    template : '#d-error-template'
 });
-crud.components.dWarning = Vue.component('d-warning', {
-    extends : crud.components.dBase,
+crud.components.misc.coreDWarning = Vue.component('core-d-warning', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
-            default : 'Attenzione'
+            default : 'app.attenzione'
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-warning-dialog]';
         return d;
     },
-    template : '#d-warning-template'
 });
 
-crud.components.dCustom = Vue.component('d-custom', {
-    // mounted : function () {
-    //     var that = this;
-    //     for (var k in that.cCallbacks) {
-    //         console.log('callback',k);
-    //         that.methods[k] = function () {
-    //             that.cCallbacks[k].apply(that);
-    //         }
-    //     }
-    // },
-    extends : crud.components.dBase,
-    // methods : {
-    //     cbCall : function (key) {
-    //         var that = this;
-    //         that.cCallbacks[key].execute(that);
-    //     }
-    // },
+crud.components.misc.coreDCustom = Vue.component('core-d-custom', {
+    extends : crud.components.misc.dBase,
     props : {
         'c-title': {
             default : ''
@@ -123,10 +135,9 @@ crud.components.dCustom = Vue.component('d-custom', {
         }
     },
     data : function() {
-        var d = this.defaultData();
+        var d = {};
         d.selector = '[c-custom-dialog]';
         d.content = this.cContent;
         return d;
     },
-    template : '#d-custom-template'
 });

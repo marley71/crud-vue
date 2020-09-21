@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>App - CRUD-VUE</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "App";
+    var mkdocs_page_input_path = "app.md";
+    var mkdocs_page_url = "/app/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CRUD-VUE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../component/">Component</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../widgets/">Widgets</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../views/">Views</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../templates/">Templates</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../actions/">Actions</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../confs/">Confs</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../routes/">Routes</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../server/">Server</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">App</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#crudapp">CrudApp</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#data">data</a></li>
+        
+            <li><a class="toctree-l3" href="#core_mixin">core_mixin</a></li>
+        
+            <li><a class="toctree-l3" href="#dialogs_mixin">dialogs_mixin</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dashboards/">Dashboards</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../protocollo_dati/">Protocols</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../esempi_views/">Esempi Views</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CRUD-VUE</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>App</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/marley71/crud#root/docs/app.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="crudapp">CrudApp</h1>
+<p>CrudApp è la classe per la gestione dell&rsquo;applicazione. Estende Vue, definisce due mixin
+- <code>core_mixin</code> : qui vengono definiti metodi di utilità generale.
+- <code>dialogs_mixin</code> : metodi generali per la gestione di dialog.
+quando CrudApp ha caricato tutto emette un evento &lsquo;crud-app-loaded&rsquo;, in questo modo siamo sicuri
+che tutto sia stato caricato.</p>
+<h4 id="data">data</h4>
+<ul>
+<li><code>templatesFiles</code> : files html dove si trovano tutti i template dei vari widgets,views e componenti in generale. default </li>
+</ul>
+<pre><code class="javascript">[
+    '/crud-vue/components/actions.html',
+    '/crud-vue/components/misc.html',
+    '/crud-vue/components/widgets.html',
+    '/crud-vue/components/views.html',
+]
+</code></pre>
+
+<ul>
+<li><code>el</code> : default &lsquo;#app&rsquo;, contenitore della nostra applicazione</li>
+<li><code>appConfig</code> = null  : eventuale file javascript per le modifiche delle varie configurazioni iniziali e defaults di <code>crud</code></li>
+<li><code>componentsFiles</code>: files js dove si trovano le definizioni dei componenti per poterli estendere facilimente. Default:</li>
+</ul>
+<pre><code class="javascript">componentsFiles : 
+[
+    '/crud-vue/components/actions.js',
+    '/crud-vue/components/misc.js',
+    '/crud-vue/components/widgets.js',
+    '/crud-vue/components/views.js',
+]
+</code></pre>
+
+<h3 id="core_mixin">core_mixin</h3>
+<p>contiene metodi di utilizzo generale.</p>
+<h4 id="metodi">metodi</h4>
+<ul>
+<li><code>waitStart : function (msg,container)</code></li>
+<li><code>waitEnd : function (component)</code></li>
+<li><code>_createContainer : function (container)</code></li>
+<li><code>translate : function (key,plural,params)</code></li>
+<li><code>createRoute : function(routeName)</code> </li>
+<li><code>createProtocol : function(name)</code> </li>
+<li><code>getDescendantProp : function(obj, desc)</code> </li>
+<li><code>getFormData : function (form)</code> </li>
+<li><code>sentenceCase : function (str)</code></li>
+<li><code>camelCase : function (string)</code></li>
+<li><code>costantCase : function (string)</code> </li>
+<li><code>dotCase : function (string)</code> </li>
+<li><code>isLowerCase : function (string)</code></li>
+<li><code>isUpperCase : function (string)</code> </li>
+<li><code>lowerCase : function (str)</code> </li>
+<li><code>paramCase : function (string)</code> </li>
+<li><code>pascalCase : function (string)</code> </li>
+<li><code>pathCase : function (string)</code> </li>
+<li><code>snakeCase : function (string)</code> </li>
+<li><code>swapCase : function (str)</code> </li>
+<li><code>titleCase : function (string)</code> </li>
+<li><code>upperCase : function (str)</code> 
+-<code>upperCaseFirst : function (str)</code></li>
+<li><code>cloneObj : function (obj)</code> </li>
+<li><code>confMerge : function(obj1,obj2)</code> </li>
+<li><code>merge : function(obj1, obj2)</code> </li>
+<li>
+<p><code>getAllUrlParams : function (url)</code> :ritorna i parametri sotto forma di vettore associativo di un 
+url altrimenti di location.search.</p>
+</li>
+<li>
+<p><code>loadResources : function(resources, callback)</code> {
+carica un vettore di risorse, al fine caricamento chiama la callback
+ @param resources
+@param callback</p>
+</li>
+<li>
+<p><code>loadResource : function (fileName, callback)</code> {
+carica una risorsa script o css dinamicamente partendo dalla cartella
+pluginsPath quando lo script e&rsquo; stato caricato chiama la callback
+ @param fileName
+@param callback</p>
+</li>
+</ul>
+<p>-<code>getRefId : function ()</code> : costruisce il riferimento id di un compoenente utilizzando la concatenazione
+          degli argomenti passati con &ldquo;-&ldquo;; 
+- <code>_loadHtml  : function (fileName,callback)</code> </p>
+<ul>
+<li>
+<p><code>_loadScript : function (scriptName, callback)</code></p>
+</li>
+<li>
+<p><code>_loadCss : function (scriptName,callback)</code> </p>
+</li>
+</ul>
+<h3 id="dialogs_mixin">dialogs_mixin</h3>
+<p>contiene metodo per la generazione di popup o modal </p>
+<h4 id="metodi_1">metodi</h4>
+<ul>
+<li><code>messageDialog : function (bodyProps,callbacks)</code></li>
+<li><code>errorDialog : function (bodyProps,callbacks)</code></li>
+<li><code>confirmDialog : function (bodyProps,callbacks)</code></li>
+<li><code>warningDialog : function (bodyProps,callbacks)</code></li>
+<li><code>customDialog : function (bodyProps,callbacks)</code></li>
+<li><code>popover : function (message,classes,time)</code></li>
+<li><code>popoverSuccess : function (message,time)</code></li>
+<li><code>popoverError : function (message,time)</code></li>
+<li><code>popoverInfo : function (message,time)</code></li>
+<li><code>popoverWarning : function (message,time)</code></li>
+<li><code>_popover : function (message,classes,time)</code></li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../dashboards/" class="btn btn-neutral float-right" title="Dashboards">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../server/" class="btn btn-neutral" title="Server"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/marley71/crud" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../server/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../dashboards/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>
