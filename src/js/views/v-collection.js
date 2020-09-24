@@ -25,16 +25,16 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     beforeDestroy () {
         for (var row in this.widgets) {
             for (var key in this.widgets[row]) {
-                this.getWidget(row,key).$destroy();
+                this.getWidget(row,key) && this.getWidget(row,key).$destroy();
             }
         }
         for (var row in this.recordActions) {
             for (var key in this.recordActions[row]) {
-                this.getRecordAction(row,key).$destroy();
+                this.getRecordAction(row,key) && this.getRecordAction(row,key).$destroy();
             }
         }
         for (var key in this.collectionActions) {
-            var a = this.getCollectionAction(key).$destroy();
+            this.getCollectionAction(key) && this.getCollectionAction(key).$destroy();
         }
     },
 

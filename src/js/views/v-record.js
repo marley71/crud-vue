@@ -13,10 +13,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     beforeDestroy () {
         for (var key in this.widgets) {
-            this.getWidget(key).$destroy();
+            this.getWidget(key) && this.getWidget(key).$destroy();
         }
         for (var key in this.actionsClass) {
-            this.getAction(key).$destroy();
+            this.getAction(key) && this.getAction(key).$destroy();
         }
     },
 
