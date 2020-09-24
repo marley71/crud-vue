@@ -8,13 +8,10 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
             d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
-//                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
-        if (!('routeName' in d))
-            d.routeName = 'autocomplete';
-        if (!('primaryKey' in d))
-            d.primaryKey = 'id';
+        d.routeName = _conf.routeName || 'autocomplete';
+        d.primaryKey = _conf.primaryKey || 'id';
         d.label = '';
         d.suggestValues = {};
         return d;
@@ -76,6 +73,7 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
             that.label = '';
             that.suggestValues = {};
             jQuery(that.$el).find('[c-autocomplete]').val('');
+            that.change();
         },
         getLabel : function () {
             var that = this;
