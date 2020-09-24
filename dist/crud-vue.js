@@ -2249,13 +2249,10 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
             d.resources = [
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
-//                'autocomplete-typeahead-bootstrap/dist/latest/bootstrap-autocomplete.js'
             ];
         }
-        if (!('routeName' in d))
-            d.routeName = 'autocomplete';
-        if (!('primaryKey' in d))
-            d.primaryKey = 'id';
+        d.routeName = _conf.routeName || 'autocomplete';
+        d.primaryKey = _conf.primaryKey || 'id';
         d.label = '';
         d.suggestValues = {};
         return d;
@@ -2317,6 +2314,7 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
             that.label = '';
             that.suggestValues = {};
             jQuery(that.$el).find('[c-autocomplete]').val('');
+            that.change();
         },
         getLabel : function () {
             var that = this;
@@ -3434,10 +3432,10 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
     beforeDestroy () {
         for (var key in this.widgets) {
-            this.getWidget(key).$destroy();
+            this.getWidget(key) && this.getWidget(key).$destroy();
         }
         for (var key in this.actionsClass) {
-            this.getAction(key).$destroy();
+            this.getAction(key) && this.getAction(key).$destroy();
         }
     },
 
@@ -3642,16 +3640,16 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     beforeDestroy () {
         for (var row in this.widgets) {
             for (var key in this.widgets[row]) {
-                this.getWidget(row,key).$destroy();
+                this.getWidget(row,key) && this.getWidget(row,key).$destroy();
             }
         }
         for (var row in this.recordActions) {
             for (var key in this.recordActions[row]) {
-                this.getRecordAction(row,key).$destroy();
+                this.getRecordAction(row,key) && this.getRecordAction(row,key).$destroy();
             }
         }
         for (var key in this.collectionActions) {
-            var a = this.getCollectionAction(key).$destroy();
+            this.getCollectionAction(key) && this.getCollectionAction(key).$destroy();
         }
     },
 
