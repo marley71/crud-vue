@@ -471,7 +471,127 @@ crud.conf = {
         domainValues : {},
         domainValuesOrder : [],
     },
+    'w-checkbox' : {
+        confParent : 'crud.conf.w-base',
+        domainValues : {},
+        domainValuesOrder : [],
+        value : [],
+    },
+    'w-select' : {
+        confParent : 'crud.conf.w-base',
+        domainValues : {},
+        domainValuesOrder : [],
+    },
+    'w-textarea' : {
+        confParent : 'crud.conf.w-base',
+    },
 
+    'w-text' : {
+        confParent : 'crud.conf.w-base',
+    },
+
+    'w-custom' : {
+        confParent : 'crud.conf.w-base',
+    },
+
+    'w-date-select' : {
+        confParent : 'crud.conf.w-base',
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
+        ],
+        minYear : null,
+        maxYear : null,
+    },
+
+    'w-date-picker' : {
+        confParent : 'crud.conf.w-base',
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
+        ],
+        displayFormat : "dd/mm/yyyy",
+        dateFormat :  "yyyy-mm-dd",
+    },
+
+    'w-texthtml' : {
+        confParent : 'crud.conf.w-base',
+        resources : [
+            //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
+            //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js',
+            'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
+            'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
+
+        ],
+    },
+
+    'w-hasmany' : {
+        confParent : 'crud.conf.w-base',
+        confViews : [],
+        limit : 100
+    },
+
+    'w-swap' : {
+        confParent : 'crud.conf.w-base',
+        routeName : 'set',
+        iconClass : 'fa fa-circle',
+        title : "swap",
+        swapType : 'icon',  // possibili valori text,icon
+        defaultDomainValues : {
+            icon : {
+                0 : 'fa fa-circle text-danger',
+                1 : 'fa fa-circle text-success'
+            },
+            text : {
+                0 : 'app.no',
+                1 : 'app.si'
+            }
+        },
+        domainValues : {},
+        slot : '',
+    },
+
+    'w-b2-select2': {
+        confParent : 'crud.conf.w-base',
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
+        ],
+        routeName : 'autocomplete',
+        route : null,
+        primaryKey : 'id',
+    },
+
+    'w-b2m-select2': {
+        confParent : 'crud.conf.w-b2-select2',
+        value : [],
+    },
+
+    'w-upload' : {
+        confParent : 'crud.conf.w-base',
+        extensions : '',
+        maxFileSize : '',
+        error : false,
+        errorMessage : '',
+    },
+
+    'w-upload-ajax' : {
+        confParent : 'crud.conf.w-base',
+        extensions : [],
+        maxFileSize : '',
+        routeName : 'uploadfile',
+        value : {},
+        error : false,
+        errorMessage : '',
+        previewConf : {},
+    },
+
+    'w-preview' : {
+        confParent : 'crud.conf.w-base',
+        icon : false,
+        iconClass : '',
+        value : {},
+    }
     // uploadFile : {
     //     routeName : null,
     //     fields : ['nome','descrizione','modelName'],
@@ -1688,7 +1808,7 @@ Server.route = function(route,callback) {
 Server.subdomain = null;
 
 crud.components.cComponent = Vue.component('c-component',{
-    props : ['cConf','compRef'],
+    props : ['cConf','cCompRef'],
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
@@ -1697,8 +1817,8 @@ crud.components.cComponent = Vue.component('c-component',{
         if (that.cRef) {
             that.$crud.cRefs[that.cRef] = this;
         }
-        if (that.compRef) {
-            that.$crud.cRefs[that.compRef] = this;
+        if (that.cCompRef) {
+            that.$crud.cRefs[that.cCompRef] = this;
         }
 
         //if (that.conf) {
@@ -2339,12 +2459,18 @@ crud.components.widgets.coreWTextarea = Vue.component('core-w-textarea', {
 
 crud.components.widgets.coreWSelect = Vue.component('core-w-select',{
     extends : crud.components.widgets.wBase,
-    data :  function () {
-        var d = this._loadConf();
-        d.domainValues = d.domainValues || {};
-        d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(d.domainValues);
-        return d;
+    mounted : function () {
+        var that = this;
+        if (that.domainValuesOrder.length == 0 && Object.keys(that.domainValues).length > 0) {
+            that.domainValuesOrder = Object.keys(that.domainValues);
+        }
     },
+    // data :  function () {
+    //     var d = this._loadConf();
+    //     d.domainValues = d.domainValues || {};
+    //     d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(d.domainValues);
+    //     return d;
+    // },
     methods : {
         reset : function() {
             if (this.defaultValue)
@@ -2358,6 +2484,13 @@ crud.components.widgets.coreWSelect = Vue.component('core-w-select',{
 
 crud.components.widgets.coreWRadio = Vue.component('core-w-radio',{
     extends : crud.components.widgets.wBase,
+    mounted : function () {
+        var that = this;
+        if (that.domainValuesOrder.length == 0 && Object.keys(that.domainValues).length > 0) {
+            that.domainValuesOrder = Object.keys(that.domainValues);
+        }
+    },
+
     // data : function() {
     //     var that = this;
     //     var _conf  = that._getConf() || {};
@@ -2371,20 +2504,27 @@ crud.components.widgets.coreWRadio = Vue.component('core-w-radio',{
 
 crud.components.widgets.coreWCheckbox = Vue.component('core-w-checkbox',{
     extends : crud.components.widgets.wBase,
-    data :  function () {
+    mounted : function () {
         var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        var dV = _conf.domainValues || {};
-        var dVO = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);
-        if (_conf.value)
-            d.value = Array.isArray(_conf.value)?_conf.value:[_conf.value];
-        else
-            d.value = [];
-        d.domainValues = dV;
-        d.domainValuesOrder = dVO;
-        return d;
+        if (that.domainValuesOrder.length == 0 && Object.keys(that.domainValues).length > 0) {
+            that.domainValuesOrder = Object.keys(that.domainValues);
+        }
     },
+
+    // data :  function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     var dV = _conf.domainValues || {};
+    //     var dVO = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);
+    //     if (_conf.value)
+    //         d.value = Array.isArray(_conf.value)?_conf.value:[_conf.value];
+    //     else
+    //         d.value = [];
+    //     d.domainValues = dV;
+    //     d.domainValuesOrder = dVO;
+    //     return d;
+    // },
     methods : {
         getFieldName : function () {
             return this.name + '[]';
@@ -2492,19 +2632,19 @@ crud.components.widgets.coreWBelongsto = Vue.component('core-w-belongsto', {
 
 crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
     extends : crud.components.widgets.wBase,
-    data : function() {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        if (!( 'resources' in _conf) ) {
-            d.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
-            ];
-        }
-        d.minYear = null;
-        d.maxYear = null;
-        return d;
-    },
+    // data : function() {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     if (!( 'resources' in _conf) ) {
+    //         d.resources = [
+    //             'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
+    //         ];
+    //     }
+    //     d.minYear = null;
+    //     d.maxYear = null;
+    //     return d;
+    // },
     computed : {
         cDay : function () {
             var that = this;
@@ -2559,7 +2699,7 @@ crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
                 that.errorDialog('invalid Date');
                 return ;
             }
-            var _cday = that.$refs.day;
+            var _cday = that.$crud.cRefs.day;
             var d = moment(that.value);
             _cday.domainValues = this._dayValues();
             _cday.domainValuesOrder = Object.keys(this._dayValues());
@@ -2568,10 +2708,13 @@ crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
         _getValidDate : function() {
             var that = this;
             //var s = jQuery(that.$el).find('[c-marker="year"]').val() +  "-" + jQuery(that.$el).find('[c-marker="month"]').val().padStart(2,'0')  + "-" + jQuery(that.$el).find('[c-marker="day"]').val().padStart(2,'0') ;
-            var _cday = that.$refs.day;
-            var _cmonth = that.$refs.month
-            var _cyear = that.$refs.year;
+            var _cday = that.$crud.cRefs.day;
+            var _cmonth = that.$crud.cRefs.month
+            var _cyear = that.$crud.cRefs.year;
+
             var sdate = _cyear.getValue() +  "-" + _cmonth.getValue().toString().padStart(2,'0')  + "-" + _cday.getValue().toString().padStart(2,'0') ;
+
+            //console.log('validate Date',_cday,_cmonth,_cyear,sdate);
             var dds = moment(sdate);
             if (!dds.isValid()) {
                 _cday.setValue(1);
@@ -2580,7 +2723,9 @@ crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
                 if (!dds.isValid())
                     return false;
             }
+            //console.log('value',sdate);
             that.value = sdate;
+            that.change();
             return true;
         },
         _dayValues : function () {
@@ -2616,21 +2761,21 @@ crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
 
 crud.components.widgets.coreWDatePicker = Vue.component('core-w-date-picker', {
     extends : crud.components.widgets.wBase,
-    data : function() {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        if (!( 'resources' in _conf) ) {
-            d.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
-                'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
-            ];
-        }
-        d.displayFormat = _conf.displayFormat || "mm/dd/yyyy";
-        d.dateFormat = _conf.dateFormat || d.displayFormat;
-        return d;
-    },
+    // data : function() {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     if (!( 'resources' in _conf) ) {
+    //         d.resources = [
+    //             'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
+    //             'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
+    //             'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
+    //         ];
+    //     }
+    //     d.displayFormat = _conf.displayFormat || "mm/dd/yyyy";
+    //     d.dateFormat = _conf.dateFormat || d.displayFormat;
+    //     return d;
+    // },
     methods : {
         afterLoadResources : function () {
             var that = this;
@@ -2648,23 +2793,23 @@ crud.components.widgets.coreWDatePicker = Vue.component('core-w-date-picker', {
 
 crud.components.widgets.coreWTexthtml = Vue.component('core-w-texthtml',{
     extends : crud.components.widgets.wBase,
-    data : function() {
-        var d = this._loadConf();
-        if (!( 'resources' in d.conf) ) {
-            d.conf.resources = [
-                //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
-                //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js',
-                'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
-                'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
-
-            ];
-        }
-        return d;
-    },
+    // data : function() {
+    //     var d = this._loadConf();
+    //     if (!( 'resources' in d.conf) ) {
+    //         d.conf.resources = [
+    //             //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
+    //             //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js',
+    //             'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
+    //             'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
+    //
+    //         ];
+    //     }
+    //     return d;
+    // },
     methods : {
         afterLoadResources : function () {
             var that = this;
-            var options = that.conf.pluginOptions || {
+            var options = that.pluginOptions || {
                 content : that.value,
                 //airMode : true
             };
@@ -2672,11 +2817,16 @@ crud.components.widgets.coreWTexthtml = Vue.component('core-w-texthtml',{
             that.jQe('.summernote').summernote(options);
             jQuery('.summernote').on('summernote.change', function() {
                 //console.log('Enter/Return key pressed',jQuery('.summernote').summernote('code'));
-                that.jQe('[c-sum]').val(jQuery('.summernote').summernote('code'));
-                that.jQe('[c-sum]').trigger('change');
+                that.jQe('[c-summernote]').val(jQuery('.summernote').summernote('code'));
+                //that.jQe('[c-sum]').trigger('change');
+                that.change();
                 //that.jQe('[c-sum]').val('hh')
             })
             jQuery('.summernote').summernote('focus');
+        },
+        getValue : function () {
+            var that = this;
+            return that.jQe('[c-summernote]').val();
         }
     }
 });
@@ -2690,15 +2840,15 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             that.confViews.push(_conf);
         }
     },
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {}
-        var d = {};
-        d.confViews = [];
-        if (!("limit" in _conf) )
-            d.limit = 100;
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {}
+    //     var d = {};
+    //     d.confViews = [];
+    //     if (!("limit" in _conf) )
+    //         d.limit = 100;
+    //     return d;
+    // },
 
     methods : {
         /**
@@ -2717,7 +2867,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             var that = this;
             var hmConf = that.hasmanyConf || {};
             var relationConf = that.relationConf || {};
-            hmConf = this.confMerge({
+            hmConf = this.mergeConfView({
                 fields : [],
                 fieldsConfig : {},
                 routeName : null,
@@ -2794,37 +2944,52 @@ crud.components.widgets.coreWHasmanyView = Vue.component('core-w-hasmany-view', 
 
 crud.components.widgets.coreWSwap = Vue.component('core-w-swap', {
     extends : crud.components.widgets.wBase,
-    data : function () {
+    mounted : function () {
         var that = this;
-        var d = {};
-        var _conf = that._getConf() || {};
-        if (!("routeName" in _conf))
-            d.routeName = 'set';
-        d.iconClass = 'fa fa-circle';
-        d.title = "swap";
-        d.swapType = _conf.swapType?_conf.swapType:'icon';
-        var defaultDomainValues = {
-            icon : {
-                0 : 'fa fa-circle text-danger',
-                1 : 'fa fa-circle text-success'
-            },
-            text : {
-                0 : that.translate('app.no'),
-                1 : that.translate('app.si')
-            }
+        if (Object.keys(that.domainValues).length == 0) {
+            that.domainValues = that.defaultDomainValues[that.swapType];
         }
-        var value = _conf.value;
-        var dV = (_conf.domainValues)? _conf.domainValues:defaultDomainValues[d.swapType];
 
-        var keys = Object.keys(dV).map(String);
-        if (keys.indexOf(""+value) >= 0) {
-            d.slot = dV[""+value];
+        var keys = Object.keys(that.domainValues).map(String);
+        if (keys.indexOf(""+that.value) >= 0) {
+            that.slot = that.domainValues[""+that.value];
         } else {
-            d.slot = dV[keys[0]];
+            that.slot = that.domainValues[keys[0]];
         }
-        d.domainValues = dV;
-        return d;
+
+        //console.log('domainValues',that.domainValues,that.slot)
     },
+    // data : function () {
+    //     var that = this;
+    //     var d = {};
+    //     var _conf = that._getConf() || {};
+    //     if (!("routeName" in _conf))
+    //         d.routeName = 'set';
+    //     d.iconClass = 'fa fa-circle';
+    //     d.title = "swap";
+    //     d.swapType = _conf.swapType?_conf.swapType:'icon';
+    //     var defaultDomainValues = {
+    //         icon : {
+    //             0 : 'fa fa-circle text-danger',
+    //             1 : 'fa fa-circle text-success'
+    //         },
+    //         text : {
+    //             0 : that.translate('app.no'),
+    //             1 : that.translate('app.si')
+    //         }
+    //     }
+    //     var value = _conf.value;
+    //     var dV = (_conf.domainValues)? _conf.domainValues:defaultDomainValues[d.swapType];
+    //
+    //     var keys = Object.keys(dV).map(String);
+    //     if (keys.indexOf(""+value) >= 0) {
+    //         d.slot = dV[""+value];
+    //     } else {
+    //         d.slot = dV[keys[0]];
+    //     }
+    //     d.domainValues = dV;
+    //     return d;
+    // },
     methods : {
         getDV : function() {
             var that = this;
@@ -2843,10 +3008,10 @@ crud.components.widgets.coreWSwap = Vue.component('core-w-swap', {
 
             route.setValues({
                 modelName: that.modelName,
-                field : that.name, //that.conf.key?that.conf.key:that.cKey,
+                field : that.name, //that.key?that.conf.key:that.cKey,
                 value : keys[index]
             });
-            route.setParams({id:that.conf.modelData.id});
+            route.setParams({id:that.modelData.id});
             return route;
         },
         swap : function () {
@@ -2959,22 +3124,22 @@ crud.components.widgets.coreWHasmanyThrough =Vue.component('core-w-hasmany-throu
 
 crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
     extends : crud.components.widgets.wBase,
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        if (!( 'resources' in _conf) ) {
-            d.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
-                'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-            ];
-        }
-        d.routeName = _conf.routeName || 'autocomplete';
-        d.route = null;
-        if (!('primaryKey' in _conf)  )
-            d.primaryKey = 'id';
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     if (!( 'resources' in _conf) ) {
+    //         d.resources = [
+    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
+    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
+    //         ];
+    //     }
+    //     d.routeName = _conf.routeName || 'autocomplete';
+    //     d.route = null;
+    //     if (!('primaryKey' in _conf)  )
+    //         d.primaryKey = 'id';
+    //     return d;
+    // },
     methods : {
         _getAjaxConf : function() {
             var that = this;
@@ -3137,16 +3302,16 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
 
 crud.components.widgets.coreWUpload = Vue.component('core-w-upload',{
     extends : crud.components.widgets.wBase,
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        d.extensions = _conf.extensions?_conf.extensions:'';
-        d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
-        d.error = false;
-        d.errorMessage = '';
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     d.extensions = _conf.extensions?_conf.extensions:'';
+    //     d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
+    //     d.error = false;
+    //     d.errorMessage = '';
+    //     return d;
+    // },
 
     methods : {
         getValue : function () {
@@ -3179,28 +3344,48 @@ crud.components.widgets.coreWUpload = Vue.component('core-w-upload',{
 
 crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
     extends : crud.components.widgets.wBase,
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        d.extensions = _conf.extensions?_conf.extensions:[];
-        d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
-        //d.uploadConf = d.conf;
-        if (! ("routeName" in _conf) )
-            d.routeName = 'uploadfile';
 
-        var value = _conf.value || {};
-        d.previewConf = {
-            value : value,
-            cRef : this._uid + 'preview'
-        }
-        d.value = JSON.stringify(value).replace(/\\"/g, '"');
-        d.error = false;
-        d.errorMessage = '';
-        return d;
+    mounted : function() {
+        this.value = JSON.stringify(this.value).replace(/\\"/g, '"');
     },
 
+    data : function() {
+        var that = this;
+        var d = {};
+        d.previewConf = {
+            value : that.value,
+            cRef : this._uid + 'preview'
+        }
+        return d;
+        //d.value = JSON.stringify(that.value).replace(/\\"/g, '"');
+    },
+
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     d.extensions = _conf.extensions?_conf.extensions:[];
+    //     d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
+    //     //d.uploadConf = d.conf;
+    //     if (! ("routeName" in _conf) )
+    //         d.routeName = 'uploadfile';
+    //
+    //     var value = _conf.value || {};
+    //     d.previewConf = {
+    //         value : value,
+    //         cRef : this._uid + 'preview'
+    //     }
+    //     d.value = JSON.stringify(value).replace(/\\"/g, '"');
+    //     d.error = false;
+    //     d.errorMessage = '';
+    //     return d;
+    // },
+
     methods : {
+
+        getPreviewConf : function() {
+            return this.previewConf;
+        },
 
         setRouteValues: function(route) {
             route.setValues({
@@ -3301,17 +3486,22 @@ crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
 
 crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
     extends : crud.components.widgets.wBase,
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {
-            icon : false,
-            iconClass : ''
-        };
-        if (!_conf.value)
-            d.value = {};
-        return d;
-    },
+    // mounted : function() {
+    //     var that = this;
+    //     console.log('previw conf',that.cConf);
+    // },
+
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {
+    //         icon : false,
+    //         iconClass : ''
+    //     };
+    //     if (!_conf.value)
+    //         d.value = {};
+    //     return d;
+    // },
     methods : {
         getType : function () {
             var that = this;

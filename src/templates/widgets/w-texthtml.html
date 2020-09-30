@@ -1,7 +1,7 @@
 <template id="w-texthtml-template">
 <!--    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>-->
     <div>
-        <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" :c-marker="cMarker" v-on:change="change">
+        <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" >
         <div class="summernote" v-html="value">
         </div>
     </div>

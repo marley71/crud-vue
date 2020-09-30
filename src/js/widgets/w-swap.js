@@ -1,36 +1,51 @@
 crud.components.widgets.coreWSwap = Vue.component('core-w-swap', {
     extends : crud.components.widgets.wBase,
-    data : function () {
+    mounted : function () {
         var that = this;
-        var d = {};
-        var _conf = that._getConf() || {};
-        if (!("routeName" in _conf))
-            d.routeName = 'set';
-        d.iconClass = 'fa fa-circle';
-        d.title = "swap";
-        d.swapType = _conf.swapType?_conf.swapType:'icon';
-        var defaultDomainValues = {
-            icon : {
-                0 : 'fa fa-circle text-danger',
-                1 : 'fa fa-circle text-success'
-            },
-            text : {
-                0 : that.translate('app.no'),
-                1 : that.translate('app.si')
-            }
+        if (Object.keys(that.domainValues).length == 0) {
+            that.domainValues = that.defaultDomainValues[that.swapType];
         }
-        var value = _conf.value;
-        var dV = (_conf.domainValues)? _conf.domainValues:defaultDomainValues[d.swapType];
 
-        var keys = Object.keys(dV).map(String);
-        if (keys.indexOf(""+value) >= 0) {
-            d.slot = dV[""+value];
+        var keys = Object.keys(that.domainValues).map(String);
+        if (keys.indexOf(""+that.value) >= 0) {
+            that.slot = that.domainValues[""+that.value];
         } else {
-            d.slot = dV[keys[0]];
+            that.slot = that.domainValues[keys[0]];
         }
-        d.domainValues = dV;
-        return d;
+
+        //console.log('domainValues',that.domainValues,that.slot)
     },
+    // data : function () {
+    //     var that = this;
+    //     var d = {};
+    //     var _conf = that._getConf() || {};
+    //     if (!("routeName" in _conf))
+    //         d.routeName = 'set';
+    //     d.iconClass = 'fa fa-circle';
+    //     d.title = "swap";
+    //     d.swapType = _conf.swapType?_conf.swapType:'icon';
+    //     var defaultDomainValues = {
+    //         icon : {
+    //             0 : 'fa fa-circle text-danger',
+    //             1 : 'fa fa-circle text-success'
+    //         },
+    //         text : {
+    //             0 : that.translate('app.no'),
+    //             1 : that.translate('app.si')
+    //         }
+    //     }
+    //     var value = _conf.value;
+    //     var dV = (_conf.domainValues)? _conf.domainValues:defaultDomainValues[d.swapType];
+    //
+    //     var keys = Object.keys(dV).map(String);
+    //     if (keys.indexOf(""+value) >= 0) {
+    //         d.slot = dV[""+value];
+    //     } else {
+    //         d.slot = dV[keys[0]];
+    //     }
+    //     d.domainValues = dV;
+    //     return d;
+    // },
     methods : {
         getDV : function() {
             var that = this;
@@ -49,10 +64,10 @@ crud.components.widgets.coreWSwap = Vue.component('core-w-swap', {
 
             route.setValues({
                 modelName: that.modelName,
-                field : that.name, //that.conf.key?that.conf.key:that.cKey,
+                field : that.name, //that.key?that.conf.key:that.cKey,
                 value : keys[index]
             });
-            route.setParams({id:that.conf.modelData.id});
+            route.setParams({id:that.modelData.id});
             return route;
         },
         swap : function () {

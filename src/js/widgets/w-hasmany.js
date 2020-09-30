@@ -7,15 +7,15 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             that.confViews.push(_conf);
         }
     },
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {}
-        var d = {};
-        d.confViews = [];
-        if (!("limit" in _conf) )
-            d.limit = 100;
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {}
+    //     var d = {};
+    //     d.confViews = [];
+    //     if (!("limit" in _conf) )
+    //         d.limit = 100;
+    //     return d;
+    // },
 
     methods : {
         /**
@@ -34,7 +34,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             var that = this;
             var hmConf = that.hasmanyConf || {};
             var relationConf = that.relationConf || {};
-            hmConf = this.confMerge({
+            hmConf = this.mergeConfView({
                 fields : [],
                 fieldsConfig : {},
                 routeName : null,

@@ -1,27 +1,47 @@
 crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
     extends : crud.components.widgets.wBase,
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        d.extensions = _conf.extensions?_conf.extensions:[];
-        d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
-        //d.uploadConf = d.conf;
-        if (! ("routeName" in _conf) )
-            d.routeName = 'uploadfile';
 
-        var value = _conf.value || {};
-        d.previewConf = {
-            value : value,
-            cRef : this._uid + 'preview'
-        }
-        d.value = JSON.stringify(value).replace(/\\"/g, '"');
-        d.error = false;
-        d.errorMessage = '';
-        return d;
+    mounted : function() {
+        this.value = JSON.stringify(this.value).replace(/\\"/g, '"');
     },
 
+    data : function() {
+        var that = this;
+        var d = {};
+        d.previewConf = {
+            value : that.value,
+            cRef : this._uid + 'preview'
+        }
+        return d;
+        //d.value = JSON.stringify(that.value).replace(/\\"/g, '"');
+    },
+
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     d.extensions = _conf.extensions?_conf.extensions:[];
+    //     d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
+    //     //d.uploadConf = d.conf;
+    //     if (! ("routeName" in _conf) )
+    //         d.routeName = 'uploadfile';
+    //
+    //     var value = _conf.value || {};
+    //     d.previewConf = {
+    //         value : value,
+    //         cRef : this._uid + 'preview'
+    //     }
+    //     d.value = JSON.stringify(value).replace(/\\"/g, '"');
+    //     d.error = false;
+    //     d.errorMessage = '';
+    //     return d;
+    // },
+
     methods : {
+
+        getPreviewConf : function() {
+            return this.previewConf;
+        },
 
         setRouteValues: function(route) {
             route.setValues({

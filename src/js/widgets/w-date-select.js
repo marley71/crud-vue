@@ -1,18 +1,18 @@
 crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
     extends : crud.components.widgets.wBase,
-    data : function() {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        if (!( 'resources' in _conf) ) {
-            d.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
-            ];
-        }
-        d.minYear = null;
-        d.maxYear = null;
-        return d;
-    },
+    // data : function() {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     if (!( 'resources' in _conf) ) {
+    //         d.resources = [
+    //             'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
+    //         ];
+    //     }
+    //     d.minYear = null;
+    //     d.maxYear = null;
+    //     return d;
+    // },
     computed : {
         cDay : function () {
             var that = this;
@@ -67,7 +67,7 @@ crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
                 that.errorDialog('invalid Date');
                 return ;
             }
-            var _cday = that.$refs.day;
+            var _cday = that.$crud.cRefs.day;
             var d = moment(that.value);
             _cday.domainValues = this._dayValues();
             _cday.domainValuesOrder = Object.keys(this._dayValues());
@@ -76,10 +76,13 @@ crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
         _getValidDate : function() {
             var that = this;
             //var s = jQuery(that.$el).find('[c-marker="year"]').val() +  "-" + jQuery(that.$el).find('[c-marker="month"]').val().padStart(2,'0')  + "-" + jQuery(that.$el).find('[c-marker="day"]').val().padStart(2,'0') ;
-            var _cday = that.$refs.day;
-            var _cmonth = that.$refs.month
-            var _cyear = that.$refs.year;
+            var _cday = that.$crud.cRefs.day;
+            var _cmonth = that.$crud.cRefs.month
+            var _cyear = that.$crud.cRefs.year;
+
             var sdate = _cyear.getValue() +  "-" + _cmonth.getValue().toString().padStart(2,'0')  + "-" + _cday.getValue().toString().padStart(2,'0') ;
+
+            //console.log('validate Date',_cday,_cmonth,_cyear,sdate);
             var dds = moment(sdate);
             if (!dds.isValid()) {
                 _cday.setValue(1);
@@ -88,7 +91,9 @@ crud.components.widgets.coreWDateSelect = Vue.component('core-w-date-select', {
                 if (!dds.isValid())
                     return false;
             }
+            //console.log('value',sdate);
             that.value = sdate;
+            that.change();
             return true;
         },
         _dayValues : function () {

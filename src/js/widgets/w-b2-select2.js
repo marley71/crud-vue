@@ -1,21 +1,21 @@
 crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
     extends : crud.components.widgets.wBase,
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        if (!( 'resources' in _conf) ) {
-            d.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
-                'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-            ];
-        }
-        d.routeName = _conf.routeName || 'autocomplete';
-        d.route = null;
-        if (!('primaryKey' in _conf)  )
-            d.primaryKey = 'id';
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     if (!( 'resources' in _conf) ) {
+    //         d.resources = [
+    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
+    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
+    //         ];
+    //     }
+    //     d.routeName = _conf.routeName || 'autocomplete';
+    //     d.route = null;
+    //     if (!('primaryKey' in _conf)  )
+    //         d.primaryKey = 'id';
+    //     return d;
+    // },
     methods : {
         _getAjaxConf : function() {
             var that = this;

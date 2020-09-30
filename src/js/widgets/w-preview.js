@@ -1,16 +1,21 @@
 crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
     extends : crud.components.widgets.wBase,
-    data : function () {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {
-            icon : false,
-            iconClass : ''
-        };
-        if (!_conf.value)
-            d.value = {};
-        return d;
-    },
+    // mounted : function() {
+    //     var that = this;
+    //     console.log('previw conf',that.cConf);
+    // },
+
+    // data : function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {
+    //         icon : false,
+    //         iconClass : ''
+    //     };
+    //     if (!_conf.value)
+    //         d.value = {};
+    //     return d;
+    // },
     methods : {
         getType : function () {
             var that = this;

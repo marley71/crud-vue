@@ -1,5 +1,5 @@
 crud.components.cComponent = Vue.component('c-component',{
-    props : ['cConf','compRef'],
+    props : ['cConf','cCompRef'],
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
@@ -8,8 +8,8 @@ crud.components.cComponent = Vue.component('c-component',{
         if (that.cRef) {
             that.$crud.cRefs[that.cRef] = this;
         }
-        if (that.compRef) {
-            that.$crud.cRefs[that.compRef] = this;
+        if (that.cCompRef) {
+            that.$crud.cRefs[that.cCompRef] = this;
         }
 
         //if (that.conf) {

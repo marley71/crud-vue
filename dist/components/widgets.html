@@ -96,10 +96,10 @@
 
 <template  id="w-date-select-template">
     <div v-if="resourcesLoaded" class="input-group">
-        <input type="hidden"  v-model="value" v-bind:name="getFieldName()" v-bind:c-marker="cMarker" v-on:change="change">
-        <w-select ref="day" v-bind:c-conf="cDay" c-marker="day"></w-select>
-        <w-select ref="month" v-bind:c-conf="cMonth" c-marker="month"></w-select>
-        <w-select ref="year" v-bind:c-conf="cYear" c-marker="year"></w-select>
+        <input type="hidden"  v-model="value" v-bind:name="getFieldName()">
+        <w-select c-comp-ref="day" ref="day" v-bind:c-conf="cDay" ></w-select>
+        <w-select c-comp-ref="month" ref="month" v-bind:c-conf="cMonth" ></w-select>
+        <w-select c-comp-ref="year" ref="year" v-bind:c-conf="cYear" ></w-select>
     </div>
 </template>
 
@@ -113,7 +113,7 @@
 <template id="w-texthtml-template">
 <!--    <textarea v-bind:c-key="getFieldName" c-summernote v-model="value" class="summernote form-control" c-lang="it-IT"></textarea>-->
     <div>
-        <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" :c-marker="cMarker" v-on:change="change">
+        <input c-summernote  type="hidden" v-model="value" :name="getFieldName()" >
         <div class="summernote" v-html="value">
         </div>
     </div>
@@ -183,7 +183,7 @@
 
 <template id="w-swap-template">
     <button type="button" class="btn btn-outline-secondary btn-sm" v-bind:title="title" v-on:click="swap">
-        <span v-show="swapType=='text'">{{ slot }}</span>
+        <span v-show="swapType=='text'">{{ slot | translate}}</span>
         <i  v-show="swapType=='icon'" v-bind:class="slot"></i>
     </button>
 </template>
@@ -269,19 +269,19 @@
             <input type="hidden" v-model="value" :name="getFieldName()" >
             <div>
                 <div v-show="extensions">
-                    <span crud-label="app.accepted-extensions">Estensioni accettate: </span>
+                    <span >{{'app.accepted-extensions' | translate}}: </span>
                     <span v-show="extensions">{{extensions.join(',')}}</span>
                 </div>
                 <div v-show="maxFileSize">
-                    Dimensione massima: <span crud-label="app.upload-max-filesize" >{{maxFileSize}}</span>
+                    {{'app.upload-max-filesize' | translate}}: <span>{{maxFileSize}}</span>
                 </div>
                 <div>
-                    <input c-file class="btn btn-outline-secondary" type="file" v-on:change="validate()" v-bind:c-marker="cMarker">
+                    <input c-file class="btn btn-outline-secondary" type="file" v-on:change="validate()" >
                 </div>
             </div>
         </div>
         <div class="col-4">
-            <w-preview :c-conf="previewConf"></w-preview>
+            <w-preview :c-conf="getPreviewConf()"></w-preview>
         </div>
     </div>
 </template>
