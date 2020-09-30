@@ -1,16 +1,16 @@
 crud.components.widgets.wBase = Vue.component('w-base', {
     extends : crud.components.cComponent,
     props : ['cMarker'],
-    data :  function () {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d  = {};
-        if (! ('value' in _conf))
-            d.value = null;
-        if (! ('defaultValue') in _conf)
-            d.defaultValue = null;
-        return d;
-    },
+    // data :  function () {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d  = {};
+    //     if (! ('value' in _conf))
+    //         d.value = null;
+    //     if (! ('defaultValue') in _conf)
+    //         d.defaultValue = null;
+    //     return d;
+    // },
     methods : {
 
         getFieldName: function () {
@@ -31,7 +31,8 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         //events
         change : function () {
             var that = this;
-            var methods = that.conf.methods || {};
+            console.log('Wbase change',that);
+            var methods = that.methods || {};
             if (methods.change) {
                 methods.change.apply(that);
             }

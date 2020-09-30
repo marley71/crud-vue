@@ -1,27 +1,27 @@
 crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete', {
     extends : crud.components.widgets.wBase,
-    data : function() {
-        var that = this;
-        var _conf = that._getConf() || {};
-        var d = {};
-        if (!( 'resources' in _conf) ) {
-            d.resources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
-                'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
-            ];
-        }
-        d.routeName = _conf.routeName || 'autocomplete';
-        d.primaryKey = _conf.primaryKey || 'id';
-        d.label = '';
-        d.suggestValues = {};
-        return d;
-    },
+    // data : function() {
+    //     var that = this;
+    //     var _conf = that._getConf() || {};
+    //     var d = {};
+    //     if (!( 'resources' in _conf) ) {
+    //         d.resources = [
+    //             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
+    //             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
+    //         ];
+    //     }
+    //     d.routeName = _conf.routeName || 'autocomplete';
+    //     d.primaryKey = _conf.primaryKey || 'id';
+    //     d.label = '';
+    //     d.suggestValues = {};
+    //     return d;
+    // },
     methods : {
         afterLoadResources : function () {
             var that = this;
             that.jQe('[c-autocomplete]').autoComplete({
                 source : function(term,suggest) {
-                    var r = that._getRoute(that.conf.routeName);
+                    var r = that._getRoute(that.routeName);
                     that.setRouteValues(r,term);
                     Server.route(r,function (json) {
                         var suggestions = [];
@@ -39,7 +39,7 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
                     })
                 },
                 onSelect: function(e, term, item){
-                    console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
+                    //console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
                     that.value = that.suggestValues[term];
                     that.label = term;
                     that.change();
@@ -49,19 +49,18 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
         },
         setRouteValues : function (route,term) {
             var that = this;
-            //var r = that.$crud.createRoute(that.conf.routeName);
-            route.setValues({modelName:that.conf.modelName});
+            route.setValues({modelName:that.modelName});
             var url = that.url?that.url:route.getUrl();
             url+= '?term='+term+'&';
 
-            if (that.conf.labelFields) {
-                for(var f in that.conf.labelFields) {
-                    url+="field[]="+that.conf.labelFields[f]+"&";
+            if (that.labelFields) {
+                for(var f in that.labelFields) {
+                    url+="field[]="+that.labelFields[f]+"&";
                 }
             }
-            url += that.conf.separator ? '&separator=' + that.conf.separator : '';
-            url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
-            url += that.conf.method ? '&method=' + that.conf.method: '';
+            url += that.separator ? '&separator=' + that.separator : '';
+            url += that.n_items ? '&n_items=' + that.n_items : '';
+            url += that.method ? '&method=' + that.method: '';
             route.setUrl(url);
             return route;
             //return url;
@@ -84,8 +83,8 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
         _getSuggestion: function(rowData) {
             var that = this;
             var s = "";
-            for (var k in that.conf.labelFields) {
-                s += (s?' ':'') + rowData[that.conf.labelFields[k]];
+            for (var k in that.labelFields) {
+                s += (s?' ':'') + rowData[that.labelFields[k]];
             }
             return s
         }

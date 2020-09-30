@@ -5,8 +5,8 @@ crud.components.cComponent = Vue.component('c-component',{
         var that = this;
         //console.log('COMPONENTE MOUNTED',jQuery(that.$el).html());
         //console.log('c-component.mounted',that.$options.name);
-        if (that.conf.cRef) {
-            that.$crud.cRefs[that.conf.cRef] = this;
+        if (that.cRef) {
+            that.$crud.cRefs[that.cRef] = this;
         }
         if (that.compRef) {
             that.$crud.cRefs[that.compRef] = this;
@@ -18,15 +18,15 @@ crud.components.cComponent = Vue.component('c-component',{
                     var localk = new String(lk);
                     //var arguments = this.arguments;
                     //console.log(localk,'arguments',arguments);
-                    return that.conf.methods[localk].apply(that,arguments);
+                    return that.methods[localk].apply(that,arguments);
                 }
             }
-            for (var k in that.conf.methods) {
+            for (var k in that.methods) {
                 __call(k);
             }
 
-            if ( that.conf.mounted) {
-                that.conf.mounted.apply(that);
+            if ( that.mounted) {
+                that.mounted.apply(that);
             }
         //}
         if (that.resources && that.resources.length) {
@@ -45,7 +45,7 @@ crud.components.cComponent = Vue.component('c-component',{
         }
     },
     beforeDestroy () {
-        var cr = this.conf.cRef || this.compRef;
+        var cr = this.cRef || this.compRef;
         if (cr)
             delete this.$crud.cRefs[cr];
     },
@@ -63,15 +63,47 @@ crud.components.cComponent = Vue.component('c-component',{
             return jQuery(that.$el);
         },
         _loadConf : function() {
-            var _c = this._getConf() || {};
-            var d = {};
-            for (var k in _c) {
-                if (['methods','mounted'].indexOf(k) >= 0)
-                    continue;
-                d[k] = _c[k];
-            }
-            d.conf = _c;
-            return d;
+            var that = this;
+            console.log('this name',this.$options.name);
+            var _compName = this.$options.name;
+            var defaultConf =  that.mergeConf(that.$crud.conf[_compName]);
+
+            var currentConf = that._getConf();
+            var mergedConf = that.merge(defaultConf,currentConf);
+            // var finalConf = {};
+            // for (var k in mergedConf) {
+            //     // if (['methods','mounted'].indexOf(k) >= 0)
+            //     //     continue;
+            //     finalConf[k] = mergedConf[k];
+            // }
+            //finalConf.conf = finalConf;
+            console.log('finalConf',mergedConf);
+            return mergedConf;
+
+
+
+            // var conf = that._getConf();
+            // console.log('merge conf',conf);
+            // var mergedConf = that.merge(defaultConf,conf);
+            // var finalConf = {};
+            // for (var k in mergedConf) {
+            //     if (['methods','mounted'].indexOf(k) >= 0)
+            //         continue;
+            //     finalConf[k] = mergedConf[k];
+            // }
+            // //finalConf.conf = finalConf;
+            // console.log('finalConf',mergedConf);
+            // return finalConf;
+
+            // var _c = this._getConf() || {};
+            // var d = {};
+            // for (var k in _c) {
+            //     if (['methods','mounted'].indexOf(k) >= 0)
+            //         continue;
+            //     d[k] = _c[k];
+            // }
+            // d.conf = _c;
+            // return d;
         },
 
         _getConf : function() {

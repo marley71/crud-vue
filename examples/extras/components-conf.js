@@ -2,7 +2,8 @@
 function wInputConf_f() {
     wInputConf = {
         name: 'field1',
-        value: 100
+        value: 100,
+        cRef : 'widget'
     };
 }
 
@@ -42,7 +43,7 @@ function wAutocompleteConf_f() {
         value: 4,
         name: 'field1',
         routeName: 'autocomplete',
-        fields: ['email', 'name'],
+        labelFields: ['email', 'name'],
         modelName: 'user',
         methods: {
             change: function () {
@@ -56,7 +57,7 @@ function wAutocompleteConf_f() {
 function wBelongstoConf_f() {
     wBelongstoConf = {
         name: 'field1',
-        fields: ['testo'],
+        labelFields: ['testo'],
         value: {
             id: 1,
             testo: 'ciao1'

@@ -282,7 +282,7 @@ core_mixin = {
          * @param obj2
          * @return {*}
          */
-        confMerge : function(obj1,obj2) {
+        mergeConfView : function(obj1,obj2) {
             var specialsKey = ['fields','fieldsConfig','customActions'];
             var c1 = this.cloneObj(obj1);
             var c2 = this.cloneObj(obj2);
@@ -315,6 +315,79 @@ core_mixin = {
                 c1[k] = c2[k];
             }
             return c1;
+        },
+
+        /**
+         * esegue il merge di una configurazione risalendo la property confParent.
+         * @param conf
+         * @return {*}
+         */
+        mergeConf : function(conf,rootData) {
+            var that = this;
+            console.log('Merge Conf',conf);
+
+            var __getConfObj = function (c,rD) {
+                if (typeof c === 'string' || c instanceof String) {
+                    c = that.getDescendantProp(rD, c);
+                }
+                return c || {};
+            }
+
+            var _rD = rootData || window;
+            var _c = __getConfObj(conf,_rD);
+            var _parents = [];
+            _parents.push(_c)
+
+            while(_c && _c.confParent){
+                var tmp = __getConfObj(_c.confParent,window);
+                _parents.push(tmp);
+                //console.log('tmp.parent',tmp.confParent);
+                _c = tmp.confParent;
+                if (!_c.confParent) {
+                    _parents.push(__getConfObj(_c,window));
+                }
+            };
+
+            var finalConf = {};
+            console.log('conf gerarchia parents',_parents);
+            for (var i=_parents.length-1;i>=0;i--) {
+                finalConf = this.merge(finalConf,_parents[i]);
+            }
+            //console.log('FINAL CONF',finalConf)
+            return finalConf;
+
+            // var specialsKey = ['fields','fieldsConfig','customActions'];
+            // var c1 = this.cloneObj(obj1);
+            // var c2 = this.cloneObj(obj2);
+            // //console.log('c1',c1,'c2',c2);
+            //
+            // c1.fields = c1.fields?c1.fields:[];
+            // c1.fieldsConfig = c1.fieldsConfig?c1.fieldsConfig:{};
+            // c1.customActions = c1.customActions?c1.customActions:{};
+            // c1.actions = c1.actions?c1.actions:[];
+            //
+            // if (c2.fields)
+            //     c1.fields = c2.fields;
+            //
+            // if (c2.fieldsConfig) {
+            //     for (var k in c2.fieldsConfig) {
+            //         c1.fieldsConfig[k] = c2.fieldsConfig[k];
+            //     }
+            // }
+            // if (c2.customActions) {
+            //     c1.customActions = c1.customActions || {};
+            //     for (var k in c2.customActions) {
+            //         c1.customActions[k] = c2.customActions[k];
+            //     }
+            // }
+            //
+            // for (var k in c2) {
+            //     if (specialsKey.indexOf(k) >= 0)
+            //         continue;
+            //     //console.log('sovrascrivo',k);
+            //     c1[k] = c2[k];
+            // }
+            // return c1;
         },
 
         merge : function(obj1, obj2) {
