@@ -11,7 +11,7 @@
                 <v-widget :c-widget="widget" :key="key"></v-widget>
             </template>
             <div v-if="actions.length">
-                <template v-for="(action,name) in actionsClass">
+                <template v-for="(action,name) in actionsConf">
                     <v-action :c-action="action"></v-action>
                 </template>
             </div>

@@ -444,13 +444,12 @@ function vCustomConf_f() {
         routeName: null,
         actions : [],
         fields: ['campo1', 'campo2'],
-        data: {
-            value: {
-                campo1: 'campo1Value',
-                campo2: 'campo2Value'
-            },
-            metadata: {}
-        }
+        value: {
+            campo1: 'campo1Value',
+            campo2: 'campo2Value'
+        },
+        metadata: {}
+
     }
 }
 

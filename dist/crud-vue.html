@@ -696,7 +696,7 @@
             </div>
         </form>
         <div class="p-3" v-show="actions.length">
-            <template v-for="(action,name) in actionsClass">
+            <template v-for="(action,name) in actionsConf">
                 <v-action  :c-action="action"></v-action>
             </template>
         </div>
@@ -716,7 +716,7 @@
                 <v-widget :c-widget="widget" :key="key"></v-widget>
             </template>
             <div v-if="actions.length">
-                <template v-for="(action,name) in actionsClass">
+                <template v-for="(action,name) in actionsConf">
                     <v-action :c-action="action"></v-action>
                 </template>
             </div>
@@ -739,7 +739,7 @@
             </div>
         </form>
         <div class="p-3" v-if="actions.length">
-            <template v-for="(action,name) in actionsClass">
+            <template v-for="(action,name) in actionsConf">
                 <v-action  :c-action="action"></v-action>
             </template>
         </div>
@@ -763,7 +763,7 @@
                 </div>
                 <div class="col-2 align-middle">
                     <div class="p-3" v-show="actions.length">
-                        <template v-for="(action,name) in actionsClass">
+                        <template v-for="(action,name) in actionsConf">
                             <v-action :c-action="action"></v-action>
                         </template>
                     </div>
@@ -798,7 +798,7 @@
             </div>
         </div>
         <div v-show="actions.length">
-            <template v-for="(action,name) in actionsClass">
+            <template v-for="(action,name) in actionsConf">
                 <component  v-bind:is="name" v-bind:c-conf="action"></component>
             </template>
         </div>

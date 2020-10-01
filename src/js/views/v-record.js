@@ -15,35 +15,42 @@ crud.components.views.vRecord = Vue.component('v-record', {
         for (var key in this.widgets) {
             this.getWidget(key) && this.getWidget(key).$destroy();
         }
-        for (var key in this.actionsClass) {
+        for (var key in this.actionsConf) {
             this.getAction(key) && this.getAction(key).$destroy();
         }
     },
 
     data : function () {
         var that = this;
-        var _conf = that._loadConf() || {}; //that._getConf() || {};
-        var modelName = that.cModel || _conf.modelName;
-        var langContext = _conf.langContext || modelName;
-        var d =  {};
-
-        d.modelName = modelName;
-
-        d.pk = that.cPk || _conf.pk || 0;
-
-        d.value = {};
-        d.metadata = {};
-        d.langContext = langContext;
-        d.route = null;
-        d.loading = true;
-        d.widgets = {};
-        d.actionsClass = [];
-        d.actions = {};
-        d.defaultWidgetType = 'w-input';
-        d.fields = _conf.fields || [];
-        d.fieldsConfig = _conf.fieldsConfig || {};
-        console.log('d v-record',d);
+        var d = {};
+        if (that.cModel)
+            d.modelName = that.cModel;
+        if (that.cPk)
+            d.pk = that.cPk;
         return d;
+
+        // var _conf = that._loadConf() || {}; //that._getConf() || {};
+        // var modelName = that.cModel || _conf.modelName;
+        // var langContext = _conf.langContext || modelName;
+        // var d =  {};
+        //
+        // d.modelName = modelName;
+        //
+        // d.pk = that.cPk || _conf.pk || 0;
+        //
+        // d.value = {};
+        // d.metadata = {};
+        // d.langContext = langContext;
+        // d.route = null;
+        // d.loading = true;
+        // d.widgets = {};
+        // d.actionsConf = [];
+        // d.actions = {};
+        // d.defaultWidgetType = 'w-input';
+        // d.fields = _conf.fields || [];
+        // d.fieldsConfig = _conf.fieldsConfig || {};
+        // console.log('d v-record',d);
+        // return d;
     },
 
     methods : {
@@ -66,8 +73,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
         },
         draw : function() {
             var that = this;
-            that.createActions();
-            that.createActionsClass();
+            that.checkValidActions();
+            that.createActionsConf();
             that.createWidgets();
             that.loading = false;
             setTimeout(function () {
@@ -105,23 +112,29 @@ crud.components.views.vRecord = Vue.component('v-record', {
             //console.log('v-record.widgets',widgets);
             that.widgets = widgets;
         },
-        createActions : function() {
+        /**
+         * controlla la validità delle azioni inserite nel vettore actions
+         * se una azione non e' valida viene rimossa dal vettore
+         */
+        checkValidActions : function() {
             var that = this;
             var actions = [];
-            for (var i in that.conf.actions) {
-                var aName = that.conf.actions[i];
+            for (var i in that.actions) {
+                var aName = that.actions[i];
                 if (that.$crud.actions[aName])
                     actions.push(aName);
-                else if (that.conf.customActions[aName])
+                else if (that.customActions[aName])
                     actions.push(aName);
                 else
                     console.warn("Impossibile trovare la definizione di " + aName);
 
-
             }
             that.actions = actions;
         },
-        createActionsClass : function () {
+        /**
+         * crea le configurazioni per tutte le azioni valide
+         */
+        createActionsConf : function () {
             var that = this;
             var actions = {};
             //console.log('confff',that.actions,that);
@@ -136,17 +149,12 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 aConf.view = that;
                 actions[aName] = aConf;
             }
-            that.actionsClass = actions;
+            that.actionsConf = actions;
         },
         fillData : function (route,json) {
             var that = this;
-            //var data = {value : {}};
-            if (!route) {
-                console.log('dati manuali',that.conf.value);
-                if (that.conf.value) {
-                    that.value = that.conf.value;
-                }
-            } else {
+            if (route) {
+                // istanzio il protocollo associato e riempio i dati nella view
                 var protocol = that.createProtocol(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
@@ -154,9 +162,24 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     that[prop[i]] = protocol[prop[i]];
                 }
             }
+            that.json = json;
+
+            // if (!route) {
+            //     console.log('dati manuali',that.conf.value);
+            //     if (that.conf.value) {
+            //         that.value = that.conf.value;
+            //     }
+            // } else {
+            //     var protocol = that.createProtocol(route.getProtocol());
+            //     protocol.jsonToData(json);
+            //     var prop = Object.getOwnPropertyNames(protocol);
+            //     for (var i in prop) {
+            //         that[prop[i]] = protocol[prop[i]];
+            //     }
+            // }
 
             //that.data = data;
-            that.json = json;
+
         },
         getViewData : function () {
             var that = this;
@@ -183,7 +206,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return this.$crud.cRefs[rConf.cRef];
         },
         getAction : function (name) {
-            var rConf = this.actionsClass[name];
+            var rConf = this.actionsConf[name];
             if (!rConf) {
                 //console.warn('attenzione action non trovata nome ' + name);
                 return null;

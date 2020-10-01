@@ -5,13 +5,13 @@ crud.components.views.coreVInsert = Vue.component('core-v-insert', {
             default : 'insert'
         }
     },
-    data :  function () {
-        var _conf = this._loadConf() || {};
-        var d =  {}
-        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
-        return d;
-
-    },
+    // data :  function () {
+    //     var _conf = this._loadConf() || {};
+    //     var d =  {}
+    //     d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
+    //     return d;
+    //
+    // },
     methods : {
         setRouteValues : function (route) {
             var that  = this;

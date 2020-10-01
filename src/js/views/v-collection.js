@@ -10,8 +10,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     },
     mounted : function() {
         var that = this;
-        if (that.cModel)
-            that.conf.modelName = that.cModel;
+        // if (that.cModel)
+        //     that.conf.modelName = that.cModel;
         that.route = that._getRoute();
         that.setRouteValues(that.route);
 
@@ -40,13 +40,12 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
     data : function () {
         var that = this;
-        //var _conf = that._getConf() || {};
         var d =  {};
         if (that.cModel)
             d.modelName = that.cModel;
-        d.value = [];
-        d.metadata = {};
-        d.needSelection = false;
+        // d.value = [];
+        // d.metadata = {};
+        // d.needSelection = false;
 
         return d;
     },
@@ -145,20 +144,28 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             }
             return this.$crud.cRefs[aConf.cRef];
         },
-        createActions : function () {
+        /**
+         * controlla la validità delle azioni inserite nel vettore actions
+         * e se e' di tipo record o collection.
+         * se una azione non e' valida viene rimossa dal vettore
+         */
+        checkValidActions : function () {
             var that = this;
             var collectionActionsName = [];
             var recordActionsName = [];
 
-            for (var i in that.conf.actions) {
-                var aName = that.conf.actions[i];
+            for (var i in that.actions) {
+                var aName = that.actions[i];
                 var aConf = {};
+                var valid = true;
                 if (that.$crud.actions[aName]) {
                     aConf = that.$crud.actions[aName];
-                } else if(that.conf.customActions[aName]) {
-                    aConf = that.conf.customActions[aName];
-                } else
-                    throw "Impossibile trovare la configurazione di " + aName;
+                } else if(that.customActions[aName]) {
+                    aConf = that.customActions[aName];
+                } else {
+                    valid = false;
+                    console.warn("Impossibile trovare la configurazione di " + aName);
+                }
 
                 if (aConf.type == 'collection') {
                     collectionActionsName.push(aName);

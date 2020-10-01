@@ -591,19 +591,66 @@ crud.conf = {
         icon : false,
         iconClass : '',
         value : {},
+    },
+    //--- configurazione di default delle views
+    'v-base' : {
+        confParent : 'crud.conf.c-component',
+        viewTitle : '',
+        langContext : '',
+        //targetRef : null,
+        errorMsg : '',
+        routeConf : null
+    },
+
+    'v-record' : {
+        confParent : 'crud.conf.v-base',
+        modelName : null,
+        pk : 0,
+        value : {},
+        metadata : {},
+        langContext : null,
+        route : null,
+        loading : true,
+        widgets : {},
+        actionsConf : [],
+        actionsName : {},
+        defaultWidgetType : 'w-input',
+        fields : [],
+        fieldsConfig : {},
+    },
+
+    'v-insert' : {
+        confParent : 'crud.conf.v-record',
+    },
+
+    'v-edit' : {
+        confParent : 'crud.conf.v-record',
+    },
+
+    'v-view' : {
+        confParent : 'crud.conf.v-record',
+        defaultWidgetType : 'w-text',
+    },
+
+    'v-search' : {
+        confParent : 'crud.conf.v-record',
+    },
+
+    'v-collection' : {
+        confParent : 'crud.conf.v-base',
+        modelName : null,
+        value : [],
+        metadata : {},
+        needSelection : false,
+        collectionActionsName : [],
+        recordActionsName : [],
+        collectionActions : {},
+        recordActions : [],
+    },
+
+    'v-list' : {
+        confParent : 'crud.conf.v-collection',
     }
-    // uploadFile : {
-    //     routeName : null,
-    //     fields : ['nome','descrizione','modelName'],
-    //     fieldsConfig : {
-    //         modelName : {
-    //             type : 'w-hidden'
-    //         },
-    //         descrizione : {
-    //             type : 'w-textarea'
-    //         }
-    //     }
-    // }
 };
 
 crud.routes =  {
@@ -3578,16 +3625,16 @@ crud.components.views.vBase = Vue.component('v-base', {
             template : '<component :is="cTemplate" :c-widget="conf"></component>'
         }),
     },
-    data : function () {
-        console.log('that.cRouteConf',this.cRouteConf);
-        return {
-            viewTitle : '',
-            langContext : '',
-            targetRef : this.cTargetRef,
-            errorMsg : '',
-            routeConf : this.cRouteConf || null
-        }
-    },
+    // data : function () {
+    //     console.log('that.cRouteConf',this.cRouteConf);
+    //     return {
+    //         viewTitle : '',
+    //         langContext : '',
+    //         targetRef : this.cTargetRef,
+    //         errorMsg : '',
+    //         routeConf : this.cRouteConf || null
+    //     }
+    // },
     methods : {
         reload : function () {
             var that = this;
@@ -3633,7 +3680,7 @@ crud.components.views.vBase = Vue.component('v-base', {
 
 
             var aConf = this.$crud.actions[name] || {};
-            var customConf = this.conf.customActions[name] || {};
+            var customConf = this.customActions[name] || {};
 
             aConf = this.merge(aConf,customConf);
 
@@ -3648,6 +3695,10 @@ crud.components.views.vBase = Vue.component('v-base', {
             var type = that.cType;
             var modelName = that.cModel;
             var defaultConf = this.$crud.conf[type];
+
+            var _compName = this.$options.name;
+            var defaultConfComponent =  that.mergeConf(that.$crud.conf[_compName]);
+
             console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
             if (this.cConf) {
@@ -3683,7 +3734,10 @@ crud.components.views.vBase = Vue.component('v-base', {
                 throw "Nessuna configurazione trovata per questa view";
             }
             //console.log('merge confs',defaultConf,conf);
-            var finalConf = this.confMerge(defaultConf,conf);
+            var finalConf = that.mergeConfView(defaultConfComponent,defaultConf);//this.confMerge(defaultConf,conf);
+            finalConf = that.mergeConfView(finalConf,conf);
+            return finalConf;
+
 
             for (var k in finalConf) {
                 if (k == 'methods')
@@ -3777,35 +3831,42 @@ crud.components.views.vRecord = Vue.component('v-record', {
         for (var key in this.widgets) {
             this.getWidget(key) && this.getWidget(key).$destroy();
         }
-        for (var key in this.actionsClass) {
+        for (var key in this.actionsConf) {
             this.getAction(key) && this.getAction(key).$destroy();
         }
     },
 
     data : function () {
         var that = this;
-        var _conf = that._loadConf() || {}; //that._getConf() || {};
-        var modelName = that.cModel || _conf.modelName;
-        var langContext = _conf.langContext || modelName;
-        var d =  {};
-
-        d.modelName = modelName;
-
-        d.pk = that.cPk || _conf.pk || 0;
-
-        d.value = {};
-        d.metadata = {};
-        d.langContext = langContext;
-        d.route = null;
-        d.loading = true;
-        d.widgets = {};
-        d.actionsClass = [];
-        d.actions = {};
-        d.defaultWidgetType = 'w-input';
-        d.fields = _conf.fields || [];
-        d.fieldsConfig = _conf.fieldsConfig || {};
-        console.log('d v-record',d);
+        var d = {};
+        if (that.cModel)
+            d.modelName = that.cModel;
+        if (that.cPk)
+            d.pk = that.cPk;
         return d;
+
+        // var _conf = that._loadConf() || {}; //that._getConf() || {};
+        // var modelName = that.cModel || _conf.modelName;
+        // var langContext = _conf.langContext || modelName;
+        // var d =  {};
+        //
+        // d.modelName = modelName;
+        //
+        // d.pk = that.cPk || _conf.pk || 0;
+        //
+        // d.value = {};
+        // d.metadata = {};
+        // d.langContext = langContext;
+        // d.route = null;
+        // d.loading = true;
+        // d.widgets = {};
+        // d.actionsConf = [];
+        // d.actions = {};
+        // d.defaultWidgetType = 'w-input';
+        // d.fields = _conf.fields || [];
+        // d.fieldsConfig = _conf.fieldsConfig || {};
+        // console.log('d v-record',d);
+        // return d;
     },
 
     methods : {
@@ -3828,8 +3889,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
         },
         draw : function() {
             var that = this;
-            that.createActions();
-            that.createActionsClass();
+            that.checkValidActions();
+            that.createActionsConf();
             that.createWidgets();
             that.loading = false;
             setTimeout(function () {
@@ -3867,23 +3928,29 @@ crud.components.views.vRecord = Vue.component('v-record', {
             //console.log('v-record.widgets',widgets);
             that.widgets = widgets;
         },
-        createActions : function() {
+        /**
+         * controlla la validità delle azioni inserite nel vettore actions
+         * se una azione non e' valida viene rimossa dal vettore
+         */
+        checkValidActions : function() {
             var that = this;
             var actions = [];
-            for (var i in that.conf.actions) {
-                var aName = that.conf.actions[i];
+            for (var i in that.actions) {
+                var aName = that.actions[i];
                 if (that.$crud.actions[aName])
                     actions.push(aName);
-                else if (that.conf.customActions[aName])
+                else if (that.customActions[aName])
                     actions.push(aName);
                 else
                     console.warn("Impossibile trovare la definizione di " + aName);
 
-
             }
             that.actions = actions;
         },
-        createActionsClass : function () {
+        /**
+         * crea le configurazioni per tutte le azioni valide
+         */
+        createActionsConf : function () {
             var that = this;
             var actions = {};
             //console.log('confff',that.actions,that);
@@ -3898,17 +3965,12 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 aConf.view = that;
                 actions[aName] = aConf;
             }
-            that.actionsClass = actions;
+            that.actionsConf = actions;
         },
         fillData : function (route,json) {
             var that = this;
-            //var data = {value : {}};
-            if (!route) {
-                console.log('dati manuali',that.conf.value);
-                if (that.conf.value) {
-                    that.value = that.conf.value;
-                }
-            } else {
+            if (route) {
+                // istanzio il protocollo associato e riempio i dati nella view
                 var protocol = that.createProtocol(route.getProtocol());
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
@@ -3916,9 +3978,24 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     that[prop[i]] = protocol[prop[i]];
                 }
             }
+            that.json = json;
+
+            // if (!route) {
+            //     console.log('dati manuali',that.conf.value);
+            //     if (that.conf.value) {
+            //         that.value = that.conf.value;
+            //     }
+            // } else {
+            //     var protocol = that.createProtocol(route.getProtocol());
+            //     protocol.jsonToData(json);
+            //     var prop = Object.getOwnPropertyNames(protocol);
+            //     for (var i in prop) {
+            //         that[prop[i]] = protocol[prop[i]];
+            //     }
+            // }
 
             //that.data = data;
-            that.json = json;
+
         },
         getViewData : function () {
             var that = this;
@@ -3945,7 +4022,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             return this.$crud.cRefs[rConf.cRef];
         },
         getAction : function (name) {
-            var rConf = this.actionsClass[name];
+            var rConf = this.actionsConf[name];
             if (!rConf) {
                 //console.warn('attenzione action non trovata nome ' + name);
                 return null;
@@ -3968,8 +4045,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     },
     mounted : function() {
         var that = this;
-        if (that.cModel)
-            that.conf.modelName = that.cModel;
+        // if (that.cModel)
+        //     that.conf.modelName = that.cModel;
         that.route = that._getRoute();
         that.setRouteValues(that.route);
 
@@ -3998,13 +4075,12 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
     data : function () {
         var that = this;
-        //var _conf = that._getConf() || {};
         var d =  {};
         if (that.cModel)
             d.modelName = that.cModel;
-        d.value = [];
-        d.metadata = {};
-        d.needSelection = false;
+        // d.value = [];
+        // d.metadata = {};
+        // d.needSelection = false;
 
         return d;
     },
@@ -4103,20 +4179,28 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             }
             return this.$crud.cRefs[aConf.cRef];
         },
-        createActions : function () {
+        /**
+         * controlla la validità delle azioni inserite nel vettore actions
+         * e se e' di tipo record o collection.
+         * se una azione non e' valida viene rimossa dal vettore
+         */
+        checkValidActions : function () {
             var that = this;
             var collectionActionsName = [];
             var recordActionsName = [];
 
-            for (var i in that.conf.actions) {
-                var aName = that.conf.actions[i];
+            for (var i in that.actions) {
+                var aName = that.actions[i];
                 var aConf = {};
+                var valid = true;
                 if (that.$crud.actions[aName]) {
                     aConf = that.$crud.actions[aName];
-                } else if(that.conf.customActions[aName]) {
-                    aConf = that.conf.customActions[aName];
-                } else
-                    throw "Impossibile trovare la configurazione di " + aName;
+                } else if(that.customActions[aName]) {
+                    aConf = that.customActions[aName];
+                } else {
+                    valid = false;
+                    console.warn("Impossibile trovare la configurazione di " + aName);
+                }
 
                 if (aConf.type == 'collection') {
                     collectionActionsName.push(aName);
@@ -4468,12 +4552,12 @@ crud.components.views.coreVEdit = Vue.component('core-v-edit', {
             default : 'edit'
         }
     },
-    data :  function () {
-        var _conf = this._loadConf() || {};
-        var d = {}
-        d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
-        return d;
-    },
+    // data :  function () {
+    //     var _conf = this._loadConf() || {};
+    //     var d = {}
+    //     d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
+    //     return d;
+    // },
     methods : {
         setRouteValues : function (route) {
             var that  = this;
@@ -4495,12 +4579,12 @@ crud.components.views.coreVView = Vue.component('core-v-view', {
             default : 'view'
         }
     },
-    data :  function () {
-        var _conf = this._loadConf() || {};
-        var d =  {}
-        d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
-        return d;
-    },
+    // data :  function () {
+    //     var _conf = this._loadConf() || {};
+    //     var d =  {}
+    //     d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
+    //     return d;
+    // },
 
     methods : {
         setRouteValues : function (route) {
@@ -4523,13 +4607,13 @@ crud.components.views.coreVInsert = Vue.component('core-v-insert', {
             default : 'insert'
         }
     },
-    data :  function () {
-        var _conf = this._loadConf() || {};
-        var d =  {}
-        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
-        return d;
-
-    },
+    // data :  function () {
+    //     var _conf = this._loadConf() || {};
+    //     var d =  {}
+    //     d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
+    //     return d;
+    //
+    // },
     methods : {
         setRouteValues : function (route) {
             var that  = this;
@@ -4552,12 +4636,12 @@ crud.components.views.coreVSearch = Vue.component('core-v-search', {
         }
     },
 
-    data :  function () {
-        var _conf = this._loadConf() || {};
-        var d = {}
-        d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
-        return d;
-    },
+    // data :  function () {
+    //     var _conf = this._loadConf() || {};
+    //     var d = {}
+    //     d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
+    //     return d;
+    // },
 
     methods : {
         completed : function() {

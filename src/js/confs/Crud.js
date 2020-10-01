@@ -591,19 +591,66 @@ crud.conf = {
         icon : false,
         iconClass : '',
         value : {},
+    },
+    //--- configurazione di default delle views
+    'v-base' : {
+        confParent : 'crud.conf.c-component',
+        viewTitle : '',
+        langContext : '',
+        //targetRef : null,
+        errorMsg : '',
+        routeConf : null
+    },
+
+    'v-record' : {
+        confParent : 'crud.conf.v-base',
+        modelName : null,
+        pk : 0,
+        value : {},
+        metadata : {},
+        langContext : null,
+        route : null,
+        loading : true,
+        widgets : {},
+        actionsConf : [],
+        actionsName : {},
+        defaultWidgetType : 'w-input',
+        fields : [],
+        fieldsConfig : {},
+    },
+
+    'v-insert' : {
+        confParent : 'crud.conf.v-record',
+    },
+
+    'v-edit' : {
+        confParent : 'crud.conf.v-record',
+    },
+
+    'v-view' : {
+        confParent : 'crud.conf.v-record',
+        defaultWidgetType : 'w-text',
+    },
+
+    'v-search' : {
+        confParent : 'crud.conf.v-record',
+    },
+
+    'v-collection' : {
+        confParent : 'crud.conf.v-base',
+        modelName : null,
+        value : [],
+        metadata : {},
+        needSelection : false,
+        collectionActionsName : [],
+        recordActionsName : [],
+        collectionActions : {},
+        recordActions : [],
+    },
+
+    'v-list' : {
+        confParent : 'crud.conf.v-collection',
     }
-    // uploadFile : {
-    //     routeName : null,
-    //     fields : ['nome','descrizione','modelName'],
-    //     fieldsConfig : {
-    //         modelName : {
-    //             type : 'w-hidden'
-    //         },
-    //         descrizione : {
-    //             type : 'w-textarea'
-    //         }
-    //     }
-    // }
 };
 
 crud.routes =  {

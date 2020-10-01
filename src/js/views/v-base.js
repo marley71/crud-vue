@@ -52,16 +52,16 @@ crud.components.views.vBase = Vue.component('v-base', {
             template : '<component :is="cTemplate" :c-widget="conf"></component>'
         }),
     },
-    data : function () {
-        console.log('that.cRouteConf',this.cRouteConf);
-        return {
-            viewTitle : '',
-            langContext : '',
-            targetRef : this.cTargetRef,
-            errorMsg : '',
-            routeConf : this.cRouteConf || null
-        }
-    },
+    // data : function () {
+    //     console.log('that.cRouteConf',this.cRouteConf);
+    //     return {
+    //         viewTitle : '',
+    //         langContext : '',
+    //         targetRef : this.cTargetRef,
+    //         errorMsg : '',
+    //         routeConf : this.cRouteConf || null
+    //     }
+    // },
     methods : {
         reload : function () {
             var that = this;
@@ -107,7 +107,7 @@ crud.components.views.vBase = Vue.component('v-base', {
 
 
             var aConf = this.$crud.actions[name] || {};
-            var customConf = this.conf.customActions[name] || {};
+            var customConf = this.customActions[name] || {};
 
             aConf = this.merge(aConf,customConf);
 
@@ -122,6 +122,10 @@ crud.components.views.vBase = Vue.component('v-base', {
             var type = that.cType;
             var modelName = that.cModel;
             var defaultConf = this.$crud.conf[type];
+
+            var _compName = this.$options.name;
+            var defaultConfComponent =  that.mergeConf(that.$crud.conf[_compName]);
+
             console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
             if (this.cConf) {
@@ -157,7 +161,10 @@ crud.components.views.vBase = Vue.component('v-base', {
                 throw "Nessuna configurazione trovata per questa view";
             }
             //console.log('merge confs',defaultConf,conf);
-            var finalConf = this.confMerge(defaultConf,conf);
+            var finalConf = that.mergeConfView(defaultConfComponent,defaultConf);//this.confMerge(defaultConf,conf);
+            finalConf = that.mergeConfView(finalConf,conf);
+            return finalConf;
+
 
             for (var k in finalConf) {
                 if (k == 'methods')
