@@ -569,7 +569,7 @@
                         </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in widgets">
+                    <tr v-for="(row,index) in widgets" >
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group btn-group-sm" role="group">
@@ -752,7 +752,7 @@
         <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
         <form v-else>
             <!-- campi nascosti -->
-            <v-widget v-for="(widget, key) in widgets" v-if="isHiddenField(key)" :c-widget="widget"></v-widget>
+            <v-widget v-for="(widget, key) in widgets" v-if="isHiddenField(key)" :c-widget="widget" :key="key"></v-widget>
             <div class="row">
                 <div class="col-10">
                     <div class="row">

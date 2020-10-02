@@ -50,9 +50,7 @@ crud.components.cComponent = Vue.component('c-component',{
             delete this.$crud.cRefs[cr];
     },
     data : function() {
-        var d =  this._loadConf();
-        d.resourcesLoaded = false;
-        return d;
+        return this._loadConf();
     },
     methods : {
         jQe : function (selector) {

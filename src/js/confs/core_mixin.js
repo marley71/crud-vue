@@ -272,7 +272,7 @@ core_mixin = {
         },
 
         cloneObj : function (obj) {
-            return jQuery.extend(true,{},obj);
+            return Array.isArray(obj)?jQuery.extend(true,[],obj):jQuery.extend(true,{},obj);
         },
 
         /**

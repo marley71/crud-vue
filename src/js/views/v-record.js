@@ -121,7 +121,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.actions) {
                 var aName = that.actions[i];
-                if (that.$crud.actions[aName])
+                if (that.$crud.conf[aName])
                     actions.push(aName);
                 else if (that.customActions[aName])
                     actions.push(aName);

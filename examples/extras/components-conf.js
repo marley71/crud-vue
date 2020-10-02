@@ -457,14 +457,15 @@ function vCustomListConf_f() {
     vCustomListConf = {
         routeName: null,
         fields: ['campo1', 'campo2'],
+        orderFields : {'campo1':'campo1'},
         value: [{
-            campo1: 'campo1Value',
+            campo1: 'Acampo1Value',
             campo2: 'campo2Value'
         }, {
-            campo1: 'campo1Value1',
+            campo1: 'Bcampo1Value1',
             campo2: 'campo2Value2'
         }, {
-            campo1: 'campo1Value1',
+            campo1: 'Ccampo1Value1',
             campo2: 'campo2Value2'
         },
         ],

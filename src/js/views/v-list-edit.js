@@ -8,13 +8,13 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             default: 'listEdit'
         }
     },
-    data : function() {
-        var dListEdit = {
-            widgetsEdit : {},
-            editMode : []
-        };
-        return dListEdit;
-    },
+    // data : function() {
+    //     var dListEdit = {
+    //         widgetsEdit : {},
+    //         editMode : []
+    //     };
+    //     return dListEdit;
+    // },
 
     beforeDestroy () {
         for (var row in this.widgetsEdit) {
@@ -28,8 +28,8 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
         draw : function() {
             var that = this;
             that.editMode = new Array(that.value.length).fill(false);
-            that.createActions();
-            that.createActionsClass();
+            that.checkValidActions();
+            that.createActionsConf();
             that.createWidgets();
             that.createWidgetsEdit();
             that.loading = false;

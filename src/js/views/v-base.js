@@ -95,6 +95,12 @@ crud.components.views.vBase = Vue.component('v-base', {
                 callback(json);
             })
         },
+        /**
+         * crea la configurazione base per ogni singola azione della view.
+         * @param name
+         * @param type
+         * @return {*|{}}
+         */
         getActionConfig : function(name,type) {
             //console.log('v-base.getActionConfig',name,type,this.conf);
             // se non esiste il componente di azione lo creo al volo
@@ -105,9 +111,15 @@ crud.components.views.vBase = Vue.component('v-base', {
                 });
             }
 
-
-            var aConf = this.$crud.actions[name] || {};
             var customConf = this.customActions[name] || {};
+            return customConf;
+
+
+
+
+            var aConf = this.$crud.conf[name] || {};
+            var customConf = this.customActions[name] || {};
+
 
             aConf = this.merge(aConf,customConf);
 

@@ -1,66 +1,34 @@
 crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
-    data :  function () {
-        var that = this;
-        var _conf = that._loadConf() || {};
-        var dList = {
-            loading : true,
-            widgets : {},
-            keys : [],
-            recordActionsName : [],
-            recordActions: [],
-            collectionActions : {},
-            collectionActionsName : [],
-            route : null,
-            maxPage : 0,
-            pagination : {},
-            viewTitle : '',
-            defaultWidgetType : 'w-text',
-            langContext : that.cModel,
-            json : {},
-        };
-        if (_conf.viewTitle) {
-            dList.viewTitle = _conf.viewTitle;
-        }
-        if (!('paginator' in _conf))
-            dList.paginator = true;
-        //console.log('_CONFFFFFF',_conf)
-        return dList;
-    },
+    // data :  function () {
+    //     var that = this;
+    //     var _conf = that._loadConf() || {};
+    //     var dList = {
+    //         loading : true,
+    //         widgets : {},
+    //         keys : [],
+    //         recordActionsName : [],
+    //         recordActions: [],
+    //         collectionActions : {},
+    //         collectionActionsName : [],
+    //         route : null,
+    //         maxPage : 0,
+    //         pagination : {},
+    //         viewTitle : '',
+    //         defaultWidgetType : 'w-text',
+    //         langContext : that.cModel,
+    //         json : {},
+    //     };
+    //     if (_conf.viewTitle) {
+    //         dList.viewTitle = _conf.viewTitle;
+    //     }
+    //     if (!('paginator' in _conf))
+    //         dList.paginator = true;
+    //     //console.log('_CONFFFFFF',_conf)
+    //     return dList;
+    // },
 
     methods: {
-
-
-
-        fillData : function(route, json) {
-            var that = this;
-            //var value = {};
-            if (!route) {
-                console.log('dati manuali',that.conf.value);
-                if (that.conf.value) {
-                    that.value = that.conf.value;
-                    that.pagination = that.conf.pagination || {};
-                }
-            } else {
-                //console.log('protocol',route.getProtocol());
-                //var protocol = Protocol.factory(route.getProtocol());
-                var protocol = that.createProtocol(route.getProtocol());
-                protocol.jsonToData(json);
-                var prop = Object.getOwnPropertyNames(protocol);
-                //console.log(prop);
-
-
-                for (var i in prop) {
-                    //console.log(k,k,prop[k]);
-                    that[prop[i]] = protocol[prop[i]];
-                }
-                //var data = data;
-                //this.maxPage = data.pagination.last_page;
-                //that.pagination = data.pagination;
-            }
-            //that.value = data;
-            that.json = json;
-        },
 
         isOrderField : function(key) {
             var that = this;
@@ -76,7 +44,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             var conf = that.getActionConfig('action-order','collection');
             conf.title = that.translate('app.ordina') + ' ' + that.translate(translateKey);
             conf.text = that.translate(translateKey);
-            conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
+            conf.orderField = that.orderFields[key]?that.orderFields[key]:key;
             //if (that.data.order_field)
             var order = that.metadata.order || {};
             //console.log('GETORDERCONF CALLED',key,order);
@@ -138,6 +106,12 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
                 this.reload();
 
             }
-        }
+        },
+        // value : {
+        //     deep : true,
+        //     handler() {
+        //         this.reload();
+        //     }
+        // }
     }
 });

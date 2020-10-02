@@ -85,284 +85,45 @@ crud.mimetypes = {
 }
 
 crud.actions = {
-    'action-edit' : {
-        type : 'record',
-        title : 'app.modifica',
-        css: 'btn btn-outline-secondary btn-sm',
-        text : '',
-        icon : 'fa fa-edit',
-        execute : function () {
-            var url = "/edit/" + this.view.modelName + "/" + this.modelData[this.view.primaryKey];
-            document.location.href=url
-        }
-    },
-    'action-view' : {
-        type : 'record',
-        title : 'app.vista',
-        css: 'btn btn-outline-secondary btn-sm ',
-        icon : 'fa fa-eye',
-        text : '',
-        execute : function () {
-            var url = "/view/" + this.view.modelName + "/" + this.modelData.id;
-            document.location.href=url;
-        }
-    },
-    'action-delete' : {
-        type : 'record',
-        title : 'app.cancella',
-        css: 'btn btn-outline-danger btn-sm ',
-        icon : 'fa fa-times',
-        text : '',
-        setRouteValues : function(route) {
-            var that = this;
-            route.setValues({
-                modelName: that.view.modelName,
-                pk : that.modelData[that.view.primaryKey]
-            });
-            return route;
-        },
-        execute : function () {
-            var that = this;
-            that.confirmDialog(that.$crud.lang['app.conferma-cancellazione'] ,{
-                ok : function () {
-                    var r = that.createRoute('delete');
-                    that.setRouteValues(r);
-                    Server.route(r,function (json) {
-                        if (json.error) {
-                            that.errorDialog(json.msg);
-                            return ;
-                        }
-                        var msg = json.msg?json.msg:that.translate('app.cancellazione-successo');
-                        that.alertSuccess(msg);
-                        that.view.reload();
-                    });
-                }
-            });
-        }
-    },
-    'action-save-row' : {
-        type: 'record',
-        title: 'app.salva',
-        css: 'btn btn-outline-success btn-sm ',
-        text: '',
-        icon: 'fa fa-save',
-        visible: false,
-        setRouteValues : function(route) {
-            var that = this;
-            route.setValues({
-                modelName: that.view.modelName,
-                pk : that.modelData[that.view.conf.primaryKey]
-            });
-            return route;
-        },
-        execute: function () {
-            var that = this;
-            var values = {};
-            for (var k in that.view.widgetsEdit[that.index]) {
-                //console.log('edit r',that.view.widgetsEdit[that.index][k])
-                var sref = that.view.widgetsEdit[that.index][k].cRef; //  're-' + that.index + '-' +  k;
-                if (that.$crud.cRefs[sref])
-                    values[k] = that.$crud.cRefs[sref].getValue();
-            }
-            var id = that.view.value[that.index][that.view.conf.primaryKey];
-            var r = that.createRoute('update');
-            that.setRouteValues(r);
-            r.setParams(values);
-            Server.route(r, function (json) {
-                if (json.error) {
-                    that.errorDialog(json.msg);
-                    return;
-                }
-                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.alertSuccess(msg,that.alertTime);
-                that.view.reload();
-            })
-            console.log('values', values);
-        }
-    },
-    'action-edit-mode':  {
-        type : 'record',
-        title : 'app.modifica',
-        css: 'btn btn-outline-secondary btn-sm ',
-        text : '',
-        icon : 'fa fa-edit',
-        execute : function () {
-            var that = this;
-            that.view.setEditMode(that.index);
-        }
-    },
-    'action-view-mode' : {
-        type : 'record',
-        title : 'app.annulla',
-        css: 'btn btn-outline-secondary btn-sm ',
-        //text : 'back',
-        icon : 'fa fa-arrow-left',
-        visible : false,
-        execute : function () {
-            var that = this;
-            that.view.setViewMode(that.index);
-        }
-    },
-    'action-insert' : {
-        type : 'collection',
-        visible : true,
-        enabled : true,
-        title : 'app.nuovo',
-        css: 'btn btn-outline-primary btn-sm btn-group mr-1',
-        icon : 'fa fa-plus',
-        text : 'app.nuovo',
-        execute  :function () {
-            var url = "/insert/" + this.view.modelName + "/new";
-            document.location.href=url;
-        }
-    },
-    'action-save' : {
-        type : 'collection',
-        title : 'app.salva',
-        css: 'btn btn-primary btn-sm mr-1',
-        icon : 'fa fa-save',
-        text : 'app.salva',
-        setRouteValues : function(route) {
-            var that = this;
-            var pk = that.view.cPk || that.view.pk || 0;
-            if (pk) {
-                route.setValues({
-                    modelName: that.view.modelName,
-                    pk : pk
-                });
-            } else {
-                route.setValues({
-                    modelName: that.view.modelName,
-                });
-            }
-            route.setParams(that.view.getViewData());
-            return route;
-        },
-        execute : function (callback) {
-            var that = this;
-            console.log('action save',this);
-            var rName = 'create';
-            var pk = that.view.cPk || that.view.pk || 0;
-            if (pk)
-                rName = 'update';
-            var r = that._getRoute(rName);
-            that.setRouteValues(r);
-            Server.route(r, function (json) {
-                if (json.error) {
-                    that.errorDialog(json.msg)
-                    return ;
-                }
-                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.alertSuccess(msg,that.alertTime);
-                callback();
-            })
-        }
-    },
-    'action-back' : {
-        type : 'collection',
-        title : 'app.indietro',
-        css: 'btn btn-secondary btn-sm mr-1',
-        icon : 'fa fa-backward',
-        text : 'app.indietro',
-        execute : function () {
-            window.history.back();
-        }
-    },
-    'action-search' : {
-        type : 'collection',
-        title : 'app.cerca',
-        css: 'btn btn-primary btn-sm btn-group mr-1',
-        icon : 'fa fa-search',
-        text : 'app.cerca',
-        execute : function () {
-            console.log('action-search',this,'view',this.view.targetRef);
-            if (this.view && this.view.targetRef) {
-                console.log('target ref',this.view.targetRef);
-                var targetView = this.$crud.cRefs[this.view.targetRef];
-                var formData = this.view.getViewData();
-                formData['page'] = 1;
-                targetView.route.setParams(formData);
-                targetView.reload();
-                return ;
-            }
-        }
-    },
-    'action-reset' : {
-        type : 'collection',
-        title : 'app.reset',
-        css: 'btn btn-primary btn-sm btn-group mr-1',
-        //icon : 'fa fa-search',
-        text : 'app.reset',
-        execute : function () {
-            if (this.view) {
-                console.log('target ref',this.view.targetRef);
-                //var targetView = this.$crud.cRefs[this.view.targetRef];
-                this.view.reset();
-                // formData['page'] = 1;
-                // targetView.route.setParams(formData);
-                // targetView.reload();
-                return ;
-            }
-        }
-    },
-    'action-order' : {
-        type : 'collection',
-        title : 'app.order',
-        css: 'btn btn-default btn-sm mr-1',
-        iconSortAsc : 'fa fa-sort-asc',
-        iconSortDesc : 'fa fa-sort-desc',
-        iconSort : 'fa fa-sort',
-        icon : null,
-        text : '',
-        execute : function () {
-            console.log('order execute',this);
-            var params = this.view.route.getParams();
-            params.order_field = this.orderField;
-            params.order_direction = (!this.orderDirection || this.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
-            this.view.route.setParams(params);
-            this.view.reload();
-        }
-    },
-    'action-delete-selected' : {
-        type : 'collection',
-        title : 'app.cancella-selezionati',
-        css: 'btn btn-outline-danger btn-sm mr-1',
-        icon : 'fa fa-trash',
-        text : '',
-        needSelection : true,
-        setRouteValues : function(route) {
-            var that = this;
-            route.setValues({
-                modelName: that.view.modelName,
-            });
-            return route;
-        },
-        execute : function () {
-            var that = this;
-            var checked = that.view.selectedRows();
-            var num = checked.length;
-            if (num === 0)
-                return ;
-            that.confirmDialog(that.translate('app.conferma-multidelete',false,[num]), {
-                ok : function () {
-                    var r = that.createRoute('multi-delete');
-                    that.setRouteValues(r);
-                    r.setParams({'ids': checked});
-                    that.waitStart();
-                    Server.route(r,function (json) {
-                        that.waitEnd();
-                        if (json.error) {
-                            that.errorDialog(json.msg);
-                            return ;
-                        }
-                        that.view.reload();
-                        //that.callback(json);
-                    })
-                }
-            });
-            console.log('selected',that.view.selectedRows())
-        }
-    }
+
+    // 'action-search' : {
+    //     type : 'collection',
+    //     title : 'app.cerca',
+    //     css: 'btn btn-primary btn-sm btn-group mr-1',
+    //     icon : 'fa fa-search',
+    //     text : 'app.cerca',
+    //     execute : function () {
+    //         console.log('action-search',this,'view',this.view.targetRef);
+    //         if (this.view && this.view.targetRef) {
+    //             console.log('target ref',this.view.targetRef);
+    //             var targetView = this.$crud.cRefs[this.view.targetRef];
+    //             var formData = this.view.getViewData();
+    //             formData['page'] = 1;
+    //             targetView.route.setParams(formData);
+    //             targetView.reload();
+    //             return ;
+    //         }
+    //     }
+    // },
+    // 'action-reset' : {
+    //     type : 'collection',
+    //     title : 'app.reset',
+    //     css: 'btn btn-primary btn-sm btn-group mr-1',
+    //     //icon : 'fa fa-search',
+    //     text : 'app.reset',
+    //     execute : function () {
+    //         if (this.view) {
+    //             console.log('target ref',this.view.targetRef);
+    //             //var targetView = this.$crud.cRefs[this.view.targetRef];
+    //             this.view.reset();
+    //             // formData['page'] = 1;
+    //             // targetView.route.setParams(formData);
+    //             // targetView.reload();
+    //             return ;
+    //         }
+    //     }
+    // },
+
 };
 
 crud.conf = {
@@ -597,6 +358,7 @@ crud.conf = {
         confParent : 'crud.conf.c-component',
         viewTitle : '',
         langContext : '',
+        loading : true,
         //targetRef : null,
         errorMsg : '',
         routeConf : null
@@ -610,7 +372,6 @@ crud.conf = {
         metadata : {},
         langContext : null,
         route : null,
-        loading : true,
         widgets : {},
         actionsConf : [],
         actionsName : {},
@@ -650,6 +411,339 @@ crud.conf = {
 
     'v-list' : {
         confParent : 'crud.conf.v-collection',
+        loading : true,
+        widgets : {},
+        keys : [],
+        route : null,
+        pagination : {},
+        defaultWidgetType : 'w-text',
+        json : {},
+        paginator : true,
+    },
+    'v-list-edit' : {
+        confParent : 'crud.conf.v-list',
+        widgetsEdit : {},
+        editMode : []
+    },
+    'v-hasmany' : {
+        confParent : 'crud.conf.v-collection',
+        defaultWidgetType : 'w-input',
+    },
+    'v-hasmany-view' : {
+        confParent : 'crud.conf.v-collection',
+        defaultWidgetType : 'w-text',
+    },
+    'action-base' : {
+        confParent : 'crud.conf.c-component',
+        type : null,
+        visible : true,
+        enabled : true,
+        title : '',
+        css: 'btn btn-outline-secondary',
+        icon : '',
+        text : '',
+        controlType : 'button',
+        href : '',
+        target: '_self',
+        needSelection  : false,
+        view : null,
+        alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
+    },
+    'action-reset' : {
+        confParent : 'crud.conf.action-base',
+        type : 'collection',
+        title : 'app.reset',
+        css: 'btn btn-primary btn-sm btn-group mr-1',
+        text : 'app.reset',
+        execute : function () {
+            if (this.view) {
+                console.log('target ref',this.view.targetRef);
+                this.view.reset();
+                return ;
+            }
+        }
+    },
+
+    'action-search' : {
+        confParent : 'crud.conf.action-base',
+        type : 'collection',
+        title : 'app.cerca',
+        css: 'btn btn-primary btn-sm btn-group mr-1',
+        icon : 'fa fa-search',
+        text : 'app.cerca',
+        execute : function () {
+            console.log('action-search',this,'view',this.view.targetRef);
+            if (this.view && this.view.targetRef) {
+                console.log('target ref',this.view.targetRef);
+                var targetView = this.$crud.cRefs[this.view.targetRef];
+                var formData = this.view.getViewData();
+                formData['page'] = 1;
+                targetView.route.setParams(formData);
+                targetView.reload();
+                return ;
+            }
+        }
+    },
+
+    'action-save' : {
+        confParent : 'crud.conf.action-base',
+        type : 'collection',
+        title : 'app.salva',
+        css: 'btn btn-primary btn-sm mr-1',
+        icon : 'fa fa-save',
+        text : 'app.salva',
+        setRouteValues : function(route) {
+            var that = this;
+            var pk = that.view.cPk || that.view.pk || 0;
+            if (pk) {
+                route.setValues({
+                    modelName: that.view.modelName,
+                    pk : pk
+                });
+            } else {
+                route.setValues({
+                    modelName: that.view.modelName,
+                });
+            }
+            route.setParams(that.view.getViewData());
+            return route;
+        },
+        execute : function (callback) {
+            var that = this;
+            console.log('action save',this);
+            var rName = 'create';
+            var pk = that.view.cPk || that.view.pk || 0;
+            if (pk)
+                rName = 'update';
+            var r = that._getRoute(rName);
+            that.setRouteValues(r);
+            Server.route(r, function (json) {
+                if (json.error) {
+                    that.errorDialog(json.msg)
+                    return ;
+                }
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.alertSuccess(msg,that.alertTime);
+                callback();
+            })
+        }
+    },
+    'action-edit' : {
+        confParent : 'crud.conf.action-base',
+        type : 'record',
+        title : 'app.modifica',
+        css: 'btn btn-outline-secondary btn-sm',
+        text : '',
+        icon : 'fa fa-edit',
+        execute : function () {
+            var url = "/edit/" + this.view.modelName + "/" + this.modelData[this.view.primaryKey];
+            document.location.href=url
+        }
+    },
+    'action-view' : {
+        confParent : 'crud.conf.action-base',
+        type : 'record',
+        title : 'app.vista',
+        css: 'btn btn-outline-secondary btn-sm ',
+        icon : 'fa fa-eye',
+        text : '',
+        execute : function () {
+            var url = "/view/" + this.view.modelName + "/" + this.modelData.id;
+            document.location.href=url;
+        }
+    },
+    'action-delete' : {
+        confParent : 'crud.conf.action-base',
+        type : 'record',
+        title : 'app.cancella',
+        css: 'btn btn-outline-danger btn-sm ',
+        icon : 'fa fa-times',
+        text : '',
+        setRouteValues : function(route) {
+            var that = this;
+            route.setValues({
+                modelName: that.view.modelName,
+                pk : that.modelData[that.view.primaryKey]
+            });
+            return route;
+        },
+        execute : function () {
+            var that = this;
+            that.confirmDialog(that.$crud.lang['app.conferma-cancellazione'] ,{
+                ok : function () {
+                    var r = that.createRoute('delete');
+                    that.setRouteValues(r);
+                    Server.route(r,function (json) {
+                        if (json.error) {
+                            that.errorDialog(json.msg);
+                            return ;
+                        }
+                        var msg = json.msg?json.msg:that.translate('app.cancellazione-successo');
+                        that.alertSuccess(msg);
+                        that.view.reload();
+                    });
+                }
+            });
+        }
+    },
+    'action-save-row' : {
+        confParent : 'crud.conf.action-base',
+        type: 'record',
+        title: 'app.salva',
+        css: 'btn btn-outline-success btn-sm ',
+        text: '',
+        icon: 'fa fa-save',
+        visible: false,
+        setRouteValues : function(route) {
+            var that = this;
+            route.setValues({
+                modelName: that.view.modelName,
+                pk : that.modelData[that.view.primaryKey]
+            });
+            return route;
+        },
+        execute: function () {
+            var that = this;
+            var values = {};
+            for (var k in that.view.widgetsEdit[that.index]) {
+                //console.log('edit r',that.view.widgetsEdit[that.index][k])
+                var sref = that.view.widgetsEdit[that.index][k].cRef; //  're-' + that.index + '-' +  k;
+                if (that.$crud.cRefs[sref])
+                    values[k] = that.$crud.cRefs[sref].getValue();
+            }
+            var id = that.view.value[that.index][that.view.primaryKey];
+            var r = that.createRoute('update');
+            that.setRouteValues(r);
+            r.setParams(values);
+            Server.route(r, function (json) {
+                if (json.error) {
+                    that.errorDialog(json.msg);
+                    return;
+                }
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.alertSuccess(msg,that.alertTime);
+                that.view.reload();
+            })
+            console.log('values', values);
+        }
+    },
+    'action-edit-mode':  {
+        confParent : 'crud.conf.action-base',
+        type : 'record',
+        title : 'app.modifica',
+        css: 'btn btn-outline-secondary btn-sm ',
+        text : '',
+        icon : 'fa fa-edit',
+        execute : function () {
+            var that = this;
+            that.view.setEditMode(that.index);
+        }
+    },
+    'action-view-mode' : {
+        confParent : 'crud.conf.action-base',
+        type : 'record',
+        title : 'app.annulla',
+        css: 'btn btn-outline-secondary btn-sm ',
+        //text : 'back',
+        icon : 'fa fa-arrow-left',
+        visible : false,
+        execute : function () {
+            var that = this;
+            that.view.setViewMode(that.index);
+        }
+    },
+    'action-insert' : {
+        confParent : 'crud.conf.action-base',
+        type : 'collection',
+        visible : true,
+        enabled : true,
+        title : 'app.nuovo',
+        css: 'btn btn-outline-primary btn-sm btn-group mr-1',
+        icon : 'fa fa-plus',
+        text : 'app.nuovo',
+        execute  :function () {
+            var url = "/insert/" + this.view.modelName + "/new";
+            document.location.href=url;
+        }
+    },
+
+    'action-back' : {
+        confParent : 'crud.conf.action-base',
+        type : 'collection',
+        title : 'app.indietro',
+        css: 'btn btn-secondary btn-sm mr-1',
+        icon : 'fa fa-backward',
+        text : 'app.indietro',
+        execute : function () {
+            window.history.back();
+        }
+    },
+    'action-order' : {
+        confParent : 'crud.conf.action-base',
+        type : 'collection',
+        title : 'app.order',
+        css: 'btn btn-default btn-sm mr-1',
+        iconSortAsc : 'fa fa-sort-asc',
+        iconSortDesc : 'fa fa-sort-desc',
+        iconSort : 'fa fa-sort',
+        icon : null,
+        text : '',
+        execute : function () {
+            console.log('order execute',this);
+            var that = this;
+            if (that.view.route) {
+                var params = that.view.route.getParams();
+                params.order_field = that.orderField;
+                params.order_direction = (!that.orderDirection || that.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
+                that.view.route.setParams(params);
+                that.view.reload();
+            } else {
+                var order_direction = (!that.orderDirection || that.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
+                that.view.staticOrder(that.orderField,order_direction);
+            }
+
+        }
+    },
+    'action-delete-selected' : {
+        confParent : 'crud.conf.action-base',
+        type : 'collection',
+        title : 'app.cancella-selezionati',
+        css: 'btn btn-outline-danger btn-sm mr-1',
+        icon : 'fa fa-trash',
+        text : '',
+        needSelection : true,
+        setRouteValues : function(route) {
+            var that = this;
+            route.setValues({
+                modelName: that.view.modelName,
+            });
+            return route;
+        },
+        execute : function () {
+            var that = this;
+            var checked = that.view.selectedRows();
+            var num = checked.length;
+            if (num === 0)
+                return ;
+            that.confirmDialog(that.translate('app.conferma-multidelete',false,[num]), {
+                ok : function () {
+                    var r = that.createRoute('multi-delete');
+                    that.setRouteValues(r);
+                    r.setParams({'ids': checked});
+                    that.waitStart();
+                    Server.route(r,function (json) {
+                        that.waitEnd();
+                        if (json.error) {
+                            that.errorDialog(json.msg);
+                            return ;
+                        }
+                        that.view.reload();
+                        //that.callback(json);
+                    })
+                }
+            });
+            console.log('selected',that.view.selectedRows())
+        }
     }
 };
 
@@ -1203,7 +1297,7 @@ core_mixin = {
         },
 
         cloneObj : function (obj) {
-            return jQuery.extend(true,{},obj);
+            return Array.isArray(obj)?jQuery.extend(true,[],obj):jQuery.extend(true,{},obj);
         },
 
         /**
@@ -1906,9 +2000,7 @@ crud.components.cComponent = Vue.component('c-component',{
             delete this.$crud.cRefs[cr];
     },
     data : function() {
-        var d =  this._loadConf();
-        d.resourcesLoaded = false;
-        return d;
+        return this._loadConf();
     },
     methods : {
         jQe : function (selector) {
@@ -2027,9 +2119,37 @@ crud.components.misc.tplBase = Vue.component('tpl-base',{
     template : '<span>template base</span>'
 });
 
-crud.components.actions.coreActionBase = Vue.component('crud-action-base', {
+crud.components.actions.coreActionBase = Vue.component('core-action-base', {
     props : ['cConf','cKey'],
     extends : crud.components.cComponent,
+    // data :  function () {
+    //     var that = this;
+    //     var d = {
+    //         view : that.$parent
+    //     }
+    //     return d;
+
+
+        // var d = that._getConf();
+        // var adata = {
+        //     type : null,
+        //     visible : true,
+        //     enabled : true,
+        //     title : '',
+        //     css: 'btn btn-outline-secondary',
+        //     icon : '',
+        //     text : '',
+        //     controlType : 'button',
+        //     href : '',
+        //     target: '_self',
+        //     needSelection  : false,
+        //     view : null,
+        //     alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
+        // };
+        // if (!('view' in adata) )
+        //     adata.view = that.$parent;
+        // return that.merge(adata,d);
+    //},
     mounted : function() {
         var that = this;
         if (that.controlType == 'link') {
@@ -2122,30 +2242,7 @@ crud.components.actions.coreActionBase = Vue.component('crud-action-base', {
             this.visible = visible;
         }
     },
-    data :  function () {
-        var that = this;
-        //console.log('action-base')
-        //var d =  that._loadConf();
-        var d = that._getConf();
-        var adata = {
-            type : null,
-            visible : true,
-            enabled : true,
-            title : '',
-            css: 'btn btn-outline-secondary',
-            icon : '',
-            text : '',
-            controlType : 'button',
-            href : '',
-            target: '_self',
-            needSelection  : false,
-            view : null,
-            alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
-        };
-        if (!('view' in adata) )
-            adata.view = that.$parent;
-        return that.merge(adata,d);
-    },
+
 });
 
 
@@ -3668,6 +3765,12 @@ crud.components.views.vBase = Vue.component('v-base', {
                 callback(json);
             })
         },
+        /**
+         * crea la configurazione base per ogni singola azione della view.
+         * @param name
+         * @param type
+         * @return {*|{}}
+         */
         getActionConfig : function(name,type) {
             //console.log('v-base.getActionConfig',name,type,this.conf);
             // se non esiste il componente di azione lo creo al volo
@@ -3678,9 +3781,15 @@ crud.components.views.vBase = Vue.component('v-base', {
                 });
             }
 
-
-            var aConf = this.$crud.actions[name] || {};
             var customConf = this.customActions[name] || {};
+            return customConf;
+
+
+
+
+            var aConf = this.$crud.conf[name] || {};
+            var customConf = this.customActions[name] || {};
+
 
             aConf = this.merge(aConf,customConf);
 
@@ -3937,7 +4046,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             var actions = [];
             for (var i in that.actions) {
                 var aName = that.actions[i];
-                if (that.$crud.actions[aName])
+                if (that.$crud.conf[aName])
                     actions.push(aName);
                 else if (that.customActions[aName])
                     actions.push(aName);
@@ -4086,12 +4195,26 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     },
     methods : {
 
+        fillData : function(route, json) {
+            var that = this;
+            if (route) {
+                var protocol = that.createProtocol(route.getProtocol());
+                protocol.jsonToData(json);
+                var prop = Object.getOwnPropertyNames(protocol);
+                for (var i in prop) {
+                    that[prop[i]] = protocol[prop[i]];
+                }
+            }
+            that.json = json;
+        },
+
         draw : function() {
             var that = this;
             that.createWidgets();
-            that.createActions();
-            that.createActionsClass();
+            that.checkValidActions();
+            that.createActionsConf();
             that.loading = false;
+            that.$forceUpdate();
             setTimeout(function () {
                 that.completed();
             },10);
@@ -4193,22 +4316,23 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 var aName = that.actions[i];
                 var aConf = {};
                 var valid = true;
-                if (that.$crud.actions[aName]) {
-                    aConf = that.$crud.actions[aName];
+                if (that.$crud.conf[aName]) {
+                    aConf = that.$crud.conf[aName];
                 } else if(that.customActions[aName]) {
                     aConf = that.customActions[aName];
                 } else {
                     valid = false;
                     console.warn("Impossibile trovare la configurazione di " + aName);
                 }
-
-                if (aConf.type == 'collection') {
-                    collectionActionsName.push(aName);
-                } else if (aConf.type == 'record') {
-                    recordActionsName.push(aName);
-                } else {
-                    console.log('action ',aConf);
-                    throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
+                if (valid) {
+                    if (aConf.type == 'collection') {
+                        collectionActionsName.push(aName);
+                    } else if (aConf.type == 'record') {
+                        recordActionsName.push(aName);
+                    } else {
+                        console.log('action ',aConf);
+                        throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
+                    }
                 }
             }
             //console.log('data',data,'conf',conf,'keys',keys);
@@ -4218,7 +4342,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.recordActions = [];
         },
 
-        createActionsClass : function() {
+        createActionsConf : function() {
             var that = this;
             that.createCollectionActions();
             for (var i in that.value) {
@@ -4267,72 +4391,76 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             }
             that.collectionActions = collectionActions;
         },
+        /**
+         * funzione chiamata per gli ordinamenti delle liste con dati non dinamici, ma statici
+         */
+        staticOrder : function (orderField,orderDirection) {
+            var that = this;
+            that.loading = true;
+            var value = that.cloneObj(that.value);
+            that.value = new Array();
+            that.$forceUpdate();
+            var __sortOn = function (arr,prop,direction) {
+                var sortOrder = direction=='ASC'?1:-1;
+                arr.sort (
+                    function (a, b) {
+                        if (a[prop] < b[prop]){
+                            return -1 * sortOrder;
+                        } else if (a[prop] > b[prop]){
+                            return 1 * sortOrder;
+                        } else {
+                            return 0;
+                        }
+                    }
+                );
+            }
+            //var order_direction = (!that.orderDirection || that.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
+            //console.log(that.orderField,order_direction);
+            __sortOn(value,orderField,orderDirection);
+            that.metadata.order = {
+                field : orderField,
+                direction : orderDirection
+            };
+            that.$set(that,'value',value);
+            //that.orderDirection = order_direction;
+            that.$forceUpdate();
+
+            that.reload();
+        }
     },
 });
 
 crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
-    data :  function () {
-        var that = this;
-        var _conf = that._loadConf() || {};
-        var dList = {
-            loading : true,
-            widgets : {},
-            keys : [],
-            recordActionsName : [],
-            recordActions: [],
-            collectionActions : {},
-            collectionActionsName : [],
-            route : null,
-            maxPage : 0,
-            pagination : {},
-            viewTitle : '',
-            defaultWidgetType : 'w-text',
-            langContext : that.cModel,
-            json : {},
-        };
-        if (_conf.viewTitle) {
-            dList.viewTitle = _conf.viewTitle;
-        }
-        if (!('paginator' in _conf))
-            dList.paginator = true;
-        //console.log('_CONFFFFFF',_conf)
-        return dList;
-    },
+    // data :  function () {
+    //     var that = this;
+    //     var _conf = that._loadConf() || {};
+    //     var dList = {
+    //         loading : true,
+    //         widgets : {},
+    //         keys : [],
+    //         recordActionsName : [],
+    //         recordActions: [],
+    //         collectionActions : {},
+    //         collectionActionsName : [],
+    //         route : null,
+    //         maxPage : 0,
+    //         pagination : {},
+    //         viewTitle : '',
+    //         defaultWidgetType : 'w-text',
+    //         langContext : that.cModel,
+    //         json : {},
+    //     };
+    //     if (_conf.viewTitle) {
+    //         dList.viewTitle = _conf.viewTitle;
+    //     }
+    //     if (!('paginator' in _conf))
+    //         dList.paginator = true;
+    //     //console.log('_CONFFFFFF',_conf)
+    //     return dList;
+    // },
 
     methods: {
-
-
-
-        fillData : function(route, json) {
-            var that = this;
-            //var value = {};
-            if (!route) {
-                console.log('dati manuali',that.conf.value);
-                if (that.conf.value) {
-                    that.value = that.conf.value;
-                    that.pagination = that.conf.pagination || {};
-                }
-            } else {
-                //console.log('protocol',route.getProtocol());
-                //var protocol = Protocol.factory(route.getProtocol());
-                var protocol = that.createProtocol(route.getProtocol());
-                protocol.jsonToData(json);
-                var prop = Object.getOwnPropertyNames(protocol);
-                //console.log(prop);
-
-
-                for (var i in prop) {
-                    //console.log(k,k,prop[k]);
-                    that[prop[i]] = protocol[prop[i]];
-                }
-                //var data = data;
-                //this.maxPage = data.pagination.last_page;
-                //that.pagination = data.pagination;
-            }
-            //that.value = data;
-            that.json = json;
-        },
 
         isOrderField : function(key) {
             var that = this;
@@ -4348,7 +4476,7 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             var conf = that.getActionConfig('action-order','collection');
             conf.title = that.translate('app.ordina') + ' ' + that.translate(translateKey);
             conf.text = that.translate(translateKey);
-            conf.orderField = that.conf.orderFields[key]?that.conf.orderFields[key]:key;
+            conf.orderField = that.orderFields[key]?that.orderFields[key]:key;
             //if (that.data.order_field)
             var order = that.metadata.order || {};
             //console.log('GETORDERCONF CALLED',key,order);
@@ -4410,7 +4538,13 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
                 this.reload();
 
             }
-        }
+        },
+        // value : {
+        //     deep : true,
+        //     handler() {
+        //         this.reload();
+        //     }
+        // }
     }
 });
 
@@ -4424,13 +4558,13 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             default: 'listEdit'
         }
     },
-    data : function() {
-        var dListEdit = {
-            widgetsEdit : {},
-            editMode : []
-        };
-        return dListEdit;
-    },
+    // data : function() {
+    //     var dListEdit = {
+    //         widgetsEdit : {},
+    //         editMode : []
+    //     };
+    //     return dListEdit;
+    // },
 
     beforeDestroy () {
         for (var row in this.widgetsEdit) {
@@ -4444,8 +4578,8 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
         draw : function() {
             var that = this;
             that.editMode = new Array(that.value.length).fill(false);
-            that.createActions();
-            that.createActionsClass();
+            that.checkValidActions();
+            that.createActionsConf();
             that.createWidgets();
             that.createWidgetsEdit();
             that.loading = false;
@@ -4579,13 +4713,6 @@ crud.components.views.coreVView = Vue.component('core-v-view', {
             default : 'view'
         }
     },
-    // data :  function () {
-    //     var _conf = this._loadConf() || {};
-    //     var d =  {}
-    //     d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
-    //     return d;
-    // },
-
     methods : {
         setRouteValues : function (route) {
             var that  = this;
@@ -4678,18 +4805,18 @@ crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
             default : 'insert'
         }
     },
-    data :  function () {
-        var _conf = this._loadConf();
-        var d =  {}
-        d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
-        //console.log('VHASMANY CONF',_conf);
-        return d;
-    },
+    // data :  function () {
+    //     var _conf = this._loadConf();
+    //     var d =  {}
+    //     d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
+    //     //console.log('VHASMANY CONF',_conf);
+    //     return d;
+    // },
 
     methods : {
-        fillData : function () {
-            this.value = this.conf.value;
-        },
+        // fillData : function () {
+        //     this.value = this.conf.value;
+        // },
         getFieldName : function (key) {
             var that = this;
             return that.cModel + "-" + key + '[]';
@@ -4704,13 +4831,13 @@ crud.components.views.coreVHasmanyView = Vue.component('core-v-hasmany-view', {
             default : 'view'
         }
     },
-    data :  function () {
-        //console.log('VHASMANYVIEW',this._getConf())
-        var _conf = this._loadConf();
-        var d =  {}
-        d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
-        return d;
-    },
+    // data :  function () {
+    //     //console.log('VHASMANYVIEW',this._getConf())
+    //     var _conf = this._loadConf();
+    //     var d =  {}
+    //     d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
+    //     return d;
+    // },
     // methods : {
     //     fillData : function () {
     //         this.data = this.cConf.data;

@@ -51,12 +51,26 @@ crud.components.views.vCollection = Vue.component('v-collection', {
     },
     methods : {
 
+        fillData : function(route, json) {
+            var that = this;
+            if (route) {
+                var protocol = that.createProtocol(route.getProtocol());
+                protocol.jsonToData(json);
+                var prop = Object.getOwnPropertyNames(protocol);
+                for (var i in prop) {
+                    that[prop[i]] = protocol[prop[i]];
+                }
+            }
+            that.json = json;
+        },
+
         draw : function() {
             var that = this;
             that.createWidgets();
-            that.createActions();
-            that.createActionsClass();
+            that.checkValidActions();
+            that.createActionsConf();
             that.loading = false;
+            that.$forceUpdate();
             setTimeout(function () {
                 that.completed();
             },10);
@@ -158,22 +172,23 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 var aName = that.actions[i];
                 var aConf = {};
                 var valid = true;
-                if (that.$crud.actions[aName]) {
-                    aConf = that.$crud.actions[aName];
+                if (that.$crud.conf[aName]) {
+                    aConf = that.$crud.conf[aName];
                 } else if(that.customActions[aName]) {
                     aConf = that.customActions[aName];
                 } else {
                     valid = false;
                     console.warn("Impossibile trovare la configurazione di " + aName);
                 }
-
-                if (aConf.type == 'collection') {
-                    collectionActionsName.push(aName);
-                } else if (aConf.type == 'record') {
-                    recordActionsName.push(aName);
-                } else {
-                    console.log('action ',aConf);
-                    throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
+                if (valid) {
+                    if (aConf.type == 'collection') {
+                        collectionActionsName.push(aName);
+                    } else if (aConf.type == 'record') {
+                        recordActionsName.push(aName);
+                    } else {
+                        console.log('action ',aConf);
+                        throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
+                    }
                 }
             }
             //console.log('data',data,'conf',conf,'keys',keys);
@@ -183,7 +198,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.recordActions = [];
         },
 
-        createActionsClass : function() {
+        createActionsConf : function() {
             var that = this;
             that.createCollectionActions();
             for (var i in that.value) {
@@ -232,5 +247,41 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             }
             that.collectionActions = collectionActions;
         },
+        /**
+         * funzione chiamata per gli ordinamenti delle liste con dati non dinamici, ma statici
+         */
+        staticOrder : function (orderField,orderDirection) {
+            var that = this;
+            that.loading = true;
+            var value = that.cloneObj(that.value);
+            that.value = new Array();
+            that.$forceUpdate();
+            var __sortOn = function (arr,prop,direction) {
+                var sortOrder = direction=='ASC'?1:-1;
+                arr.sort (
+                    function (a, b) {
+                        if (a[prop] < b[prop]){
+                            return -1 * sortOrder;
+                        } else if (a[prop] > b[prop]){
+                            return 1 * sortOrder;
+                        } else {
+                            return 0;
+                        }
+                    }
+                );
+            }
+            //var order_direction = (!that.orderDirection || that.orderDirection.toLowerCase() == 'desc')?'ASC':'DESC';
+            //console.log(that.orderField,order_direction);
+            __sortOn(value,orderField,orderDirection);
+            that.metadata.order = {
+                field : orderField,
+                direction : orderDirection
+            };
+            that.$set(that,'value',value);
+            //that.orderDirection = order_direction;
+            that.$forceUpdate();
+
+            that.reload();
+        }
     },
 });
