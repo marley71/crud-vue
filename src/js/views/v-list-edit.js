@@ -68,7 +68,7 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
 
         setEditMode : function (index) {
             var that = this;
-            console.log('edit mode',index);
+            //console.log('edit mode',index);
             if (that.actions.indexOf('action-delete') >= 0)
                 that.hideRA(index,'action-delete');
             if (that.actions.indexOf('action-edit-mode') >= 0)
@@ -102,9 +102,6 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             var that = this;
             var a = that.getRecordAction(index,name);
             a.setVisible(false);
-
-            //var n = that.getRefId(that._uid,'ra',index,name);
-            //this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var that = this;

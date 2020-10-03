@@ -68,13 +68,6 @@ crud.components.cComponent = Vue.component('c-component',{
 
             var currentConf = that._getConf();
             var mergedConf = that.merge(defaultConf,currentConf);
-            // var finalConf = {};
-            // for (var k in mergedConf) {
-            //     // if (['methods','mounted'].indexOf(k) >= 0)
-            //     //     continue;
-            //     finalConf[k] = mergedConf[k];
-            // }
-            //finalConf.conf = finalConf;
             console.log('finalConf',mergedConf);
             return mergedConf;
 

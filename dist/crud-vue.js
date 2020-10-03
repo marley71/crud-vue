@@ -422,6 +422,7 @@ crud.conf = {
     },
     'v-list-edit' : {
         confParent : 'crud.conf.v-list',
+        //viewTitle : 'title',
         widgetsEdit : {},
         editMode : []
     },
@@ -1363,14 +1364,20 @@ core_mixin = {
             var _parents = [];
             _parents.push(_c)
 
-            while(_c && _c.confParent){
-                var tmp = __getConfObj(_c.confParent,window);
-                _parents.push(tmp);
-                //console.log('tmp.parent',tmp.confParent);
-                _c = tmp.confParent;
-                if (!_c.confParent) {
-                    _parents.push(__getConfObj(_c,window));
+            while(_c){
+                if (_c.confParent) {
+                    var tmp = __getConfObj(_c.confParent,window);
+                    _parents.push(tmp);
+                    //console.log('tmp.parent',tmp.confParent);
+                    _c = tmp.confParent;
+                    // if (!_c || !_c.confParent) {
+                    //     _parents.push(__getConfObj(_c,window));
+                    // }
+                } else {
+                    _parents.push(_c);
+                    _c = null;
                 }
+
             };
 
             var finalConf = {};
@@ -2018,13 +2025,6 @@ crud.components.cComponent = Vue.component('c-component',{
 
             var currentConf = that._getConf();
             var mergedConf = that.merge(defaultConf,currentConf);
-            // var finalConf = {};
-            // for (var k in mergedConf) {
-            //     // if (['methods','mounted'].indexOf(k) >= 0)
-            //     //     continue;
-            //     finalConf[k] = mergedConf[k];
-            // }
-            //finalConf.conf = finalConf;
             console.log('finalConf',mergedConf);
             return mergedConf;
 
@@ -4618,7 +4618,7 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
 
         setEditMode : function (index) {
             var that = this;
-            console.log('edit mode',index);
+            //console.log('edit mode',index);
             if (that.actions.indexOf('action-delete') >= 0)
                 that.hideRA(index,'action-delete');
             if (that.actions.indexOf('action-edit-mode') >= 0)
@@ -4652,9 +4652,6 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             var that = this;
             var a = that.getRecordAction(index,name);
             a.setVisible(false);
-
-            //var n = that.getRefId(that._uid,'ra',index,name);
-            //this.$crud.cRefs[n]? this.$crud.cRefs[n].setVisible(false):null;
         },
         showRA : function (index,name) {
             var that = this;

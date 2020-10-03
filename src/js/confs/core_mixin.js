@@ -338,14 +338,20 @@ core_mixin = {
             var _parents = [];
             _parents.push(_c)
 
-            while(_c && _c.confParent){
-                var tmp = __getConfObj(_c.confParent,window);
-                _parents.push(tmp);
-                //console.log('tmp.parent',tmp.confParent);
-                _c = tmp.confParent;
-                if (!_c.confParent) {
-                    _parents.push(__getConfObj(_c,window));
+            while(_c){
+                if (_c.confParent) {
+                    var tmp = __getConfObj(_c.confParent,window);
+                    _parents.push(tmp);
+                    //console.log('tmp.parent',tmp.confParent);
+                    _c = tmp.confParent;
+                    // if (!_c || !_c.confParent) {
+                    //     _parents.push(__getConfObj(_c,window));
+                    // }
+                } else {
+                    _parents.push(_c);
+                    _c = null;
                 }
+
             };
 
             var finalConf = {};

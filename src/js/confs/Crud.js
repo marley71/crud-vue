@@ -422,6 +422,7 @@ crud.conf = {
     },
     'v-list-edit' : {
         confParent : 'crud.conf.v-list',
+        //viewTitle : 'title',
         widgetsEdit : {},
         editMode : []
     },
