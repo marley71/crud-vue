@@ -288,7 +288,7 @@ crud.conf = {
 
     'w-hasmany' : {
         confParent : 'crud.conf.w-base',
-        confViews : [],
+        confViews : {},
         limit : 100
     },
 

@@ -63,13 +63,13 @@ crud.components.cComponent = Vue.component('c-component',{
         _loadConf : function() {
             var that = this;
 
-            console.log('this name',this.$options.name);
+            //console.log('this name',this.$options.name);
             var _compName = this.$options.name;
             var defaultConf =  that.mergeConf(that.$crud.conf[_compName]);
 
             var currentConf = that._getConf();
             var mergedConf = that.merge(defaultConf,currentConf);
-            console.log('finalConf',mergedConf);
+            //console.log('finalConf',mergedConf);
             return mergedConf;
 
 

@@ -324,7 +324,7 @@ core_mixin = {
          */
         mergeConf : function(conf,rootData) {
             var that = this;
-            console.log('Merge Conf',conf);
+            //console.log('Merge Conf',conf);
 
             var __getConfObj = function (c,rD) {
                 let _conf = c;
@@ -357,39 +357,6 @@ core_mixin = {
             }
             //console.log('FINAL CONF',finalConf)
             return finalConf;
-
-            // var specialsKey = ['fields','fieldsConfig','customActions'];
-            // var c1 = this.cloneObj(obj1);
-            // var c2 = this.cloneObj(obj2);
-            // //console.log('c1',c1,'c2',c2);
-            //
-            // c1.fields = c1.fields?c1.fields:[];
-            // c1.fieldsConfig = c1.fieldsConfig?c1.fieldsConfig:{};
-            // c1.customActions = c1.customActions?c1.customActions:{};
-            // c1.actions = c1.actions?c1.actions:[];
-            //
-            // if (c2.fields)
-            //     c1.fields = c2.fields;
-            //
-            // if (c2.fieldsConfig) {
-            //     for (var k in c2.fieldsConfig) {
-            //         c1.fieldsConfig[k] = c2.fieldsConfig[k];
-            //     }
-            // }
-            // if (c2.customActions) {
-            //     c1.customActions = c1.customActions || {};
-            //     for (var k in c2.customActions) {
-            //         c1.customActions[k] = c2.customActions[k];
-            //     }
-            // }
-            //
-            // for (var k in c2) {
-            //     if (specialsKey.indexOf(k) >= 0)
-            //         continue;
-            //     //console.log('sovrascrivo',k);
-            //     c1[k] = c2[k];
-            // }
-            // return c1;
         },
 
         merge : function(obj1, obj2) {

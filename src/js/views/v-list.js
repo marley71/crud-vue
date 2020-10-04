@@ -52,15 +52,6 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             conf.view = that;
             return conf;
         },
-        // reload : function () {
-        //     var that = this;
-        //     that.loading = true;
-        //     that.fetchData(that.route,function (json) {
-        //         that.fillData(that.route,json);
-        //         that.draw();
-        //         //that.loading = false;
-        //     });
-        // },
         selectAllRows : function () {
             var that = this;
             var sel = that.jQe('[c-row-check-all]').prop('checked');
