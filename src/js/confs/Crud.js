@@ -292,6 +292,10 @@ crud.conf = {
         limit : 100
     },
 
+    'w-hasmany-view' : {
+        confParent : 'crud.conf.w-hasmany',
+    },
+
     'w-swap' : {
         confParent : 'crud.conf.w-base',
         routeName : 'set',
@@ -411,7 +415,7 @@ crud.conf = {
 
     'v-list' : {
         confParent : 'crud.conf.v-collection',
-        loading : true,
+        //loading : true,
         widgets : {},
         keys : [],
         route : null,

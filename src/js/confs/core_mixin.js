@@ -327,10 +327,11 @@ core_mixin = {
             console.log('Merge Conf',conf);
 
             var __getConfObj = function (c,rD) {
+                let _conf = c;
                 if (typeof c === 'string' || c instanceof String) {
-                    c = that.getDescendantProp(rD, c);
+                    _conf = that.getDescendantProp(rD, c);
                 }
-                return c || {};
+                return _conf || {};
             }
 
             var _rD = rootData || window;
@@ -339,23 +340,18 @@ core_mixin = {
             _parents.push(_c)
 
             while(_c){
+                //console.log('parent',_c.confParent);
                 if (_c.confParent) {
-                    var tmp = __getConfObj(_c.confParent,window);
-                    _parents.push(tmp);
-                    //console.log('tmp.parent',tmp.confParent);
-                    _c = tmp.confParent;
-                    // if (!_c || !_c.confParent) {
-                    //     _parents.push(__getConfObj(_c,window));
-                    // }
+                    _c = __getConfObj(_c.confParent,window);
+                    _parents.push(_c);
                 } else {
                     _parents.push(_c);
                     _c = null;
                 }
-
             };
 
             var finalConf = {};
-            console.log('conf gerarchia parents',_parents);
+            //console.log('conf gerarchia parents',_parents);
             for (var i=_parents.length-1;i>=0;i--) {
                 finalConf = this.merge(finalConf,_parents[i]);
             }
