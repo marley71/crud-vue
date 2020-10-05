@@ -1,5 +1,18 @@
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cFields','cTargetRef','cRouteConf'],
+    props : {
+        cFields : {
+            default : null
+        },
+        cTargetRef : {
+            default : null
+        },
+        cRouteConf : {
+            default : null
+        },
+        cConfDefaultName : {
+            default : 'v-base',
+        }
+    },
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
@@ -96,35 +109,28 @@ crud.components.views.vBase = Vue.component('v-base', {
             })
         },
         /**
-         * crea la configurazione base per ogni singola azione della view.
+         * crea la configurazione base per ogni singola azione della view, se incontra un'azione
+         * custom con una configurazione non definita, la definisce in crud.conf[action-name]
          * @param name
          * @param type
          * @return {*|{}}
          */
         getActionConfig : function(name,type) {
-            //console.log('v-base.getActionConfig',name,type,this.conf);
+            var that = this;
             // se non esiste il componente di azione lo creo al volo
             if (!this.$options.components[name]) {
-                //console.log('estendo azioni ',name);
                 Vue.component(name, {
                     extends : crud.components.actions.actionBase
                 });
+                // se non esiste una configurazione la inserisco io con quella di default
+                if (!that.$crud.conf[name]) {
+                    that.$crud.conf[name] = {
+                        confParent : 'crud.conf.action-base'
+                    }
+                }
+
             }
-
-            var customConf = this.customActions[name] || {};
-            return customConf;
-
-
-
-
-            var aConf = this.$crud.conf[name] || {};
-            var customConf = this.customActions[name] || {};
-
-
-            aConf = this.merge(aConf,customConf);
-
-            //console.log('getActionConfig',aConf);
-            return aConf;
+            return that.customActions[name] || {};
         },
 
         _loadConf : function() {
@@ -133,10 +139,13 @@ crud.components.views.vBase = Vue.component('v-base', {
             var d = {};
             var type = that.cType;
             var modelName = that.cModel;
-            var defaultConf = this.$crud.conf[type];
 
-            var _compName = this.$options.name;
-            var defaultConfComponent =  that.mergeConf(that.$crud.conf[_compName]);
+
+
+            var defaultConf = that._getDefaultConf();
+
+            // var _compName = this.$options.name;
+            // var defaultConfComponent =  that.mergeConf(that.$crud.conf[_compName]);
 
             console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
@@ -175,17 +184,18 @@ crud.components.views.vBase = Vue.component('v-base', {
             //console.log('merge confs',defaultConf,conf);
             var finalConf = that.mergeConfView(defaultConfComponent,defaultConf);//this.confMerge(defaultConf,conf);
             finalConf = that.mergeConfView(finalConf,conf);
+            console.log('v-base finalConf',finalConf)
             return finalConf;
 
-
-            for (var k in finalConf) {
-                if (k == 'methods')
-                    continue;
-                d[k] = finalConf[k];
-            }
-            d.conf = finalConf;
-            console.log('finalConf',finalConf);
-            return d;
+            //
+            // for (var k in finalConf) {
+            //     if (k == 'methods')
+            //         continue;
+            //     d[k] = finalConf[k];
+            // }
+            // d.conf = finalConf;
+            // console.log('finalConf',finalConf);
+            // return d;
         },
 
         _loadRouteConf : function() {

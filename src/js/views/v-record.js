@@ -1,6 +1,20 @@
 crud.components.views.vRecord = Vue.component('v-record', {
     extends : crud.components.views.vBase,
-    props : ['cModel','cPk'],
+    //props : ['cModel','cPk'],
+    props : {
+        'cModel' : {
+            default: null
+        },
+        'cType' : {
+            default: 'record'
+        },
+        'cPk' : {
+            default : 0,
+        },
+        cConfDefaultName : {
+            default : 'v-record',
+        }
+    },
     mounted : function() {
         var that = this;
         that.route = that._getRoute();

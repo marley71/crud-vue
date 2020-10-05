@@ -1,5 +1,15 @@
 crud.components.cComponent = Vue.component('c-component',{
-    props : ['cConf','cCompRef'],
+    props : {
+        'cConf' : {
+            default : null
+        },
+        'cCompRef' : {
+            default : null
+        },
+        'cConfDefaultName' : {
+            default : 'c-component'
+        }
+    },
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
@@ -62,13 +72,22 @@ crud.components.cComponent = Vue.component('c-component',{
         },
         _loadConf : function() {
             var that = this;
+            //var _compName = this.$options.name;
 
-            //console.log('this name',this.$options.name);
-            var _compName = this.$options.name;
-            var defaultConf =  that.mergeConf(that.$crud.conf[_compName]);
+            var _confName = that.cConfDefaultName;
+            var defaultConf =  that.mergeConf(that.$crud.conf[_confName]);
+            var _confComponentName = that.$options.name;
+            var componentNameConf = that.mergeConf(that.$crud.conf[_confComponentName]);
 
+
+            var mergedConf = that.merge(defaultConf,componentNameConf);
+
+
+            //console.log('this name',_compName,defaultConf);
+            var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
-            var mergedConf = that.merge(defaultConf,currentConf);
+
+            mergedConf = that.merge(mergedConf,currentConf);
             //console.log('finalConf',mergedConf);
             return mergedConf;
 
@@ -97,6 +116,11 @@ crud.components.cComponent = Vue.component('c-component',{
             // d.conf = _c;
             // return d;
         },
+        /**
+         * esegue il binding con la configurazione passata a run time
+         * @return {*}
+         * @private
+         */
 
         _getConf : function() {
             var that = this;
@@ -105,13 +129,37 @@ crud.components.cComponent = Vue.component('c-component',{
             if (typeof that.cConf === 'string' || that.cConf instanceof String) {
                 conf = that.getDescendantProp(window, that.cConf);
                 // altrimenti controllo che non sia una configurazione dentro la crud conf
-                if (!conf) {
-                    conf = that.getDescendantProp(that.$crud.conf, that.cConf);
-                }
+                // if (!conf) {
+                //     conf = that.getDescendantProp(that.$crud.conf, that.cConf);
+                // }
             }
             else
                 conf = that.cConf;
             return conf;
+        },
+        /**
+         * esegue il binding con la configurazione di default, data dal merge della cDefaultConfName e il nome del
+         * widget
+         * @return {*}
+         * @private
+         */
+        _getDefaultConf : function () {
+            var that = this;
+            //var _compName = this.$options.name;
+
+            var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
+            var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
+
+
+            var mergedConf = that.merge(defaultConf,componentNameConf);
+            return mergedConf;
+
+            // //console.log('this name',_compName,defaultConf);
+            //
+            // var currentConf = that._getConf();
+            // mergedConf = that.merge(mergedConf,currentConf);
+            // //console.log('finalConf',mergedConf);
+            // return mergedConf;
         },
         /**
          * setta la configurazione della route secondo le proprie esigenze.

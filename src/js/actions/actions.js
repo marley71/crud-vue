@@ -1,5 +1,13 @@
 crud.components.actions.coreActionBase = Vue.component('core-action-base', {
-    props : ['cConf','cKey'],
+    //props : ['cConf','cKey'],
+    props : {
+        'cKey' : {
+            default: null
+        },
+        cConfDefaultName : {
+            default : 'action-base',
+        }
+    },
     extends : crud.components.cComponent,
     // data :  function () {
     //     var that = this;

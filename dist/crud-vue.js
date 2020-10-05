@@ -128,6 +128,7 @@ crud.actions = {
 
 crud.conf = {
     view : {
+        confParent : 'crud.conf.v-view',
         primaryKey : 'id',
         routeName : 'view',
         fieldsConfig : {},
@@ -137,6 +138,7 @@ crud.conf = {
         widgetTemplate : 'tpl-record2',
     },
     edit : {
+        confParent : 'crud.conf.v-edit',
         primaryKey : 'id',
         routeName : 'edit',
         customActions : {},
@@ -148,6 +150,7 @@ crud.conf = {
         actions : ['action-save','action-back']
     },
     list : {
+        confParent : 'crud.conf.v-list',
         primaryKey : 'id',
         routeName : 'list',
         customActions: {},
@@ -157,6 +160,7 @@ crud.conf = {
         actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
     },
     listEdit : {
+        confParent : 'crud.conf.v-list',
         routeName : 'list',
         primaryKey : 'id',
         customActions: {},
@@ -200,18 +204,18 @@ crud.conf = {
         defaultValue : null,
     },
     'w-input' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         inputType : 'text'
     },
     'w-input-helped' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         domainValues : {},
         domainValuesOrder : [],
         customValue : false,
     },
 
     'w-autocomplete' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         resources : [
             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
@@ -224,39 +228,39 @@ crud.conf = {
     },
 
     'w-belongsto' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         labelFields : ['text'],
     },
     'w-radio' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         domainValues : {},
         domainValuesOrder : [],
     },
     'w-checkbox' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         domainValues : {},
         domainValuesOrder : [],
         value : [],
     },
     'w-select' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         domainValues : {},
         domainValuesOrder : [],
     },
     'w-textarea' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
     },
 
     'w-text' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
     },
 
     'w-custom' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
     },
 
     'w-date-select' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         resources : [
             'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
         ],
@@ -265,7 +269,7 @@ crud.conf = {
     },
 
     'w-date-picker' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         resources : [
             'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
@@ -274,9 +278,11 @@ crud.conf = {
         displayFormat : "dd/mm/yyyy",
         dateFormat :  "yyyy-mm-dd",
     },
+    'w-date-text' : {
 
+    },
     'w-texthtml' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         resources : [
             //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
             //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js',
@@ -287,7 +293,7 @@ crud.conf = {
     },
 
     'w-hasmany' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         confViews : {},
         limit : 100
     },
@@ -297,7 +303,7 @@ crud.conf = {
     },
 
     'w-swap' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         routeName : 'set',
         iconClass : 'fa fa-circle',
         title : "swap",
@@ -317,7 +323,7 @@ crud.conf = {
     },
 
     'w-b2-select2': {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         resources : [
             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
@@ -328,12 +334,12 @@ crud.conf = {
     },
 
     'w-b2m-select2': {
-        confParent : 'crud.conf.w-b2-select2',
+        //confParent : 'crud.conf.w-b2-select2',
         value : [],
     },
 
     'w-upload' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         extensions : '',
         maxFileSize : '',
         error : false,
@@ -341,7 +347,7 @@ crud.conf = {
     },
 
     'w-upload-ajax' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         extensions : [],
         maxFileSize : '',
         routeName : 'uploadfile',
@@ -352,7 +358,7 @@ crud.conf = {
     },
 
     'w-preview' : {
-        confParent : 'crud.conf.w-base',
+        //confParent : 'crud.conf.w-base',
         icon : false,
         iconClass : '',
         value : {},
@@ -1923,7 +1929,17 @@ Server.route = function(route,callback) {
 Server.subdomain = null;
 
 crud.components.cComponent = Vue.component('c-component',{
-    props : ['cConf','cCompRef'],
+    props : {
+        'cConf' : {
+            default : null
+        },
+        'cCompRef' : {
+            default : null
+        },
+        'cConfDefaultName' : {
+            default : 'c-component'
+        }
+    },
     mixins : [core_mixin,dialogs_mixin],
     mounted : function() {
         var that = this;
@@ -1986,13 +2002,22 @@ crud.components.cComponent = Vue.component('c-component',{
         },
         _loadConf : function() {
             var that = this;
+            //var _compName = this.$options.name;
 
-            //console.log('this name',this.$options.name);
-            var _compName = this.$options.name;
-            var defaultConf =  that.mergeConf(that.$crud.conf[_compName]);
+            var _confName = that.cConfDefaultName;
+            var defaultConf =  that.mergeConf(that.$crud.conf[_confName]);
+            var _confComponentName = that.$options.name;
+            var componentNameConf = that.mergeConf(that.$crud.conf[_confComponentName]);
 
+
+            var mergedConf = that.merge(defaultConf,componentNameConf);
+
+
+            //console.log('this name',_compName,defaultConf);
+            var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
-            var mergedConf = that.merge(defaultConf,currentConf);
+
+            mergedConf = that.merge(mergedConf,currentConf);
             //console.log('finalConf',mergedConf);
             return mergedConf;
 
@@ -2021,6 +2046,11 @@ crud.components.cComponent = Vue.component('c-component',{
             // d.conf = _c;
             // return d;
         },
+        /**
+         * esegue il binding con la configurazione passata a run time
+         * @return {*}
+         * @private
+         */
 
         _getConf : function() {
             var that = this;
@@ -2029,13 +2059,37 @@ crud.components.cComponent = Vue.component('c-component',{
             if (typeof that.cConf === 'string' || that.cConf instanceof String) {
                 conf = that.getDescendantProp(window, that.cConf);
                 // altrimenti controllo che non sia una configurazione dentro la crud conf
-                if (!conf) {
-                    conf = that.getDescendantProp(that.$crud.conf, that.cConf);
-                }
+                // if (!conf) {
+                //     conf = that.getDescendantProp(that.$crud.conf, that.cConf);
+                // }
             }
             else
                 conf = that.cConf;
             return conf;
+        },
+        /**
+         * esegue il binding con la configurazione di default, data dal merge della cDefaultConfName e il nome del
+         * widget
+         * @return {*}
+         * @private
+         */
+        _getDefaultConf : function () {
+            var that = this;
+            //var _compName = this.$options.name;
+
+            var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
+            var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
+
+
+            var mergedConf = that.merge(defaultConf,componentNameConf);
+            return mergedConf;
+
+            // //console.log('this name',_compName,defaultConf);
+            //
+            // var currentConf = that._getConf();
+            // mergedConf = that.merge(mergedConf,currentConf);
+            // //console.log('finalConf',mergedConf);
+            // return mergedConf;
         },
         /**
          * setta la configurazione della route secondo le proprie esigenze.
@@ -2088,7 +2142,15 @@ crud.components.misc.tplBase = Vue.component('tpl-base',{
 });
 
 crud.components.actions.coreActionBase = Vue.component('core-action-base', {
-    props : ['cConf','cKey'],
+    //props : ['cConf','cKey'],
+    props : {
+        'cKey' : {
+            default: null
+        },
+        cConfDefaultName : {
+            default : 'action-base',
+        }
+    },
     extends : crud.components.cComponent,
     // data :  function () {
     //     var that = this;
@@ -2452,17 +2514,18 @@ crud.components.misc.coreCWait = Vue.component('crud-c-wait', {
 
 crud.components.widgets.wBase = Vue.component('w-base', {
     extends : crud.components.cComponent,
-    props : ['cMarker'],
-    // data :  function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d  = {};
-    //     if (! ('value' in _conf))
-    //         d.value = null;
-    //     if (! ('defaultValue') in _conf)
-    //         d.defaultValue = null;
-    //     return d;
-    // },
+    //props : ['cMarker'],
+    props : {
+        'cMarker' : {
+            default: null
+        },
+        // 'cType' : {
+        //     default: 'widget'
+        // },
+        cConfDefaultName : {
+            default : 'w-base',
+        }
+    },
     methods : {
 
         getFieldName: function () {
@@ -2501,16 +2564,7 @@ crud.components.widgets.coreWCustom = Vue.component('core-w-custom', {
 
 crud.components.widgets.coreWInput = Vue.component('core-w-input', {
     extends : crud.components.widgets.wBase,
-    // data : function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {
-    //         inputType : 'text'
-    //     };
-    //     if (_conf.inputType)
-    //         d.inputType = _conf.inputType;
-    //     return d;
-    // }
+
 });
 
 crud.components.widgets.coreWInputHelped =  Vue.component('core-w-input-helped', {
@@ -3647,7 +3701,20 @@ crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
 })
 
 crud.components.views.vBase = Vue.component('v-base', {
-    props : ['cFields','cTargetRef','cRouteConf'],
+    props : {
+        cFields : {
+            default : null
+        },
+        cTargetRef : {
+            default : null
+        },
+        cRouteConf : {
+            default : null
+        },
+        cConfDefaultName : {
+            default : 'v-base',
+        }
+    },
     extends : crud.components.cComponent,
     components : {
         vAction : Vue.component('v-action', {
@@ -3744,35 +3811,28 @@ crud.components.views.vBase = Vue.component('v-base', {
             })
         },
         /**
-         * crea la configurazione base per ogni singola azione della view.
+         * crea la configurazione base per ogni singola azione della view, se incontra un'azione
+         * custom con una configurazione non definita, la definisce in crud.conf[action-name]
          * @param name
          * @param type
          * @return {*|{}}
          */
         getActionConfig : function(name,type) {
-            //console.log('v-base.getActionConfig',name,type,this.conf);
+            var that = this;
             // se non esiste il componente di azione lo creo al volo
             if (!this.$options.components[name]) {
-                //console.log('estendo azioni ',name);
                 Vue.component(name, {
                     extends : crud.components.actions.actionBase
                 });
+                // se non esiste una configurazione la inserisco io con quella di default
+                if (!that.$crud.conf[name]) {
+                    that.$crud.conf[name] = {
+                        confParent : 'crud.conf.action-base'
+                    }
+                }
+
             }
-
-            var customConf = this.customActions[name] || {};
-            return customConf;
-
-
-
-
-            var aConf = this.$crud.conf[name] || {};
-            var customConf = this.customActions[name] || {};
-
-
-            aConf = this.merge(aConf,customConf);
-
-            //console.log('getActionConfig',aConf);
-            return aConf;
+            return that.customActions[name] || {};
         },
 
         _loadConf : function() {
@@ -3781,10 +3841,13 @@ crud.components.views.vBase = Vue.component('v-base', {
             var d = {};
             var type = that.cType;
             var modelName = that.cModel;
-            var defaultConf = this.$crud.conf[type];
 
-            var _compName = this.$options.name;
-            var defaultConfComponent =  that.mergeConf(that.$crud.conf[_compName]);
+
+
+            var defaultConf = that._getDefaultConf();
+
+            // var _compName = this.$options.name;
+            // var defaultConfComponent =  that.mergeConf(that.$crud.conf[_compName]);
 
             console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
 
@@ -3823,17 +3886,18 @@ crud.components.views.vBase = Vue.component('v-base', {
             //console.log('merge confs',defaultConf,conf);
             var finalConf = that.mergeConfView(defaultConfComponent,defaultConf);//this.confMerge(defaultConf,conf);
             finalConf = that.mergeConfView(finalConf,conf);
+            console.log('v-base finalConf',finalConf)
             return finalConf;
 
-
-            for (var k in finalConf) {
-                if (k == 'methods')
-                    continue;
-                d[k] = finalConf[k];
-            }
-            d.conf = finalConf;
-            console.log('finalConf',finalConf);
-            return d;
+            //
+            // for (var k in finalConf) {
+            //     if (k == 'methods')
+            //         continue;
+            //     d[k] = finalConf[k];
+            // }
+            // d.conf = finalConf;
+            // console.log('finalConf',finalConf);
+            // return d;
         },
 
         _loadRouteConf : function() {
@@ -3903,7 +3967,21 @@ crud.components.views.vBase = Vue.component('v-base', {
 
 crud.components.views.vRecord = Vue.component('v-record', {
     extends : crud.components.views.vBase,
-    props : ['cModel','cPk'],
+    //props : ['cModel','cPk'],
+    props : {
+        'cModel' : {
+            default: null
+        },
+        'cType' : {
+            default: 'record'
+        },
+        'cPk' : {
+            default : 0,
+        },
+        cConfDefaultName : {
+            default : 'v-record',
+        }
+    },
     mounted : function() {
         var that = this;
         that.route = that._getRoute();
@@ -4127,7 +4205,10 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             default: null
         },
         'cType' : {
-            default: 'list'
+            default: 'collection'
+        },
+        cConfDefaultName : {
+            default : 'v-collection',
         }
     },
     mounted : function() {

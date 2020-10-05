@@ -5,7 +5,10 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             default: null
         },
         'cType' : {
-            default: 'list'
+            default: 'collection'
+        },
+        cConfDefaultName : {
+            default : 'v-collection',
         }
     },
     mounted : function() {

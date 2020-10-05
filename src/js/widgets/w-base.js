@@ -1,16 +1,17 @@
 crud.components.widgets.wBase = Vue.component('w-base', {
     extends : crud.components.cComponent,
-    props : ['cMarker'],
-    // data :  function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d  = {};
-    //     if (! ('value' in _conf))
-    //         d.value = null;
-    //     if (! ('defaultValue') in _conf)
-    //         d.defaultValue = null;
-    //     return d;
-    // },
+    //props : ['cMarker'],
+    props : {
+        'cMarker' : {
+            default: null
+        },
+        // 'cType' : {
+        //     default: 'widget'
+        // },
+        cConfDefaultName : {
+            default : 'w-base',
+        }
+    },
     methods : {
 
         getFieldName: function () {
