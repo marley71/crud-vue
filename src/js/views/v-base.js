@@ -133,32 +133,21 @@ crud.components.views.vBase = Vue.component('v-base', {
             return that.customActions[name] || {};
         },
 
-        _loadConf : function() {
+        _getConf : function() {
             var that = this;
             var conf = null;
-            var d = {};
-            var type = that.cType;
-            var modelName = that.cModel;
-
-
-
-            var defaultConf = that._getDefaultConf();
-
-            // var _compName = this.$options.name;
-            // var defaultConfComponent =  that.mergeConf(that.$crud.conf[_compName]);
-
-            console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
-
-            if (this.cConf) {
-                if (typeof this.cConf === 'string' || this.cConf instanceof String) {
-                    conf = this.getDescendantProp(window, this.cConf);
-                    if (!conf) {
-                        conf = this.getDescendantProp(this.$crud.conf, this.cConf);
-                    }
+            if (that.cConf) {
+                if (typeof that.cConf === 'string' || that.cConf instanceof String) {
+                    conf = this.getDescendantProp(window, that.cConf);
+                    // if (!conf) {
+                    //     conf = this.getDescendantProp(this.$crud.conf, this.cConf);
+                    // }
                 }
                 else
-                    conf = this.cConf;
+                    conf = that.cConf;
             } else {
+                var modelName = that.cModel;
+                var type = that.cType;
                 console.log('Check exist default conf '+ 'Model'+this.pascalCase(modelName));
                 if (window['Model'+this.pascalCase(modelName)]) {
                     var cm = window['Model'+this.pascalCase(modelName)];
@@ -177,13 +166,16 @@ crud.components.views.vBase = Vue.component('v-base', {
                     conf = this.$crud.conf[type];
                 }
             }
+
             if (!conf) {
-                console.trace();
+                //console.trace();
                 throw "Nessuna configurazione trovata per questa view";
             }
+            return  conf;
+
             //console.log('merge confs',defaultConf,conf);
-            var finalConf = that.mergeConfView(defaultConfComponent,defaultConf);//this.confMerge(defaultConf,conf);
-            finalConf = that.mergeConfView(finalConf,conf);
+            var finalConf = that.mergeConfView(defaultConf,conf);//this.confMerge(defaultConf,conf);
+            //finalConf = that.mergeConfView(finalConf,conf);
             console.log('v-base finalConf',finalConf)
             return finalConf;
 
@@ -196,6 +188,20 @@ crud.components.views.vBase = Vue.component('v-base', {
             // d.conf = finalConf;
             // console.log('finalConf',finalConf);
             // return d;
+        },
+
+
+        _getDefaultConf : function () {
+            var that = this;
+            //var _compName = this.$options.name;
+
+            var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
+            var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
+            var typeConf = that.mergeConf(that.$crud.conf[that.cType]);
+
+            var mergedConf = that.merge(defaultConf,componentNameConf);
+            mergedConf = that.merge(mergedConf,typeConf);
+            return mergedConf;
         },
 
         _loadRouteConf : function() {

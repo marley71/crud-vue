@@ -1,9 +1,6 @@
 crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
     extends : crud.components.views.coreVList,
     props : {
-        'cModel' : {
-            default: null
-        },
         'cType' : {
             default: 'listEdit'
         }

@@ -17,7 +17,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         //     that.conf.modelName = that.cModel;
         that.route = that._getRoute();
         that.setRouteValues(that.route);
-
         that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             //that.keys = that.getKeys();

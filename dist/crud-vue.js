@@ -2004,20 +2004,20 @@ crud.components.cComponent = Vue.component('c-component',{
             var that = this;
             //var _compName = this.$options.name;
 
-            var _confName = that.cConfDefaultName;
-            var defaultConf =  that.mergeConf(that.$crud.conf[_confName]);
-            var _confComponentName = that.$options.name;
-            var componentNameConf = that.mergeConf(that.$crud.conf[_confComponentName]);
-
-
-            var mergedConf = that.merge(defaultConf,componentNameConf);
+            // var _confName = that.cConfDefaultName;
+            // var defaultConf =  that.mergeConf(that.$crud.conf[_confName]);
+            // var _confComponentName = that.$options.name;
+            // var componentNameConf = that.mergeConf(that.$crud.conf[_confComponentName]);
+            //
+            //
+            // var mergedConf = that.merge(defaultConf,componentNameConf);
 
 
             //console.log('this name',_compName,defaultConf);
             var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
 
-            mergedConf = that.merge(mergedConf,currentConf);
+            mergedConf = that.merge(defaultConf,currentConf);
             //console.log('finalConf',mergedConf);
             return mergedConf;
 
@@ -3835,32 +3835,21 @@ crud.components.views.vBase = Vue.component('v-base', {
             return that.customActions[name] || {};
         },
 
-        _loadConf : function() {
+        _getConf : function() {
             var that = this;
             var conf = null;
-            var d = {};
-            var type = that.cType;
-            var modelName = that.cModel;
-
-
-
-            var defaultConf = that._getDefaultConf();
-
-            // var _compName = this.$options.name;
-            // var defaultConfComponent =  that.mergeConf(that.$crud.conf[_compName]);
-
-            console.log('_loadConf',modelName,type,'defaultConf',defaultConf,'cConf',this.cConf);
-
-            if (this.cConf) {
-                if (typeof this.cConf === 'string' || this.cConf instanceof String) {
-                    conf = this.getDescendantProp(window, this.cConf);
-                    if (!conf) {
-                        conf = this.getDescendantProp(this.$crud.conf, this.cConf);
-                    }
+            if (that.cConf) {
+                if (typeof that.cConf === 'string' || that.cConf instanceof String) {
+                    conf = this.getDescendantProp(window, that.cConf);
+                    // if (!conf) {
+                    //     conf = this.getDescendantProp(this.$crud.conf, this.cConf);
+                    // }
                 }
                 else
-                    conf = this.cConf;
+                    conf = that.cConf;
             } else {
+                var modelName = that.cModel;
+                var type = that.cType;
                 console.log('Check exist default conf '+ 'Model'+this.pascalCase(modelName));
                 if (window['Model'+this.pascalCase(modelName)]) {
                     var cm = window['Model'+this.pascalCase(modelName)];
@@ -3879,13 +3868,16 @@ crud.components.views.vBase = Vue.component('v-base', {
                     conf = this.$crud.conf[type];
                 }
             }
+
             if (!conf) {
-                console.trace();
+                //console.trace();
                 throw "Nessuna configurazione trovata per questa view";
             }
+            return  conf;
+
             //console.log('merge confs',defaultConf,conf);
-            var finalConf = that.mergeConfView(defaultConfComponent,defaultConf);//this.confMerge(defaultConf,conf);
-            finalConf = that.mergeConfView(finalConf,conf);
+            var finalConf = that.mergeConfView(defaultConf,conf);//this.confMerge(defaultConf,conf);
+            //finalConf = that.mergeConfView(finalConf,conf);
             console.log('v-base finalConf',finalConf)
             return finalConf;
 
@@ -3898,6 +3890,20 @@ crud.components.views.vBase = Vue.component('v-base', {
             // d.conf = finalConf;
             // console.log('finalConf',finalConf);
             // return d;
+        },
+
+
+        _getDefaultConf : function () {
+            var that = this;
+            //var _compName = this.$options.name;
+
+            var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
+            var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
+            var typeConf = that.mergeConf(that.$crud.conf[that.cType]);
+
+            var mergedConf = that.merge(defaultConf,componentNameConf);
+            mergedConf = that.merge(mergedConf,typeConf);
+            return mergedConf;
         },
 
         _loadRouteConf : function() {
@@ -4217,7 +4223,6 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         //     that.conf.modelName = that.cModel;
         that.route = that._getRoute();
         that.setRouteValues(that.route);
-
         that.fetchData(that.route,function (json) {
             that.fillData(that.route,json);
             //that.keys = that.getKeys();
@@ -4491,6 +4496,11 @@ crud.components.views.vCollection = Vue.component('v-collection', {
 
 crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
+    props : {
+        'cType' : {
+            default: 'list'
+        },
+    },
     // data :  function () {
     //     var that = this;
     //     var _conf = that._loadConf() || {};
@@ -4601,9 +4611,6 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
 crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
     extends : crud.components.views.coreVList,
     props : {
-        'cModel' : {
-            default: null
-        },
         'cType' : {
             default: 'listEdit'
         }

@@ -1,5 +1,10 @@
 crud.components.views.coreVList = Vue.component('core-v-list', {
     extends : crud.components.views.vCollection,
+    props : {
+        'cType' : {
+            default: 'list'
+        },
+    },
     // data :  function () {
     //     var that = this;
     //     var _conf = that._loadConf() || {};
