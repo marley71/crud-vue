@@ -72,8 +72,24 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
 
         deleteItem : function (refId) {
             var that = this;
-            //var refId = that.getRefId(that._uid,'hm',index);
-            //console.log('index',index,this.value[index].status,this.confViews[index],refId,this.$crud.cRefs[refId]);
+            // per questioni di aggiornamento devo fare un ciclo, altrimenti vue non renderizza come dovuto
+            var newConfViews = {};
+            for (var vId in that.confViews) {
+                if (vId != refId)
+                    newConfViews[vId] =  that.confViews[vId];
+            }
+
+            if (this.$crud.cRefs[refId].value.status  == 'new') {
+                delete this.confViews[refId];
+                this.$crud.cRefs[refId].$destroy();
+            } else {
+                this.$crud.cRefs[refId].value.status = 'deleted';
+            }
+
+            that.$set(that,'confViews', newConfViews);
+            this.$forceUpdate();
+            return ;
+
             console.log('deleteItem',refId,this.$crud.cRefs[refId])
             if (this.$crud.cRefs[refId].value.status  == 'new') {
                 delete this.confViews[refId];
@@ -81,7 +97,27 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             } else {
                 this.$crud.cRefs[refId].value.status = 'deleted';
             }
+            return ;
             console.log('confView',that.confViews);
+            var oldConfViews = that.confViews
+            that.$set(that,'confViews', {});
+            this.$forceUpdate();
+            setTimeout(function () {
+                var newConfViews = {};
+                for (var k in oldConfViews) {
+                    var vId = oldConfViews[k].cRef;
+                    newConfViews[k] = oldConfViews[k];
+                    if (vId != refId) {
+                        console.log('vid',vId,refId)
+                        that.$crud.cRefs[vId].setValue(that.$crud.cRefs[vId].getValue())
+                    }
+
+                    //that.$crud.cRefs[vId].$forceUpdate();
+                }
+                that.$set(that,'confViews',newConfViews);
+                that.$forceUpdate();
+            },100)
+
 
             // if (this.value[index].status == 'new') {
             //     this.value.splice(index, 1);
@@ -94,7 +130,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             //     this.$set(this.confViews[index].value, 'status' , 'deleted');
             //     this.$crud.cRefs[refId].setWidgetValue('status','deleted');
             // }
-            this.$forceUpdate();
+            //this.$forceUpdate();
         },
         showItem : function (refId) {
             //console.log('show item',index,this.confViews[index]);
@@ -111,6 +147,16 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             }
             //console.log('outlimit',valid,that.limit);
             return (valid >= that.limit);
+        },
+
+        getValue : function () {
+            var that = this;
+            var value = [];
+            for (let k in that.confViews) {
+                var vId = this.confViews[k].cRef;
+                value.push(this.$crud.cRefs[vId].getValue());
+            }
+            return value;
         }
     }
 });

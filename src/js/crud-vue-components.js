@@ -39,6 +39,11 @@ crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
     template: '#w-date-select-template',
 });
 
+crud.components.widgets.wDateText = Vue.component('w-date-text', {
+    extends: crud.components.widgets.coreWDateText,
+    template: '#w-date-text-template',
+});
+
 crud.components.widgets.wDownload = Vue.component('w-download', {
     extends: crud.components.widgets.coreWDownload,
     template: '#w-download-template',

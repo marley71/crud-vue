@@ -27,12 +27,16 @@ var ModelUser = {
     },
     list : {
         modelName : 'user',
-        fields : ['email','name','email_verified_at','banned','mainrole','fotos','attachments'],
+        fields : ['calcolato','email','name','email_verified_at','banned','mainrole','fotos','attachments'],
         actions : ['action-edit','action-delete','action-insert','action-delete-selected','action-view'],
         orderFields : {
             'email':'email'
         },
         fieldsConfig : {
+            calcolato : {
+                type : 'w-custom',
+                value : 'Ciao'
+            },
             email_verified_at : {
                 type : 'w-swap',
                 model : 'user',

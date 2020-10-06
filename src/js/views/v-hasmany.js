@@ -20,6 +20,14 @@ crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
         getFieldName : function (key) {
             var that = this;
             return that.cModel + "-" + key + '[]';
+        },
+        getValue : function () {
+            var that = this;
+            var value = {};
+            for (var k in that.widgets) {
+                value[k] = that.getWidget(k).getValue();
+            }
+            return value;
         }
     }
 });

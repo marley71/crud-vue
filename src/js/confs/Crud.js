@@ -279,7 +279,12 @@ crud.conf = {
         dateFormat :  "yyyy-mm-dd",
     },
     'w-date-text' : {
-
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
+        ],
+        displayFormat : "dd/mm/yyyy",
+        dateFormat :  "yyyy-mm-dd",
+        formattedValue : null,
     },
     'w-texthtml' : {
         //confParent : 'crud.conf.w-base',

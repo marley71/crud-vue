@@ -185,6 +185,11 @@ function wDatePickerConf_f() {
     };
 }
 
+function wDateTextConf_f() {
+    wDateTextConf = {
+        value : '2020-03-30'
+    }
+}
 function wTexthtmlConf_f() {
     wTexthtmlConf = {
         name: 'field1',
@@ -216,7 +221,7 @@ function wHasmanyConf_f() {
             }
         },
         value: [],
-        limit: 2,
+        limit: 3,
         methods: {
             change: function () {
                 console.log('change ' , this.getValue())

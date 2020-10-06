@@ -35,6 +35,7 @@ var crudJsFiles = [
     'src/js/widgets/w-belongsto.js',
     'src/js/widgets/w-date-select.js',
     'src/js/widgets/w-date-picker.js',
+    'src/js/widgets/w-date-text.js',
     'src/js/widgets/w-texthtml.js',
 
     'src/js/widgets/w-hasmany.js',
@@ -95,6 +96,7 @@ var widgetsHtmlFiles = [
     'src/templates/widgets/w-belongsto.html',
     'src/templates/widgets/w-date-select.html',
     'src/templates/widgets/w-date-picker.html',
+    'src/templates/widgets/w-date-text.html',
     'src/templates/widgets/w-texthtml.html',
 
     'src/templates/widgets/w-hasmany.html',
@@ -146,6 +148,7 @@ var crudHtmlFiles = [
     'src/templates/widgets/w-belongsto.html',
     'src/templates/widgets/w-date-select.html',
     'src/templates/widgets/w-date-picker.html',
+    'src/templates/widgets/w-date-text.html',
     'src/templates/widgets/w-texthtml.html',
 
     'src/templates/widgets/w-hasmany.html',

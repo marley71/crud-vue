@@ -27,11 +27,15 @@ Vue.component('c-test',{
             var that = this;
             var confName = that.cConf || that.camelCase(this.cComponent+'-conf');
             console.log('c-test confName',confName);
-            if(window[confName+"_f"]) {
-                eval(confName+"_f()");
+            var confObj = {};
+            if (confName) {
+                confObj = that.getDescendantProp(window,confName);
+                console.log('conf calcolato',confObj);
             }
-
-            var confObj = (window[confName]?window[confName]:null) || {};
+            if(!confObj && window[confName+"_f"]) {
+                eval(confName+"_f()");
+                confObj = (window[confName]?window[confName]:null) || {};
+            }
             confObj.cRef = 'test-component';
             console.log('c-test confObj',confObj);
             //var code = that.getCode(confName);

@@ -279,7 +279,12 @@ crud.conf = {
         dateFormat :  "yyyy-mm-dd",
     },
     'w-date-text' : {
-
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
+        ],
+        displayFormat : "dd/mm/yyyy",
+        dateFormat :  "yyyy-mm-dd",
+        formattedValue : null,
     },
     'w-texthtml' : {
         //confParent : 'crud.conf.w-base',
@@ -2957,6 +2962,17 @@ crud.components.widgets.coreWDatePicker = Vue.component('core-w-date-picker', {
     }
 });
 
+crud.components.widgets.coreWDateText = Vue.component('core-w-date-text', {
+    extends : crud.components.widgets.wBase,
+    methods : {
+        afterLoadResources : function () {
+            var that = this;
+            that.formattedValue = moment(that.value).format(that.displayFormat.toUpperCase())
+            console.log('date-text ',that.value,that.displayFormat.toUpperCase(),that.formattedValue)
+        }
+    }
+});
+
 crud.components.widgets.coreWTexthtml = Vue.component('core-w-texthtml',{
     extends : crud.components.widgets.wBase,
     // data : function() {
@@ -3071,8 +3087,24 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
 
         deleteItem : function (refId) {
             var that = this;
-            //var refId = that.getRefId(that._uid,'hm',index);
-            //console.log('index',index,this.value[index].status,this.confViews[index],refId,this.$crud.cRefs[refId]);
+            // per questioni di aggiornamento devo fare un ciclo, altrimenti vue non renderizza come dovuto
+            var newConfViews = {};
+            for (var vId in that.confViews) {
+                if (vId != refId)
+                    newConfViews[vId] =  that.confViews[vId];
+            }
+
+            if (this.$crud.cRefs[refId].value.status  == 'new') {
+                delete this.confViews[refId];
+                this.$crud.cRefs[refId].$destroy();
+            } else {
+                this.$crud.cRefs[refId].value.status = 'deleted';
+            }
+
+            that.$set(that,'confViews', newConfViews);
+            this.$forceUpdate();
+            return ;
+
             console.log('deleteItem',refId,this.$crud.cRefs[refId])
             if (this.$crud.cRefs[refId].value.status  == 'new') {
                 delete this.confViews[refId];
@@ -3080,7 +3112,27 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             } else {
                 this.$crud.cRefs[refId].value.status = 'deleted';
             }
+            return ;
             console.log('confView',that.confViews);
+            var oldConfViews = that.confViews
+            that.$set(that,'confViews', {});
+            this.$forceUpdate();
+            setTimeout(function () {
+                var newConfViews = {};
+                for (var k in oldConfViews) {
+                    var vId = oldConfViews[k].cRef;
+                    newConfViews[k] = oldConfViews[k];
+                    if (vId != refId) {
+                        console.log('vid',vId,refId)
+                        that.$crud.cRefs[vId].setValue(that.$crud.cRefs[vId].getValue())
+                    }
+
+                    //that.$crud.cRefs[vId].$forceUpdate();
+                }
+                that.$set(that,'confViews',newConfViews);
+                that.$forceUpdate();
+            },100)
+
 
             // if (this.value[index].status == 'new') {
             //     this.value.splice(index, 1);
@@ -3093,7 +3145,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             //     this.$set(this.confViews[index].value, 'status' , 'deleted');
             //     this.$crud.cRefs[refId].setWidgetValue('status','deleted');
             // }
-            this.$forceUpdate();
+            //this.$forceUpdate();
         },
         showItem : function (refId) {
             //console.log('show item',index,this.confViews[index]);
@@ -3110,6 +3162,16 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             }
             //console.log('outlimit',valid,that.limit);
             return (valid >= that.limit);
+        },
+
+        getValue : function () {
+            var that = this;
+            var value = [];
+            for (let k in that.confViews) {
+                var vId = this.confViews[k].cRef;
+                value.push(this.$crud.cRefs[vId].getValue());
+            }
+            return value;
         }
     }
 });
@@ -4083,7 +4145,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
             for (var k in keys) {
                 var key = keys[k];
                 widgets[key] = that._defaultWidgetConfig(key);
-                widgets[key].cRef = that.getRefId(that._uid,'r',key);
+                widgets[key].cRef = that.getRefId(that._uid,'w',key);
                 widgets[key].value = null;
                 widgets[key].modelData = that.value;
                 if (that.value && (key in that.value) )
@@ -4308,7 +4370,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 for (var k in that.keys) {
                     var key = that.keys[k];
                     var dconf = that._defaultWidgetConfig(key);
-                    dconf.cRef = that.getRefId(that._uid,'r',i,key);
+                    dconf.cRef = that.getRefId(that._uid,'w',i,key);
                     dconf.modelData = value[i];
                     if (! ('value' in dconf))
                         dconf.value = null;
@@ -4874,6 +4936,14 @@ crud.components.views.coreVHasmany = Vue.component('core-v-hasmany', {
         getFieldName : function (key) {
             var that = this;
             return that.cModel + "-" + key + '[]';
+        },
+        getValue : function () {
+            var that = this;
+            var value = {};
+            for (var k in that.widgets) {
+                value[k] = that.getWidget(k).getValue();
+            }
+            return value;
         }
     }
 });
