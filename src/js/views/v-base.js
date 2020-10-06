@@ -108,6 +108,15 @@ crud.components.views.vBase = Vue.component('v-base', {
                 callback(json);
             })
         },
+
+        _loadConf : function() {
+            var that = this;
+            var defaultConf = that._getDefaultConf();
+            var currentConf = that._getConf();
+            mergedConf = that.mergeConfView(defaultConf,currentConf);
+            return mergedConf;
+        },
+
         /**
          * crea la configurazione base per ogni singola azione della view, se incontra un'azione
          * custom con una configurazione non definita, la definisce in crud.conf[action-name]
@@ -171,6 +180,7 @@ crud.components.views.vBase = Vue.component('v-base', {
                 //console.trace();
                 throw "Nessuna configurazione trovata per questa view";
             }
+            console.log('v-base _getConf',conf);
             return  conf;
 
             //console.log('merge confs',defaultConf,conf);
@@ -201,6 +211,7 @@ crud.components.views.vBase = Vue.component('v-base', {
 
             var mergedConf = that.merge(defaultConf,componentNameConf);
             mergedConf = that.merge(mergedConf,typeConf);
+            console.log('v-base _getDefaultConf',mergedConf);
             return mergedConf;
         },
 

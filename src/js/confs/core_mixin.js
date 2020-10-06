@@ -1,5 +1,8 @@
 core_mixin = {
     methods : {
+        getComponent : function (refId) {
+            return this.$crud.cRefs[refId];
+        },
         waitStart : function (msg,container) {
             var that = this;
             var c = container?container:'body';
