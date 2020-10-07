@@ -44,11 +44,12 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
 
         getOrderConf : function (key) {
             var that = this;
+            var widgetsRow = that.widgets[0];
             var translateKey = that.langContext?that.langContext+'.':'';
             translateKey += key+'.label';
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = that.translate('app.ordina') + ' ' + that.translate(translateKey);
-            conf.text = that.translate(translateKey);
+            conf.title = that.translate('app.ordina') + ' ' + widgetsRow[key].label; //that.translate(translateKey);
+            conf.text = widgetsRow[key].label; //that.translate(translateKey);
             conf.orderField = that.orderFields[key]?that.orderFields[key]:key;
             //if (that.data.order_field)
             var order = that.metadata.order || {};

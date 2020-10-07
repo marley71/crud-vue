@@ -2291,11 +2291,11 @@ crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
-            this.icon = this.cConf.iconSortDesc;
+            this.icon = this.iconSortDesc;
         else if (direction == 'asc')
-            this.icon = this.cConf.iconSortAsc
+            this.icon = this.iconSortAsc
         else
-            this.icon = this.cConf.iconSort;
+            this.icon = this.iconSort;
         if (this.text) {
             var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
             if (this.hasTranslation(langKey+'.label'))
@@ -4168,10 +4168,12 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     widgets[key].value = that.value[key];
 
                 widgets[key].name = that.getFieldName(key);
-                if (! ('label' in widgets[key]) )
+                if (! ('label' in widgets[key]) ) {
                     widgets[key].label = key;
-                //console.log('translate',that.langContext,widgets[key].label )
-                widgets[key].label = that.$options.filters.translate(widgets[key].label+'.label',that.langContext);
+                    widgets[key].label = that.$options.filters.translate(widgets[key].label + '.label', that.langContext);
+                } else {
+                    widgets[key].label = that.$options.filters.translate(widgets[key].label);
+                }
             }
 
             //console.log('v-record.widgets',widgets);
@@ -4393,6 +4395,12 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     if (value[i][key])
                         dconf.value = value[i][key];
                     dconf.name = that.getFieldName(key);
+                    if (! ('label' in dconf ))  {
+                        dconf.label = key;
+                        dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
+                    } else {
+                        dconf.label = that.$options.filters.translate(dconf.label);
+                    }
                     //console.log(i,widgets,widgets[i],key,dconf),
                     widgets[i][key] = dconf;
 
@@ -4568,6 +4576,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.$forceUpdate();
 
             that.reload();
+        },
+
+        getTranslate:function (key) {
+            var that = this;
+            if (!that.widgets.length)
+                return '';
+            return that.widgets[0][key].label;
+
         }
     },
 });
@@ -4618,11 +4634,12 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
 
         getOrderConf : function (key) {
             var that = this;
+            var widgetsRow = that.widgets[0];
             var translateKey = that.langContext?that.langContext+'.':'';
             translateKey += key+'.label';
             var conf = that.getActionConfig('action-order','collection');
-            conf.title = that.translate('app.ordina') + ' ' + that.translate(translateKey);
-            conf.text = that.translate(translateKey);
+            conf.title = that.translate('app.ordina') + ' ' + widgetsRow[key].label; //that.translate(translateKey);
+            conf.text = widgetsRow[key].label; //that.translate(translateKey);
             conf.orderField = that.orderFields[key]?that.orderFields[key]:key;
             //if (that.data.order_field)
             var order = that.metadata.order || {};

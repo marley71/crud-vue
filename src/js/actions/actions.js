@@ -138,11 +138,11 @@ crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
     mounted : function () {
         var direction = this.cConf.orderDirection?this.cConf.orderDirection.toLowerCase():null;
         if (direction == 'desc')
-            this.icon = this.cConf.iconSortDesc;
+            this.icon = this.iconSortDesc;
         else if (direction == 'asc')
-            this.icon = this.cConf.iconSortAsc
+            this.icon = this.iconSortAsc
         else
-            this.icon = this.cConf.iconSort;
+            this.icon = this.iconSort;
         if (this.text) {
             var langKey = (this.view && this.view.langContext)?this.view.langContext+'.'+this.text:this.text;
             if (this.hasTranslation(langKey+'.label'))

@@ -109,6 +109,12 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     if (value[i][key])
                         dconf.value = value[i][key];
                     dconf.name = that.getFieldName(key);
+                    if (! ('label' in dconf ))  {
+                        dconf.label = key;
+                        dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
+                    } else {
+                        dconf.label = that.$options.filters.translate(dconf.label);
+                    }
                     //console.log(i,widgets,widgets[i],key,dconf),
                     widgets[i][key] = dconf;
 
@@ -284,6 +290,14 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.$forceUpdate();
 
             that.reload();
+        },
+
+        getTranslate:function (key) {
+            var that = this;
+            if (!that.widgets.length)
+                return '';
+            return that.widgets[0][key].label;
+
         }
     },
 });
