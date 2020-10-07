@@ -26,6 +26,7 @@ const CrudApp = Vue.extend({
         Vue.prototype.$crud = crud;
         that.$crud.instance = that;
         that.$crud.pluginsPath = that.$data.pluginsPath?that.$data.pluginsPath:'/';
+        that.$crud.EventBus = new Vue();
         var __loadResources = function () {
             var resources = [];
             // carico i template del core

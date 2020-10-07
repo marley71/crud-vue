@@ -199,6 +199,7 @@ crud.conf = {
         resourcesLoaded : false,
     },
     'w-base' : {
+        name : null,
         confParent : 'crud.conf.c-component',
         value : null,
         defaultValue : null,
@@ -300,7 +301,8 @@ crud.conf = {
     'w-hasmany' : {
         //confParent : 'crud.conf.w-base',
         confViews : {},
-        limit : 100
+        limit : 100,
+        value : [],
     },
 
     'w-hasmany-view' : {
