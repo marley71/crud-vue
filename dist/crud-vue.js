@@ -3898,17 +3898,17 @@ crud.components.views.vBase = Vue.component('v-base', {
             // se non esiste il componente di azione lo creo al volo
             if (!this.$options.components[name]) {
                 Vue.component(name, {
-                    extends : crud.components.actions.actionBase
+                    extends: crud.components.actions.actionBase
                 });
-                // se non esiste una configurazione la inserisco io con quella di default
-                if (!that.$crud.conf[name]) {
-                    that.$crud.conf[name] = {
-                        confParent : 'crud.conf.action-base'
-                    }
-                }
-
             }
-            return that.customActions[name] || {};
+            // se non esiste una configurazione la inserisco io con quella di default
+            if (!that.$crud.conf[name]) {
+                that.$crud.conf[name] = {
+                    confParent : 'crud.conf.action-base'
+                }
+            }
+            // ritorno l'azione con la configurazione di default mergiata con un eventuale configurazione custom
+            return that.merge(that.$crud.conf[name],(that.customActions[name] || {}));
         },
 
         _getConf : function() {
