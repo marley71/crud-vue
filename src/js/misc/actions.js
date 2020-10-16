@@ -1,5 +1,4 @@
 crud.components.actions.coreActionBase = Vue.component('core-action-base', {
-    //props : ['cConf','cKey'],
     props : {
         'cKey' : {
             default: null
@@ -9,34 +8,6 @@ crud.components.actions.coreActionBase = Vue.component('core-action-base', {
         }
     },
     extends : crud.components.cComponent,
-    // data :  function () {
-    //     var that = this;
-    //     var d = {
-    //         view : that.$parent
-    //     }
-    //     return d;
-
-
-        // var d = that._getConf();
-        // var adata = {
-        //     type : null,
-        //     visible : true,
-        //     enabled : true,
-        //     title : '',
-        //     css: 'btn btn-outline-secondary',
-        //     icon : '',
-        //     text : '',
-        //     controlType : 'button',
-        //     href : '',
-        //     target: '_self',
-        //     needSelection  : false,
-        //     view : null,
-        //     alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
-        // };
-        // if (!('view' in adata) )
-        //     adata.view = that.$parent;
-        // return that.merge(adata,d);
-    //},
     mounted : function() {
         var that = this;
         if (that.controlType == 'link') {
@@ -132,7 +103,6 @@ crud.components.actions.coreActionBase = Vue.component('core-action-base', {
 
 });
 
-
 crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
     extends : crud.components.actions.coreActionBase,
     mounted : function () {
@@ -150,11 +120,3 @@ crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
         }
     }
 })
-
-
-
-
-// Vue.component('action-dialog', {
-//     extends : crud.components.cComponent,
-//     template : '#action-dialog-template'
-// })

@@ -1,9 +1,17 @@
 
 var crudJsFiles = [
 
-    'src/js/confs/Crud.js',
-    'src/js/confs/dialogs_mixin.js',
-    'src/js/confs/core_mixin.js',
+    'src/js/confs/crud-conf.js',
+    'src/js/confs/crud-conf-actions.js',
+    'src/js/confs/crud-conf-misc.js',
+    'src/js/confs/crud-conf-widgets.js',
+    'src/js/confs/crud-conf-views.js',
+    'src/js/confs/crud-merge.js',
+    'src/js/confs/crud-routes.js',
+
+    'src/js/mixins/dialogs_mixin.js',
+    'src/js/mixins/core_mixin.js',
+    'src/js/mixins/choice_mixin.js',
 
     'src/js/crud/Protocols.js',
     'src/js/crud/Routes.js',
@@ -12,7 +20,7 @@ var crudJsFiles = [
     'src/js/misc/c-component.js',
     'src/js/misc/c-loading.js',
     'src/js/misc/cr-templates.js',
-    'src/js/actions/actions.js',
+    'src/js/misc/actions.js',
     'src/js/misc/c-paginator.js',
     'src/js/misc/dialogs.js',
     'src/js/misc/c-wait.js',

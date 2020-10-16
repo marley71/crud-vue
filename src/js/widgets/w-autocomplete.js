@@ -1,21 +1,5 @@
 crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete', {
     extends : crud.components.widgets.wBase,
-    // data : function() {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {};
-    //     if (!( 'resources' in _conf) ) {
-    //         d.resources = [
-    //             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
-    //             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
-    //         ];
-    //     }
-    //     d.routeName = _conf.routeName || 'autocomplete';
-    //     d.primaryKey = _conf.primaryKey || 'id';
-    //     d.label = '';
-    //     d.suggestValues = {};
-    //     return d;
-    // },
     methods : {
         afterLoadResources : function () {
             var that = this;

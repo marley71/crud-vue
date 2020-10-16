@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Crud on Vue</title>
+    <!-- bootstrap4 css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- minimal crud-vue css -->
+    <link href="../dist/crud-vue.css" rel="stylesheet">
+    <!-- font-awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script
+        src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- Vue js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <!-- crud-vue.js -->
+    <script src="../dist/crud-vue.js"></script>
+    <script src="./extras/ModelUser.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="component-area">
+            <v-list :c-comp-ref="'vmia'" c-conf="conf"></v-list>
+        </div>
+    </div>
+
+<script>
+    var app = null;
+    jQuery( function() {
+        jQuery('body').on('set-code',function (event,confName) {
+            console.log('event confName',confName);
+            var code = window[confName+"_f"]?window[confName+"_f"].toString().match(/function[^{]+\{([\s\S]*)\}$/)[1]:"{}";
+            editAreaLoader.setValue('editor',code)
+        });
+        app = new CrudApp({
+            mounted : function() {
+               tests();
+
+            },
+            data : function () {
+
+                return {
+                    // default template  html della libreria basato su bootstrap4
+                    templatesFiles : '../dist/crud-vue.html',
+                    // -- path plugins se usi qualche particolare plugin
+                    //pluginsPath : '/bootstrap4/plugins/',
+                    // -- configurazioni personali per ridefinire o aggiungere comportamenti della libreria
+                    appConfig : './extras/myconf.js',
+                    componentsFiles : '../dist/crud-vue-components.js',
+                    el : '#app'
+                };
+            }
+        });
+
+    });
+</script>
+<script src="./extras/components-conf.js"></script>
+<script>
+    var testFuncs = [];
+    function tests() {
+        for (var k in testFuncs) {
+            console.log('call ' + testFuncs[k].name);
+            testFuncs[k]();
+        }
+    }
+
+
+    var cId = 'component-area';
+    var conf = {
+        fields : ['user','email']
+    };
+
+    testFuncs.push(function testA() {
+        //jQuery('#'+cId).html('<v-list c-ref="vmia" c-conf="conf"></v-list>');
+        var vC = app.$crud.cRefs['vmia'];
+        console.assert(vC);
+    })
+
+    testFuncs.push(function testB() {
+        var v = new app.$options.components['v-list']({
+            propsData : {
+                cModel : 'user',
+                cConf : conf,
+                cCompRef : 'list-view'
+            }
+        });
+        var id= 'd' + (new Date().getTime());
+        jQuery('#'+cId).html('<div id="'+id+'"></div>');
+        v.$mount('#'+id);
+        var vC = app.$crud.cRefs['list-view'];
+        console.assert(vC);
+        //console.assert(Object.keys(vC.widgets[0]).length == conf.fields.length);
+    })
+
+
+</script>
+</body>
+</html>

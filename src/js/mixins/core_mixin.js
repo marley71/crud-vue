@@ -5,13 +5,13 @@ core_mixin = {
         },
         waitStart : function (msg,container) {
             var that = this;
-            var c = container?container:'body';
-            var id = that._createContainer(c);
+            var _c = container?container:'body';
+            var id = that._createContainer(_c);
 
             var comp = new that.$crud.components.misc.cWait({
                 propsData: {
                     cMsg : msg,
-                    cGlobal : (container==='body')?true:false,
+                    cGlobal : (_c==='body')?true:false,
                 }
             })
             comp.$mount('#'+id);

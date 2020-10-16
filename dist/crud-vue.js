@@ -6,7 +6,24 @@ var crud = {
     _resources_loaded : {},
     pluginsPath : '',
     _wait_istances : [],
+    conf : {},  // variabile configurazioni di default
+    components : {  //vengono registrati i componenti realizzati in crud per permettere una facile estensione
+        widgets : {
+
+        },
+        views : {
+
+        },
+        actions : {
+
+        },
+        misc :  {
+
+        }
+    },
+    cRefs : {},  // contiene tutti i componenti creati a runtime per poterci accedere
 };
+
 crud.lang = {
     'app.aggiungi' : 'Aggiungi',
     'app.annulla' : 'Annulla',
@@ -37,7 +54,9 @@ crud.lang = {
     'app.seleziona' : 'Seleziona',
     'app.si' : 'Si',
     'app.vista' : 'Vista',
+    'app.elementi' : 'Elementi',
 };
+
 
 crud.icons = {
     mimetypes: {
@@ -84,389 +103,7 @@ crud.mimetypes = {
     ]
 }
 
-crud.actions = {
-
-    // 'action-search' : {
-    //     type : 'collection',
-    //     title : 'app.cerca',
-    //     css: 'btn btn-primary btn-sm btn-group mr-1',
-    //     icon : 'fa fa-search',
-    //     text : 'app.cerca',
-    //     execute : function () {
-    //         console.log('action-search',this,'view',this.view.targetRef);
-    //         if (this.view && this.view.targetRef) {
-    //             console.log('target ref',this.view.targetRef);
-    //             var targetView = this.$crud.cRefs[this.view.targetRef];
-    //             var formData = this.view.getViewData();
-    //             formData['page'] = 1;
-    //             targetView.route.setParams(formData);
-    //             targetView.reload();
-    //             return ;
-    //         }
-    //     }
-    // },
-    // 'action-reset' : {
-    //     type : 'collection',
-    //     title : 'app.reset',
-    //     css: 'btn btn-primary btn-sm btn-group mr-1',
-    //     //icon : 'fa fa-search',
-    //     text : 'app.reset',
-    //     execute : function () {
-    //         if (this.view) {
-    //             console.log('target ref',this.view.targetRef);
-    //             //var targetView = this.$crud.cRefs[this.view.targetRef];
-    //             this.view.reset();
-    //             // formData['page'] = 1;
-    //             // targetView.route.setParams(formData);
-    //             // targetView.reload();
-    //             return ;
-    //         }
-    //     }
-    // },
-
-};
-
-crud.conf = {
-    view : {
-        confParent : 'crud.conf.v-view',
-        primaryKey : 'id',
-        routeName : 'view',
-        fieldsConfig : {},
-        //actions : ['action-back'],
-        actions : [],
-        customActions: {},
-        widgetTemplate : 'tpl-record2',
-    },
-    edit : {
-        confParent : 'crud.conf.v-edit',
-        primaryKey : 'id',
-        routeName : 'edit',
-        customActions : {},
-        fieldsConfig : {
-            id : 'w-hidden'
-        },
-        fields : [],
-        widgetTemplate : 'tpl-record',
-        actions : ['action-save','action-back']
-    },
-    list : {
-        confParent : 'crud.conf.v-list',
-        primaryKey : 'id',
-        routeName : 'list',
-        customActions: {},
-        fieldsConfig : {},
-        orderFields: {},
-        widgetTemplate : 'tpl-list',
-        actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
-    },
-    listEdit : {
-        confParent : 'crud.conf.v-list',
-        routeName : 'list',
-        primaryKey : 'id',
-        customActions: {},
-        fieldsConfig : {},
-        orderFields: {},
-        widgetTemplate : 'tpl-list',
-        actions : [
-            'action-insert',
-            'action-delete-selected',
-            'action-view',
-            'action-edit-mode',
-            'action-delete',
-            'action-save-row',
-            'action-view-mode'
-        ]
-    },
-    search : {
-        primaryKey : 'id',
-        routeName : 'search',
-        actions : ['action-search','action-reset'],
-        fieldsConfig : {},
-        customActions: {},
-        widgetTemplate : 'tpl-record',
-    },
-    insert : {
-        primaryKey : 'id',
-        routeName : 'insert',
-        widgetTemplate : 'tpl-record',
-        actions : ['action-save','action-back'],
-        fieldsConfig : {
-            id : 'w-hidden'
-        },
-        actions : ['action-save','action-back']
-    },
-    'c-component' : {
-        resourcesLoaded : false,
-    },
-    'w-base' : {
-        name : null,
-        confParent : 'crud.conf.c-component',
-        value : null,
-        defaultValue : null,
-    },
-    'w-input' : {
-        //confParent : 'crud.conf.w-base',
-        inputType : 'text'
-    },
-    'w-input-helped' : {
-        //confParent : 'crud.conf.w-base',
-        domainValues : {},
-        domainValuesOrder : [],
-        customValue : false,
-    },
-
-    'w-autocomplete' : {
-        //confParent : 'crud.conf.w-base',
-        resources : [
-            'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
-            'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
-        ],
-        routeName : 'autocomplete',
-        primaryKey : 'id',
-        label : '',
-        suggestValues : {},
-        labelFields : ['text'],
-    },
-
-    'w-belongsto' : {
-        //confParent : 'crud.conf.w-base',
-        labelFields : ['text'],
-    },
-    'w-radio' : {
-        //confParent : 'crud.conf.w-base',
-        domainValues : {},
-        domainValuesOrder : [],
-    },
-    'w-checkbox' : {
-        //confParent : 'crud.conf.w-base',
-        domainValues : {},
-        domainValuesOrder : [],
-        value : [],
-    },
-    'w-select' : {
-        //confParent : 'crud.conf.w-base',
-        domainValues : {},
-        domainValuesOrder : [],
-    },
-    'w-textarea' : {
-        //confParent : 'crud.conf.w-base',
-    },
-
-    'w-text' : {
-        //confParent : 'crud.conf.w-base',
-    },
-
-    'w-custom' : {
-        //confParent : 'crud.conf.w-base',
-    },
-
-    'w-date-select' : {
-        //confParent : 'crud.conf.w-base',
-        resources : [
-            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
-        ],
-        minYear : null,
-        maxYear : null,
-    },
-
-    'w-date-picker' : {
-        //confParent : 'crud.conf.w-base',
-        resources : [
-            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
-        ],
-        displayFormat : "dd/mm/yyyy",
-        dateFormat :  "yyyy-mm-dd",
-    },
-    'w-date-text' : {
-        resources : [
-            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
-        ],
-        displayFormat : "dd/mm/yyyy",
-        dateFormat :  "yyyy-mm-dd",
-        formattedValue : null,
-    },
-    'w-texthtml' : {
-        //confParent : 'crud.conf.w-base',
-        resources : [
-            //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
-            //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js',
-            'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
-            'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
-
-        ],
-    },
-
-    'w-hasmany' : {
-        //confParent : 'crud.conf.w-base',
-        confViews : {},
-        limit : 100,
-        value : [],
-    },
-
-    'w-hasmany-view' : {
-        confParent : 'crud.conf.w-hasmany',
-    },
-
-    'w-swap' : {
-        //confParent : 'crud.conf.w-base',
-        routeName : 'set',
-        iconClass : 'fa fa-circle',
-        title : "swap",
-        swapType : 'icon',  // possibili valori text,icon
-        defaultDomainValues : {
-            icon : {
-                0 : 'fa fa-circle text-danger',
-                1 : 'fa fa-circle text-success'
-            },
-            text : {
-                0 : 'app.no',
-                1 : 'app.si'
-            }
-        },
-        domainValues : {},
-        slot : '',
-    },
-
-    'w-b2-select2': {
-        //confParent : 'crud.conf.w-base',
-        resources : [
-            'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
-            'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-        ],
-        routeName : 'autocomplete',
-        route : null,
-        primaryKey : 'id',
-    },
-
-    'w-b2m-select2': {
-        //confParent : 'crud.conf.w-b2-select2',
-        value : [],
-    },
-
-    'w-upload' : {
-        //confParent : 'crud.conf.w-base',
-        extensions : '',
-        maxFileSize : '',
-        error : false,
-        errorMessage : '',
-    },
-
-    'w-upload-ajax' : {
-        //confParent : 'crud.conf.w-base',
-        extensions : [],
-        maxFileSize : '',
-        routeName : 'uploadfile',
-        value : {},
-        error : false,
-        errorMessage : '',
-        previewConf : {},
-    },
-
-    'w-preview' : {
-        //confParent : 'crud.conf.w-base',
-        icon : false,
-        iconClass : '',
-        value : {},
-    },
-    //--- configurazione di default delle views
-    'v-base' : {
-        confParent : 'crud.conf.c-component',
-        viewTitle : '',
-        langContext : '',
-        loading : true,
-        //targetRef : null,
-        errorMsg : '',
-        routeConf : null
-    },
-
-    'v-record' : {
-        confParent : 'crud.conf.v-base',
-        modelName : null,
-        pk : 0,
-        value : {},
-        metadata : {},
-        langContext : null,
-        route : null,
-        widgets : {},
-        actionsConf : [],
-        actionsName : {},
-        defaultWidgetType : 'w-input',
-        fields : [],
-        fieldsConfig : {},
-    },
-
-    'v-insert' : {
-        confParent : 'crud.conf.v-record',
-    },
-
-    'v-edit' : {
-        confParent : 'crud.conf.v-record',
-    },
-
-    'v-view' : {
-        confParent : 'crud.conf.v-record',
-        defaultWidgetType : 'w-text',
-    },
-
-    'v-search' : {
-        confParent : 'crud.conf.v-record',
-    },
-
-    'v-collection' : {
-        confParent : 'crud.conf.v-base',
-        modelName : null,
-        value : [],
-        metadata : {},
-        needSelection : false,
-        collectionActionsName : [],
-        recordActionsName : [],
-        collectionActions : {},
-        recordActions : [],
-    },
-
-    'v-list' : {
-        confParent : 'crud.conf.v-collection',
-        //loading : true,
-        widgets : {},
-        keys : [],
-        route : null,
-        pagination : {},
-        defaultWidgetType : 'w-text',
-        json : {},
-        paginator : true,
-    },
-    'v-list-edit' : {
-        confParent : 'crud.conf.v-list',
-        //viewTitle : 'title',
-        widgetsEdit : {},
-        editMode : []
-    },
-    'v-hasmany' : {
-        confParent : 'crud.conf.v-collection',
-        defaultWidgetType : 'w-input',
-    },
-    'v-hasmany-view' : {
-        confParent : 'crud.conf.v-collection',
-        defaultWidgetType : 'w-text',
-    },
-    'action-base' : {
-        confParent : 'crud.conf.c-component',
-        type : null,
-        visible : true,
-        enabled : true,
-        title : '',
-        css: 'btn btn-outline-secondary',
-        icon : '',
-        text : '',
-        controlType : 'button',
-        href : '',
-        target: '_self',
-        needSelection  : false,
-        view : null,
-        alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
-    },
+let crudConfActions =  {
     'action-reset' : {
         confParent : 'crud.conf.action-base',
         type : 'collection',
@@ -481,7 +118,6 @@ crud.conf = {
             }
         }
     },
-
     'action-search' : {
         confParent : 'crud.conf.action-base',
         type : 'collection',
@@ -502,7 +138,6 @@ crud.conf = {
             }
         }
     },
-
     'action-save' : {
         confParent : 'crud.conf.action-base',
         type : 'collection',
@@ -684,7 +319,6 @@ crud.conf = {
             document.location.href=url;
         }
     },
-
     'action-back' : {
         confParent : 'crud.conf.action-base',
         type : 'collection',
@@ -763,7 +397,348 @@ crud.conf = {
             console.log('selected',that.view.selectedRows())
         }
     }
-};
+}
+
+let crudConfMisc = {
+    'c-component' : {
+        resourcesLoaded : false,
+    },
+    'action-base' : {
+        confParent : 'crud.conf.c-component',
+        type : null,
+        visible : true,
+        enabled : true,
+        title : '',
+        css: 'btn btn-outline-secondary',
+        icon : '',
+        text : '',
+        controlType : 'button',
+        href : '',
+        target: '_self',
+        needSelection  : false,
+        view : null,
+        alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
+    }
+}
+
+let crudConfWidgets = {
+    'w-base' : {
+        name : null,
+        confParent : 'crud.conf.c-component',
+        value : null,
+        defaultValue : null,
+    },
+    'w-input' : {
+        //confParent : 'crud.conf.w-base',
+        inputType : 'text'
+    },
+    'w-input-helped' : {
+        //confParent : 'crud.conf.w-base',
+        domainValues : {},
+        domainValuesOrder : [],
+        customValue : false,
+    },
+    'w-autocomplete' : {
+        //confParent : 'crud.conf.w-base',
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
+        ],
+        routeName : 'autocomplete',
+        primaryKey : 'id',
+        label : '',
+        suggestValues : {},
+        labelFields : ['text'],
+    },
+    'w-belongsto' : {
+        //confParent : 'crud.conf.w-base',
+        labelFields : ['text'],
+    },
+    'w-radio' : {
+        //confParent : 'crud.conf.w-base',
+        domainValues : {},
+        domainValuesOrder : [],
+    },
+    'w-checkbox' : {
+        //confParent : 'crud.conf.w-base',
+        domainValues : {},
+        domainValuesOrder : [],
+        value : [],
+    },
+    'w-select' : {
+        //confParent : 'crud.conf.w-base',
+        domainValues : {},
+        domainValuesOrder : [],
+    },
+    'w-textarea' : {
+        //confParent : 'crud.conf.w-base',
+    },
+    'w-text' : {
+        //confParent : 'crud.conf.w-base',
+    },
+    'w-custom' : {
+        //confParent : 'crud.conf.w-base',
+    },
+    'w-date-select' : {
+        //confParent : 'crud.conf.w-base',
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
+        ],
+        minYear : null,
+        maxYear : null,
+    },
+    'w-date-picker' : {
+        //confParent : 'crud.conf.w-base',
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js'
+        ],
+        displayFormat : "dd/mm/yyyy",
+        dateFormat :  "yyyy-mm-dd",
+    },
+    'w-date-text' : {
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
+        ],
+        displayFormat : "dd/mm/yyyy",
+        dateFormat :  "yyyy-mm-dd",
+        formattedValue : null,
+    },
+    'w-texthtml' : {
+        //confParent : 'crud.conf.w-base',
+        resources : [
+            //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css',
+            //'https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.min.js',
+            'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
+            'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
+
+        ],
+    },
+    'w-hasmany' : {
+        //confParent : 'crud.conf.w-base',
+        confViews : {},
+        limit : 100,
+        value : [],
+    },
+    'w-hasmany-view' : {
+        confParent : 'crud.conf.w-hasmany',
+    },
+    'w-swap' : {
+        //confParent : 'crud.conf.w-base',
+        routeName : 'set',
+        iconClass : 'fa fa-circle',
+        title : "swap",
+        swapType : 'icon',  // possibili valori text,icon
+        defaultDomainValues : {
+            icon : {
+                0 : 'fa fa-circle text-danger',
+                1 : 'fa fa-circle text-success'
+            },
+            text : {
+                0 : 'app.no',
+                1 : 'app.si'
+            }
+        },
+        domainValues : {},
+        slot : '',
+    },
+    'w-b2-select2': {
+        //confParent : 'crud.conf.w-base',
+        resources : [
+            'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
+        ],
+        routeName : 'autocomplete',
+        route : null,
+        primaryKey : 'id',
+    },
+    'w-b2m-select2': {
+        //confParent : 'crud.conf.w-b2-select2',
+        value : [],
+    },
+    'w-upload' : {
+        //confParent : 'crud.conf.w-base',
+        extensions : '',
+        maxFileSize : '',
+        error : false,
+        errorMessage : '',
+    },
+    'w-upload-ajax' : {
+        //confParent : 'crud.conf.w-base',
+        extensions : [],
+        maxFileSize : '',
+        routeName : 'uploadfile',
+        value : {},
+        error : false,
+        errorMessage : '',
+        previewConf : {},
+    },
+    'w-preview' : {
+        //confParent : 'crud.conf.w-base',
+        icon : false,
+        iconClass : '',
+        value : {},
+    },
+}
+
+let crudConfViews = {
+    //--- configurazione di default delle views
+    'v-base' : {
+        confParent : 'crud.conf.c-component',
+        viewTitle : '',
+        langContext : '',
+        loading : true,
+        //targetRef : null,
+        errorMsg : '',
+        routeConf : null
+    },
+    'v-record' : {
+        confParent : 'crud.conf.v-base',
+        modelName : null,
+        pk : 0,
+        value : {},
+        metadata : {},
+        langContext : null,
+        route : null,
+        widgets : {},
+        actionsConf : [],
+        actionsName : {},
+        defaultWidgetType : 'w-input',
+        fields : [],
+        fieldsConfig : {},
+    },
+    'v-insert' : {
+        confParent : 'crud.conf.v-record',
+    },
+    'v-edit' : {
+        confParent : 'crud.conf.v-record',
+    },
+    'v-view' : {
+        confParent : 'crud.conf.v-record',
+        defaultWidgetType : 'w-text',
+    },
+    'v-search' : {
+        confParent : 'crud.conf.v-record',
+    },
+    'v-collection' : {
+        confParent : 'crud.conf.v-base',
+        modelName : null,
+        value : [],
+        metadata : {},
+        needSelection : false,
+        collectionActionsName : [],
+        recordActionsName : [],
+        collectionActions : {},
+        recordActions : [],
+    },
+    'v-list' : {
+        confParent : 'crud.conf.v-collection',
+        //loading : true,
+        widgets : {},
+        keys : [],
+        route : null,
+        pagination : {},
+        defaultWidgetType : 'w-text',
+        json : {},
+        paginator : true,
+    },
+    'v-list-edit' : {
+        confParent : 'crud.conf.v-list',
+        //viewTitle : 'title',
+        widgetsEdit : {},
+        editMode : []
+    },
+    'v-hasmany' : {
+        confParent : 'crud.conf.v-collection',
+        defaultWidgetType : 'w-input',
+    },
+    'v-hasmany-view' : {
+        confParent : 'crud.conf.v-collection',
+        defaultWidgetType : 'w-text',
+    },
+    // --- configurazione di default per tipo view
+    view : {
+        confParent : 'crud.conf.v-view',
+        primaryKey : 'id',
+        routeName : 'view',
+        fieldsConfig : {},
+        //actions : ['action-back'],
+        actions : [],
+        customActions: {},
+        widgetTemplate : 'tpl-record2',
+    },
+    edit : {
+        confParent : 'crud.conf.v-edit',
+        primaryKey : 'id',
+        routeName : 'edit',
+        customActions : {},
+        fieldsConfig : {
+            id : 'w-hidden'
+        },
+        fields : [],
+        widgetTemplate : 'tpl-record',
+        actions : ['action-save','action-back']
+    },
+    list : {
+        confParent : 'crud.conf.v-list',
+        primaryKey : 'id',
+        routeName : 'list',
+        customActions: {},
+        fieldsConfig : {},
+        orderFields: {},
+        widgetTemplate : 'tpl-list',
+        actions : ['action-insert','action-delete-selected','action-view','action-edit','action-delete']
+    },
+    listEdit : {
+        confParent : 'crud.conf.v-list',
+        routeName : 'list',
+        primaryKey : 'id',
+        customActions: {},
+        fieldsConfig : {},
+        orderFields: {},
+        widgetTemplate : 'tpl-list',
+        actions : [
+            'action-insert',
+            'action-delete-selected',
+            'action-view',
+            'action-edit-mode',
+            'action-delete',
+            'action-save-row',
+            'action-view-mode'
+        ]
+    },
+    search : {
+        primaryKey : 'id',
+        routeName : 'search',
+        actions : ['action-search','action-reset'],
+        fieldsConfig : {},
+        customActions: {},
+        widgetTemplate : 'tpl-record',
+    },
+    insert : {
+        primaryKey : 'id',
+        routeName : 'insert',
+        widgetTemplate : 'tpl-record',
+        actions : ['action-save','action-back'],
+        fieldsConfig : {
+            id : 'w-hidden'
+        },
+        actions : ['action-save','action-back']
+    },
+}
+
+crud.conf = {
+    ...crudConfMisc,
+    ...crudConfActions,
+    ...crudConfWidgets,
+    ...crudConfViews,
+}
+
+delete crudConfMisc;
+delete crudConfActions;
+delete crudConfWidgets;
+delete crudConfViews;
 
 crud.routes =  {
     list : {
@@ -868,24 +843,6 @@ crud.routes =  {
         protocol    : 'record'
     }
 };
-
-crud.cRefs = {};
-
-crud.components = {
-    widgets : {
-
-    },
-    views : {
-
-    },
-    actions : {
-
-    },
-    misc :  {
-
-    }
-};
-
 
 const dialogs_mixin = {
     methods : {
@@ -1048,13 +1005,13 @@ core_mixin = {
         },
         waitStart : function (msg,container) {
             var that = this;
-            var c = container?container:'body';
-            var id = that._createContainer(c);
+            var _c = container?container:'body';
+            var id = that._createContainer(_c);
 
             var comp = new that.$crud.components.misc.cWait({
                 propsData: {
                     cMsg : msg,
-                    cGlobal : (container==='body')?true:false,
+                    cGlobal : (_c==='body')?true:false,
                 }
             })
             comp.$mount('#'+id);
@@ -1586,6 +1543,25 @@ core_mixin = {
         }
     }
 };
+
+choice_mixin = {
+    methods: {
+        setDomainValues : function (domainValues,domainValuesOrder) {
+            var that = this;
+            that.domainValues = domainValues;
+            that.domainValuesOrder = domainValuesOrder?domainValuesOrder:Object.keys(domainValues);
+            if (that.domainValuesOrder.indexOf(that.getValue()) < 0) {
+                that.value = that.domainValuesOrder[0];
+            }
+        },
+        reset : function() {
+            if (this.defaultValue)
+                this.value = this.defaultValue;
+            else
+                this.value = this.domainValuesOrder[0];
+        }
+    }
+}
 
 /**
  * definizione protocollo tra json che arriva dal server e le strutture
@@ -2152,7 +2128,6 @@ crud.components.misc.tplBase = Vue.component('tpl-base',{
 });
 
 crud.components.actions.coreActionBase = Vue.component('core-action-base', {
-    //props : ['cConf','cKey'],
     props : {
         'cKey' : {
             default: null
@@ -2162,34 +2137,6 @@ crud.components.actions.coreActionBase = Vue.component('core-action-base', {
         }
     },
     extends : crud.components.cComponent,
-    // data :  function () {
-    //     var that = this;
-    //     var d = {
-    //         view : that.$parent
-    //     }
-    //     return d;
-
-
-        // var d = that._getConf();
-        // var adata = {
-        //     type : null,
-        //     visible : true,
-        //     enabled : true,
-        //     title : '',
-        //     css: 'btn btn-outline-secondary',
-        //     icon : '',
-        //     text : '',
-        //     controlType : 'button',
-        //     href : '',
-        //     target: '_self',
-        //     needSelection  : false,
-        //     view : null,
-        //     alertTime : null, // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
-        // };
-        // if (!('view' in adata) )
-        //     adata.view = that.$parent;
-        // return that.merge(adata,d);
-    //},
     mounted : function() {
         var that = this;
         if (that.controlType == 'link') {
@@ -2285,7 +2232,6 @@ crud.components.actions.coreActionBase = Vue.component('core-action-base', {
 
 });
 
-
 crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
     extends : crud.components.actions.coreActionBase,
     mounted : function () {
@@ -2303,14 +2249,6 @@ crud.components.actions.coreActionOrder = Vue.component('crud-action-order', {
         }
     }
 })
-
-
-
-
-// Vue.component('action-dialog', {
-//     extends : crud.components.cComponent,
-//     template : '#action-dialog-template'
-// })
 
 crud.components.misc.coreCPaginator = Vue.component('crud-c-paginator',{
     extends : crud.components.cComponent,
@@ -2511,9 +2449,15 @@ crud.components.misc.coreDCustom = Vue.component('core-d-custom', {
     },
 });
 
-crud.components.misc.coreCWait = Vue.component('crud-c-wait', {
+crud.components.misc.coreCWait = Vue.component('core-c-wait', {
     extends : crud.components.cComponent,
     props : ['cMsg','cGlobal'],
+    mounted : function () {
+        var that = this;
+        if (that.global) {
+            that.jQe('[c-wait]').css('height', jQuery(document).height());
+        }
+    },
     data : function () {
         return {
             msg : this.cMsg?this.cMsg:'...',
@@ -2634,31 +2578,19 @@ crud.components.widgets.coreWTextarea = Vue.component('core-w-textarea', {
 });
 
 crud.components.widgets.coreWSelect = Vue.component('core-w-select',{
+    mixins : [choice_mixin],
     extends : crud.components.widgets.wBase,
     mounted : function () {
         var that = this;
         if (that.domainValuesOrder.length == 0 && Object.keys(that.domainValues).length > 0) {
             that.domainValuesOrder = Object.keys(that.domainValues);
         }
-    },
-    // data :  function () {
-    //     var d = this._loadConf();
-    //     d.domainValues = d.domainValues || {};
-    //     d.domainValuesOrder = d.domainValuesOrder?d.domainValuesOrder:Object.keys(d.domainValues);
-    //     return d;
-    // },
-    methods : {
-        reset : function() {
-            if (this.defaultValue)
-                this.value = this.defaultValue;
-            else
-                this.value = this.domainValuesOrder[0];
-        },
     }
 });
 
 
 crud.components.widgets.coreWRadio = Vue.component('core-w-radio',{
+    mixins : [choice_mixin],
     extends : crud.components.widgets.wBase,
     mounted : function () {
         var that = this;
@@ -2666,42 +2598,27 @@ crud.components.widgets.coreWRadio = Vue.component('core-w-radio',{
             that.domainValuesOrder = Object.keys(that.domainValues);
         }
     },
-
-    // data : function() {
-    //     var that = this;
-    //     var _conf  = that._getConf() || {};
-    //     var d = {};
-    //     var dV = _conf.domainValues || {};
-    //     d.domainValuesOrder = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);
-    //     return d;
-    // },
 });
 
 
 crud.components.widgets.coreWCheckbox = Vue.component('core-w-checkbox',{
     extends : crud.components.widgets.wBase,
+    mixins : [choice_mixin],
     mounted : function () {
         var that = this;
         if (that.domainValuesOrder.length == 0 && Object.keys(that.domainValues).length > 0) {
             that.domainValuesOrder = Object.keys(that.domainValues);
         }
     },
-
-    // data :  function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {};
-    //     var dV = _conf.domainValues || {};
-    //     var dVO = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);
-    //     if (_conf.value)
-    //         d.value = Array.isArray(_conf.value)?_conf.value:[_conf.value];
-    //     else
-    //         d.value = [];
-    //     d.domainValues = dV;
-    //     d.domainValuesOrder = dVO;
-    //     return d;
-    // },
     methods : {
+        setDomainValues : function (domainValues,domainValuesOrder) {
+            var that = this;
+            that.domainValues = domainValues;
+            that.domainValuesOrder = domainValuesOrder?domainValuesOrder:Object.keys(domainValues);
+            if (that.domainValuesOrder.indexOf(that.getValue()) < 0) {
+                that.value = [that.domainValuesOrder[0]];
+            }
+        },
         getFieldName : function () {
             return this.name + '[]';
         }
@@ -2711,22 +2628,6 @@ crud.components.widgets.coreWCheckbox = Vue.component('core-w-checkbox',{
 
 crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete', {
     extends : crud.components.widgets.wBase,
-    // data : function() {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {};
-    //     if (!( 'resources' in _conf) ) {
-    //         d.resources = [
-    //             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
-    //             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
-    //         ];
-    //     }
-    //     d.routeName = _conf.routeName || 'autocomplete';
-    //     d.primaryKey = _conf.primaryKey || 'id';
-    //     d.label = '';
-    //     d.suggestValues = {};
-    //     return d;
-    // },
     methods : {
         afterLoadResources : function () {
             var that = this;

@@ -1,4 +1,5 @@
 crud.components.widgets.coreWRadio = Vue.component('core-w-radio',{
+    mixins : [choice_mixin],
     extends : crud.components.widgets.wBase,
     mounted : function () {
         var that = this;
@@ -6,14 +7,5 @@ crud.components.widgets.coreWRadio = Vue.component('core-w-radio',{
             that.domainValuesOrder = Object.keys(that.domainValues);
         }
     },
-
-    // data : function() {
-    //     var that = this;
-    //     var _conf  = that._getConf() || {};
-    //     var d = {};
-    //     var dV = _conf.domainValues || {};
-    //     d.domainValuesOrder = _conf.domainValuesOrder?_conf.domainValuesOrder:Object.keys(dV);
-    //     return d;
-    // },
 });
 
