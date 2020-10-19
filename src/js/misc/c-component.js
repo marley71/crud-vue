@@ -11,10 +11,9 @@ crud.components.cComponent = Vue.component('c-component',{
         }
     },
     mixins : [core_mixin,dialogs_mixin],
+
     mounted : function() {
         var that = this;
-        //console.log('COMPONENTE MOUNTED',jQuery(that.$el).html());
-        //console.log('c-component.mounted',that.$options.name);
         if (that.cRef) {
             that.$crud.cRefs[that.cRef] = this;
         }
@@ -70,51 +69,21 @@ crud.components.cComponent = Vue.component('c-component',{
             }
             return jQuery(that.$el);
         },
+        /**
+         * carica la configurazione del componente, data dalla configurazione di default mergiata con
+         * la configurazione passata a runtime.
+         * @return {*}
+         * @private
+         */
         _loadConf : function() {
             var that = this;
-            //var _compName = this.$options.name;
-
-            // var _confName = that.cConfDefaultName;
-            // var defaultConf =  that.mergeConf(that.$crud.conf[_confName]);
-            // var _confComponentName = that.$options.name;
-            // var componentNameConf = that.mergeConf(that.$crud.conf[_confComponentName]);
-            //
-            //
-            // var mergedConf = that.merge(defaultConf,componentNameConf);
-
-
             //console.log('this name',_compName,defaultConf);
             var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
-
-            mergedConf = that.merge(defaultConf,currentConf);
+            var mergedConf = that.merge(defaultConf,currentConf);
             //console.log('finalConf',mergedConf);
             return mergedConf;
 
-
-
-            // var conf = that._getConf();
-            // console.log('merge conf',conf);
-            // var mergedConf = that.merge(defaultConf,conf);
-            // var finalConf = {};
-            // for (var k in mergedConf) {
-            //     if (['methods','mounted'].indexOf(k) >= 0)
-            //         continue;
-            //     finalConf[k] = mergedConf[k];
-            // }
-            // //finalConf.conf = finalConf;
-            // console.log('finalConf',mergedConf);
-            // return finalConf;
-
-            // var _c = this._getConf() || {};
-            // var d = {};
-            // for (var k in _c) {
-            //     if (['methods','mounted'].indexOf(k) >= 0)
-            //         continue;
-            //     d[k] = _c[k];
-            // }
-            // d.conf = _c;
-            // return d;
         },
         /**
          * esegue il binding con la configurazione passata a run time
@@ -128,10 +97,6 @@ crud.components.cComponent = Vue.component('c-component',{
             // se e' una stringa controllo prima che non sia una variabile globale
             if (typeof that.cConf === 'string' || that.cConf instanceof String) {
                 conf = that.getDescendantProp(window, that.cConf);
-                // altrimenti controllo che non sia una configurazione dentro la crud conf
-                // if (!conf) {
-                //     conf = that.getDescendantProp(that.$crud.conf, that.cConf);
-                // }
             }
             else
                 conf = that.cConf;
@@ -145,21 +110,10 @@ crud.components.cComponent = Vue.component('c-component',{
          */
         _getDefaultConf : function () {
             var that = this;
-            //var _compName = this.$options.name;
-
             var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
             var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
-
-
             var mergedConf = that.merge(defaultConf,componentNameConf);
             return mergedConf;
-
-            // //console.log('this name',_compName,defaultConf);
-            //
-            // var currentConf = that._getConf();
-            // mergedConf = that.merge(mergedConf,currentConf);
-            // //console.log('finalConf',mergedConf);
-            // return mergedConf;
         },
         /**
          * setta la configurazione della route secondo le proprie esigenze.
@@ -184,7 +138,7 @@ crud.components.cComponent = Vue.component('c-component',{
                 return null;
             if (!that.$crud.routes[rn])
                 throw "Impossibile trovare la route " + rn;
-            console.log('routeName',rn,that.$crud.routes[rn])
+            //console.log('routeName',rn,that.$crud.routes[rn])
             return new Route(that.$crud.routes[rn]);
         },
 

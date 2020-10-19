@@ -544,7 +544,7 @@ let crudConfWidgets = {
         slot : '',
     },
     'w-b2-select2': {
-        //confParent : 'crud.conf.w-base',
+        labelFields : [],
         resources : [
             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
@@ -552,9 +552,11 @@ let crudConfWidgets = {
         routeName : 'autocomplete',
         route : null,
         primaryKey : 'id',
+        allowClear : true,
+        data : null,  // eventuali dati statici
     },
     'w-b2m-select2': {
-        //confParent : 'crud.conf.w-b2-select2',
+        confParent : 'crud.conf.w-b2-select2',
         value : [],
     },
     'w-upload' : {
@@ -1927,10 +1929,9 @@ crud.components.cComponent = Vue.component('c-component',{
         }
     },
     mixins : [core_mixin,dialogs_mixin],
+
     mounted : function() {
         var that = this;
-        //console.log('COMPONENTE MOUNTED',jQuery(that.$el).html());
-        //console.log('c-component.mounted',that.$options.name);
         if (that.cRef) {
             that.$crud.cRefs[that.cRef] = this;
         }
@@ -1986,51 +1987,21 @@ crud.components.cComponent = Vue.component('c-component',{
             }
             return jQuery(that.$el);
         },
+        /**
+         * carica la configurazione del componente, data dalla configurazione di default mergiata con
+         * la configurazione passata a runtime.
+         * @return {*}
+         * @private
+         */
         _loadConf : function() {
             var that = this;
-            //var _compName = this.$options.name;
-
-            // var _confName = that.cConfDefaultName;
-            // var defaultConf =  that.mergeConf(that.$crud.conf[_confName]);
-            // var _confComponentName = that.$options.name;
-            // var componentNameConf = that.mergeConf(that.$crud.conf[_confComponentName]);
-            //
-            //
-            // var mergedConf = that.merge(defaultConf,componentNameConf);
-
-
             //console.log('this name',_compName,defaultConf);
             var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
-
-            mergedConf = that.merge(defaultConf,currentConf);
+            var mergedConf = that.merge(defaultConf,currentConf);
             //console.log('finalConf',mergedConf);
             return mergedConf;
 
-
-
-            // var conf = that._getConf();
-            // console.log('merge conf',conf);
-            // var mergedConf = that.merge(defaultConf,conf);
-            // var finalConf = {};
-            // for (var k in mergedConf) {
-            //     if (['methods','mounted'].indexOf(k) >= 0)
-            //         continue;
-            //     finalConf[k] = mergedConf[k];
-            // }
-            // //finalConf.conf = finalConf;
-            // console.log('finalConf',mergedConf);
-            // return finalConf;
-
-            // var _c = this._getConf() || {};
-            // var d = {};
-            // for (var k in _c) {
-            //     if (['methods','mounted'].indexOf(k) >= 0)
-            //         continue;
-            //     d[k] = _c[k];
-            // }
-            // d.conf = _c;
-            // return d;
         },
         /**
          * esegue il binding con la configurazione passata a run time
@@ -2044,10 +2015,6 @@ crud.components.cComponent = Vue.component('c-component',{
             // se e' una stringa controllo prima che non sia una variabile globale
             if (typeof that.cConf === 'string' || that.cConf instanceof String) {
                 conf = that.getDescendantProp(window, that.cConf);
-                // altrimenti controllo che non sia una configurazione dentro la crud conf
-                // if (!conf) {
-                //     conf = that.getDescendantProp(that.$crud.conf, that.cConf);
-                // }
             }
             else
                 conf = that.cConf;
@@ -2061,21 +2028,10 @@ crud.components.cComponent = Vue.component('c-component',{
          */
         _getDefaultConf : function () {
             var that = this;
-            //var _compName = this.$options.name;
-
             var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
             var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
-
-
             var mergedConf = that.merge(defaultConf,componentNameConf);
             return mergedConf;
-
-            // //console.log('this name',_compName,defaultConf);
-            //
-            // var currentConf = that._getConf();
-            // mergedConf = that.merge(mergedConf,currentConf);
-            // //console.log('finalConf',mergedConf);
-            // return mergedConf;
         },
         /**
          * setta la configurazione della route secondo le proprie esigenze.
@@ -2100,7 +2056,7 @@ crud.components.cComponent = Vue.component('c-component',{
                 return null;
             if (!that.$crud.routes[rn])
                 throw "Impossibile trovare la route " + rn;
-            console.log('routeName',rn,that.$crud.routes[rn])
+            //console.log('routeName',rn,that.$crud.routes[rn])
             return new Route(that.$crud.routes[rn]);
         },
 
@@ -3268,30 +3224,122 @@ crud.components.widgets.coreWHasmanyThrough =Vue.component('core-w-hasmany-throu
 
 crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
     extends : crud.components.widgets.wBase,
-    // data : function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {};
-    //     if (!( 'resources' in _conf) ) {
-    //         d.resources = [
-    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
-    //             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-    //         ];
-    //     }
-    //     d.routeName = _conf.routeName || 'autocomplete';
-    //     d.route = null;
-    //     if (!('primaryKey' in _conf)  )
-    //         d.primaryKey = 'id';
-    //     return d;
-    // },
     methods : {
+
+        afterLoadResources : function () {
+            var that = this;
+            var data = [];
+
+            if (that.routeName === null) {  // caso di valori statici
+                that._initSelectStatic();
+            } else {
+                that._initSelectAjax();
+            }
+            that._connectEvents();
+        },
+
+        _connectEvents : function () {
+            var that = this;
+            that.jQe('[c-select2]').on('select2:select', function (e) {
+                that.change();
+            });
+        },
+
+        getLabel : function(value) {
+            var that  =this;
+            var label = "";
+            if (that.labelFields.length > 0) {
+                for (var i in that.labelFields) {
+                    label += value[that.labelFields[i]] + " ";
+                }
+            } else {
+                label = value[that.primaryKey];
+            }
+
+            return label;
+        },
+        getValue : function () {
+            var that = this;
+            var selValue = that.jQe('[c-select2]').select2('data');
+            console.log('selvalue',selValue);
+            return selValue.length>0?selValue[0].id:null;
+
+        },
+        setRouteValues : function(route) {
+            route.setValues({modelName:this.modelName});
+            return route;
+        },
+        reset : function() {
+            if (this.defaultValue)
+                this.value = this.defaultValue;
+            else
+                this.value = [];
+        },
+
+        /**
+         * inizializzazione select con dati statici
+         * @private
+         */
+        _initSelectStatic : function () {
+            var that = this;
+            // if (that.data === null) {
+            //     console.log('select statica ma senza valori presenti in data');
+            // }
+            // var data = [];
+            // // trasformo il valore con i labelFields per coerenza con la parte ajax
+            // for (var i in that.data) {
+            //     var d = {
+            //         id : that.data[i][that.primaryKey],
+            //         text : that.getLabel(that.data[i])
+            //     };
+            //     if (d.id == that.value)
+            //         d.selected = true;
+            //     data.push(d);
+            // }
+            var data = that._getSelectedValues();
+            that.jQe('[c-select2]').select2({
+                data : data,
+                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
+                allowClear : that.allowClear,
+                theme : that.theme,
+            });
+        },
+        /**
+         * inizializzazione select ajax, in caso contenta un valore gia' selezionato,
+         * allora staticamenti la property data deve avere un item simile alla risposta json e deve
+         * avere come primary key uguale alla property value.
+         * @private
+         */
+        _initSelectAjax : function () {
+            var that = this;
+            // var data = that.data || [];
+            // if (that.value) {
+            //     var _id = data.length?data[0][that.primaryKey]:null;
+            //     if (that.value == _id) {
+            //         data[0].selected = true;
+            //         data[0].text = that.getLabel(data[0]);
+            //     }
+            // }
+            var data = that._getSelectedValues();
+            //console.log('DATA',data);
+            that.jQe('[c-select2]').select2({
+                data : data,
+                ajax : that._getAjaxConf(),
+                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
+                allowClear : that.allowClear,
+                theme : that.theme,
+            });
+        },
+        /**
+         * configurazione ajax per la gestione dei risultati
+         * @return {{headers: *, delay: number, method: string, data: (function(*): {field: core-w-b2-select2.methods.name, value: *}), dataType: string, processResults: (function(*): {results: []}), url: *}}
+         * @private
+         */
         _getAjaxConf : function() {
             var that = this;
             that.route = that._getRoute();
             that.setRouteValues(that.route);
             var url = that.route.getUrl();
-            //console.log('conf',that.conf);
-            //console.log('url',url);
             var ajax = {
                 url : url,
                 method : that.route.getMethod(),
@@ -3314,7 +3362,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
                             record : json.result[i]
                         });
                     }
-                    console.log(that.primaryKey,'items',items);
+                    //console.log(that.primaryKey,'items',items);
                     return {
                         results: items
                     };
@@ -3322,66 +3370,27 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
             };
             return ajax;
         },
-        afterLoadResources : function () {
+
+        /**
+         * ritorna i dati con eventuali valori gia' selezionati.
+         * @private
+         */
+        _getSelectedValues : function (){
             var that = this;
-            var data = [];
-            //W2=this;
-            // setTimeout(function () {
-            //     that.afterLoadResources();
-            // },2000)
-            //console.log('w2-select MOUNTED',jQuery(that.$el).html());
-            if (that.value) {
-                data.push({
-                    id : that.value,
-                    selected : true,
-                    text : that.getLabel(that.referredData)
-                });
+            if (that.data === null && that.value) {
+                console.log('select statica ma senza valori presenti in data');
+                return [];
             }
-
-
-            that.jQe('[c-select2]').select2({
-                data : data,
-                ajax : that._getAjaxConf(),
-                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
-                allowClear : that.allowClear,
-                theme : that.theme,
-                // ajax: {
-                //     url: 'https://api.github.com/search/repositories',
-                //     dataType: 'json'
-                //     // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-                // }
-            });
-            that.jQe('[c-select2]').on('select2:select', function (e) {
-                //console.log('value',that.getValue())
-                that.change();
-                //that.$emit('change',e);
-            });
-        },
-        getLabel : function(value) {
-            var that  =this;
-            var label = "";
-            for (var i in that.labelFields) {
-                label += value[that.labelFields[i]] + " ";
+            var data = that.data || [];
+            // trasformo il valore con i labelFields per coerenza con la parte ajax
+            for (var i in data) {
+                data[i].text = that.getLabel(that.data[i]);
+                if (data[i][that.primaryKey] == that.value) {
+                    data[i].selected = true;
+                }
             }
-            return label;
-        },
-        getValue : function () {
-            var that = this;
-            var selValue = that.jQe('[c-select2]').select2('data');
-            console.log('selvalue',selValue);
-            return selValue.length>0?selValue[0].id:null;
-
-        },
-        setRouteValues : function(route) {
-            route.setValues({modelName:this.modelName});
-            return route;
-        },
-        reset : function() {
-            if (this.defaultValue)
-                this.value = this.defaultValue;
-            else
-                this.value = [];
-        },
+            return data;
+        }
     }
 
 });
@@ -3389,34 +3398,118 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
 crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
     extends : crud.components.widgets.coreWB2Select2,
     methods : {
+
         afterLoadResources : function () {
             var that = this;
-            var selected = [];
-            for (var i in that.value) {
-                selected.push({
-                    id : that.value[i].id,
-                    text : that.getLabel(that.value[i]),
-                    selected : true,
-                });
+            var data = [];
+
+            if (that.routeName === null) {  // caso di valori statici
+                that._initSelectStatic();
+            } else {
+                that._initSelectAjax();
             }
-            jQuery(that.$el).find('[c-select2]').select2({
-                data : selected,
-                ajax : that._getAjaxConf(),
-                allowClear : that.allowClear,
-                placeholder: that.placeholder?that.placeholder:"Seleziona",
-            });
-
-            jQuery(that.$el).find('[c-select2]').on('select2:select', function (e) {
-                that._renderHidden();
-                that.change(e);
-            });
-            jQuery(that.$el).find('[c-select2]').on('select2:unselect', function (e) {
-                that._renderHidden();
-                that.change(e);
-            });
+            that._connectEvents();
             that._renderHidden();
-
         },
+
+        _connectEvents : function () {
+            var that = this;
+            that.jQe('[c-select2]').on('select2:select', function (e) {
+                that._renderHidden();
+                that.change(e);
+            });
+            that.jQe('[c-select2]').on('select2:unselect', function (e) {
+                that._renderHidden();
+                that.change(e);
+            });
+        },
+
+        /**
+         * inizializzazione select con dati statici
+         * @private
+         */
+        _initSelectStatic : function () {
+            var that = this;
+            // if (that.data === null) {
+            //     console.log('select statica ma senza valori presenti in data');
+            // }
+            // var data = that.data || [];
+            // // trasformo il valore con i labelFields per coerenza con la parte ajax
+            // for (var i in that.data) {
+            //     var d = {
+            //         id : that.data[i][that.primaryKey],
+            //         text : that.getLabel(that.data[i])
+            //     };
+            //     if (d.id == that.value)
+            //         d.selected = true;
+            //     data.push(d);
+            // }
+            var data = that._getSelectedValues();
+            that.jQe('[c-select2]').select2({
+                data : data,
+                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
+                allowClear : that.allowClear,
+                theme : that.theme,
+            });
+        },
+        /**
+         * inizializzazione select ajax, in caso contenta un valore gia' selezionato,
+         * allora staticamenti la property data deve avere un item simile alla risposta json e deve
+         * avere come primary key uguale alla property value.
+         * @private
+         */
+        _initSelectAjax : function () {
+            var that = this;
+            var data = this._getSelectedValues();
+            //console.log('DATA',data);
+            that.jQe('[c-select2]').select2({
+                data : data,
+                ajax : that._getAjaxConf(),
+                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
+                allowClear : that.allowClear,
+                theme : that.theme,
+            });
+        },
+
+        // afterLoadResources : function () {
+        //     var that = this;
+        //     var selected = [];
+        //     for (var i in that.value) {
+        //         selected.push({
+        //             id : that.value[i].id,
+        //             text : that.getLabel(that.value[i]),
+        //             selected : true,
+        //         });
+        //     }
+        //     jQuery(that.$el).find('[c-select2]').select2({
+        //         data : selected,
+        //         ajax : that._getAjaxConf(),
+        //         allowClear : that.allowClear,
+        //         placeholder: that.placeholder?that.placeholder:"Seleziona",
+        //     });
+
+        //
+        //     that._renderHidden();
+        //
+        // },
+
+        getValue : function () {
+            var that = this;
+            var selValues = that.jQe('[c-select2]').select2('data');
+            //console.log('selValues',selValues);
+            var values = [];
+            for (var i in selValues) {
+                values.push(selValues[i][that.primaryKey]);
+            }
+            //console.log('values',values);
+            return values;
+        },
+
+        /**
+         * serve per renderizzare degli input hidden con i valori selezionati per compatibilità con
+         * la presenza di una form.
+         * @private
+         */
         _renderHidden : function () {
             var that = this;
             var values = that.getValue();
@@ -3429,17 +3522,27 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
             }
 
         },
-        getValue : function () {
+        /**
+         * ritorna i dati con eventuali valori gia' selezionati.
+         * @private
+         */
+
+        _getSelectedValues : function (){
             var that = this;
-            var selValues = jQuery(that.$el).find('[c-select2]').select2('data');
-            //console.log('selValues',selValues);
-            var values = [];
-            for (var i in selValues) {
-                values.push(selValues[i].id);
+            var data = that.data || [];
+            if (that.value.length > 0) {
+                for (var i in that.value) {
+                    for(var j in data) {
+                        //console.log('test',that.value[i],data[j][that.primaryKey])
+                        if (that.value[i] == data[j][that.primaryKey]) {
+                            data[j].selected = true;
+                            data[j].text = that.getLabel(data[j]);
+                        }
+                    }
+                }
             }
-            //console.log('values',values);
-            return values;
-        },
+            return data;
+        }
     }
 
 });
@@ -3671,9 +3774,6 @@ crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
 crud.components.views.vBase = Vue.component('v-base', {
     props : {
         cFields : {
-            default : null
-        },
-        cTargetRef : {
             default : null
         },
         cRouteConf : {
@@ -4452,6 +4552,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.value = new Array();
             that.$forceUpdate();
             var __sortOn = function (arr,prop,direction) {
+                console.log('prop',prop,'direction',direction)
                 var sortOrder = direction=='ASC'?1:-1;
                 arr.sort (
                     function (a, b) {
@@ -4472,11 +4573,18 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 field : orderField,
                 direction : orderDirection
             };
+            that.loading = true;
+            console.log('nuovi valori ordinati',value);
             that.$set(that,'value',value);
             //that.orderDirection = order_direction;
-            that.$forceUpdate();
 
-            that.reload();
+            setTimeout(function (){
+                that.loading = false;  //  per far in modo di autodisegnarsi di nuovo
+                that.reload();
+            },100);
+            //that.$forceUpdate();
+            //this.loading = false;
+            //that.reload();
         },
 
         getTranslate:function (key) {

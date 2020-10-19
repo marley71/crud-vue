@@ -265,6 +265,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             that.value = new Array();
             that.$forceUpdate();
             var __sortOn = function (arr,prop,direction) {
+                console.log('prop',prop,'direction',direction)
                 var sortOrder = direction=='ASC'?1:-1;
                 arr.sort (
                     function (a, b) {
@@ -285,11 +286,18 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 field : orderField,
                 direction : orderDirection
             };
+            that.loading = true;
+            console.log('nuovi valori ordinati',value);
             that.$set(that,'value',value);
             //that.orderDirection = order_direction;
-            that.$forceUpdate();
 
-            that.reload();
+            setTimeout(function (){
+                that.loading = false;  //  per far in modo di autodisegnarsi di nuovo
+                that.reload();
+            },100);
+            //that.$forceUpdate();
+            //this.loading = false;
+            //that.reload();
         },
 
         getTranslate:function (key) {

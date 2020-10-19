@@ -3,9 +3,6 @@ crud.components.views.vBase = Vue.component('v-base', {
         cFields : {
             default : null
         },
-        cTargetRef : {
-            default : null
-        },
         cRouteConf : {
             default : null
         },

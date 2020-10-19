@@ -573,7 +573,7 @@
                         </tr>
                     </thead>
                     <tbody >
-                    <tr v-for="(row,index) in widgets" >
+                    <tr v-for="(row,index) in widgets" :key="Math.random()">
                         <td v-show="recordActionsName.length">
 
                             <div class="btn-group btn-group-sm" role="group">
@@ -587,7 +587,7 @@
                             </div>
 
                         </td>
-                        <td v-for="(widget, key) in row" v-if="!isHiddenField(key)">
+                        <td v-for="(widget, key) in row" :key="key" v-if="!isHiddenField(key)">
                             <v-widget :c-widget="widget" :key="key"></v-widget>
                         </td>
                         <template v-for="(widget, key) in row" v-if="isHiddenField(key)">

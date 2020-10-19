@@ -121,7 +121,7 @@ let crudConfWidgets = {
         slot : '',
     },
     'w-b2-select2': {
-        //confParent : 'crud.conf.w-base',
+        labelFields : [],
         resources : [
             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
             'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
@@ -129,9 +129,11 @@ let crudConfWidgets = {
         routeName : 'autocomplete',
         route : null,
         primaryKey : 'id',
+        allowClear : true,
+        data : null,  // eventuali dati statici
     },
     'w-b2m-select2': {
-        //confParent : 'crud.conf.w-b2-select2',
+        confParent : 'crud.conf.w-b2-select2',
         value : [],
     },
     'w-upload' : {
