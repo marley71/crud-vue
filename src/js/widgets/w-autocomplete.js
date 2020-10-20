@@ -1,9 +1,28 @@
-crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete', {
+crud.components.widgets.coreWAutocomplete = Vue.component('core-w-autocomplete', {
     extends : crud.components.widgets.wBase,
     methods : {
         afterLoadResources : function () {
             var that = this;
+            if (that.routeName === null) {  // caso di valori statici
+                that._initStatic();
+            } else {
+                that._initAjax();
+            }
+            // that.jQe('[c-autocomplete]').autoComplete({
+            //     onSelect: function(e, term, item){
+            //         //console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
+            //         that.value = that.suggestValues[term];
+            //         that.label = term;
+            //         that.change();
+            //     }
+            // });
+
+            that.getLabel();
+        },
+        _initAjax : function () {
+            var that = this;
             that.jQe('[c-autocomplete]').autoComplete({
+                minLength : that.minLength,
                 source : function(term,suggest) {
                     var r = that._getRoute(that.routeName);
                     that.setRouteValues(r,term);
@@ -22,21 +41,40 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
                         return suggest(suggestions)
                     })
                 },
-                onSelect: function(e, term, item){
-                    //console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
-                    that.value = that.suggestValues[term];
-                    that.label = term;
-                    that.change();
-                }
+                onSelect: that._onSelect
             });
-            that.getLabel();
+        },
+        _initStatic : function () {
+            var that = this;
+            var data = that.data || [];
+            for (var i in data) {
+                data[i].text = that._getSuggestion(that.data[i]);
+                if (data[i][that.primaryKey] == that.value) {
+                    data[i].selected = true;
+                }
+            }
+            //data = ['ciao','cianon'];
+            console.log('data',data);
+            that.jQe('[c-autocomplete]').autoComplete({
+                source : function(term,suggest) {
+                    var suggestions = [];
+                    //that.suggestValues = {};
+                    for (var i in data) {
+                        var s = that._getSuggestion(data[i]);
+                        suggestions.push(s);
+                        that.suggestValues[s] = data[i][that.primaryKey];
+                    }
+                    return suggest(suggestions)
+                },
+                minLength : that.minLength,
+                onSelect: that._onSelect
+            });
         },
         setRouteValues : function (route,term) {
             var that = this;
             route.setValues({modelName:that.modelName});
             var url = that.url?that.url:route.getUrl();
             url+= '?term='+term+'&';
-
             if (that.labelFields) {
                 for(var f in that.labelFields) {
                     url+="field[]="+that.labelFields[f]+"&";
@@ -67,10 +105,21 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
         _getSuggestion: function(rowData) {
             var that = this;
             var s = "";
+            if (that.labelFields.length == 0) {
+                console.log('rowData',rowData[that.primaryKey],' primaryKey',that.primaryKey)
+                return rowData[that.primaryKey] +"";
+            }
             for (var k in that.labelFields) {
                 s += (s?' ':'') + rowData[that.labelFields[k]];
             }
             return s
+        },
+        _onSelect : function(e, term, item) {
+            var that = this;
+            //console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
+            that.value = that.suggestValues[term];
+            that.label = term;
+            that.change();
         }
     }
 });

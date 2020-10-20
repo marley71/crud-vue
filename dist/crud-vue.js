@@ -445,10 +445,11 @@ let crudConfWidgets = {
             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
         ],
         routeName : 'autocomplete',
-        primaryKey : 'id',
+        primaryKey : 'id',  // campo da utilizzare per assegnare il valore selezionato
         label : '',
         suggestValues : {},
-        labelFields : ['text'],
+        labelFields : [], // campi da visualizzare nell'autocomplete
+        minLength: 3, // caratteri minimi prima che parta la ricerca
     },
     'w-belongsto' : {
         //confParent : 'crud.conf.w-base',
@@ -2582,12 +2583,31 @@ crud.components.widgets.coreWCheckbox = Vue.component('core-w-checkbox',{
 });
 
 
-crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete', {
+crud.components.widgets.coreWAutocomplete = Vue.component('core-w-autocomplete', {
     extends : crud.components.widgets.wBase,
     methods : {
         afterLoadResources : function () {
             var that = this;
+            if (that.routeName === null) {  // caso di valori statici
+                that._initStatic();
+            } else {
+                that._initAjax();
+            }
+            // that.jQe('[c-autocomplete]').autoComplete({
+            //     onSelect: function(e, term, item){
+            //         //console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
+            //         that.value = that.suggestValues[term];
+            //         that.label = term;
+            //         that.change();
+            //     }
+            // });
+
+            that.getLabel();
+        },
+        _initAjax : function () {
+            var that = this;
             that.jQe('[c-autocomplete]').autoComplete({
+                minLength : that.minLength,
                 source : function(term,suggest) {
                     var r = that._getRoute(that.routeName);
                     that.setRouteValues(r,term);
@@ -2606,21 +2626,40 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
                         return suggest(suggestions)
                     })
                 },
-                onSelect: function(e, term, item){
-                    //console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
-                    that.value = that.suggestValues[term];
-                    that.label = term;
-                    that.change();
-                }
+                onSelect: that._onSelect
             });
-            that.getLabel();
+        },
+        _initStatic : function () {
+            var that = this;
+            var data = that.data || [];
+            for (var i in data) {
+                data[i].text = that._getSuggestion(that.data[i]);
+                if (data[i][that.primaryKey] == that.value) {
+                    data[i].selected = true;
+                }
+            }
+            //data = ['ciao','cianon'];
+            console.log('data',data);
+            that.jQe('[c-autocomplete]').autoComplete({
+                source : function(term,suggest) {
+                    var suggestions = [];
+                    //that.suggestValues = {};
+                    for (var i in data) {
+                        var s = that._getSuggestion(data[i]);
+                        suggestions.push(s);
+                        that.suggestValues[s] = data[i][that.primaryKey];
+                    }
+                    return suggest(suggestions)
+                },
+                minLength : that.minLength,
+                onSelect: that._onSelect
+            });
         },
         setRouteValues : function (route,term) {
             var that = this;
             route.setValues({modelName:that.modelName});
             var url = that.url?that.url:route.getUrl();
             url+= '?term='+term+'&';
-
             if (that.labelFields) {
                 for(var f in that.labelFields) {
                     url+="field[]="+that.labelFields[f]+"&";
@@ -2651,10 +2690,21 @@ crud.components.widgets.coreWAutocomplete = Vue.component('crud-w-autocomplete',
         _getSuggestion: function(rowData) {
             var that = this;
             var s = "";
+            if (that.labelFields.length == 0) {
+                console.log('rowData',rowData[that.primaryKey],' primaryKey',that.primaryKey)
+                return rowData[that.primaryKey] +"";
+            }
             for (var k in that.labelFields) {
                 s += (s?' ':'') + rowData[that.labelFields[k]];
             }
             return s
+        },
+        _onSelect : function(e, term, item) {
+            var that = this;
+            //console.log(term,that.suggestValues,'selected',that.suggestValues[term],'item',item);
+            that.value = that.suggestValues[term];
+            that.label = term;
+            that.change();
         }
     }
 });
@@ -3228,8 +3278,6 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
 
         afterLoadResources : function () {
             var that = this;
-            var data = [];
-
             if (that.routeName === null) {  // caso di valori statici
                 that._initSelectStatic();
             } else {
@@ -3282,20 +3330,6 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
          */
         _initSelectStatic : function () {
             var that = this;
-            // if (that.data === null) {
-            //     console.log('select statica ma senza valori presenti in data');
-            // }
-            // var data = [];
-            // // trasformo il valore con i labelFields per coerenza con la parte ajax
-            // for (var i in that.data) {
-            //     var d = {
-            //         id : that.data[i][that.primaryKey],
-            //         text : that.getLabel(that.data[i])
-            //     };
-            //     if (d.id == that.value)
-            //         d.selected = true;
-            //     data.push(d);
-            // }
             var data = that._getSelectedValues();
             that.jQe('[c-select2]').select2({
                 data : data,
@@ -3312,14 +3346,6 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
          */
         _initSelectAjax : function () {
             var that = this;
-            // var data = that.data || [];
-            // if (that.value) {
-            //     var _id = data.length?data[0][that.primaryKey]:null;
-            //     if (that.value == _id) {
-            //         data[0].selected = true;
-            //         data[0].text = that.getLabel(data[0]);
-            //     }
-            // }
             var data = that._getSelectedValues();
             //console.log('DATA',data);
             that.jQe('[c-select2]').select2({
@@ -3428,48 +3454,38 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
          * inizializzazione select con dati statici
          * @private
          */
-        _initSelectStatic : function () {
-            var that = this;
-            // if (that.data === null) {
-            //     console.log('select statica ma senza valori presenti in data');
-            // }
-            // var data = that.data || [];
-            // // trasformo il valore con i labelFields per coerenza con la parte ajax
-            // for (var i in that.data) {
-            //     var d = {
-            //         id : that.data[i][that.primaryKey],
-            //         text : that.getLabel(that.data[i])
-            //     };
-            //     if (d.id == that.value)
-            //         d.selected = true;
-            //     data.push(d);
-            // }
-            var data = that._getSelectedValues();
-            that.jQe('[c-select2]').select2({
-                data : data,
-                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
-                allowClear : that.allowClear,
-                theme : that.theme,
-            });
-        },
+        // _initSelectStatic : function () {
+        //     var that = this;
+        //     //var data = that.data || [];
+        //     // trasformo il valore con i labelFields per coerenza con la parte ajax
+        //
+        //     var data = that._getSelectedValues();
+        //     //console.log('DATA',data);
+        //     that.jQe('[c-select2]').select2({
+        //         data : data,
+        //         placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
+        //         allowClear : that.allowClear,
+        //         theme : that.theme,
+        //     });
+        // },
         /**
          * inizializzazione select ajax, in caso contenta un valore gia' selezionato,
          * allora staticamenti la property data deve avere un item simile alla risposta json e deve
          * avere come primary key uguale alla property value.
          * @private
          */
-        _initSelectAjax : function () {
-            var that = this;
-            var data = this._getSelectedValues();
-            //console.log('DATA',data);
-            that.jQe('[c-select2]').select2({
-                data : data,
-                ajax : that._getAjaxConf(),
-                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
-                allowClear : that.allowClear,
-                theme : that.theme,
-            });
-        },
+        // _initSelectAjax : function () {
+        //     var that = this;
+        //     var data = this._getSelectedValues();
+        //     //console.log('DATA ajaax',data);
+        //     that.jQe('[c-select2]').select2({
+        //         data : data,
+        //         ajax : that._getAjaxConf(),
+        //         placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
+        //         allowClear : that.allowClear,
+        //         theme : that.theme,
+        //     });
+        // },
 
         // afterLoadResources : function () {
         //     var that = this;
@@ -3534,9 +3550,9 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
                 for (var i in that.value) {
                     for(var j in data) {
                         //console.log('test',that.value[i],data[j][that.primaryKey])
+                        data[j].text = that.getLabel(data[j]);
                         if (that.value[i] == data[j][that.primaryKey]) {
                             data[j].selected = true;
-                            data[j].text = that.getLabel(data[j]);
                         }
                     }
                 }

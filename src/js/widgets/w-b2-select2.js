@@ -4,8 +4,6 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
 
         afterLoadResources : function () {
             var that = this;
-            var data = [];
-
             if (that.routeName === null) {  // caso di valori statici
                 that._initSelectStatic();
             } else {
@@ -58,20 +56,6 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
          */
         _initSelectStatic : function () {
             var that = this;
-            // if (that.data === null) {
-            //     console.log('select statica ma senza valori presenti in data');
-            // }
-            // var data = [];
-            // // trasformo il valore con i labelFields per coerenza con la parte ajax
-            // for (var i in that.data) {
-            //     var d = {
-            //         id : that.data[i][that.primaryKey],
-            //         text : that.getLabel(that.data[i])
-            //     };
-            //     if (d.id == that.value)
-            //         d.selected = true;
-            //     data.push(d);
-            // }
             var data = that._getSelectedValues();
             that.jQe('[c-select2]').select2({
                 data : data,
@@ -88,14 +72,6 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
          */
         _initSelectAjax : function () {
             var that = this;
-            // var data = that.data || [];
-            // if (that.value) {
-            //     var _id = data.length?data[0][that.primaryKey]:null;
-            //     if (that.value == _id) {
-            //         data[0].selected = true;
-            //         data[0].text = that.getLabel(data[0]);
-            //     }
-            // }
             var data = that._getSelectedValues();
             //console.log('DATA',data);
             that.jQe('[c-select2]').select2({

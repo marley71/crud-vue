@@ -31,48 +31,38 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
          * inizializzazione select con dati statici
          * @private
          */
-        _initSelectStatic : function () {
-            var that = this;
-            // if (that.data === null) {
-            //     console.log('select statica ma senza valori presenti in data');
-            // }
-            // var data = that.data || [];
-            // // trasformo il valore con i labelFields per coerenza con la parte ajax
-            // for (var i in that.data) {
-            //     var d = {
-            //         id : that.data[i][that.primaryKey],
-            //         text : that.getLabel(that.data[i])
-            //     };
-            //     if (d.id == that.value)
-            //         d.selected = true;
-            //     data.push(d);
-            // }
-            var data = that._getSelectedValues();
-            that.jQe('[c-select2]').select2({
-                data : data,
-                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
-                allowClear : that.allowClear,
-                theme : that.theme,
-            });
-        },
+        // _initSelectStatic : function () {
+        //     var that = this;
+        //     //var data = that.data || [];
+        //     // trasformo il valore con i labelFields per coerenza con la parte ajax
+        //
+        //     var data = that._getSelectedValues();
+        //     //console.log('DATA',data);
+        //     that.jQe('[c-select2]').select2({
+        //         data : data,
+        //         placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
+        //         allowClear : that.allowClear,
+        //         theme : that.theme,
+        //     });
+        // },
         /**
          * inizializzazione select ajax, in caso contenta un valore gia' selezionato,
          * allora staticamenti la property data deve avere un item simile alla risposta json e deve
          * avere come primary key uguale alla property value.
          * @private
          */
-        _initSelectAjax : function () {
-            var that = this;
-            var data = this._getSelectedValues();
-            //console.log('DATA',data);
-            that.jQe('[c-select2]').select2({
-                data : data,
-                ajax : that._getAjaxConf(),
-                placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
-                allowClear : that.allowClear,
-                theme : that.theme,
-            });
-        },
+        // _initSelectAjax : function () {
+        //     var that = this;
+        //     var data = this._getSelectedValues();
+        //     //console.log('DATA ajaax',data);
+        //     that.jQe('[c-select2]').select2({
+        //         data : data,
+        //         ajax : that._getAjaxConf(),
+        //         placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
+        //         allowClear : that.allowClear,
+        //         theme : that.theme,
+        //     });
+        // },
 
         // afterLoadResources : function () {
         //     var that = this;
@@ -137,9 +127,9 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
                 for (var i in that.value) {
                     for(var j in data) {
                         //console.log('test',that.value[i],data[j][that.primaryKey])
+                        data[j].text = that.getLabel(data[j]);
                         if (that.value[i] == data[j][that.primaryKey]) {
                             data[j].selected = true;
-                            data[j].text = that.getLabel(data[j]);
                         }
                     }
                 }

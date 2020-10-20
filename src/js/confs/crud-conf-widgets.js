@@ -22,10 +22,11 @@ let crudConfWidgets = {
             'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
         ],
         routeName : 'autocomplete',
-        primaryKey : 'id',
+        primaryKey : 'id',  // campo da utilizzare per assegnare il valore selezionato
         label : '',
         suggestValues : {},
-        labelFields : ['text'],
+        labelFields : [], // campi da visualizzare nell'autocomplete
+        minLength: 3, // caratteri minimi prima che parta la ricerca
     },
     'w-belongsto' : {
         //confParent : 'crud.conf.w-base',
