@@ -58,6 +58,9 @@ var crudJsFiles = [
     'src/js/widgets/w-upload-ajax.js',
     'src/js/widgets/w-preview.js',
 
+    'src/js/widgets/w-map.js',
+    'src/js/widgets/w-map-view.js',
+
     'src/js/views/v-base.js',
     'src/js/views/v-record.js',
     'src/js/views/v-collection.js',
@@ -118,6 +121,9 @@ var widgetsHtmlFiles = [
     'src/templates/widgets/w-upload.html',
     'src/templates/widgets/w-upload-ajax.html',
     'src/templates/widgets/w-preview.html',
+
+    'src/templates/widgets/w-map.html',
+    'src/templates/widgets/w-map-view.html',
 ];
 
 var viewsHtmlFiles = [
@@ -170,6 +176,9 @@ var crudHtmlFiles = [
     'src/templates/widgets/w-upload.html',
     'src/templates/widgets/w-upload-ajax.html',
     'src/templates/widgets/w-preview.html',
+    'src/templates/widgets/w-map.html',
+    'src/templates/widgets/w-map-view.html',
+
 
     'src/templates/views/v-list.html',
     'src/templates/views/v-list-edit.html',

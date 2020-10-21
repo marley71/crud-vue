@@ -134,6 +134,16 @@ crud.components.widgets.wUploadAjax = Vue.component('w-upload-ajax', {
     template: '#w-upload-ajax-template',
 });
 
+crud.components.widgets.wMap = Vue.component('w-map', {
+    extends: crud.components.widgets.coreWMap,
+    template: '#w-map-template',
+});
+
+crud.components.widgets.wMapView = Vue.component('w-map-view', {
+    extends: crud.components.widgets.coreWMapView,
+    template: '#w-map-view-template',
+});
+
 //-----------------   VIEWS  ----------------------
 
 crud.components.views.vEdit = Vue.component('v-edit', {

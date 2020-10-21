@@ -1,11 +1,6 @@
 <template id="w-b2m-select2-template">
-    <div>
-        <select c-select2 class="form-control m-select2" name="" multiple="true"
-                v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
+    <select c-select2 class="form-control m-select2" :name="getFieldName()" multiple="true"
+            v-model="value" v-bind:c-marker="cMarker" v-on:change="change">
 
-        </select>
-        <div c-selected-items>
-            <!-- hidden input for selected items -->
-        </div>
-    </div>
+    </select>
 </template>

@@ -1,0 +1,14 @@
+<template id="w-map-template">
+    <div>
+        <!-- input hidden for form compatibiliy --->
+        <input type="hidden" :name="lngName" >
+        <input type="hidden" :name="latName">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">{{'app.trova_indirizzo' | translate}}</span>
+            </div>
+            <input class="form-control" type="text" v-on:change="searchAddress"/>
+        </div>
+        <div c-map></div>
+    </div>
+</template>

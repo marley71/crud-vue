@@ -578,10 +578,24 @@ let crudConfWidgets = {
         previewConf : {},
     },
     'w-preview' : {
-        //confParent : 'crud.conf.w-base',
         icon : false,
         iconClass : '',
         value : {},
+    },
+    'w-map' : {
+        apiKey : null,
+        map : null,
+        marker : null,
+        lat : 0,
+        lng : 0,
+        zoom : 8,
+        height : 400,
+        width : 'auto',
+        lngName : 'lng',
+        latName : 'lat'
+    },
+    'w-map-view' : {
+        confParent : 'crud.conf.w-map',
     },
 }
 
@@ -3109,37 +3123,6 @@ crud.components.widgets.coreWSwap = Vue.component('core-w-swap', {
 
         //console.log('domainValues',that.domainValues,that.slot)
     },
-    // data : function () {
-    //     var that = this;
-    //     var d = {};
-    //     var _conf = that._getConf() || {};
-    //     if (!("routeName" in _conf))
-    //         d.routeName = 'set';
-    //     d.iconClass = 'fa fa-circle';
-    //     d.title = "swap";
-    //     d.swapType = _conf.swapType?_conf.swapType:'icon';
-    //     var defaultDomainValues = {
-    //         icon : {
-    //             0 : 'fa fa-circle text-danger',
-    //             1 : 'fa fa-circle text-success'
-    //         },
-    //         text : {
-    //             0 : that.translate('app.no'),
-    //             1 : that.translate('app.si')
-    //         }
-    //     }
-    //     var value = _conf.value;
-    //     var dV = (_conf.domainValues)? _conf.domainValues:defaultDomainValues[d.swapType];
-    //
-    //     var keys = Object.keys(dV).map(String);
-    //     if (keys.indexOf(""+value) >= 0) {
-    //         d.slot = dV[""+value];
-    //     } else {
-    //         d.slot = dV[keys[0]];
-    //     }
-    //     d.domainValues = dV;
-    //     return d;
-    // },
     methods : {
         getDV : function() {
             var that = this;
@@ -3181,7 +3164,9 @@ crud.components.widgets.coreWSwap = Vue.component('core-w-swap', {
             var r = that._getRoute();
             that.setRouteValues(r);
             var dV = that.getDV();
+            that.waitStart()
             Server.route(r,function (json) {
+                that.waitEnd();
                 if (json.error) {
                     that.errorDialog(json.msg);
                     return;
@@ -3330,7 +3315,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
          */
         _initSelectStatic : function () {
             var that = this;
-            var data = that._getSelectedValues();
+            var data = that._getDataValues();
             that.jQe('[c-select2]').select2({
                 data : data,
                 placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
@@ -3346,7 +3331,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
          */
         _initSelectAjax : function () {
             var that = this;
-            var data = that._getSelectedValues();
+            var data = that._getDataValues();
             //console.log('DATA',data);
             that.jQe('[c-select2]').select2({
                 data : data,
@@ -3398,10 +3383,10 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
         },
 
         /**
-         * ritorna i dati con eventuali valori gia' selezionati.
+         * ritorna e aggiusta i dati statici con eventuali valori gia' selezionati.
          * @private
          */
-        _getSelectedValues : function (){
+        _getDataValues : function (){
             var that = this;
             if (that.data === null && that.value) {
                 console.log('select statica ma senza valori presenti in data');
@@ -3410,6 +3395,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
             var data = that.data || [];
             // trasformo il valore con i labelFields per coerenza con la parte ajax
             for (var i in data) {
+                data[i].id = data[i][that.primaryKey];
                 data[i].text = that.getLabel(that.data[i]);
                 if (data[i][that.primaryKey] == that.value) {
                     data[i].selected = true;
@@ -3425,27 +3411,30 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
     extends : crud.components.widgets.coreWB2Select2,
     methods : {
 
-        afterLoadResources : function () {
-            var that = this;
-            var data = [];
-
-            if (that.routeName === null) {  // caso di valori statici
-                that._initSelectStatic();
-            } else {
-                that._initSelectAjax();
-            }
-            that._connectEvents();
-            that._renderHidden();
+        getFieldName : function () {
+            return this.name + '[]';
         },
+
+        // afterLoadResources : function () {
+        //     var that = this;
+        //     console.log('wb2m',that)
+        //     if (that.routeName === null) {  // caso di valori statici
+        //         that._initSelectStatic();
+        //     } else {
+        //         that._initSelectAjax();
+        //     }
+        //     that._connectEvents();
+        //     //that._renderHidden();
+        // },
 
         _connectEvents : function () {
             var that = this;
             that.jQe('[c-select2]').on('select2:select', function (e) {
-                that._renderHidden();
+                //that._renderHidden();
                 that.change(e);
             });
             that.jQe('[c-select2]').on('select2:unselect', function (e) {
-                that._renderHidden();
+                //that._renderHidden();
                 that.change(e);
             });
         },
@@ -3526,35 +3515,33 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
          * la presenza di una form.
          * @private
          */
-        _renderHidden : function () {
-            var that = this;
-            var values = that.getValue();
-            that.jQe('[c-selected-items]').html(' ');
-            for (var i in values) {
-                jQuery('<input type="hidden">').attr({
-                    'name': that.getFieldName() + '-' + that.primaryKey + '[]',
-                    'value':values[i]
-                }).appendTo(that.jQe('[c-selected-items]'));
-            }
-
-        },
+        // _renderHidden : function () {
+        //     var that = this;
+        //     var values = that.getValue();
+        //     that.jQe('[c-selected-items]').html(' ');
+        //     for (var i in values) {
+        //         jQuery('<input type="hidden">').attr({
+        //             'name': that.getFieldName() + '-' + that.primaryKey + '[]',
+        //             'value':values[i]
+        //         }).appendTo(that.jQe('[c-selected-items]'));
+        //     }
+        //
+        // },
         /**
-         * ritorna i dati con eventuali valori gia' selezionati.
+         * ritorna e aggiusta i dati statici con eventuali valori gia' selezionati.
          * @private
          */
 
-        _getSelectedValues : function (){
+        _getDataValues : function (){
             var that = this;
             var data = that.data || [];
-            if (that.value.length > 0) {
-                for (var i in that.value) {
-                    for(var j in data) {
-                        //console.log('test',that.value[i],data[j][that.primaryKey])
-                        data[j].text = that.getLabel(data[j]);
-                        if (that.value[i] == data[j][that.primaryKey]) {
-                            data[j].selected = true;
-                        }
-                    }
+            var value = that.value || [];
+            for(var j in data) {
+                //console.log('test',that.value[i],data[j][that.primaryKey])
+                data[j].id = data[j][that.primaryKey];
+                data[j].text = that.getLabel(data[j]);
+                if (value.indexOf(data[j][that.primaryKey]) >= 0) {
+                    data[j].selected = true;
                 }
             }
             return data;
@@ -3749,22 +3736,6 @@ crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
 
 crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
     extends : crud.components.widgets.wBase,
-    // mounted : function() {
-    //     var that = this;
-    //     console.log('previw conf',that.cConf);
-    // },
-
-    // data : function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {
-    //         icon : false,
-    //         iconClass : ''
-    //     };
-    //     if (!_conf.value)
-    //         d.value = {};
-    //     return d;
-    // },
     methods : {
         getType : function () {
             var that = this;
@@ -3786,6 +3757,109 @@ crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
         }
     }
 })
+
+crud.components.widgets.coreWMap = Vue.component('core-w-map',{
+    extends : crud.components.widgets.wBase,
+    mounted : function () {
+        var that = this;
+        if (!that.apiKey)
+            throw 'nessuna apiKey definita!'
+        var random = 10; //Math.floor(Math.random() * 10000);
+        window['__initMap'+random] = function () {
+            that.initMap();
+        }
+        var scriptName = 'https://maps.googleapis.com/maps/api/js?key='+ that.apiKey+ '&callback=__initMap'+random;
+        if (!that.$crud._resources[scriptName])
+            that._loadScript(scriptName);
+        else
+            that.initMap();
+    },
+    methods : {
+        initMap : function () {
+            var that = this;
+            that.jQe('[c-map]').css('height',that.height).css('width',that.width);
+            var pos = {
+                lat : that.lat,
+                lng : that.lng
+            }
+
+            that.map = new google.maps.Map(that.jQe('[c-map]')[0], {
+                center: pos,
+                zoom: that.zoom
+            });
+            that.createMarker();
+        },
+        createMarker : function () {
+            var that = this;
+            var pos = {
+                lat : that.lat,
+                lng : that.lng
+            }
+            that.marker = new google.maps.Marker({
+                position: pos,
+                map: that.map,
+                draggable: true,
+            });
+            that.marker.addListener("dragend", function () {
+                that._setHiddenValues();
+                //console.log('position',that.marker.position);
+            });
+        },
+        searchAddress : function (event) {
+            var that = this;
+            console.log('searchAddress',jQuery(event.target).val());
+            var address = jQuery(event.target).val();
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode( { 'address': address }, function(results, status) {
+                if (results) {
+                    if (results.length > 1) {
+                        console.warn('multiple values',results);
+                    }
+                    console.log('results',results)
+                    var foundOk = false;
+                    for (var key in results) {
+                        var item = results[key];
+                        //console.log('item',item,'status',status);
+                        if (status==google.maps.GeocoderStatus.OK) {
+                            var position = new google.maps.LatLng(item.geometry.location.lat(), item.geometry.location.lng());
+                            that.marker.setPosition(position);
+                            break;
+                        }
+                    }
+                    that.map.setCenter(that.marker.position);
+                    that._setHiddenValues();
+                    delete geocoder;
+                } else {
+                    that.errorDialog(status);
+                }
+            });
+
+        },
+        _setHiddenValues : function () {
+            var that = this;
+            that.jQe('input[name="' + that.latName +'"]').val(that.marker.position.lat());
+            that.jQe('input[name="' + that.lngName +'"]').val(that.marker.position.lng());
+        }
+    }
+});
+
+crud.components.widgets.coreWMapView = Vue.component('core-w-map-view',{
+    extends : crud.components.widgets.coreWMap,
+    methods : {
+        createMarker : function () {
+            var that = this;
+            //console.log('aaaa')
+            var pos = {
+                lat : that.lat,
+                lng : that.lng
+            }
+            that.marker = new google.maps.Marker({
+                position: pos,
+                map: that.map,
+            });
+        }
+    }
+});
 
 crud.components.views.vBase = Vue.component('v-base', {
     props : {
@@ -4026,7 +4100,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             var that = this;
             var c = {
                 type:that.defaultWidgetType,
-                value : null,
             };
             configName = configName?configName:'fieldsConfig';
             var conf = (that[configName] && that[configName][key])?that[configName][key]:null;
@@ -4110,29 +4183,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
         if (that.cPk)
             d.pk = that.cPk;
         return d;
-
-        // var _conf = that._loadConf() || {}; //that._getConf() || {};
-        // var modelName = that.cModel || _conf.modelName;
-        // var langContext = _conf.langContext || modelName;
-        // var d =  {};
-        //
-        // d.modelName = modelName;
-        //
-        // d.pk = that.cPk || _conf.pk || 0;
-        //
-        // d.value = {};
-        // d.metadata = {};
-        // d.langContext = langContext;
-        // d.route = null;
-        // d.loading = true;
-        // d.widgets = {};
-        // d.actionsConf = [];
-        // d.actions = {};
-        // d.defaultWidgetType = 'w-input';
-        // d.fields = _conf.fields || [];
-        // d.fieldsConfig = _conf.fieldsConfig || {};
-        // console.log('d v-record',d);
-        // return d;
     },
 
     methods : {
@@ -4179,7 +4229,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 var key = keys[k];
                 widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'w',key);
-                widgets[key].value = null;
+                //widgets[key].value = null;
                 widgets[key].modelData = that.value;
                 if (that.value && (key in that.value) )
                     widgets[key].value = that.value[key];
@@ -4247,23 +4297,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 }
             }
             that.json = json;
-
-            // if (!route) {
-            //     console.log('dati manuali',that.conf.value);
-            //     if (that.conf.value) {
-            //         that.value = that.conf.value;
-            //     }
-            // } else {
-            //     var protocol = that.createProtocol(route.getProtocol());
-            //     protocol.jsonToData(json);
-            //     var prop = Object.getOwnPropertyNames(protocol);
-            //     for (var i in prop) {
-            //         that[prop[i]] = protocol[prop[i]];
-            //     }
-            // }
-
-            //that.data = data;
-
         },
         getViewData : function () {
             var that = this;
@@ -4407,8 +4440,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     var dconf = that._defaultWidgetConfig(key);
                     dconf.cRef = that.getRefId(that._uid,'w',i,key);
                     dconf.modelData = value[i];
-                    if (! ('value' in dconf))
-                        dconf.value = null;
+                    // if (! ('value' in dconf))
+                    //     dconf.value = null;
                     if (value[i][key])
                         dconf.value = value[i][key];
                     dconf.name = that.getFieldName(key);

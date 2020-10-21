@@ -2,27 +2,30 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
     extends : crud.components.widgets.coreWB2Select2,
     methods : {
 
-        afterLoadResources : function () {
-            var that = this;
-            var data = [];
-
-            if (that.routeName === null) {  // caso di valori statici
-                that._initSelectStatic();
-            } else {
-                that._initSelectAjax();
-            }
-            that._connectEvents();
-            that._renderHidden();
+        getFieldName : function () {
+            return this.name + '[]';
         },
+
+        // afterLoadResources : function () {
+        //     var that = this;
+        //     console.log('wb2m',that)
+        //     if (that.routeName === null) {  // caso di valori statici
+        //         that._initSelectStatic();
+        //     } else {
+        //         that._initSelectAjax();
+        //     }
+        //     that._connectEvents();
+        //     //that._renderHidden();
+        // },
 
         _connectEvents : function () {
             var that = this;
             that.jQe('[c-select2]').on('select2:select', function (e) {
-                that._renderHidden();
+                //that._renderHidden();
                 that.change(e);
             });
             that.jQe('[c-select2]').on('select2:unselect', function (e) {
-                that._renderHidden();
+                //that._renderHidden();
                 that.change(e);
             });
         },
@@ -103,35 +106,33 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
          * la presenza di una form.
          * @private
          */
-        _renderHidden : function () {
-            var that = this;
-            var values = that.getValue();
-            that.jQe('[c-selected-items]').html(' ');
-            for (var i in values) {
-                jQuery('<input type="hidden">').attr({
-                    'name': that.getFieldName() + '-' + that.primaryKey + '[]',
-                    'value':values[i]
-                }).appendTo(that.jQe('[c-selected-items]'));
-            }
-
-        },
+        // _renderHidden : function () {
+        //     var that = this;
+        //     var values = that.getValue();
+        //     that.jQe('[c-selected-items]').html(' ');
+        //     for (var i in values) {
+        //         jQuery('<input type="hidden">').attr({
+        //             'name': that.getFieldName() + '-' + that.primaryKey + '[]',
+        //             'value':values[i]
+        //         }).appendTo(that.jQe('[c-selected-items]'));
+        //     }
+        //
+        // },
         /**
-         * ritorna i dati con eventuali valori gia' selezionati.
+         * ritorna e aggiusta i dati statici con eventuali valori gia' selezionati.
          * @private
          */
 
-        _getSelectedValues : function (){
+        _getDataValues : function (){
             var that = this;
             var data = that.data || [];
-            if (that.value.length > 0) {
-                for (var i in that.value) {
-                    for(var j in data) {
-                        //console.log('test',that.value[i],data[j][that.primaryKey])
-                        data[j].text = that.getLabel(data[j]);
-                        if (that.value[i] == data[j][that.primaryKey]) {
-                            data[j].selected = true;
-                        }
-                    }
+            var value = that.value || [];
+            for(var j in data) {
+                //console.log('test',that.value[i],data[j][that.primaryKey])
+                data[j].id = data[j][that.primaryKey];
+                data[j].text = that.getLabel(data[j]);
+                if (value.indexOf(data[j][that.primaryKey]) >= 0) {
+                    data[j].selected = true;
                 }
             }
             return data;

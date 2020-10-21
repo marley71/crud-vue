@@ -237,7 +237,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             var that = this;
             var c = {
                 type:that.defaultWidgetType,
-                value : null,
             };
             configName = configName?configName:'fieldsConfig';
             var conf = (that[configName] && that[configName][key])?that[configName][key]:null;

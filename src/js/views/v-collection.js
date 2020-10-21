@@ -104,8 +104,8 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     var dconf = that._defaultWidgetConfig(key);
                     dconf.cRef = that.getRefId(that._uid,'w',i,key);
                     dconf.modelData = value[i];
-                    if (! ('value' in dconf))
-                        dconf.value = null;
+                    // if (! ('value' in dconf))
+                    //     dconf.value = null;
                     if (value[i][key])
                         dconf.value = value[i][key];
                     dconf.name = that.getFieldName(key);

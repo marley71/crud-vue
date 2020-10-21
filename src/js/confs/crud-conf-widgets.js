@@ -155,9 +155,23 @@ let crudConfWidgets = {
         previewConf : {},
     },
     'w-preview' : {
-        //confParent : 'crud.conf.w-base',
         icon : false,
         iconClass : '',
         value : {},
+    },
+    'w-map' : {
+        apiKey : null,
+        map : null,
+        marker : null,
+        lat : 0,
+        lng : 0,
+        zoom : 8,
+        height : 400,
+        width : 'auto',
+        lngName : 'lng',
+        latName : 'lat'
+    },
+    'w-map-view' : {
+        confParent : 'crud.conf.w-map',
     },
 }

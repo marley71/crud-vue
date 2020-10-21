@@ -56,7 +56,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
          */
         _initSelectStatic : function () {
             var that = this;
-            var data = that._getSelectedValues();
+            var data = that._getDataValues();
             that.jQe('[c-select2]').select2({
                 data : data,
                 placeholder: that.translate(that.placeholder?that.placeholder:'app.seleziona'),
@@ -72,7 +72,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
          */
         _initSelectAjax : function () {
             var that = this;
-            var data = that._getSelectedValues();
+            var data = that._getDataValues();
             //console.log('DATA',data);
             that.jQe('[c-select2]').select2({
                 data : data,
@@ -124,10 +124,10 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
         },
 
         /**
-         * ritorna i dati con eventuali valori gia' selezionati.
+         * ritorna e aggiusta i dati statici con eventuali valori gia' selezionati.
          * @private
          */
-        _getSelectedValues : function (){
+        _getDataValues : function (){
             var that = this;
             if (that.data === null && that.value) {
                 console.log('select statica ma senza valori presenti in data');
@@ -136,6 +136,7 @@ crud.components.widgets.coreWB2Select2 = Vue.component('core-w-b2-select2', {
             var data = that.data || [];
             // trasformo il valore con i labelFields per coerenza con la parte ajax
             for (var i in data) {
+                data[i].id = data[i][that.primaryKey];
                 data[i].text = that.getLabel(that.data[i]);
                 if (data[i][that.primaryKey] == that.value) {
                     data[i].selected = true;

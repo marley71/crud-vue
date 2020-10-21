@@ -42,29 +42,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
         if (that.cPk)
             d.pk = that.cPk;
         return d;
-
-        // var _conf = that._loadConf() || {}; //that._getConf() || {};
-        // var modelName = that.cModel || _conf.modelName;
-        // var langContext = _conf.langContext || modelName;
-        // var d =  {};
-        //
-        // d.modelName = modelName;
-        //
-        // d.pk = that.cPk || _conf.pk || 0;
-        //
-        // d.value = {};
-        // d.metadata = {};
-        // d.langContext = langContext;
-        // d.route = null;
-        // d.loading = true;
-        // d.widgets = {};
-        // d.actionsConf = [];
-        // d.actions = {};
-        // d.defaultWidgetType = 'w-input';
-        // d.fields = _conf.fields || [];
-        // d.fieldsConfig = _conf.fieldsConfig || {};
-        // console.log('d v-record',d);
-        // return d;
     },
 
     methods : {
@@ -111,7 +88,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 var key = keys[k];
                 widgets[key] = that._defaultWidgetConfig(key);
                 widgets[key].cRef = that.getRefId(that._uid,'w',key);
-                widgets[key].value = null;
+                //widgets[key].value = null;
                 widgets[key].modelData = that.value;
                 if (that.value && (key in that.value) )
                     widgets[key].value = that.value[key];
@@ -179,23 +156,6 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 }
             }
             that.json = json;
-
-            // if (!route) {
-            //     console.log('dati manuali',that.conf.value);
-            //     if (that.conf.value) {
-            //         that.value = that.conf.value;
-            //     }
-            // } else {
-            //     var protocol = that.createProtocol(route.getProtocol());
-            //     protocol.jsonToData(json);
-            //     var prop = Object.getOwnPropertyNames(protocol);
-            //     for (var i in prop) {
-            //         that[prop[i]] = protocol[prop[i]];
-            //     }
-            // }
-
-            //that.data = data;
-
         },
         getViewData : function () {
             var that = this;
