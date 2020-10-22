@@ -70,7 +70,7 @@ const CrudApp = Vue.extend({
 
 Vue.filter('translate', function (value,context,plural,params) {
     var langKey = context?context+'.'+value:value;
-    if (crud.instance.hasTranslation(langKey))
+    //if (crud.instance.hasTranslation(langKey))
         return crud.instance.translate(langKey,plural,params);
-    return value;
+    //return value;
 })

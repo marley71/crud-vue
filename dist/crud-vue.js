@@ -3607,29 +3607,7 @@ crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
             cRef : this._uid + 'preview'
         }
         return d;
-        //d.value = JSON.stringify(that.value).replace(/\\"/g, '"');
     },
-
-    // data : function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {};
-    //     d.extensions = _conf.extensions?_conf.extensions:[];
-    //     d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
-    //     //d.uploadConf = d.conf;
-    //     if (! ("routeName" in _conf) )
-    //         d.routeName = 'uploadfile';
-    //
-    //     var value = _conf.value || {};
-    //     d.previewConf = {
-    //         value : value,
-    //         cRef : this._uid + 'preview'
-    //     }
-    //     d.value = JSON.stringify(value).replace(/\\"/g, '"');
-    //     d.error = false;
-    //     d.errorMessage = '';
-    //     return d;
-    // },
 
     methods : {
 
@@ -4116,8 +4094,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!c.template)
                 c.template = that.widgetTemplate;
             c = this.merge( c ,(that.metadata[key] || {}));
-            //console.log('that.metadata',that.metadata);
-            //console.log('_defaultWidgetConfig',key,c,that.conf[configName][key]);
+            console.log('_defaultWidgetConfig',c);
             return c;
         },
         getFieldName : function (key) {
@@ -4236,8 +4213,8 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
                 widgets[key].name = that.getFieldName(key);
                 if (! ('label' in widgets[key]) ) {
-                    widgets[key].label = key;
-                    widgets[key].label = that.$options.filters.translate(widgets[key].label + '.label', that.langContext);
+                    console.log('translate key e langContext',key,that.langContext);
+                    widgets[key].label = that.$options.filters.translate(key + '.label', that.langContext);
                 } else {
                     widgets[key].label = that.$options.filters.translate(widgets[key].label);
                 }
@@ -4941,13 +4918,6 @@ crud.components.views.coreVInsert = Vue.component('core-v-insert', {
             default : 'insert'
         }
     },
-    // data :  function () {
-    //     var _conf = this._loadConf() || {};
-    //     var d =  {}
-    //     d.defaultWidgetType = _conf.defaultWidgetType || 'w-input';
-    //     return d;
-    //
-    // },
     methods : {
         setRouteValues : function (route) {
             var that  = this;
@@ -5132,7 +5102,7 @@ const CrudApp = Vue.extend({
 
 Vue.filter('translate', function (value,context,plural,params) {
     var langKey = context?context+'.'+value:value;
-    if (crud.instance.hasTranslation(langKey))
+    //if (crud.instance.hasTranslation(langKey))
         return crud.instance.translate(langKey,plural,params);
-    return value;
+    //return value;
 })
