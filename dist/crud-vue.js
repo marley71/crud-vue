@@ -4217,7 +4217,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
 
                 widgets[key].name = that.getFieldName(key);
                 if (! ('label' in widgets[key]) ) {
-                    console.log('translate key e langContext',key,that.langContext);
+                    //console.log('translate key e langContext',key,that.langContext);
                     widgets[key].label = that.$options.filters.translate(key + '.label', that.langContext);
                 } else {
                     widgets[key].label = that.$options.filters.translate(widgets[key].label);
@@ -4512,7 +4512,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                         recordActionsName.push(aName);
                     } else {
                         console.log('action ',aConf);
-                        throw aName + "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
+                        throw aName + ", tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
                     }
                 }
             }
@@ -4801,6 +4801,12 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
                     if (that.value[i][key])
                         dconf.value = that.value[i][key];
                     dconf.name = that.getFieldName(key);
+                    if (! ('label' in dconf ))  {
+                        dconf.label = key;
+                        dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
+                    } else {
+                        dconf.label = that.$options.filters.translate(dconf.label);
+                    }
                     widgetsEdit[i][key] = dconf;
                 }
             }

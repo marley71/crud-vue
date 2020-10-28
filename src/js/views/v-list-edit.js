@@ -57,6 +57,12 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
                     if (that.value[i][key])
                         dconf.value = that.value[i][key];
                     dconf.name = that.getFieldName(key);
+                    if (! ('label' in dconf ))  {
+                        dconf.label = key;
+                        dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
+                    } else {
+                        dconf.label = that.$options.filters.translate(dconf.label);
+                    }
                     widgetsEdit[i][key] = dconf;
                 }
             }
