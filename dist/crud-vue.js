@@ -2944,9 +2944,13 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     mounted : function() {
         var that = this;
         that.keyCounter = 0; // intero per generare chiave uniche
-        for (var i in that.value) {
-            var _conf = that.getHasmanyConf(i,that.value[i]);
-            that.confViews[_conf.cRef] = _conf;
+        console.log('hasmany',that.value);
+        if (that.value && that.value.length > 0) {
+            for (var i in that.value) {
+                var _conf = that.getHasmanyConf(that.value[i]);
+                that.confViews[_conf.cRef] = _conf;
+            }
+            this.$forceUpdate();
         }
     },
 
@@ -4094,7 +4098,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!c.template)
                 c.template = that.widgetTemplate;
             c = this.merge( c ,(that.metadata[key] || {}));
-            console.log('_defaultWidgetConfig',c);
+            //console.log('_defaultWidgetConfig',c);
             return c;
         },
         getFieldName : function (key) {

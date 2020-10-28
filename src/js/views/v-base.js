@@ -253,7 +253,7 @@ crud.components.views.vBase = Vue.component('v-base', {
             if (!c.template)
                 c.template = that.widgetTemplate;
             c = this.merge( c ,(that.metadata[key] || {}));
-            console.log('_defaultWidgetConfig',c);
+            //console.log('_defaultWidgetConfig',c);
             return c;
         },
         getFieldName : function (key) {

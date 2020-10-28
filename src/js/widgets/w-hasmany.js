@@ -3,9 +3,13 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     mounted : function() {
         var that = this;
         that.keyCounter = 0; // intero per generare chiave uniche
-        for (var i in that.value) {
-            var _conf = that.getHasmanyConf(i,that.value[i]);
-            that.confViews[_conf.cRef] = _conf;
+        console.log('hasmany',that.value);
+        if (that.value && that.value.length > 0) {
+            for (var i in that.value) {
+                var _conf = that.getHasmanyConf(that.value[i]);
+                that.confViews[_conf.cRef] = _conf;
+            }
+            this.$forceUpdate();
         }
     },
 
