@@ -195,7 +195,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                         recordActionsName.push(aName);
                     } else {
                         console.log('action ',aConf);
-                        throw "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
+                        throw aName + "tipo di action (" + aConf.type + ") non definito! valori accettati sono record,collection";
                     }
                 }
             }
