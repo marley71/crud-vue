@@ -183,12 +183,15 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 if (that.$crud.conf[aName]) {
                     aConf = that.$crud.conf[aName];
                 } else if(that.customActions[aName]) {
-                    aConf = that.customActions[aName];
+                    aConf = that.merge(that.$crud.conf['action-base'],that.customActions[aName]);
+                    //aConf.confParent = 'crud.conf.action-base';
                 } else {
                     valid = false;
                     console.warn("Impossibile trovare la configurazione di " + aName);
                 }
+                //aConf = that.mergeConf(aConf);
                 if (valid) {
+                    console.log('aConf',aConf);
                     if (aConf.type == 'collection') {
                         collectionActionsName.push(aName);
                     } else if (aConf.type == 'record') {
