@@ -1992,7 +1992,7 @@ crud.components.cComponent = Vue.component('c-component',{
             delete this.$crud.cRefs[cr];
     },
     data : function() {
-        return this._loadConf();
+        return this.dynamicData(this._loadConf());
     },
     methods : {
         jQe : function (selector) {
@@ -2001,6 +2001,9 @@ crud.components.cComponent = Vue.component('c-component',{
                 return jQuery(that.$el).find(selector).addBack(selector);
             }
             return jQuery(that.$el);
+        },
+        dynamicData : function (conf) {
+            return conf;
         },
         /**
          * carica la configurazione del componente, data dalla configurazione di default mergiata con
@@ -2944,7 +2947,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
     mounted : function() {
         var that = this;
         that.keyCounter = 0; // intero per generare chiave uniche
-        console.log('hasmany',that.value);
+        //console.log('hasmany',that.value);
         if (that.value && that.value.length > 0) {
             for (var i in that.value) {
                 var _conf = that.getHasmanyConf(that.value[i]);

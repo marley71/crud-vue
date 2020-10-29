@@ -59,7 +59,7 @@ crud.components.cComponent = Vue.component('c-component',{
             delete this.$crud.cRefs[cr];
     },
     data : function() {
-        return this._loadConf();
+        return this.dynamicData(this._loadConf());
     },
     methods : {
         jQe : function (selector) {
@@ -68,6 +68,9 @@ crud.components.cComponent = Vue.component('c-component',{
                 return jQuery(that.$el).find(selector).addBack(selector);
             }
             return jQuery(that.$el);
+        },
+        dynamicData : function (conf) {
+            return conf;
         },
         /**
          * carica la configurazione del componente, data dalla configurazione di default mergiata con
