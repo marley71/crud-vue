@@ -130,12 +130,13 @@ crud.components.views.vBase = Vue.component('v-base', {
                 });
             }
             // se non esiste una configurazione la inserisco io con quella di default
-            if (!that.$crud.conf[name]) {
-                that.$crud.conf[name] = {
-                    confParent : 'crud.conf.action-base'
-                }
-            }
+            // if (!that.$crud.conf[name]) {
+            //     that.$crud.conf[name] = {
+            //         confParent : 'crud.conf.action-base'
+            //     }
+            // }
             // ritorno l'azione con la configurazione di default mergiata con un eventuale configurazione custom
+            //console.log('getActionConfig name',that.$crud.conf[name],that.customActions[name]);
             return that.merge(that.$crud.conf[name],(that.customActions[name] || {}));
         },
 

@@ -175,14 +175,16 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var that = this;
             var collectionActionsName = [];
             var recordActionsName = [];
-
+            //console.log('customActions',that.customActions)
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = {};
                 var valid = true;
+
                 if (that.$crud.conf[aName]) {
                     aConf = that.$crud.conf[aName];
                 } else if(that.customActions[aName]) {
+                    //console.log('custom action',aName,JSON.parse(JSON.stringify(that.customActions[aName])))
                     aConf = that.merge(that.$crud.conf['action-base'],that.customActions[aName]);
                     //aConf.confParent = 'crud.conf.action-base';
                 } else {
@@ -191,7 +193,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 }
                 //aConf = that.mergeConf(aConf);
                 if (valid) {
-                    console.log('aConf',aConf);
+                    //console.log('aConf',aName,aConf);
                     if (aConf.type == 'collection') {
                         collectionActionsName.push(aName);
                     } else if (aConf.type == 'record') {

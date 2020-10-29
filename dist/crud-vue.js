@@ -3975,12 +3975,13 @@ crud.components.views.vBase = Vue.component('v-base', {
                 });
             }
             // se non esiste una configurazione la inserisco io con quella di default
-            if (!that.$crud.conf[name]) {
-                that.$crud.conf[name] = {
-                    confParent : 'crud.conf.action-base'
-                }
-            }
+            // if (!that.$crud.conf[name]) {
+            //     that.$crud.conf[name] = {
+            //         confParent : 'crud.conf.action-base'
+            //     }
+            // }
             // ritorno l'azione con la configurazione di default mergiata con un eventuale configurazione custom
+            //console.log('getActionConfig name',that.$crud.conf[name],that.customActions[name]);
             return that.merge(that.$crud.conf[name],(that.customActions[name] || {}));
         },
 
@@ -4492,14 +4493,16 @@ crud.components.views.vCollection = Vue.component('v-collection', {
             var that = this;
             var collectionActionsName = [];
             var recordActionsName = [];
-
+            //console.log('customActions',that.customActions)
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = {};
                 var valid = true;
+
                 if (that.$crud.conf[aName]) {
                     aConf = that.$crud.conf[aName];
                 } else if(that.customActions[aName]) {
+                    //console.log('custom action',aName,JSON.parse(JSON.stringify(that.customActions[aName])))
                     aConf = that.merge(that.$crud.conf['action-base'],that.customActions[aName]);
                     //aConf.confParent = 'crud.conf.action-base';
                 } else {
@@ -4508,7 +4511,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                 }
                 //aConf = that.mergeConf(aConf);
                 if (valid) {
-                    console.log('aConf',aConf);
+                    //console.log('aConf',aName,aConf);
                     if (aConf.type == 'collection') {
                         collectionActionsName.push(aName);
                     } else if (aConf.type == 'record') {
