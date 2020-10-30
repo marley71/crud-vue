@@ -6,6 +6,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
         //console.log('hasmany',that.value);
         if (that.value && that.value.length > 0) {
             for (var i in that.value) {
+                that.value.status = 'updated';
                 var _conf = that.getHasmanyConf(that.value[i]);
                 that.confViews[_conf.cRef] = _conf;
             }
@@ -44,11 +45,11 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
                     hmConf.fields = Object.keys(value);
                 }
             }
-            if (!value) {
-                value.status = 'new';
-            } else {
-                value.status = 'update';
-            }
+            // if (!value) {
+            //     value.status = 'new';
+            // } else {
+            //     value.status = 'update';
+            // }
             // if (!value) {
             //     that.value[index].status = 'new';
             //     hmConf.value.status = 'new';
