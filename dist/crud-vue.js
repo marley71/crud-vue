@@ -2950,7 +2950,7 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
         //console.log('hasmany',that.value);
         if (that.value && that.value.length > 0) {
             for (var i in that.value) {
-                that.value.status = 'updated';
+                that.value[i].status = 'updated';
                 var _conf = that.getHasmanyConf(that.value[i]);
                 that.confViews[_conf.cRef] = _conf;
             }
