@@ -3748,8 +3748,6 @@ crud.components.widgets.coreWMap = Vue.component('core-w-map',{
     extends : crud.components.widgets.wBase,
     mounted : function () {
         var that = this;
-        if (!that.apiKey)
-            throw 'nessuna apiKey definita!'
         var random = 10; //Math.floor(Math.random() * 10000);
         window['__initMap'+random] = function () {
             that.initMap();
@@ -3763,6 +3761,8 @@ crud.components.widgets.coreWMap = Vue.component('core-w-map',{
     methods : {
         initMap : function () {
             var that = this;
+            if (!that.apiKey)
+                throw 'nessuna apiKey definita!'
             that.jQe('[c-map]').css('height',that.height).css('width',that.width);
             var pos = {
                 lat : that.lat,
