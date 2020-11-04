@@ -1,33 +1,32 @@
 crud.components.widgets.coreWMap = Vue.component('core-w-map',{
     extends : crud.components.widgets.wBase,
     mounted : function () {
-        var that = this;
-        var random = 10; //Math.floor(Math.random() * 10000);
-        window['__initMap'+random] = function () {
-            that.initMap();
-        }
-        var scriptName = 'https://maps.googleapis.com/maps/api/js?key='+ that.apiKey+ '&callback=__initMap'+random;
-        if (!that.$crud._resources[scriptName])
-            that._loadScript(scriptName);
-        else
-            that.initMap();
+        this.initMap();
     },
     methods : {
         initMap : function () {
             var that = this;
             if (!that.apiKey)
-                throw 'nessuna apiKey definita!'
-            that.jQe('[c-map]').css('height',that.height).css('width',that.width);
-            var pos = {
-                lat : that.lat,
-                lng : that.lng
-            }
+                throw 'nessuna apiKey definita!';
+            var random = 10; //Math.floor(Math.random() * 10000);
+            window['__initMap'+random] = function () {
+                that.jQe('[c-map]').css('height',that.height).css('width',that.width);
+                var pos = {
+                    lat : that.lat,
+                    lng : that.lng
+                }
 
-            that.map = new google.maps.Map(that.jQe('[c-map]')[0], {
-                center: pos,
-                zoom: that.zoom
-            });
-            that.createMarker();
+                that.map = new google.maps.Map(that.jQe('[c-map]')[0], {
+                    center: pos,
+                    zoom: that.zoom
+                });
+                that.createMarker();
+            }
+            var scriptName = 'https://maps.googleapis.com/maps/api/js?key='+ that.apiKey+ '&callback=__initMap'+random;
+            if (!that.$crud._resources[scriptName])
+                that._loadScript(scriptName);
+            else
+                window['__initMap'+random]();
         },
         createMarker : function () {
             var that = this;

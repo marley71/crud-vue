@@ -427,6 +427,7 @@ let crudConfWidgets = {
         confParent : 'crud.conf.c-component',
         value : null,
         defaultValue : null,
+        label : null,
     },
     'w-input' : {
         //confParent : 'crud.conf.w-base',
@@ -446,7 +447,7 @@ let crudConfWidgets = {
         ],
         routeName : 'autocomplete',
         primaryKey : 'id',  // campo da utilizzare per assegnare il valore selezionato
-        label : '',
+        //label : '',
         suggestValues : {},
         labelFields : [], // campi da visualizzare nell'autocomplete
         minLength: 3, // caratteri minimi prima che parta la ricerca
@@ -616,7 +617,7 @@ let crudConfViews = {
         pk : 0,
         value : {},
         metadata : {},
-        langContext : null,
+        //langContext : '',
         route : null,
         widgets : {},
         actionsConf : [],
@@ -3039,33 +3040,33 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
             this.$forceUpdate();
             return ;
 
-            console.log('deleteItem',refId,this.$crud.cRefs[refId])
-            if (this.$crud.cRefs[refId].value.status  == 'new') {
-                delete this.confViews[refId];
-                this.$crud.cRefs[refId].$destroy();
-            } else {
-                this.$crud.cRefs[refId].value.status = 'deleted';
-            }
-            return ;
-            console.log('confView',that.confViews);
-            var oldConfViews = that.confViews
-            that.$set(that,'confViews', {});
-            this.$forceUpdate();
-            setTimeout(function () {
-                var newConfViews = {};
-                for (var k in oldConfViews) {
-                    var vId = oldConfViews[k].cRef;
-                    newConfViews[k] = oldConfViews[k];
-                    if (vId != refId) {
-                        console.log('vid',vId,refId)
-                        that.$crud.cRefs[vId].setValue(that.$crud.cRefs[vId].getValue())
-                    }
-
-                    //that.$crud.cRefs[vId].$forceUpdate();
-                }
-                that.$set(that,'confViews',newConfViews);
-                that.$forceUpdate();
-            },100)
+            // console.log('deleteItem',refId,this.$crud.cRefs[refId])
+            // if (this.$crud.cRefs[refId].value.status  == 'new') {
+            //     delete this.confViews[refId];
+            //     this.$crud.cRefs[refId].$destroy();
+            // } else {
+            //     this.$crud.cRefs[refId].value.status = 'deleted';
+            // }
+            // return ;
+            // console.log('confView',that.confViews);
+            // var oldConfViews = that.confViews
+            // that.$set(that,'confViews', {});
+            // this.$forceUpdate();
+            // setTimeout(function () {
+            //     var newConfViews = {};
+            //     for (var k in oldConfViews) {
+            //         var vId = oldConfViews[k].cRef;
+            //         newConfViews[k] = oldConfViews[k];
+            //         if (vId != refId) {
+            //             console.log('vid',vId,refId)
+            //             that.$crud.cRefs[vId].setValue(that.$crud.cRefs[vId].getValue())
+            //         }
+            //
+            //         //that.$crud.cRefs[vId].$forceUpdate();
+            //     }
+            //     that.$set(that,'confViews',newConfViews);
+            //     that.$forceUpdate();
+            // },100)
 
 
             // if (this.value[index].status == 'new') {
@@ -3747,33 +3748,32 @@ crud.components.widgets.coreWPreview = Vue.component('core-w-preview',{
 crud.components.widgets.coreWMap = Vue.component('core-w-map',{
     extends : crud.components.widgets.wBase,
     mounted : function () {
-        var that = this;
-        var random = 10; //Math.floor(Math.random() * 10000);
-        window['__initMap'+random] = function () {
-            that.initMap();
-        }
-        var scriptName = 'https://maps.googleapis.com/maps/api/js?key='+ that.apiKey+ '&callback=__initMap'+random;
-        if (!that.$crud._resources[scriptName])
-            that._loadScript(scriptName);
-        else
-            that.initMap();
+        this.initMap();
     },
     methods : {
         initMap : function () {
             var that = this;
             if (!that.apiKey)
-                throw 'nessuna apiKey definita!'
-            that.jQe('[c-map]').css('height',that.height).css('width',that.width);
-            var pos = {
-                lat : that.lat,
-                lng : that.lng
-            }
+                throw 'nessuna apiKey definita!';
+            var random = 10; //Math.floor(Math.random() * 10000);
+            window['__initMap'+random] = function () {
+                that.jQe('[c-map]').css('height',that.height).css('width',that.width);
+                var pos = {
+                    lat : that.lat,
+                    lng : that.lng
+                }
 
-            that.map = new google.maps.Map(that.jQe('[c-map]')[0], {
-                center: pos,
-                zoom: that.zoom
-            });
-            that.createMarker();
+                that.map = new google.maps.Map(that.jQe('[c-map]')[0], {
+                    center: pos,
+                    zoom: that.zoom
+                });
+                that.createMarker();
+            }
+            var scriptName = 'https://maps.googleapis.com/maps/api/js?key='+ that.apiKey+ '&callback=__initMap'+random;
+            if (!that.$crud._resources[scriptName])
+                that._loadScript(scriptName);
+            else
+                window['__initMap'+random]();
         },
         createMarker : function () {
             var that = this;
@@ -4229,7 +4229,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 }
             }
 
-            //console.log('v-record.widgets',widgets);
+            console.log('v-record.widgets',widgets);
             that.widgets = widgets;
         },
         /**

@@ -4,6 +4,7 @@ let crudConfWidgets = {
         confParent : 'crud.conf.c-component',
         value : null,
         defaultValue : null,
+        label : null,
     },
     'w-input' : {
         //confParent : 'crud.conf.w-base',
@@ -23,7 +24,7 @@ let crudConfWidgets = {
         ],
         routeName : 'autocomplete',
         primaryKey : 'id',  // campo da utilizzare per assegnare il valore selezionato
-        label : '',
+        //label : '',
         suggestValues : {},
         labelFields : [], // campi da visualizzare nell'autocomplete
         minLength: 3, // caratteri minimi prima che parta la ricerca

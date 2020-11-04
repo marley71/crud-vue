@@ -102,7 +102,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                 }
             }
 
-            //console.log('v-record.widgets',widgets);
+            console.log('v-record.widgets',widgets);
             that.widgets = widgets;
         },
         /**

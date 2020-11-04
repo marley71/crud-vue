@@ -15,7 +15,7 @@ let crudConfViews = {
         pk : 0,
         value : {},
         metadata : {},
-        langContext : null,
+        //langContext : '',
         route : null,
         widgets : {},
         actionsConf : [],
