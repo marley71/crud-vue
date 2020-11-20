@@ -1079,7 +1079,7 @@ core_mixin = {
                 }
              */
             // creo la dialog custom
-            that.customDialog({
+            var dialog = that.customDialog({
                 cContent: '<div id="' + divId + '"></div>',
                 cTitle: title,
                 //cBig : true,
@@ -1087,7 +1087,8 @@ core_mixin = {
             });
             // visualizzo la view
             dialogComp.$mount('#' + divId);
-            return dialogComp;
+            dialog.componentInstance = dialogComp
+            return dialog;
         },
         createBigModalView : function(viewName,conf,title,callbacks) {
             var that = this;
@@ -1106,7 +1107,7 @@ core_mixin = {
                 }
              */
             // creo la dialog custom
-            that.customDialog({
+            var dialog = that.customDialog({
                 cContent: '<div id="' + divId + '"></div>',
                 cTitle: title,
                 cBig : true,
@@ -1114,7 +1115,8 @@ core_mixin = {
             });
             // visualizzo la view
             dialogComp.$mount('#' + divId);
-            return dialogComp;
+            dialog.componentInstance = dialogComp
+            return dialog;
         },
         _createContainer : function (container) {
             var id= 'd' + (new Date().getTime());
@@ -1342,7 +1344,7 @@ core_mixin = {
          * @return {*}
          */
         mergeConfView : function(obj1,obj2) {
-            var specialsKey = ['fields','fieldsConfig','customActions'];
+            var specialsKey = ['fields','fieldsConfig','customActions','methods'];
             var c1 = this.cloneObj(obj1);
             var c2 = this.cloneObj(obj2);
             //console.log('c1',c1,'c2',c2);
@@ -1351,6 +1353,7 @@ core_mixin = {
             c1.fieldsConfig = c1.fieldsConfig?c1.fieldsConfig:{};
             c1.customActions = c1.customActions?c1.customActions:{};
             c1.actions = c1.actions?c1.actions:[];
+            c1.methods = c1.methods?c1.methods:{};
 
             if (c2.fields)
                 c1.fields = c2.fields;
@@ -1361,9 +1364,14 @@ core_mixin = {
                 }
             }
             if (c2.customActions) {
-                c1.customActions = c1.customActions || {};
+                //c1.customActions = c1.customActions || {};
                 for (var k in c2.customActions) {
                     c1.customActions[k] = c2.customActions[k];
+                }
+            }
+            if (c2.methods) {
+                for (var k in c2.methods) {
+                    c1.methods[k] = c2.methods[k];
                 }
             }
 
