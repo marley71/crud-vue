@@ -1,16 +1,10 @@
 crud.components.widgets.coreWUpload = Vue.component('core-w-upload',{
     extends : crud.components.widgets.wBase,
-    // data : function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {};
-    //     d.extensions = _conf.extensions?_conf.extensions:'';
-    //     d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
-    //     d.error = false;
-    //     d.errorMessage = '';
-    //     return d;
-    // },
+    mounted() {
+        var that = this;
 
+        UU = this;
+    },
     methods : {
         getValue : function () {
             var that = this;
@@ -27,8 +21,9 @@ crud.components.widgets.coreWUpload = Vue.component('core-w-upload',{
         },
         validate : function () {
             var that = this;
+
             //TODO eseguire validazione
-            console.log('validate');
+            console.log('validate',that.getValue());
             that.change();
             if (that._validate()) {
                 //that.value =

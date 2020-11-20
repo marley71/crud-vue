@@ -144,6 +144,7 @@ let crudConfWidgets = {
         maxFileSize : '',
         error : false,
         errorMessage : '',
+        extensions : [],
     },
     'w-upload-ajax' : {
         //confParent : 'crud.conf.w-base',

@@ -161,6 +161,11 @@ crud.components.views.vHasmanyView = Vue.component('v-hasmany-view', {
     template: '#v-hasmany-template',
 });
 
+crud.components.views.vHasone = Vue.component('v-hasone', {
+    extends: crud.components.views.coreVHasone,
+    template: '#v-hasone-template',
+});
+
 crud.components.views.vInsert = Vue.component('v-insert', {
     extends: crud.components.views.coreVInsert,
     template: '#v-insert-template',

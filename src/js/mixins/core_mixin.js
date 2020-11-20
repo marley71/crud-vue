@@ -36,25 +36,55 @@ core_mixin = {
             }
         },
 
-        createModalView : function(viewName,conf,title) {
+        createModalView : function(viewName,conf,title,callbacks) {
             var that = this;
             var divId = 'd' + (new Date().getTime());
             //var dialogComp = new that.$crud.components.views[viewName]({
             var dialogComp = new that.$options.components[viewName]({
                 propsData: conf
             });
-
+            var _cbs = callbacks?callbacks:{};
+            /*
+            {
+                    chiudi: function () {
+                        dialogComp.$destroy();
+                        this.hide();
+                    }
+                }
+             */
             // creo la dialog custom
             that.customDialog({
                 cContent: '<div id="' + divId + '"></div>',
                 cTitle: title,
                 //cBig : true,
-                cCallbacks: {
-                    ok: function () {
+                cCallbacks: _cbs,
+            });
+            // visualizzo la view
+            dialogComp.$mount('#' + divId);
+            return dialogComp;
+        },
+        createBigModalView : function(viewName,conf,title,callbacks) {
+            var that = this;
+            var divId = 'd' + (new Date().getTime());
+            //var dialogComp = new that.$crud.components.views[viewName]({
+            var dialogComp = new that.$options.components[viewName]({
+                propsData: conf
+            });
+            var _cbs = callbacks?callbacks:{};
+            /*
+            {
+                    chiudi: function () {
                         dialogComp.$destroy();
                         this.hide();
                     }
                 }
+             */
+            // creo la dialog custom
+            that.customDialog({
+                cContent: '<div id="' + divId + '"></div>',
+                cTitle: title,
+                cBig : true,
+                cCallbacks: _cbs,
             });
             // visualizzo la view
             dialogComp.$mount('#' + divId);

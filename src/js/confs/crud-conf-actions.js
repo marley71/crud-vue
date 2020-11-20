@@ -40,6 +40,7 @@ let crudConfActions =  {
         css: 'btn btn-primary btn-sm mr-1',
         icon : 'fa fa-save',
         text : 'app.salva',
+        json : null,
         setRouteValues : function(route) {
             var that = this;
             var pk = that.view.cPk || that.view.pk || 0;
@@ -70,6 +71,7 @@ let crudConfActions =  {
                     that.errorDialog(json.msg)
                     return ;
                 }
+                that.json = json;
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
                 that.alertSuccess(msg,that.alertTime);
                 callback();

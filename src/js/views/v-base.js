@@ -92,6 +92,7 @@ crud.components.views.vBase = Vue.component('v-base', {
         fetchData: function (route,callback) {
             var that = this;
             if (!route) {
+                that.afterLoadData({});
                 callback({});
                 return;
             }
@@ -102,15 +103,20 @@ crud.components.views.vBase = Vue.component('v-base', {
                     that.errorMsg = json.msg;
                     return
                 }
+                that.afterLoadData(json);
                 callback(json);
             })
         },
 
+        afterLoadData : function (json) {
+
+        },
         _loadConf : function() {
             var that = this;
             var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
-            mergedConf = that.mergeConfView(defaultConf,currentConf);
+            var mergedConf = that.mergeConfView(defaultConf,currentConf);
+            console.log('v-base _loadConf',mergedConf);
             return mergedConf;
         },
 
@@ -182,10 +188,10 @@ crud.components.views.vBase = Vue.component('v-base', {
             return  conf;
 
             //console.log('merge confs',defaultConf,conf);
-            var finalConf = that.mergeConfView(defaultConf,conf);//this.confMerge(defaultConf,conf);
-            //finalConf = that.mergeConfView(finalConf,conf);
-            console.log('v-base finalConf',finalConf)
-            return finalConf;
+            // var finalConf = that.mergeConfView(defaultConf,conf);//this.confMerge(defaultConf,conf);
+            // //finalConf = that.mergeConfView(finalConf,conf);
+            // console.log('v-base finalConf',finalConf)
+            // return finalConf;
 
             //
             // for (var k in finalConf) {

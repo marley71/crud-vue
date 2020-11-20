@@ -145,6 +145,7 @@ let crudConfActions =  {
         css: 'btn btn-primary btn-sm mr-1',
         icon : 'fa fa-save',
         text : 'app.salva',
+        json : null,
         setRouteValues : function(route) {
             var that = this;
             var pk = that.view.cPk || that.view.pk || 0;
@@ -175,6 +176,7 @@ let crudConfActions =  {
                     that.errorDialog(json.msg)
                     return ;
                 }
+                that.json = json;
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
                 that.alertSuccess(msg,that.alertTime);
                 callback();
@@ -567,6 +569,7 @@ let crudConfWidgets = {
         maxFileSize : '',
         error : false,
         errorMessage : '',
+        extensions : [],
     },
     'w-upload-ajax' : {
         //confParent : 'crud.conf.w-base',
@@ -674,6 +677,11 @@ let crudConfViews = {
     'v-hasmany-view' : {
         confParent : 'crud.conf.v-collection',
         defaultWidgetType : 'w-text',
+    },
+    'v-hasone' : {
+        confParent : 'crud.conf.v-record',
+        defaultWidgetType : 'w-input',
+        loaded : false,
     },
     // --- configurazione di default per tipo view
     view : {
@@ -1054,25 +1062,55 @@ core_mixin = {
             }
         },
 
-        createModalView : function(viewName,conf,title) {
+        createModalView : function(viewName,conf,title,callbacks) {
             var that = this;
             var divId = 'd' + (new Date().getTime());
             //var dialogComp = new that.$crud.components.views[viewName]({
             var dialogComp = new that.$options.components[viewName]({
                 propsData: conf
             });
-
+            var _cbs = callbacks?callbacks:{};
+            /*
+            {
+                    chiudi: function () {
+                        dialogComp.$destroy();
+                        this.hide();
+                    }
+                }
+             */
             // creo la dialog custom
             that.customDialog({
                 cContent: '<div id="' + divId + '"></div>',
                 cTitle: title,
                 //cBig : true,
-                cCallbacks: {
-                    ok: function () {
+                cCallbacks: _cbs,
+            });
+            // visualizzo la view
+            dialogComp.$mount('#' + divId);
+            return dialogComp;
+        },
+        createBigModalView : function(viewName,conf,title,callbacks) {
+            var that = this;
+            var divId = 'd' + (new Date().getTime());
+            //var dialogComp = new that.$crud.components.views[viewName]({
+            var dialogComp = new that.$options.components[viewName]({
+                propsData: conf
+            });
+            var _cbs = callbacks?callbacks:{};
+            /*
+            {
+                    chiudi: function () {
                         dialogComp.$destroy();
                         this.hide();
                     }
                 }
+             */
+            // creo la dialog custom
+            that.customDialog({
+                cContent: '<div id="' + divId + '"></div>',
+                cTitle: title,
+                cBig : true,
+                cCallbacks: _cbs,
             });
             // visualizzo la view
             dialogComp.$mount('#' + divId);
@@ -1922,7 +1960,7 @@ Server.get = function (url, params, callback) {
 };
 
 Server.route = function(route,callback) {
-    var __cb = callback?callback:function (json) {log.debug(route.className,json)};
+    var __cb = callback?callback:function (json) {console.debug(route.className,json)};
     var realUrl = Server.getUrl(route.getUrl());
     var params = route.getParams();
     Server[route.getMethod()](realUrl,params,function (json) {
@@ -3561,17 +3599,11 @@ crud.components.widgets.coreWB2mSelect2 = Vue.component('core-w-b2m-select2', {
 
 crud.components.widgets.coreWUpload = Vue.component('core-w-upload',{
     extends : crud.components.widgets.wBase,
-    // data : function () {
-    //     var that = this;
-    //     var _conf = that._getConf() || {};
-    //     var d = {};
-    //     d.extensions = _conf.extensions?_conf.extensions:'';
-    //     d.maxFileSize = _conf.maxFileSize?_conf.maxFileSize:'';
-    //     d.error = false;
-    //     d.errorMessage = '';
-    //     return d;
-    // },
+    mounted() {
+        var that = this;
 
+        UU = this;
+    },
     methods : {
         getValue : function () {
             var that = this;
@@ -3588,8 +3620,9 @@ crud.components.widgets.coreWUpload = Vue.component('core-w-upload',{
         },
         validate : function () {
             var that = this;
+
             //TODO eseguire validazione
-            console.log('validate');
+            console.log('validate',that.getValue());
             that.change();
             if (that._validate()) {
                 //that.value =
@@ -3941,6 +3974,7 @@ crud.components.views.vBase = Vue.component('v-base', {
         fetchData: function (route,callback) {
             var that = this;
             if (!route) {
+                that.afterLoadData({});
                 callback({});
                 return;
             }
@@ -3951,15 +3985,20 @@ crud.components.views.vBase = Vue.component('v-base', {
                     that.errorMsg = json.msg;
                     return
                 }
+                that.afterLoadData(json);
                 callback(json);
             })
         },
 
+        afterLoadData : function (json) {
+
+        },
         _loadConf : function() {
             var that = this;
             var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
-            mergedConf = that.mergeConfView(defaultConf,currentConf);
+            var mergedConf = that.mergeConfView(defaultConf,currentConf);
+            console.log('v-base _loadConf',mergedConf);
             return mergedConf;
         },
 
@@ -4031,10 +4070,10 @@ crud.components.views.vBase = Vue.component('v-base', {
             return  conf;
 
             //console.log('merge confs',defaultConf,conf);
-            var finalConf = that.mergeConfView(defaultConf,conf);//this.confMerge(defaultConf,conf);
-            //finalConf = that.mergeConfView(finalConf,conf);
-            console.log('v-base finalConf',finalConf)
-            return finalConf;
+            // var finalConf = that.mergeConfView(defaultConf,conf);//this.confMerge(defaultConf,conf);
+            // //finalConf = that.mergeConfView(finalConf,conf);
+            // console.log('v-base finalConf',finalConf)
+            // return finalConf;
 
             //
             // for (var k in finalConf) {
@@ -5048,6 +5087,29 @@ crud.components.views.coreVHasmanyView = Vue.component('core-v-hasmany-view', {
     //         this.data = this.cConf.data;
     //     }
     // },
+});
+
+crud.components.views.coreVHasone = Vue.component('core-v-hasone', {
+    extends : crud.components.views.vRecord,
+    props : {
+        cType : {
+            default : 'insert'
+        }
+    },
+    methods : {
+        getFieldName : function (key) {
+            var that = this;
+            return that.modelName + "-" + key;
+        },
+        getValue : function () {
+            var that = this;
+            var value = {};
+            for (var k in that.widgets) {
+                value[k] = that.getWidget(k).getValue();
+            }
+            return value;
+        }
+    }
 });
 
 const CrudApp = Vue.extend({

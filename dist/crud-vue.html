@@ -821,3 +821,11 @@
         </div>
     </div>
 </template>
+
+<template id="v-hasone-template">
+    <div>
+        <div  v-for="(widget, key) in widgets" :key="key">
+            <v-widget :c-widget="widget"></v-widget>
+        </div>
+    </div>
+</template>

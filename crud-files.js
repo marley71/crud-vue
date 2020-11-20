@@ -72,6 +72,7 @@ var crudJsFiles = [
     'src/js/views/v-search.js',
     'src/js/views/v-hasmany.js',
     'src/js/views/v-hasmany-view.js',
+    'src/js/views/v-hasone.js',
 
     'src/js/crud-app.js'
 
@@ -135,6 +136,7 @@ var viewsHtmlFiles = [
     'src/templates/views/v-search.html',
     'src/templates/views/v-hasmany.html',
     'src/templates/views/v-hasmany-view.html',
+    'src/templates/views/v-hasone.html',
 ];
 
 
@@ -188,5 +190,6 @@ var crudHtmlFiles = [
     'src/templates/views/v-search.html',
     'src/templates/views/v-hasmany.html',
     'src/templates/views/v-hasmany-view.html',
+    'src/templates/views/v-hasone.html',
 
 ];

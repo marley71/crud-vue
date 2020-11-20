@@ -73,6 +73,11 @@ let crudConfViews = {
         confParent : 'crud.conf.v-collection',
         defaultWidgetType : 'w-text',
     },
+    'v-hasone' : {
+        confParent : 'crud.conf.v-record',
+        defaultWidgetType : 'w-input',
+        loaded : false,
+    },
     // --- configurazione di default per tipo view
     view : {
         confParent : 'crud.conf.v-view',
