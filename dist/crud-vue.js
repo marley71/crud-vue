@@ -4237,6 +4237,7 @@ crud.components.views.vRecord = Vue.component('v-record', {
                     widgets[key].value = that.value[key];
 
                 widgets[key].name = that.getFieldName(key);
+                widgets[key].view = that;
                 if (! ('label' in widgets[key]) ) {
                     //console.log('translate key e langContext',key,that.langContext);
                     widgets[key].label = that.$options.filters.translate(key + '.label', that.langContext);
@@ -4457,6 +4458,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     } else {
                         dconf.label = that.$options.filters.translate(dconf.label);
                     }
+                    dconf.view = that;
                     //console.log(i,widgets,widgets[i],key,dconf),
                     widgets[i][key] = dconf;
 
@@ -4664,34 +4666,6 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             default: 'list'
         },
     },
-    // data :  function () {
-    //     var that = this;
-    //     var _conf = that._loadConf() || {};
-    //     var dList = {
-    //         loading : true,
-    //         widgets : {},
-    //         keys : [],
-    //         recordActionsName : [],
-    //         recordActions: [],
-    //         collectionActions : {},
-    //         collectionActionsName : [],
-    //         route : null,
-    //         maxPage : 0,
-    //         pagination : {},
-    //         viewTitle : '',
-    //         defaultWidgetType : 'w-text',
-    //         langContext : that.cModel,
-    //         json : {},
-    //     };
-    //     if (_conf.viewTitle) {
-    //         dList.viewTitle = _conf.viewTitle;
-    //     }
-    //     if (!('paginator' in _conf))
-    //         dList.paginator = true;
-    //     //console.log('_CONFFFFFF',_conf)
-    //     return dList;
-    // },
-
     methods: {
 
         isOrderField : function(key) {
@@ -4779,14 +4753,6 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             default: 'listEdit'
         }
     },
-    // data : function() {
-    //     var dListEdit = {
-    //         widgetsEdit : {},
-    //         editMode : []
-    //     };
-    //     return dListEdit;
-    // },
-
     beforeDestroy () {
         for (var row in this.widgetsEdit) {
             for (var key in this.widgetsEdit[row]) {
@@ -4979,14 +4945,6 @@ crud.components.views.coreVSearch = Vue.component('core-v-search', {
             default : 'search'
         }
     },
-
-    // data :  function () {
-    //     var _conf = this._loadConf() || {};
-    //     var d = {}
-    //     d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
-    //     return d;
-    // },
-
     methods : {
         completed : function() {
             var that = this;
@@ -5056,18 +5014,6 @@ crud.components.views.coreVHasmanyView = Vue.component('core-v-hasmany-view', {
             default : 'view'
         }
     },
-    // data :  function () {
-    //     //console.log('VHASMANYVIEW',this._getConf())
-    //     var _conf = this._loadConf();
-    //     var d =  {}
-    //     d.defaultWidgetType = _conf.defaultWidgetType || 'w-text';
-    //     return d;
-    // },
-    // methods : {
-    //     fillData : function () {
-    //         this.data = this.cConf.data;
-    //     }
-    // },
 });
 
 crud.components.views.coreVHasone = Vue.component('core-v-hasone', {
