@@ -77,68 +77,28 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
 
         deleteItem : function (refId) {
             var that = this;
-            // per questioni di aggiornamento devo fare un ciclo, altrimenti vue non renderizza come dovuto
+            console.log('delete',refId,this.$crud.cRefs[refId].value)
             var newConfViews = {};
+            // per questioni di aggiornamento assegno ad un'altra variabile, altrimenti vue non renderizza come dovuto
             for (var vId in that.confViews) {
-                if (vId != refId)
-                    newConfViews[vId] =  that.confViews[vId];
+                newConfViews[vId] =  that.confViews[vId];
             }
-
             if (this.$crud.cRefs[refId].value.status  == 'new') {
-                delete this.confViews[refId];
+                delete newConfViews[refId];
                 this.$crud.cRefs[refId].$destroy();
-            } else {
-                this.$crud.cRefs[refId].value.status = 'deleted';
-            }
 
+            } else {
+                newConfViews[refId].value.status = 'deleted';
+                if (that.getComponent(refId)) {
+                    that.getComponent(refId).getWidget('status').setValue('deleted');
+                }
+            }
             that.$set(that,'confViews', newConfViews);
             this.$forceUpdate();
-            return ;
-
-            // console.log('deleteItem',refId,this.$crud.cRefs[refId])
-            // if (this.$crud.cRefs[refId].value.status  == 'new') {
-            //     delete this.confViews[refId];
-            //     this.$crud.cRefs[refId].$destroy();
-            // } else {
-            //     this.$crud.cRefs[refId].value.status = 'deleted';
-            // }
-            // return ;
-            // console.log('confView',that.confViews);
-            // var oldConfViews = that.confViews
-            // that.$set(that,'confViews', {});
-            // this.$forceUpdate();
-            // setTimeout(function () {
-            //     var newConfViews = {};
-            //     for (var k in oldConfViews) {
-            //         var vId = oldConfViews[k].cRef;
-            //         newConfViews[k] = oldConfViews[k];
-            //         if (vId != refId) {
-            //             console.log('vid',vId,refId)
-            //             that.$crud.cRefs[vId].setValue(that.$crud.cRefs[vId].getValue())
-            //         }
-            //
-            //         //that.$crud.cRefs[vId].$forceUpdate();
-            //     }
-            //     that.$set(that,'confViews',newConfViews);
-            //     that.$forceUpdate();
-            // },100)
-
-
-            // if (this.value[index].status == 'new') {
-            //     this.value.splice(index, 1);
-            //     this.confViews.splice(index,1);
-            //     this.$crud.cRefs[refId].$destroy();
-            // }
-            // else {
-            //     //console.log('update status deleted ', index,this.confViews[index].data.value)
-            //     this.$set(this.value[index], 'status', 'deleted');
-            //     this.$set(this.confViews[index].value, 'status' , 'deleted');
-            //     this.$crud.cRefs[refId].setWidgetValue('status','deleted');
-            // }
-            //this.$forceUpdate();
         },
         showItem : function (refId) {
             //console.log('show item',index,this.confViews[index]);
+            console.log('showItem',refId,this.confViews[refId])
             if (!this.confViews[refId])
                 return false;
             return (this.confViews[refId].value.status != 'deleted'  )

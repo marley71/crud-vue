@@ -1992,7 +1992,7 @@ crud.components.cComponent = Vue.component('c-component',{
     },
     mixins : [core_mixin,dialogs_mixin],
 
-    mounted : function() {
+    mounted() {
         var that = this;
         if (that.cRef) {
             that.$crud.cRefs[that.cRef] = this;
@@ -2042,14 +2042,14 @@ crud.components.cComponent = Vue.component('c-component',{
         return this.dynamicData(this._loadConf());
     },
     methods : {
-        jQe : function (selector) {
+        jQe(selector) {
             var that = this;
             if (selector) {
                 return jQuery(that.$el).find(selector).addBack(selector);
             }
             return jQuery(that.$el);
         },
-        dynamicData : function (conf) {
+        dynamicData(conf) {
             return conf;
         },
         /**
@@ -2058,7 +2058,7 @@ crud.components.cComponent = Vue.component('c-component',{
          * @return {*}
          * @private
          */
-        _loadConf : function() {
+        _loadConf() {
             var that = this;
             //console.log('this name',_compName,defaultConf);
             var defaultConf = that._getDefaultConf();
@@ -2074,7 +2074,7 @@ crud.components.cComponent = Vue.component('c-component',{
          * @private
          */
 
-        _getConf : function() {
+        _getConf() {
             var that = this;
             var conf = {};
             // se e' una stringa controllo prima che non sia una variabile globale
@@ -2091,7 +2091,7 @@ crud.components.cComponent = Vue.component('c-component',{
          * @return {*}
          * @private
          */
-        _getDefaultConf : function () {
+        _getDefaultConf() {
             var that = this;
             var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
             var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
@@ -2521,7 +2521,7 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         //events
         change : function () {
             var that = this;
-            console.log('Wbase change',that);
+            //console.log('Wbase change',that);
             var methods = that.methods || {};
             if (methods.change) {
                 methods.change.apply(that);
@@ -2944,7 +2944,7 @@ crud.components.widgets.coreWDateText = Vue.component('core-w-date-text', {
         afterLoadResources : function () {
             var that = this;
             that.formattedValue = moment(that.value).format(that.displayFormat.toUpperCase())
-            console.log('date-text ',that.value,that.displayFormat.toUpperCase(),that.formattedValue)
+            //console.log('date-text ',that.value,that.displayFormat.toUpperCase(),that.formattedValue)
         }
     }
 });
@@ -3068,68 +3068,28 @@ crud.components.widgets.coreWHasmany =Vue.component('core-w-hasmany', {
 
         deleteItem : function (refId) {
             var that = this;
-            // per questioni di aggiornamento devo fare un ciclo, altrimenti vue non renderizza come dovuto
+            console.log('delete',refId,this.$crud.cRefs[refId].value)
             var newConfViews = {};
+            // per questioni di aggiornamento assegno ad un'altra variabile, altrimenti vue non renderizza come dovuto
             for (var vId in that.confViews) {
-                if (vId != refId)
-                    newConfViews[vId] =  that.confViews[vId];
+                newConfViews[vId] =  that.confViews[vId];
             }
-
             if (this.$crud.cRefs[refId].value.status  == 'new') {
-                delete this.confViews[refId];
+                delete newConfViews[refId];
                 this.$crud.cRefs[refId].$destroy();
-            } else {
-                this.$crud.cRefs[refId].value.status = 'deleted';
-            }
 
+            } else {
+                newConfViews[refId].value.status = 'deleted';
+                if (that.getComponent(refId)) {
+                    that.getComponent(refId).getWidget('status').setValue('deleted');
+                }
+            }
             that.$set(that,'confViews', newConfViews);
             this.$forceUpdate();
-            return ;
-
-            // console.log('deleteItem',refId,this.$crud.cRefs[refId])
-            // if (this.$crud.cRefs[refId].value.status  == 'new') {
-            //     delete this.confViews[refId];
-            //     this.$crud.cRefs[refId].$destroy();
-            // } else {
-            //     this.$crud.cRefs[refId].value.status = 'deleted';
-            // }
-            // return ;
-            // console.log('confView',that.confViews);
-            // var oldConfViews = that.confViews
-            // that.$set(that,'confViews', {});
-            // this.$forceUpdate();
-            // setTimeout(function () {
-            //     var newConfViews = {};
-            //     for (var k in oldConfViews) {
-            //         var vId = oldConfViews[k].cRef;
-            //         newConfViews[k] = oldConfViews[k];
-            //         if (vId != refId) {
-            //             console.log('vid',vId,refId)
-            //             that.$crud.cRefs[vId].setValue(that.$crud.cRefs[vId].getValue())
-            //         }
-            //
-            //         //that.$crud.cRefs[vId].$forceUpdate();
-            //     }
-            //     that.$set(that,'confViews',newConfViews);
-            //     that.$forceUpdate();
-            // },100)
-
-
-            // if (this.value[index].status == 'new') {
-            //     this.value.splice(index, 1);
-            //     this.confViews.splice(index,1);
-            //     this.$crud.cRefs[refId].$destroy();
-            // }
-            // else {
-            //     //console.log('update status deleted ', index,this.confViews[index].data.value)
-            //     this.$set(this.value[index], 'status', 'deleted');
-            //     this.$set(this.confViews[index].value, 'status' , 'deleted');
-            //     this.$crud.cRefs[refId].setWidgetValue('status','deleted');
-            // }
-            //this.$forceUpdate();
         },
         showItem : function (refId) {
             //console.log('show item',index,this.confViews[index]);
+            console.log('showItem',refId,this.confViews[refId])
             if (!this.confViews[refId])
                 return false;
             return (this.confViews[refId].value.status != 'deleted'  )
@@ -3646,21 +3606,30 @@ crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
     extends : crud.components.widgets.wBase,
 
     mounted : function() {
-        this.value = JSON.stringify(this.value).replace(/\\"/g, '"');
+        if (this.value instanceof String)
+            this.value = JSON.stringify(this.value).replace(/\\"/g, '"');
+        console.log('w-ulpload ajax',this.value);
     },
 
-    data : function() {
-        var that = this;
-        var d = {};
-        d.previewConf = {
-            value : that.value,
-            cRef : this._uid + 'preview'
-        }
-        return d;
-    },
+    // data : function() {
+    //     var that = this;
+    //     var d = {};
+    //     d.previewConf = {
+    //         value : that.value,
+    //         cRef : this._uid + 'preview'
+    //     }
+    //     return d;
+    // },
 
     methods : {
 
+        dynamicData(conf) {
+            conf.previewConf = {
+                value : conf.value,
+                cRef : this._uid + 'preview'
+            }
+            return conf;
+        },
         getPreviewConf : function() {
             return this.previewConf;
         },
@@ -4409,19 +4378,23 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         }
     },
 
-    data : function () {
-        var that = this;
-        var d =  {};
-        if (that.cModel)
-            d.modelName = that.cModel;
-        // d.value = [];
-        // d.metadata = {};
-        // d.needSelection = false;
-
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var d =  {};
+    //     if (that.cModel)
+    //         d.modelName = that.cModel;
+    //     // d.value = [];
+    //     // d.metadata = {};
+    //     // d.needSelection = false;
+    //
+    //     return d;
+    // },
     methods : {
-
+        dynamicData(conf) {
+            if (this.cModel)
+                conf.modelName = this.cModel;
+            return conf;
+        },
         fillData : function(route, json) {
             var that = this;
             if (route) {

@@ -5,34 +5,6 @@ crud.components.views.coreVList = Vue.component('core-v-list', {
             default: 'list'
         },
     },
-    // data :  function () {
-    //     var that = this;
-    //     var _conf = that._loadConf() || {};
-    //     var dList = {
-    //         loading : true,
-    //         widgets : {},
-    //         keys : [],
-    //         recordActionsName : [],
-    //         recordActions: [],
-    //         collectionActions : {},
-    //         collectionActionsName : [],
-    //         route : null,
-    //         maxPage : 0,
-    //         pagination : {},
-    //         viewTitle : '',
-    //         defaultWidgetType : 'w-text',
-    //         langContext : that.cModel,
-    //         json : {},
-    //     };
-    //     if (_conf.viewTitle) {
-    //         dList.viewTitle = _conf.viewTitle;
-    //     }
-    //     if (!('paginator' in _conf))
-    //         dList.paginator = true;
-    //     //console.log('_CONFFFFFF',_conf)
-    //     return dList;
-    // },
-
     methods: {
 
         isOrderField : function(key) {

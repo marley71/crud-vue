@@ -2,21 +2,30 @@ crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
     extends : crud.components.widgets.wBase,
 
     mounted : function() {
-        this.value = JSON.stringify(this.value).replace(/\\"/g, '"');
+        if (this.value instanceof String)
+            this.value = JSON.stringify(this.value).replace(/\\"/g, '"');
+        console.log('w-ulpload ajax',this.value);
     },
 
-    data : function() {
-        var that = this;
-        var d = {};
-        d.previewConf = {
-            value : that.value,
-            cRef : this._uid + 'preview'
-        }
-        return d;
-    },
+    // data : function() {
+    //     var that = this;
+    //     var d = {};
+    //     d.previewConf = {
+    //         value : that.value,
+    //         cRef : this._uid + 'preview'
+    //     }
+    //     return d;
+    // },
 
     methods : {
 
+        dynamicData(conf) {
+            conf.previewConf = {
+                value : conf.value,
+                cRef : this._uid + 'preview'
+            }
+            return conf;
+        },
         getPreviewConf : function() {
             return this.previewConf;
         },

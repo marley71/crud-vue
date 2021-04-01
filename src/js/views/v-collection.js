@@ -40,19 +40,23 @@ crud.components.views.vCollection = Vue.component('v-collection', {
         }
     },
 
-    data : function () {
-        var that = this;
-        var d =  {};
-        if (that.cModel)
-            d.modelName = that.cModel;
-        // d.value = [];
-        // d.metadata = {};
-        // d.needSelection = false;
-
-        return d;
-    },
+    // data : function () {
+    //     var that = this;
+    //     var d =  {};
+    //     if (that.cModel)
+    //         d.modelName = that.cModel;
+    //     // d.value = [];
+    //     // d.metadata = {};
+    //     // d.needSelection = false;
+    //
+    //     return d;
+    // },
     methods : {
-
+        dynamicData(conf) {
+            if (this.cModel)
+                conf.modelName = this.cModel;
+            return conf;
+        },
         fillData : function(route, json) {
             var that = this;
             if (route) {
@@ -115,6 +119,7 @@ crud.components.views.vCollection = Vue.component('v-collection', {
                     } else {
                         dconf.label = that.$options.filters.translate(dconf.label);
                     }
+                    dconf.view = that;
                     //console.log(i,widgets,widgets[i],key,dconf),
                     widgets[i][key] = dconf;
 

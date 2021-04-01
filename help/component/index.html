@@ -173,7 +173,7 @@ sostanzialmente il comportamento della classe a basso livello.</p>
 <li><code>cConf</code> : rappresenta la configurazione iniziale del componente. E&rsquo; formata da un vettore associativo. Tutte le 
 proprietà di cConf vengono spalmate flat nel <code>data</code> del componente vue.</li>
 <li><code>compRef</code> : chiave per marcare il componente creato per poi poterlo riprendere successivamente attraverso il vettore
-delle componenti marcate $crud.cRefs[compRef].</li>
+delle componenti marcate this.getComponent(compRef).</li>
 </ul>
 <h4 id="metodi">Metodi</h4>
 <ul>
@@ -183,12 +183,18 @@ passato il parametro <strong>selector</strong> allora si posiziona all&rsquo;ele
 del container.</p>
 </li>
 <li>
-<p><code>_loadConf()</code> : Carica l&rsquo;oggetto cConf e spalma le proprietà nell&rsquo;oggetto.</p>
+<p><code>dynamicData(conf)</code> : metodo chiamato al momento della generazione dei dati del componente, conf e&rsquo; il parametro
+della configurazione ottenuta per il componente. Deve ritornare un configurazione.</p>
 </li>
 <li>
-<p><code>_getConf</code> : risolve il nome cConf, cConf può essere un array associativo o una stringa. In caso di stringa,
- la configurazione viene ricercata nell&rsquo;oggetto window o nella configurazione generale dell&rsquo;applicazione chiamata 
- $crud.conf</p>
+<p><code>_loadConf()</code> : Carica l&rsquo;oggetto cConf e la spalma proprietà del componente. Il caricamento della conf avviene uninendo
+le configurazioni presenti in base alla loro valenza. Viene eseguito il merge tra la configurazione di default dell&rsquo;oggetto
+e la configurazione corrente passata come parametro.</p>
+</li>
+<li>
+<p><code>_getConf</code> : risolve il nome cConf passato al componente. La proprietà cConf può essere un array associativo o una 
+stringa. In caso di stringa, la configurazione viene ricercata nell&rsquo;oggetto window o nella configurazione generale 
+dell&rsquo;applicazione chiamata $crud.conf e usando la tecnica di array dot.</p>
 </li>
 </ul>
 <p>Può essere usato il punto per configurazioni gerarchiche. Esempio potrei creare una configurazione tipo:</p>
@@ -205,14 +211,21 @@ del container.</p>
 <p>posso passare come attributo del componente c-conf=&rdquo;conf1.paginax.elementoa&rdquo;;</p>
 <ul>
 <li>
-<p><code>_getRoute(routeName)</code> : Crea l&rsquo;oggetto Route di nome routeName. La definizione della route viene cercata nell&rsquo;oggetto
-$crud.routes[routeName];</p>
+<p><code>_getDefaultConf()</code> : ritorna la configurazione di default. Per configurazione di default si intende il merge tra 
+la configurazione generale che ci trova in $crud.conf[&lsquo;c-component&rsquo;] e la configurazione del componente (se esiste) che 
+che viene cercata in $crud.conf[component-name].</p>
+</li>
+<li>
+<p><code>_getRoute(routeName)</code> : Crea l&rsquo;oggetto Route di a partire dalla proprietà routeName. La definizione della route viene 
+cercata in $crud.routes[routeName];</p>
 </li>
 <li>
 <p><code>beforeLoadResources()</code> : metodo chiamato prima di caricare risorse esterne di particolari plugins di terze parti </p>
 </li>
-<li><code>afterLoadResources()</code> : metodo chiamato dopo aver caricato risorse esterne di plugins. Questo permette di eseguire
-eventuali azioni del plugins dopo che le risorse siano state caricate.</li>
+<li>
+<p><code>afterLoadResources()</code> : metodo chiamato dopo aver caricato risorse esterne di plugins. Questo permette di eseguire
+eventuali azioni del plugins dopo che le risorse siano state caricate.</p>
+</li>
 </ul>
               
             </div>

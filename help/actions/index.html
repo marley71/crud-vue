@@ -223,15 +223,7 @@ una callback viene chiamata a fine esecuzione. Serve per operazioni asincrone.</
 <li><code>setVisible(visible)</code> : se definita viene chiamata al termi dell&rsquo;execute</li>
 </ul>
 <h4 id="template">template</h4>
-<pre><code class="html">&lt;template id=&quot;action-template&quot;&gt;&lt;button v-if=&quot;controlType=='button'&quot; type=&quot;button&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; v-on:click=&quot;_execute&quot; v-bind:disabled=&quot;_disabled&quot;&gt;
-        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
-        &lt;span&gt;{{text | translate}}&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;a v-else :target=&quot;target&quot; :href=&quot;href&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; :disabled=&quot;_disabled&quot;&gt;
-        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
-        &lt;span&gt;{{text | translate}}&lt;/span&gt;
-    &lt;/a&gt;
-&lt;/template&gt;
+<pre><code class="html">{{{action-template}}}
 </code></pre>
 
 <h1 id="actions-implementate">Actions Implementate</h1>
@@ -350,15 +342,7 @@ all&rsquo;interno della lista. </p>
 <li>iconSort : icon per definire il campo che si puo&rsquo; ordinare ma nessun ordinamento attivo.</li>
 </ul>
 <h4 id="template_1">template</h4>
-<pre><code class="html">&lt;template id=&quot;action-order-template&quot;&gt;&lt;button v-if=&quot;controlType=='button'&quot; type=&quot;button&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; v-on:click=&quot;_execute&quot; v-bind:disabled=&quot;_disabled&quot;&gt;
-        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
-        &lt;span&gt;{{text | translate}}&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;a v-else :target=&quot;target&quot; :href=&quot;href&quot; v-show=&quot;_visible&quot; :title=&quot;title | translate&quot; :class=&quot;css&quot; :disabled=&quot;_disabled&quot;&gt;
-        &lt;i v-show=&quot;icon&quot; :class=&quot;icon&quot;&gt;&lt;/i&gt;
-        &lt;span&gt;{{text | translate}}&lt;/span&gt;
-    &lt;/a&gt;
-&lt;/template&gt;
+<pre><code class="html">{{{action-order-template}}}
 </code></pre>
 
 <h2 id="action-edit-mode">action-edit-mode</h2>

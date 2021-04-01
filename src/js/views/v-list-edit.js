@@ -5,14 +5,6 @@ crud.components.views.coreVListEdit = Vue.component('core-v-list-edit', {
             default: 'listEdit'
         }
     },
-    // data : function() {
-    //     var dListEdit = {
-    //         widgetsEdit : {},
-    //         editMode : []
-    //     };
-    //     return dListEdit;
-    // },
-
     beforeDestroy () {
         for (var row in this.widgetsEdit) {
             for (var key in this.widgetsEdit[row]) {

@@ -32,7 +32,7 @@ crud.components.widgets.wBase = Vue.component('w-base', {
         //events
         change : function () {
             var that = this;
-            console.log('Wbase change',that);
+            //console.log('Wbase change',that);
             var methods = that.methods || {};
             if (methods.change) {
                 methods.change.apply(that);

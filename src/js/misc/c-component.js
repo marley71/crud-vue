@@ -12,7 +12,7 @@ crud.components.cComponent = Vue.component('c-component',{
     },
     mixins : [core_mixin,dialogs_mixin],
 
-    mounted : function() {
+    mounted() {
         var that = this;
         if (that.cRef) {
             that.$crud.cRefs[that.cRef] = this;
@@ -62,14 +62,14 @@ crud.components.cComponent = Vue.component('c-component',{
         return this.dynamicData(this._loadConf());
     },
     methods : {
-        jQe : function (selector) {
+        jQe(selector) {
             var that = this;
             if (selector) {
                 return jQuery(that.$el).find(selector).addBack(selector);
             }
             return jQuery(that.$el);
         },
-        dynamicData : function (conf) {
+        dynamicData(conf) {
             return conf;
         },
         /**
@@ -78,7 +78,7 @@ crud.components.cComponent = Vue.component('c-component',{
          * @return {*}
          * @private
          */
-        _loadConf : function() {
+        _loadConf() {
             var that = this;
             //console.log('this name',_compName,defaultConf);
             var defaultConf = that._getDefaultConf();
@@ -94,7 +94,7 @@ crud.components.cComponent = Vue.component('c-component',{
          * @private
          */
 
-        _getConf : function() {
+        _getConf() {
             var that = this;
             var conf = {};
             // se e' una stringa controllo prima che non sia una variabile globale
@@ -111,7 +111,7 @@ crud.components.cComponent = Vue.component('c-component',{
          * @return {*}
          * @private
          */
-        _getDefaultConf : function () {
+        _getDefaultConf() {
             var that = this;
             var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
             var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);

@@ -6,14 +6,6 @@ crud.components.views.coreVSearch = Vue.component('core-v-search', {
             default : 'search'
         }
     },
-
-    // data :  function () {
-    //     var _conf = this._loadConf() || {};
-    //     var d = {}
-    //     d.defaultWidgetType  = _conf.defaultWidgetType?_conf.defaultWidgetType:'w-input';
-    //     return d;
-    // },
-
     methods : {
         completed : function() {
             var that = this;
