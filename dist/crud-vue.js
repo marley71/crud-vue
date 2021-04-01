@@ -3805,6 +3805,10 @@ crud.components.widgets.coreWMap = Vue.component('core-w-map',{
             var that = this;
             console.log('searchAddress',jQuery(event.target).val());
             var address = jQuery(event.target).val();
+            that._gSearch(address);
+        },
+        _gSearch(address) {
+            var that = this;
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode( { 'address': address }, function(results, status) {
                 if (results) {
@@ -3829,7 +3833,6 @@ crud.components.widgets.coreWMap = Vue.component('core-w-map',{
                     that.errorDialog(status);
                 }
             });
-
         },
         _setHiddenValues : function () {
             var that = this;
