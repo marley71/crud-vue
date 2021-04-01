@@ -13,7 +13,7 @@ crud.components.views.coreVInsert = Vue.component('core-v-insert', {
                     modelName : that.modelName
                 });
             }
-            return route;
+            return route; 
         }
     }
 });
