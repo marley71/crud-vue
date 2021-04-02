@@ -186,22 +186,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
             console.log('v-base _getConf',conf);
             return  conf;
-
-            //console.log('merge confs',defaultConf,conf);
-            // var finalConf = that.mergeConfView(defaultConf,conf);//this.confMerge(defaultConf,conf);
-            // //finalConf = that.mergeConfView(finalConf,conf);
-            // console.log('v-base finalConf',finalConf)
-            // return finalConf;
-
-            //
-            // for (var k in finalConf) {
-            //     if (k == 'methods')
-            //         continue;
-            //     d[k] = finalConf[k];
-            // }
-            // d.conf = finalConf;
-            // console.log('finalConf',finalConf);
-            // return d;
         },
 
 

@@ -220,7 +220,7 @@
                 <v-widget v-for="(widget, key) in widgets" v-if="isHiddenField(key)" :c-widget="widget" :key="key"></v-widget>
                 <div class="row">
                     <div class="col col-lg-3 col-md-4 col-sm-6" v-for="(widget, key) in widgets" v-if="!isHiddenField(key)">
-                        <v-widget  :c-widget="widget"></v-widget>
+                        <v-widget  :c-widget="widget" :key="key"></v-widget>
                     </div>
                 </div>
             </form>

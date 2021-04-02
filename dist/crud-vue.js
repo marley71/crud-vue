@@ -1992,6 +1992,24 @@ crud.components.cComponent = Vue.component('c-component',{
     },
     mixins : [core_mixin,dialogs_mixin],
 
+    // created () {
+    //     var that = this;
+    //     console.log('CREATED',that.$options.name,that.cConf);
+    //     // controllo che nella configurazione dinamica non ci siano definiti dei metodi. in caso ci siano
+    //     // estendo il componente con questi metodi aggiuntivi
+    //     var __call = function (lk) {
+    //         that[lk] = function () {
+    //             var localk = new String(lk);
+    //             //var arguments = this.arguments;
+    //             //console.log(localk,'arguments',arguments);
+    //             return that.methods[localk].apply(that, arguments);
+    //         }
+    //     }
+    //     for (var k in that.methods) {
+    //         __call(k);
+    //     }
+    // },
+
     mounted() {
         var that = this;
         if (that.cRef) {
@@ -2001,12 +2019,10 @@ crud.components.cComponent = Vue.component('c-component',{
             that.$crud.cRefs[that.cCompRef] = this;
         }
 
-        //if (that.conf) {
+
             var __call = function (lk) {
                 that[lk] = function () {
                     var localk = new String(lk);
-                    //var arguments = this.arguments;
-                    //console.log(localk,'arguments',arguments);
                     return that.methods[localk].apply(that,arguments);
                 }
             }
@@ -2017,7 +2033,7 @@ crud.components.cComponent = Vue.component('c-component',{
             if ( that.mounted) {
                 that.mounted.apply(that);
             }
-        //}
+
         if (that.resources && that.resources.length) {
             that.beforeLoadResources();
             //that.resourcesLoaded = false;
@@ -2050,6 +2066,7 @@ crud.components.cComponent = Vue.component('c-component',{
             return jQuery(that.$el);
         },
         dynamicData(conf) {
+            console.log('default dynamicdata',conf);
             return conf;
         },
         /**
@@ -4048,22 +4065,6 @@ crud.components.views.vBase = Vue.component('v-base', {
             }
             console.log('v-base _getConf',conf);
             return  conf;
-
-            //console.log('merge confs',defaultConf,conf);
-            // var finalConf = that.mergeConfView(defaultConf,conf);//this.confMerge(defaultConf,conf);
-            // //finalConf = that.mergeConfView(finalConf,conf);
-            // console.log('v-base finalConf',finalConf)
-            // return finalConf;
-
-            //
-            // for (var k in finalConf) {
-            //     if (k == 'methods')
-            //         continue;
-            //     d[k] = finalConf[k];
-            // }
-            // d.conf = finalConf;
-            // console.log('finalConf',finalConf);
-            // return d;
         },
 
 
