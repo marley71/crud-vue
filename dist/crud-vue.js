@@ -508,6 +508,7 @@ let crudConfWidgets = {
         displayFormat : "dd/mm/yyyy",
         dateFormat :  "yyyy-mm-dd",
         formattedValue : null,
+        nullText : '',
     },
     'w-texthtml' : {
         //confParent : 'crud.conf.w-base',
@@ -2960,7 +2961,10 @@ crud.components.widgets.coreWDateText = Vue.component('core-w-date-text', {
     methods : {
         afterLoadResources : function () {
             var that = this;
-            that.formattedValue = moment(that.value).format(that.displayFormat.toUpperCase())
+            if (that.value)
+                that.formattedValue = moment(that.value).format(that.displayFormat.toUpperCase())
+            else
+                that.formattedValue =  that.translate(that.nullText);
             //console.log('date-text ',that.value,that.displayFormat.toUpperCase(),that.formattedValue)
         }
     }

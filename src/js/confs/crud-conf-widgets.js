@@ -83,6 +83,7 @@ let crudConfWidgets = {
         displayFormat : "dd/mm/yyyy",
         dateFormat :  "yyyy-mm-dd",
         formattedValue : null,
+        nullText : '',
     },
     'w-texthtml' : {
         //confParent : 'crud.conf.w-base',
