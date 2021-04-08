@@ -86,7 +86,7 @@ crud.components.cComponent = Vue.component('c-component',{
             return jQuery(that.$el);
         },
         dynamicData(conf) {
-            console.log('default dynamicdata',conf);
+            //console.log('default dynamicdata',conf);
             return conf;
         },
         /**

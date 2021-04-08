@@ -2,7 +2,9 @@ crud.components.widgets.coreWUploadAjax = Vue.component('core-w-upload-ajax',{
     extends : crud.components.widgets.wBase,
 
     mounted : function() {
-        if (this.value instanceof String)
+        // if (this.value instanceof String)
+        //     this.value = JSON.stringify(this.value).replace(/\\"/g, '"');
+        if (this.value instanceof Object)
             this.value = JSON.stringify(this.value).replace(/\\"/g, '"');
         console.log('w-ulpload ajax',this.value);
     },
