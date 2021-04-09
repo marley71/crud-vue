@@ -10,9 +10,9 @@ const coreMixin = {
         waitStart : function (msg,container) {
             var that = this;
             var _c = container?container:'body';
-            var id = that._createContainer(_c);
+            var id = that.createContainer(_c);
 
-            var comp = new that.$crud.components.misc.cWait({
+            let comp = new that.$options.components['c-wait']({
                 propsData: {
                     cMsg : msg,
                     cGlobal : (_c==='body')?true:false,
@@ -28,13 +28,13 @@ const coreMixin = {
                 return ;
             if (component) {
                 for (var i in that.$crud._wait_istances) {
-                    var comp =that.$crud._wait_istances[i];
+                    let comp =that.$crud._wait_istances[i];
                     if (comp._uid == component._uid) {
                         that.$crud._wait_istances.splice(i,1);
                     }
                 }
             } else {
-                var comp = that.$crud._wait_istances.pop();
+                let comp = that.$crud._wait_istances.pop();
                 comp.$destroy();
                 comp.$el.parentNode.removeChild(comp.$el);
             }
@@ -42,6 +42,28 @@ const coreMixin = {
 
         createModalView : function(viewName,conf,title,callbacks) {
             var that = this;
+            var divId = 'd' + (new Date().getTime());
+            var dialogConf = {
+                message : '<div id="' + divId + '">uuuu</div>',
+                callbacks : callbacks,
+                title : title,
+                mounted() {
+                    var thisDialog = this;
+                    console.log('dialog mounted',thisDialog.jQe().html())
+                    var dialogComp = new that.$options.components[viewName]({
+                        propsData: {
+                            cConf : conf
+                        }
+                    });
+                    dialogComp.$mount(thisDialog.jQe('#'+divId)[0]);
+                }
+            }
+            var d =  that.customDialog(dialogConf);
+            return d;
+
+
+
+
             var divId = 'd' + (new Date().getTime());
             //var dialogComp = new that.$crud.components.views[viewName]({
             var dialogComp = new that.$options.components[viewName]({
@@ -96,7 +118,7 @@ const coreMixin = {
             dialog.componentInstance = dialogComp
             return dialog;
         },
-        _createContainer : function (container) {
+        createContainer : function (container) {
             var id= 'd' + (new Date().getTime());
             jQuery(container).append('<div id="'+id+'" ></div>');
             return id;
@@ -200,8 +222,8 @@ const coreMixin = {
                 that.app.log.error('form not found!');
                 return {};
             }
-            if (typeof tinyMCE !== 'undefined') {
-                tinyMCE.triggerSave();
+            if (typeof window.tinyMCE !== 'undefined') {
+                window.tinyMCE.triggerSave();
             }
             var formData =  _serializeAssoc(form);//form.serializeAssoc();
             var postData = {}
@@ -233,7 +255,7 @@ const coreMixin = {
             }
 
             return String(str)
-            // Enables camel case support.
+                // Enables camel case support.
                 .replace(this.$crud._CAMEL_CASE_REGEXP, '$1 $2')
                 // Add a space after any digits.
                 .replace(this.$crud._TRAILING_DIGIT_REGEXP, '$1 $2')
@@ -246,7 +268,7 @@ const coreMixin = {
         },
         camelCase : function (string) {
             return this.sentenceCase(string)
-            // Replace periods between numeric entities with an underscore.
+                // Replace periods between numeric entities with an underscore.
                 .replace(/(\d) (?=\d)/g, '$1_')
                 // Replace spaces between words with a string upper cased character.
                 .replace(/ (\w)/g, function (_, $1) {
@@ -343,17 +365,17 @@ const coreMixin = {
             }
             if (c2.customActions) {
                 //c1.customActions = c1.customActions || {};
-                for (var k in c2.customActions) {
+                for (let k in c2.customActions) {
                     c1.customActions[k] = c2.customActions[k];
                 }
             }
             if (c2.methods) {
-                for (var k in c2.methods) {
+                for (let k in c2.methods) {
                     c1.methods[k] = c2.methods[k];
                 }
             }
 
-            for (var k in c2) {
+            for (let k in c2) {
                 if (specialsKey.indexOf(k) >= 0)
                     continue;
                 //console.log('sovrascrivo',k);
@@ -379,7 +401,8 @@ const coreMixin = {
                 return _conf || {};
             }
 
-            var _rD = rootData || window;
+            var _rD = rootData || that.$crud.conf;
+            //console.log('_rD',_rD,'conf',conf);
             var _c = __getConfObj(conf,_rD);
             var _parents = [];
             _parents.push(_c)
@@ -387,13 +410,13 @@ const coreMixin = {
             while(_c){
                 //console.log('parent',_c.confParent);
                 if (_c.confParent) {
-                    _c = __getConfObj(_c.confParent,window);
+                    _c = __getConfObj(_c.confParent,that.$crud.conf);
                     _parents.push(_c);
                 } else {
                     _parents.push(_c);
                     _c = null;
                 }
-            };
+            }
 
             var finalConf = {};
             //console.log('conf gerarchia parents',_parents);
@@ -421,7 +444,7 @@ const coreMixin = {
                 return params
             var sparams = tmp[1].split("&");
             for(var i in sparams) {
-                var tmp = sparams[i].split("=");
+                let tmp = sparams[i].split("=");
                 if (tmp.length != 2)
                     continue;
                 var name = tmp[0];
@@ -516,7 +539,7 @@ const coreMixin = {
                 that.$crud._resources_loaded[fileName] = true;
                 if (callback) {
                     callback();
-                };
+                }
             }
             if (!that.$crud._resources[fileName]) {
                 jQuery.get(fileName,function (html) {
@@ -566,7 +589,7 @@ const coreMixin = {
                 that.$crud._resources_loaded[scriptName] = true;
                 if (callback) {
                     callback();
-                };
+                }
             }
             if (!that.$crud._resources[scriptName]) {
                 //that.log.info('loading... ' + scriptName);

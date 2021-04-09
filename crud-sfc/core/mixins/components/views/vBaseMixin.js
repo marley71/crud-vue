@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Server from "../../../Server";
 
-const vBase = {
+const vBaseMixin = {
     props: {
         cFields: {
             default: null
@@ -226,4 +226,4 @@ const vBase = {
         }
     }
 }
-export default vBase
+export default vBaseMixin
