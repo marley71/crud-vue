@@ -10,8 +10,10 @@ import dialogsMixin from '../../core/mixins/dialogsMixin'
 Vue.config.productionTip = false
 Vue.prototype.$crud = crud
 
+require('./components/misc')
 require('./components/widgets')
 require('./components/dialogs')
+require('./components/widgetTemplates')
 
 /* eslint-disable no-new */
 var app = new Vue({

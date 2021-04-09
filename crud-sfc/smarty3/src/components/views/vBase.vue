@@ -2,6 +2,8 @@
 import cComponent from '../misc/cComponent'
 import vBaseMixin from '../../../../core/mixins/components/views/vBaseMixin'
 import crud from '../../../../core/crud'
+import vWidget from './vWidget'
+import vAction from './vAction'
 
 crud.conf['v-base'] = {
   confParent: 'c-component',
@@ -16,7 +18,8 @@ crud.conf['v-base'] = {
 export default {
   name: 'v-base',
   extends: cComponent,
-  mixins: [vBaseMixin]
+  mixins: [vBaseMixin],
+  components: {vWidget, vAction}
 }
 </script>
 
