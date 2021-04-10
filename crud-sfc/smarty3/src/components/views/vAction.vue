@@ -1,5 +1,5 @@
 <template>
-    <action-base :c-conf="conf"></action-base>
+    <a-base :c-conf="conf"></a-base>
 </template>
 
 <script>

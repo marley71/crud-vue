@@ -186,8 +186,8 @@ const vCollectionMixin = {
                     aConf = that.$crud.conf[aName];
                 } else if (that.customActions[aName]) {
                     //console.log('custom action',aName,JSON.parse(JSON.stringify(that.customActions[aName])))
-                    aConf = that.merge(that.$crud.conf['action-base'], that.customActions[aName]);
-                    //aConf.confParent = 'crud.conf.action-base';
+                    aConf = that.merge(that.$crud.conf['a-base'], that.customActions[aName]);
+                    //aConf.confParent = 'crud.conf.a-base';
                 } else {
                     valid = false;
                     console.warn("Impossibile trovare la configurazione di " + aName);

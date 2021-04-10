@@ -99,9 +99,8 @@ const vBaseMixin = {
             // se non esiste il componente di azione lo creo al volo
             if (!this.$options.components[name]) {
                 Vue.component(name, {
-                    extends: actionBase
+                    extends: that.$options.components['a-base']
                 });
-                //aconf = that.$crud.conf['action-base'];
             }
             // ritorno la configurazione dell'azione con la configurazione di default mergiata con un eventuale configurazione custom
             return that.merge(that.$crud.conf[name], (that.customActions[name] || {}));

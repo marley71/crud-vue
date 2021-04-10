@@ -11,6 +11,7 @@ Vue.config.productionTip = false
 Vue.prototype.$crud = crud
 
 require('./components/misc')
+require('./components/actions')
 require('./components/widgets')
 require('./components/dialogs')
 require('./components/widgetTemplates')
