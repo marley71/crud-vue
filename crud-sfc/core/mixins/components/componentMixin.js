@@ -1,4 +1,5 @@
 import Route from '../../Routes'
+import jQuery from 'jquery'
 
 var componentMixin = {
     props : {
@@ -16,7 +17,7 @@ var componentMixin = {
 
     created () {
         var that = this;
-        console.log('CREATED',that.$options.name,that.cConf);
+        console.log('CREATEDDDD',that.$crud,that.$options.name,that.cConf);
         // controllo che nella configurazione dinamica non ci siano definiti dei metodi. in caso ci siano
         // estendo il componente con questi metodi aggiuntivi
         var __call = function (lk) {
@@ -132,6 +133,7 @@ var componentMixin = {
          */
         _getDefaultConf() {
             var that = this;
+            console.log('_getDefaultConf',that.cConfDefaultName,that.$options.name,that.$crud.conf)
             var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
             var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
             var mergedConf = that.merge(defaultConf,componentNameConf);

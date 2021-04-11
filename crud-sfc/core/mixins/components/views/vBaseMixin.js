@@ -79,8 +79,6 @@ const vBaseMixin = {
         _loadConf: function () {
             var that = this;
             var defaultConf = that._getDefaultConf();
-            // console.log('DEFAULT CONF',defaultConf)
-            // return defaultConf;
             var currentConf = that._getConf();
             var mergedConf = that.mergeConfView(defaultConf, currentConf);
             console.log('v-base _loadConf', mergedConf);
@@ -98,9 +96,11 @@ const vBaseMixin = {
             var that = this;
             // se non esiste il componente di azione lo creo al volo
             if (!this.$options.components[name]) {
-                Vue.component(name, {
+                console.log('non esiste la creao',name,that.$options.components['a-base'])
+                this.$options.components[name] = Vue.component(name, {
                     extends: that.$options.components['a-base']
                 });
+                this.$options.components[name].prototype.$crud = this.$crud;
             }
             // ritorno la configurazione dell'azione con la configurazione di default mergiata con un eventuale configurazione custom
             return that.merge(that.$crud.conf[name], (that.customActions[name] || {}));
@@ -135,16 +135,7 @@ const vBaseMixin = {
 
                 }
 
-                // else {
-                //     //onsole.log('get default crud conf ',type)
-                //     conf = this.$crud.conf[type];
-                // }
             }
-
-            // if (!conf) {
-            //     //console.trace();
-            //     throw "Nessuna configurazione trovata per questa view";
-            // }
             console.log('v-base _getConf', conf);
             return conf;
         },

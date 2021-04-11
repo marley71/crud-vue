@@ -18,7 +18,7 @@ require('./components/widgetTemplates')
 
 /* eslint-disable no-new */
 var app = new Vue({
-  el: '#app',
+  // el: '#app',
   router,
   components: { App },
   template: '<App/>',
@@ -29,3 +29,5 @@ Vue.filter('translate', function (value, context, plural, params) {
   var langKey = context ? context + '.' + value : value
   return app.translate(langKey, plural, params)
 })
+
+app.$mount('#app')
