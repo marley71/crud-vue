@@ -17,14 +17,12 @@ var componentMixin = {
 
     created () {
         var that = this;
-        console.log('CREATEDDDD',that.$crud,that.$options.name,that.cConf);
+        //console.log('CREATEDDDD',that.$crud,that.$options.name,that.cConf);
         // controllo che nella configurazione dinamica non ci siano definiti dei metodi. in caso ci siano
         // estendo il componente con questi metodi aggiuntivi
         var __call = function (lk) {
             that[lk] = function () {
                 var localk = new String(lk);
-                //var arguments = this.arguments;
-                //console.log(localk,'arguments',arguments);
                 return that.methods[localk].apply(that, arguments);
             }
         }

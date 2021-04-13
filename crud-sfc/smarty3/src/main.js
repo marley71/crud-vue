@@ -15,6 +15,7 @@ require('./components/actions')
 require('./components/widgets')
 require('./components/dialogs')
 require('./components/widgetTemplates')
+require('./components/app')
 
 /* eslint-disable no-new */
 var app = new Vue({

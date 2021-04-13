@@ -6,6 +6,7 @@ import vListEdit from '../components/views/vListEdit'
 import vEdit from '../components/views/vEdit'
 import vInsert from '../components/views/vInsert'
 import vView from '../components/views/vView'
+import cPage from '../components/app/cPage'
 
 Vue.use(Router)
 
@@ -44,6 +45,12 @@ export default new Router({
       path: '/view/:cConf/:cPk',
       name: 'v-view',
       component: vView,
+      props: true
+    },
+    {
+      path: '/page/:cPath',
+      name: 'c-page',
+      component: cPage,
       props: true
     }
   ]

@@ -178,12 +178,13 @@ var ModelUser = {
     }
   },
   insert: {
+    routeName: null,
     value: {
       "mainrole": -1,
       "fotos": [],
       "attachments": [],
       "id": null,
-      "name": null,
+      "name": 'cicco',
       "banned": -1,
       "email": null,
       "password": null,
