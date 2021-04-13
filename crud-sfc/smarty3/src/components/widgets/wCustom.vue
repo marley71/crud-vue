@@ -5,15 +5,15 @@
 </template>
 
 <script>
-import wBase from "./wBase";
-import crud from "../../crud/confs";
+import wBase from './wBase'
+import crud from '../../../../core/crud'
 
 crud.conf['w-custom'] = {
-};
+}
 
 export default {
-name: "w-custom",
-    extends: wBase
+  name: 'w-custom',
+  extends: wBase
 }
 </script>
 

@@ -3,15 +3,15 @@
 </template>
 
 <script>
-import wBase from "./wBase";
-import crud from "../../crud/confs";
+import wBase from './wBase'
+import crud from '../../../../core/crud'
 
 crud.conf['w-image'] = {
-};
+}
 
 export default {
-    name: "w-image",
-    extends: wBase
+  name: 'w-image',
+  extends: wBase
 }
 </script>
 

@@ -3,16 +3,17 @@
 </template>
 
 <script>
-import wBase from './wBase.vue';
-import crud from "../../crud/confs";
+
+import wBase from './wBase'
+import crud from '../../../../core/crud'
 
 crud.conf['w-input'] = {
-    inputType : 'text'
-};
+  inputType: 'text'
+}
 
 export default {
-  name: "w-input",
-  extends : wBase
+  name: 'w-input',
+  extends: wBase
 }
 </script>
 

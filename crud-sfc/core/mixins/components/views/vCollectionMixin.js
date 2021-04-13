@@ -1,6 +1,6 @@
-//import vBase from "../views/vBase";
-import ProtocolList from '../../../ProtocolList';
-import jQuery from "jquery";
+
+import ProtocolList from '../../../ProtocolList'
+import jQuery from "jquery"
 
 
 const vCollectionMixin = {

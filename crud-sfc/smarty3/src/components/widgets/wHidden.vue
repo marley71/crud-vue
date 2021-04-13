@@ -3,15 +3,15 @@
 </template>
 
 <script>
-import wBase from "./wBase";
-import crud from "../../crud/confs";
+import wBase from './wBase'
+import crud from '../../../../core/crud'
 
 crud.conf['w-hidden'] = {
-};
+}
 
 export default {
-    name: "w-hidden",
-    extends : wBase
+  name: 'w-hidden',
+  extends: wBase
 }
 </script>
 

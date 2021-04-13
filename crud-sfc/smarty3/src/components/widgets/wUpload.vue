@@ -14,47 +14,21 @@
 </template>
 
 <script>
-import wBase from "./wBase";
-import crud from "../../crud/confs";
+import wBase from './wBase'
+import crud from '../../../../core/crud'
+import wUploadMixin from '../../../../core/mixins/components/widgets/wUploadMixin'
 
 crud.conf['w-upload'] = {
-    extensions: '',
-    maxFileSize: '',
-    error: false,
-    errorMessage: '',
-    extensions: [],
-};
+  maxFileSize: '',
+  error: false,
+  errorMessage: '',
+  extensions: []
+}
 
 export default {
-    name: "w-upload",
-    extends: wBase,
-    methods: {
-        getValue: function () {
-            var that = this;
-            console.log('filedesc', jQuery(that.$el).find('[c-file]').prop('files'));
-            var fileDesc = jQuery(that.$el).find('[c-file]').prop('files');
-            if (fileDesc.length) {
-                return fileDesc[0];
-            }
-
-            return null;
-        },
-        _validate: function () {
-            return true;
-        },
-        validate: function () {
-            var that = this;
-
-            //TODO eseguire validazione
-            console.log('validate', that.getValue());
-            that.change();
-            if (that._validate()) {
-                //that.value =
-                that.$emit('success', that);
-            } else
-                that.$emit('error', that);
-        }
-    }
+  name: 'w-upload',
+  extends: wBase,
+  mixins: [wUploadMixin]
 }
 </script>
 

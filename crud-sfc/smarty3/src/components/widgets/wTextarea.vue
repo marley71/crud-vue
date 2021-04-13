@@ -8,17 +8,18 @@
 </template>
 
 <script>
-import wBase from "./wBase";
-import crud from "../../crud/confs";
+import wBase from './wBase'
+import crud from '../../../../core/crud'
+// import wAutocompleteMixin from '../../../../core/mixins/components/widgets/wAutocompleteMixin'
 
 crud.conf['w-textarea'] = {
-    maxlength: 1000,
-    charleft: false,
-};
+  maxlength: 1000,
+  charleft: false
+}
 
 export default {
-    name: "w-textarea",
-    extends: wBase
+  name: 'w-textarea',
+  extends: wBase
 }
 </script>
 
