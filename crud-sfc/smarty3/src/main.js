@@ -6,7 +6,22 @@ import router from './router'
 import crud from '../../core/crud'
 import coreMixin from '../../core/mixins/coreMixin'
 import dialogsMixin from '../../core/mixins/dialogsMixin'
+import jQuery from 'jquery'
 
+// -- import css smarty3 --
+
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
+
+import './assets/index.css'
+
+// import base from 'tailwindcss/base.css'
+// import components from 'tailwindcss/components.css'
+// import utilities from 'tailwindcss/utilities.css'
+
+// --------
+
+crud.EventBus = new Vue()
 Vue.config.productionTip = false
 Vue.prototype.$crud = crud
 
@@ -15,6 +30,7 @@ require('./components/actions')
 require('./components/widgets')
 require('./components/dialogs')
 require('./components/widgetTemplates')
+require('./components/views')
 require('./components/app')
 
 /* eslint-disable no-new */
@@ -30,5 +46,5 @@ Vue.filter('translate', function (value, context, plural, params) {
   var langKey = context ? context + '.' + value : value
   return app.translate(langKey, plural, params)
 })
-
+window.jQuery = jQuery
 app.$mount('#app')

@@ -11,18 +11,18 @@
 import vRecord from './vRecord'
 import crud from '../../../../core/crud'
 
-crud.conf['v-hasmany'] =  {
-    confParent: 'v-record',
-    defaultWidgetType: 'w-input'
+crud.conf['v-hasmany'] = {
+  confParent: 'v-record',
+  defaultWidgetType: 'w-input'
 }
 
 export default {
-  name: "v-hasmany",
+  name: 'v-hasmany',
   extends: vRecord,
   methods: {
     getFieldName: function (key) {
       var that = this
-      return that.cModel + "-" + key + '[]'
+      return that.cModel + '-' + key + '[]'
     },
     getValue: function () {
       var that = this

@@ -10,14 +10,14 @@
             </template>
             <div class="flex flex-col">
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-                    <div class="mx-1" :class="key.replace('|','-')" v-for="(widget, key) in widgets">
+                    <div v-for="(widget, key) in widgets" class="mx-1" :class="key.replace('|','-')"  :key="key">
                         <v-widget :c-widget="widget" v-if="!isHiddenField(key)"></v-widget>
                     </div>
                 </div>
                 <div class="flex search-buttons" :class="buttonsClass">
                     <div class="p-3 flex" v-show="actions.length">
                         <template v-for="(action,name) in actionsConf">
-                            <v-action :c-action="action"></v-action>
+                            <v-action :c-action="action" :key="name"></v-action>
                         </template>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
 
 <script>
 import vRecord from './vRecord'
-import jQuery from 'jquery';
+import jQuery from 'jquery'
 import crud from '../../../../core/crud'
 
 crud.conf['v-search'] = {
@@ -42,7 +42,7 @@ crud.conf['v-search'] = {
   customActions: {},
   widgetTemplate: 'tpl-record',
   buttonsClass: null
-};
+}
 
 export default {
   name: 'v-search',
@@ -58,11 +58,11 @@ export default {
       that.jQe('form').each(function () {
         jQuery(this).find('input').keypress(function (e) {
           // Enter pressed?
-          if (e.which == 10 || e.which == 13) {
-            var a = that.getAction('action-search');
-            a.execute();
+          if (e.which === 10 || e.which === 13) {
+            var a = that.getAction('action-search')
+            a.execute()
           }
-        });
+        })
       })
     },
     getFieldName: function (key) {
@@ -73,7 +73,7 @@ export default {
       if (route) {
         route.setValues({
           modelName: that.modelName
-        });
+        })
       }
       return route
     }

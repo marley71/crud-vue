@@ -1,3 +1,5 @@
+import Server from '../../../Server'
+
 const wSwapMixin = {
     mounted: function () {
         var that = this;

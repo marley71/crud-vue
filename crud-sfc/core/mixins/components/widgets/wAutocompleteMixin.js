@@ -1,4 +1,5 @@
 import jQuery from "jquery";
+import Server from '../../../Server'
 
 const wAutocompleteMixin = {
     methods: {
@@ -13,7 +14,7 @@ const wAutocompleteMixin = {
         },
         _initAjax: function () {
             var that = this;
-            that.jQe('[c-autocomplete]').autoComplete({
+            window.jQuery(that.jQe('[c-autocomplete]')).autoComplete({
                 minLength: that.minLength,
                 source: function (term, suggest) {
                     var r = that._getRoute(that.routeName);
@@ -47,7 +48,7 @@ const wAutocompleteMixin = {
             }
             //data = ['ciao','cianon'];
             console.log('data', data);
-            that.jQe('[c-autocomplete]').autoComplete({
+            window.jQuery(that.jQe('[c-autocomplete]')).autoComplete({
                 source: function (term, suggest) {
                     var suggestions = [];
                     //that.suggestValues = {};
