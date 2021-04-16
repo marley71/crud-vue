@@ -90,7 +90,8 @@ const actionConfs = {
         text : '',
         icon : 'fa fa-edit',
         execute : function () {
-            var url = "/edit/" + this.view.modelName + "/" + this.modelData[this.view.primaryKey];
+            let url = '#/edit/' + this.pascalCase('model_'+this.view.modelName) + '/' + this.modelData[this.view.primaryKey]
+            //var url = "/edit/" + this.view.modelName + "/" + this.modelData[this.view.primaryKey];
             document.location.href=url
         }
     },
@@ -102,7 +103,7 @@ const actionConfs = {
         icon : 'fa fa-eye',
         text : '',
         execute : function () {
-            var url = "/view/" + this.view.modelName + "/" + this.modelData.id;
+            let url = '#/view/' + this.pascalCase('model_'+this.view.modelName) + '/' + this.modelData[this.view.primaryKey]
             document.location.href=url;
         }
     },
@@ -239,7 +240,8 @@ const actionConfs = {
         icon : 'fa fa-plus',
         text : 'app.nuovo',
         execute  :function () {
-            var url = "/insert/" + this.view.modelName + "/new";
+            //var url = "/insert/" + this.view.modelName + "/new";
+            let url = '#/insert/' + this.pascalCase('model_'+this.view.modelName) + ".insert"
             document.location.href=url;
         }
     },
