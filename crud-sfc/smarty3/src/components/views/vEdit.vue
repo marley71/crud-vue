@@ -23,7 +23,7 @@
 
 <script>
 import vRecord from './vRecord'
-// import vListMixin from '../../../../core/mixins/components/views/vListMixin'
+import vEditMixin from '../../../../core/mixins/components/views/vEditMixin'
 import crud from '../../../../core/crud'
 
 crud.conf['v-edit'] = {
@@ -44,21 +44,10 @@ crud.conf['v-edit'] = {
 export default {
   name: 'v-edit',
   extends: vRecord,
+  mixins: [vEditMixin],
   props: {
     cType: {
       default: 'edit'
-    }
-  },
-  methods: {
-    setRouteValues: function (route) {
-      var that = this
-      if (route) {
-        route.setValues({
-          modelName: that.modelName,
-          pk: that.pk
-        })
-      }
-      return route
     }
   }
 }

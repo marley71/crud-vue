@@ -2,24 +2,18 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+
 import router from './router'
 import crud from '../../core/crud'
 import coreMixin from '../../core/mixins/coreMixin'
 import dialogsMixin from '../../core/mixins/dialogsMixin'
+import mainMixin from '../../core/mixins/mainMixin'
 import jQuery from 'jquery'
 
 // -- import css smarty3 --
-
+import './assets/index.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
-
-import './assets/index.css'
-
-// import base from 'tailwindcss/base.css'
-// import components from 'tailwindcss/components.css'
-// import utilities from 'tailwindcss/utilities.css'
-
-// --------
 
 crud.EventBus = new Vue()
 Vue.config.productionTip = false
@@ -39,7 +33,7 @@ var app = new Vue({
   router,
   components: { App },
   template: '<App/>',
-  mixins: [coreMixin, dialogsMixin]
+  mixins: [coreMixin, dialogsMixin, mainMixin]
 })
 
 Vue.filter('translate', function (value, context, plural, params) {
@@ -47,4 +41,5 @@ Vue.filter('translate', function (value, context, plural, params) {
   return app.translate(langKey, plural, params)
 })
 window.jQuery = jQuery
+window.app = app
 app.$mount('#app')

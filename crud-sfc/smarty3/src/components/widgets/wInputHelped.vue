@@ -18,6 +18,8 @@
 
 import wBase from './wBase'
 import crud from '../../../../core/crud'
+import choiceMixin from '../../../../core/mixins/choiceMixin'
+import wInputHelpedMixin from '../../../../core/mixins/components/widgets/wInputHelpedMixin'
 
 crud.conf['w-input-helped'] = {
   domainValues: {},
@@ -28,12 +30,7 @@ crud.conf['w-input-helped'] = {
 export default {
   name: 'w-input-helped',
   extends: wBase,
-  mounted: function () {
-    var that = this
-    if (that.domainValuesOrder.length === 0 && Object.keys(that.domainValues).length > 0) {
-      that.domainValuesOrder = Object.keys(that.domainValues)
-    }
-  }
+  mixins: [choiceMixin, wInputHelpedMixin]
 }
 </script>
 

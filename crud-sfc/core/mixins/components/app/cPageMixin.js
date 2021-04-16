@@ -1,7 +1,5 @@
-import Server from '../../Server'
-import jQuery from 'jquery'
+import Server from '../../../Server'
 import Vue from 'vue'
-import crud from "../../crud";
 
 const cPageMixin = {
     beforeDestroy() {
@@ -23,42 +21,25 @@ const cPageMixin = {
                 that.errorDialog(html.msg);
                 return;
             }
-            // var htmlNode = jQuery(html);
-            //
-            // if (htmlNode.find('html').length >= 1) {
-            //     console.log(htmlNode.html())
-            //     throw new Error({ code : 500, message: 'Invalid html'})
-            // }
-            // console.log(jQuery(html).is('html'));
-
-            var htmlNode = jQuery('<div>' + html + '</div>');
+            var htmlNode = window.jQuery('<div>' + html + '</div>');
             // contiene il tag html => pagina principale
             if (htmlNode.find('html').length >= 1) {
-                console.log(htmlNode.html())
+                // console.log(htmlNode.html())
                 throw new Error({ code : 500, message: 'Invalid html'})
             }
-            console.log(htmlNode.html());
-
-
-
-            jQuery.each(htmlNode.find('script'), function () {
-                //console.log('script',jQuery(this).text());
-                jQuery('body').append(jQuery(this));
-                jQuery(this).remove();
+            window.jQuery.each(htmlNode.find('script'), function () {
+                // console.log('script',window.jQuery(this).text());
+                window.jQuery('body').append(window.jQuery(this));
+                window.jQuery(this).remove();
             })
 
-            //console.log('html', htmlNode.html());
+            // console.log('html', htmlNode.html());
+            var id = Math.floor(Math.random()*1000);
             Vue.prototype.$crud = that.$crud;
-            var cdef = Vue.component('async-comp', {
+            var cdef = Vue.component('page'+id, {
                 extends: that.$options.components['c-component'],
                 template: htmlNode.html()
             });
-            //cdef.prototype.$crud = that.$crud;
-
-            var id = 'd' + (new Date().getTime());
-
-            //jQuery('#' + that.contentId).html('<div id="' + id + '" ></div>');
-            //console.log('componente container length id ' + id,jQuery('#' + id).length);
             var componente = new cdef();
             componente.$mount('#page_container' );
             that.component = componente;

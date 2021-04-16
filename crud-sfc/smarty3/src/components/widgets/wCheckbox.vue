@@ -12,6 +12,7 @@
 <script>
 import wBase from './wBase'
 import choiceMixin from '../../../../core/mixins/choiceMixin'
+import wCheckboxMixin from '../../../../core/mixins/components/widgets/wCheckboxMixin'
 import crud from '../../../../core/crud'
 
 crud.conf['w-checkbox'] = {
@@ -24,12 +25,7 @@ crud.conf['w-checkbox'] = {
 export default {
   name: 'w-checkbox',
   extends: wBase,
-  mixins: [choiceMixin],
-  methods: {
-    getFieldName: function () {
-      return this.name + '[]'
-    }
-  }
+  mixins: [choiceMixin, wCheckboxMixin]
 }
 </script>
 

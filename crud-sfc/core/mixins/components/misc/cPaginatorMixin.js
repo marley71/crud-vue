@@ -1,19 +1,19 @@
-const paginatorMixin = {
-    data () {
-        var that = this;
-        //console.log('paginator',that.cPagination, that.$parent.pagination )
-        var pagination = that.cPagination || that.$parent.data.pagination || {};
-        var d = {
-            current_page: 0,
-            from: 0,
-            to: 0,
-            last_page: 0,
-            per_page: 0,
-            total: 0,
-            pagination_steps: {}
-        }
-        return this.merge(d, pagination);
-    },
+const cPaginatorMixin = {
+    // data () {
+    //     var that = this;
+    //     //console.log('paginator',that.cPagination, that.$parent.pagination )
+    //     var pagination = that.cPagination || that.$parent.data.pagination || {};
+    //     var d = {
+    //         current_page: 0,
+    //         from: 0,
+    //         to: 0,
+    //         last_page: 0,
+    //         per_page: 0,
+    //         total: 0,
+    //         pagination_steps: {}
+    //     }
+    //     return this.merge(d, pagination);
+    // },
     methods: {
         firstPage () {
             var that = this;
@@ -50,4 +50,4 @@ const paginatorMixin = {
         },
     }
 }
-export default paginatorMixin
+export default cPaginatorMixin

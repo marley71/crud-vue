@@ -47,17 +47,6 @@ export default {
     cType: {
       default: 'insert'
     }
-  },
-  methods: {
-    setRouteValues: function (route) {
-      var that = this
-      if (route) {
-        route.setValues({
-          modelName: that.modelName
-        })
-      }
-      return route
-    }
   }
 }
 </script>

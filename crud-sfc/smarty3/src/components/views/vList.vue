@@ -13,7 +13,7 @@
           <div v-if="paginator" class="flex w-full md:w-1/2 pb-2 md:pb-0 justify-center">
             <!-- v-bind:c-route-conf="routeConf" -->
             <c-paginator v-if="widgets.length > 0" v-show="pagination"
-                         v-bind:c-pagination="pagination" v-bind:c-route="route"></c-paginator>
+                         :c-conf="pagination" ></c-paginator>
           </div>
           <div class="flex w-full md:w-1/2 justify-center h-8" v-show="collectionActionsName.length">
             <template v-for="name in collectionActionsName" >

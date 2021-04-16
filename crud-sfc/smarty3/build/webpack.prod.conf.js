@@ -11,6 +11,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const tailwindcss = require('tailwindcss');
+const { VueLoaderPlugin } = require("vue-loader");
+
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -38,6 +40,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     // ])
     // ,
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
+    //new postCss(),
+    //new tailwindcss(),
+    new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': env
     }),

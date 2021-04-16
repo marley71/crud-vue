@@ -65,7 +65,7 @@
 <script>
 
 import cComponent from '../misc/cComponent'
-import cManageMixin from '../../../../core/mixins/app/cManageMixin'
+import cManageMixin from '../../../../core/mixins/components/app/cManageMixin'
 import crud from '../../../../core/crud'
 
 crud.conf['c-manage'] = {
@@ -96,12 +96,13 @@ crud.conf['c-manage'] = {
   resources: [
     'https://unpkg.com/velocity-animate@2.0.6/velocity.min.js'
   ],
-  list:{},
+  // configurazioni delle varie view
+  list: {},
   edit: {},
-  search:{},
+  search: {},
   view: {},
   listEdit: {},
-  insert:null,
+  insert: null
 }
 
 export default {

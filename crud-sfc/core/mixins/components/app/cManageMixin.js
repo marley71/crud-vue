@@ -20,12 +20,12 @@ const cManageMixin = {
             el.style.transformOrigin = 'left'
         },
         enter: function (el, done) {
-            jQuery(el).velocity({ opacity: 1}, { duration: 1000 })
-            jQuery(el).velocity({ fontSize: '1em' }, { complete: done })
+            window.jQuery(el).velocity({ opacity: 1}, { duration: 1000 })
+            window.jQuery(el).velocity({ fontSize: '1em' }, { complete: done })
         },
         leave: function (el, done) {
 
-            jQuery(el).velocity({
+            window.jQuery(el).velocity({
                 opacity: 0
             }, { duration: 1000 })
         },
@@ -33,49 +33,49 @@ const cManageMixin = {
             el.style.opacity = 1
         },
         enterList: function (el, done) {
-            jQuery(el).velocity(
+            window.jQuery(el).velocity(
                 "slideDown", {duration: 1000});
-            // jQuery(el).velocity({ fontSize: '1em' }, { complete: done })
+            // window.jQuery(el).velocity({ fontSize: '1em' }, { complete: done })
         },
         leaveList: function (el, done) {
-            jQuery(el).velocity(
+            window.jQuery(el).velocity(
                 "slideUp", {duration: 1000});
 
-            jQuery(el).velocity({
+            window.jQuery(el).velocity({
                 opacity: 0
             }, { complete: done })
         },
-        dynamicData(conf) {
-            var thisManage = this;
-            //var _conf = this._getConf() || {};
-
-            if (!conf.modelName)
-                conf.modelName = thisManage.cModel ? thisManage.cModel : null;
-            if (thisManage.cInlineEdit)
-                conf.inlineEdit = thisManage.cInlineEdit;
-
-            // if (!conf.modelName)
-            //     throw 'model Name not found!';
-            conf.layoutGradientColor = thisManage.$crud.layoutGradientColor;
-
-            console.log(conf.modelName , thisManage.cCollapsible);
-            var collapsibleElement = (thisManage.cCollapsible !== undefined) ? thisManage.cCollapsible :
-                (conf.collapsible !== undefined) ? conf.collapsible :
-                    true;
-            conf.collapsible = (collapsibleElement === true || collapsibleElement === 'collapsed');
-            conf.collapsed =  (collapsibleElement === 'collapsed');
-            conf.collapseId = conf.collapseId || 'manageCollapse'+conf.modelName;
-
-            conf = thisManage._getListConfiguration(conf);
-            conf = thisManage._getSearchConfiguration(conf);
-            conf = thisManage._getListEditConfiguration(conf);
-            conf = thisManage._getEditConfiguration(conf);
-            conf = thisManage._getInsertConfiguration(conf);
-            conf = thisManage._getViewConfiguration(conf);
-
-            console.log('CONF MANAGE',conf);
-            return conf;
-        },
+        // dynamicData(conf) {
+        //     var thisManage = this;
+        //     //var _conf = this._getConf() || {};
+        //
+        //     if (!conf.modelName)
+        //         conf.modelName = thisManage.cModel ? thisManage.cModel : null;
+        //     if (thisManage.cInlineEdit)
+        //         conf.inlineEdit = thisManage.cInlineEdit;
+        //
+        //     // if (!conf.modelName)
+        //     //     throw 'model Name not found!';
+        //     conf.layoutGradientColor = thisManage.$crud.layoutGradientColor;
+        //
+        //     console.log(conf.modelName , thisManage.cCollapsible);
+        //     var collapsibleElement = (thisManage.cCollapsible !== undefined) ? thisManage.cCollapsible :
+        //         (conf.collapsible !== undefined) ? conf.collapsible :
+        //             true;
+        //     conf.collapsible = (collapsibleElement === true || collapsibleElement === 'collapsed');
+        //     conf.collapsed =  (collapsibleElement === 'collapsed');
+        //     conf.collapseId = conf.collapseId || 'manageCollapse'+conf.modelName;
+        //
+        //     conf = thisManage._getListConfiguration(conf);
+        //     conf = thisManage._getSearchConfiguration(conf);
+        //     conf = thisManage._getListEditConfiguration(conf);
+        //     conf = thisManage._getEditConfiguration(conf);
+        //     conf = thisManage._getInsertConfiguration(conf);
+        //     conf = thisManage._getViewConfiguration(conf);
+        //
+        //     console.log('CONF MANAGE',conf);
+        //     return conf;
+        // },
         createList: function () {
             var that = this;
             if (that.listComp)
@@ -84,16 +84,18 @@ const cManageMixin = {
             var id = 'd' + (new Date().getTime());
             that.jQe('[c-list-container]').html('<div id="' + id + '"></div>');
             if (that.list) {
+                var conf = that._getListConfiguration();
                 that.listComp = new that.$options.components[that.listComponentName]({
                     propsData: {
-                        cConf: that.listConf,
+                        cConf: conf,
                         cRef: 'list-view'
                     }
                 });
             } else {
+                var conf = that._getListEditConfiguration();
                 that.listComp = new that.$options.components[that.listEditComponentName]({
                     propsData: {
-                        cConf: that.listEditConf,
+                        cConf: conf,
                         cRef: 'list-view'
                     }
                 });
@@ -103,17 +105,18 @@ const cManageMixin = {
         },
         createSearch: function () {
             var that = this;
-            if (!that.searchConf || that.searchConf.fields.length == 0)
+            if (!that.search || !that.search.fields || that.search.fields.length == 0)
                 return;
             if (that.searchComp)
                 that.searchComp.$destroy();
             // monto la search
+            //that.search.targetRef = 'list-view';
+            var conf = that._getSearchConfiguration();
             var id = 'd' + (new Date().getTime());
             that.jQe('[c-search-container]').html('<div id="' + id + '"></div>');
             that.searchComp = new that.$options.components[that.searchComponentName]({
                 propsData: {
-                    cModel: that.cModel,
-                    cConf: that.searchConf,
+                    cConf: conf,
                 }
             });
             //}
@@ -125,43 +128,39 @@ const cManageMixin = {
                 thisManage.editComp.$destroy();
                 thisManage.editComp = null;
             }
-            //console.log('primary key ',thisManage.listComp.primaryKey,action)
-            var pkTranslation = thisManage.translate(thisManage.modelName + "." + thisManage.listComp.primaryKey + '.label');
-
-            if (thisManage.modelName === 'istituto') {
-
-                thisManage.updateTitle = 'Modifica ' + thisManage.translate(thisManage.modelName+'.label') + ' (' +
-                    pkTranslation +
-                    ':' + action.modelData[thisManage.listComp.primaryKey] + ')';
-            } else {
-                thisManage.updateTitle = 'Modifica ' + thisManage.translate(thisManage.modelName+'.label');
+            if (!this.edit) {
+                throw new Error({message:'configurazione edit non trovata',code:500});
             }
+            //console.log('primary key ',thisManage.listComp.primaryKey,action)
+            var pkTranslation = thisManage.translate(thisManage.edit.modelName + "." + thisManage.listComp.primaryKey + '.label');
+
+            thisManage.updateTitle = 'Modifica ' + thisManage.translate(thisManage.edit.modelName+'.label');
+
+            var conf = thisManage._getEditConfiguration();
 
             var id = 'd' + (new Date().getTime());
             thisManage.jQe('[c-edit-container]').html('<div id="' + id + '"></div>');
             thisManage.editComp = new thisManage.$options.components[thisManage.editComponentName]({
 
                 propsData: {
-                    cModel: thisManage.modelName,
                     cPk: action.modelData[thisManage.listComp.primaryKey],
-                    cConf: thisManage.editConf
+                    cConf: conf
                 }
             });
             thisManage.editComp.$mount('#' + id);
             thisManage.showEdit = true;
             thisManage.showList = false;
 
-            // thisManage.jQe('[c-collapse-edit]').collapse('show');
-            // thisManage.jQe('[c-collapse-list]').collapse('hide');
         },
         _createView: function (action) {
             var thisManage = this;
             //var that = this;
             var id = 'd' + (new Date().getTime());
             let primaryKey = thisManage.listComp?thisManage.listComp.primaryKey:thisManage.listEditComp.primaryKey;
+            let modelName = thisManage.listComp?thisManage.listComp.modelName:thisManage.listEditComp.modelName;
 
-            var pkTranslation = thisManage.translate(thisManage.modelName + "." + primaryKey + '.label');
-            thisManage.viewTitle = thisManage.translate("model." + thisManage.modelName, 0) + ' (' +
+            var pkTranslation = thisManage.translate(modelName + "." + primaryKey + '.label');
+            thisManage.viewTitle = thisManage.translate("model." + modelName, 0) + ' (' +
                 pkTranslation +
                 ':' + action.modelData[primaryKey] + ')';
 
@@ -171,10 +170,8 @@ const cManageMixin = {
             }
             var pk = action.modelData[primaryKey];
             var dlgView = thisManage.customDialog('<div id="' + id + '"></div>');
+            var conf = thisManage._getViewConfiguration();
 
-            //console.log('VIEWDATA',pk);
-            //viewConf.pk = pk;
-            //thisManage.jQe('[c-view-container]').html('<div id="' + id + '"></div>');
             thisManage.viewComp = new thisManage.$options.components[thisManage.viewComponentName]({
                 propsData: {
                     cModel: thisManage.modelName,
@@ -229,23 +226,22 @@ const cManageMixin = {
                 execute: function () {
                     thisManage.showEdit = false;
                     thisManage.showList = true;
-                    // thisManage.jQe('[c-collapse-edit]').collapse('hide');
-                    // thisManage.jQe('[c-collapse-list]').collapse('show');
                     this.view.$destroy();
                     thisManage.listComp.reload();
                     thisManage.jQe('[c-edit-container]').html(' ');
                 }
             }
         },
-        _getListConfiguration: function (conf) {
+        _getListConfiguration: function () {
             var thisManage = this;
-            var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
-            var originalConf = window[modelConf] ? window[modelConf] : {};
-            //console.log('conf.modelName',conf.modelName,modelConf,originalConf);
-            var listConf = null;
+            // var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
+            // var originalConf = window[modelConf] ? window[modelConf] : {};
+            // //console.log('conf.modelName',conf.modelName,modelConf,originalConf);
+            // var originalConf = thisManage.list || {};
+            var listConf = thisManage.list || {};
 
-            if (!thisManage.cInlineEdit && !conf.inlineEdit) {
-                listConf = conf.listConf || originalConf.list || {};
+            if (!thisManage.cInlineEdit && !thisManage.inlineEdit) {
+                //listConf = conf.listConf || originalConf.list || {};
                 listConf = thisManage.mergeConfView(thisManage.$crud.conf.list, listConf);
                 // se sono presente l'action-edit,action-view o action-insert le ridefinisco per la gestione automatica da parte della c-manage
                 if (listConf.actions.indexOf('action-edit') >= 0) {
@@ -271,17 +267,19 @@ const cManageMixin = {
                     listConf.customActions['action-insert'] = aInsert;
                 }
             }
-            conf.listConf = listConf;
-            return conf;
+            return listConf;
+            // conf.listConf = listConf;
+            // return conf;
         },
-        _getListEditConfiguration: function (conf) {
+        _getListEditConfiguration: function () {
             var thisManage = this;
-            var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
-            var originalConf = window[modelConf] ? window[modelConf] : {};
-            //console.log('conf.modelName',conf.modelName,modelConf,originalConf);
-            var listEditConf = null;
+            // var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
+            // var originalConf = window[modelConf] ? window[modelConf] : {};
+            // //console.log('conf.modelName',conf.modelName,modelConf,originalConf);
+            // var listEditConf = null;
+            var listEditConf = thisManage.listEdit;
 
-            if (thisManage.cInlineEdit || conf.inlineEdit) {
+            if (thisManage.cInlineEdit || thisManage.inlineEdit) {
                 listEditConf = thisManage.mergeConfView(conf.listEditConf, (originalConf.listEdit || {}));
                 //listEditConf = thisManage.mergeConfView(thisManage.$crud.conf.listEdit, listEditConf);
                 console.log('acions list edit ', listEditConf.actions);
@@ -304,13 +302,14 @@ const cManageMixin = {
             conf.listEditConf = listEditConf;
             return conf;
         },
-        _getSearchConfiguration: function (conf) {
+        _getSearchConfiguration: function () {
             var thisManage = this;
-            if (conf.searchConf === null) return conf;
-            var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
-            var originalConf = window[modelConf] ? window[modelConf] : {};
-            var searchConf = conf.searchConf || originalConf.search || {};
-            //searchConf = thisManage.mergeConfView(thisManage.$crud.conf.search, searchConf);
+            // if (conf.searchConf === null) return conf;
+            // var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
+            // var originalConf = window[modelConf] ? window[modelConf] : {};
+            // var searchConf = conf.searchConf || originalConf.search || {};
+            // //searchConf = thisManage.mergeConfView(thisManage.$crud.conf.search, searchConf);
+            var searchConf = thisManage.search || {};
 
             if (!searchConf.customActions) searchConf.customActions = {};
 
@@ -326,15 +325,16 @@ const cManageMixin = {
                 return;
             };
             searchConf.customActions['action-search'] = acSearch;
-            conf.searchConf = searchConf;
-            return conf;
+            return searchConf;
         },
-        _getEditConfiguration: function (conf) {
+        _getEditConfiguration: function () {
             var thisManage = this;
-            var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
-            var originalConf = window[modelConf] ? window[modelConf] : {};
+            // var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
+            // var originalConf = window[modelConf] ? window[modelConf] : {};
+            //
+            // var editConf = conf.editConf || originalConf.edit || {};
 
-            var editConf = conf.editConf || originalConf.edit || {};
+            var editConf = thisManage.edit || {};
             editConf = thisManage.mergeConfView(thisManage.$crud.conf.edit, editConf);
             // prendo eventuali configurazioni locali al modello.
             var _asb = editConf.customActions['action-save-back'] || {};
@@ -348,9 +348,10 @@ const cManageMixin = {
             });
             if (editConf.actions.indexOf('action-save-back') < 0)
                 editConf.actions.push('action-save-back');
-            console.log("EDITCONFACTIONS::: ",editConf.actions);
-            conf.editConf = editConf;
-            return conf;
+            return editConf;
+            // console.log("EDITCONFACTIONS::: ",editConf.actions);
+            // conf.editConf = editConf;
+            // return conf;
         },
         _getInsertConfiguration: function (conf) {
             var thisManage = this;

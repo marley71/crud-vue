@@ -8,6 +8,8 @@ import vInsert from '../components/views/vInsert'
 import vView from '../components/views/vView'
 import cPage from '../components/app/cPage'
 import cManage from '../components/app/cManage'
+import cImport from '../components/app/cImport'
+import cCalendar from '../components/app/cCalendar'
 
 Vue.use(Router)
 
@@ -58,6 +60,18 @@ export default new Router({
       path: '/manage/:cConf',
       name: 'c-manage',
       component: cManage,
+      props: true
+    },
+    {
+      path: '/import/:cConf',
+      name: 'c-import',
+      component: cImport,
+      props: true
+    },
+    {
+      path: '/calendar/:cConf',
+      name: 'c-calendar',
+      component: cCalendar,
       props: true
     }
   ]

@@ -1,4 +1,3 @@
-import jQuery from "jquery";
 
 const dialogsMixin = {
     methods : {
@@ -19,7 +18,7 @@ const dialogsMixin = {
                 }
             });
             var id= 'd' + (new Date().getTime());
-            jQuery('body').append('<div id="'+id+'"></div>');
+            window.jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
             return d;
         },
@@ -72,22 +71,22 @@ const dialogsMixin = {
                 //methods : callbacks,
             });
             var id= 'd' + (new Date().getTime());
-            jQuery('body').append('<div id="'+id+'"></div>');
+            window.jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
             return d;
         },
         popover : function (element,content,title) {
-            jQuery(element).popover({
+            window.jQuery(element).popover({
                 html : true,
                 content : content,
                 title : title,
                 trigger : 'click'
 
             });
-            jQuery(element).popover('show');
-            jQuery(element).click(function () {
+            window.jQuery(element).popover('show');
+            window.jQuery(element).click(function () {
                 console.log('aaaa');
-                jQuery(element).popover('hide');
+                window.jQuery(element).popover('hide');
             })
         }
     }

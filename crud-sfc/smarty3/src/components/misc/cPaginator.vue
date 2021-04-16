@@ -40,17 +40,24 @@
 <script>
 import cComponent from './cComponent'
 import crud from '../../../../core/crud'
-import paginatorMixin from '../../../../core/mixins/components/paginatorMixin'
+import cPaginatorMixin from '../../../../core/mixins/components/misc/cPaginatorMixin'
 
 crud.conf['c-paginator'] = {
-  confParent: 'c-component'
+  confParent: 'c-component',
+  current_page: 0,
+  from: 0,
+  to: 0,
+  last_page: 0,
+  per_page: 0,
+  total: 0,
+  pagination_steps: {}
 }
 
 export default {
   name: 'c-paginator',
   extends: cComponent,
-  props: ['c-pagination'],
-  mixins: [paginatorMixin]
+  // props: ['c-pagination'],
+  mixins: [cPaginatorMixin]
 }
 
 </script>

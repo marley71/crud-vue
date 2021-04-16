@@ -1,3 +1,5 @@
+import Server from '../../../Server'
+
 const wB2Select2Mixin = {
     methods: {
 

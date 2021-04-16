@@ -10,6 +10,7 @@
 <script>
 import vRecord from './vRecord'
 import crud from '../../../../core/crud'
+import vHasmanyMixin from '../../../../core/mixins/components/views/vHasmanyMixin'
 
 crud.conf['v-hasmany'] = {
   confParent: 'v-record',
@@ -19,20 +20,7 @@ crud.conf['v-hasmany'] = {
 export default {
   name: 'v-hasmany',
   extends: vRecord,
-  methods: {
-    getFieldName: function (key) {
-      var that = this
-      return that.cModel + '-' + key + '[]'
-    },
-    getValue: function () {
-      var that = this
-      var value = {}
-      for (var k in that.widgets) {
-        value[k] = that.getWidget(k).getValue()
-      }
-      return value
-    }
-  }
+  mixins: [vHasmanyMixin]
 }
 </script>
 

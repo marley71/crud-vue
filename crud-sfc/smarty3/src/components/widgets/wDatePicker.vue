@@ -11,7 +11,7 @@
 import jQuery from 'jquery'
 import wBase from './wBase'
 import crud from '../../../../core/crud'
-// import wAutocompleteMixin from '../../../../core/mixins/components/widgets/wAutocompleteMixin'
+import wDatePickerMixin from '../../../../core/mixins/components/widgets/wDatePickerMixin'
 
 /* eslint no-undef: "off" */
 
@@ -28,24 +28,7 @@ crud.conf['w-date-picker'] = {
 export default {
   name: 'w-date-picker',
   extends: wBase,
-  methods: {
-    afterLoadResources: function () {
-      var that = this
-      jQuery(that.$el).find('[c-picker]').datepicker({
-        format: that.displayFormat
-      }).on('changeDate', function (ev) {
-        that.value = moment(ev.date.toISOString()).format(that.dateFormat.toUpperCase()) // ev.date.toISOString();
-        that.change()
-      })
-
-      // console.log('dateformat', that.dateFormat.toUpperCase())
-      jQuery(that.$el).find('[c-picker]').datepicker('update', moment(that.value).format(that.displayFormat.toUpperCase()))
-      if (that.value) {
-        var d = moment(that.value).toDate()
-        jQuery(that.$el).find('[c-picker]').datepicker('setDate', d)
-      }
-    }
-  }
+  mixins: [wDatePickerMixin]
 }
 </script>
 

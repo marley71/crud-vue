@@ -26,6 +26,7 @@ const crud = {
     // },
     conf : actionConfs,
     routes : routeConfs,
+    env : {},
 }
 
 export default crud

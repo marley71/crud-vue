@@ -28,7 +28,7 @@ import wUpload from './wUpload'
 import wUploadAjax from './wUploadAjax'
 
 Vue.component('w-autocomplete', wAutocomplete)
-Vue.component('w-b2-select', wB2Select2)
+Vue.component('w-b2-select2', wB2Select2)
 Vue.component('w-b2m-select2', wB2mSelect2)
 Vue.component('w-belongsto', wBelongsto)
 Vue.component('w-checkbox', wCheckbox)

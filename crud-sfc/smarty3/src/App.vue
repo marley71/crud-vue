@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <img style="height:50px" src="./assets/logo.png">
+    <h1>Test</h1>
+    <router-view :key="$route.fullPath"/>
   </div>
 </template>
 
@@ -20,7 +21,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 </style>

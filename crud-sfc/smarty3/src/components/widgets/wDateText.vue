@@ -6,7 +6,7 @@
 
 import wBase from './wBase'
 import crud from '../../../../core/crud'
-
+import wDateTextMixin from '../../../../core/mixins/components/widgets/wDateTextMixin'
 /* eslint no-undef: "off" */
 
 crud.conf['w-date-text'] = {
@@ -21,12 +21,7 @@ crud.conf['w-date-text'] = {
 export default {
   name: 'w-date-text',
   extends: wBase,
-  methods: {
-    afterLoadResources () {
-      var that = this
-      that.formattedValue = moment(that.value).format(that.displayFormat.toUpperCase())
-    }
-  }
+  mixins: [wDateTextMixin]
 }
 </script>
 

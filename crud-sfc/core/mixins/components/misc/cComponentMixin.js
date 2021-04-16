@@ -1,7 +1,6 @@
-import Route from '../../Routes'
-import jQuery from 'jquery'
+import Route from '../../../Routes'
 
-var componentMixin = {
+var cComponentMixin = {
     props : {
         'cConf' : {
             default : null
@@ -31,7 +30,7 @@ var componentMixin = {
         }
     },
 
-        mounted() {
+    mounted() {
         var that = this;
         if (that.cRef) {
             that.$crud.cRefs[that.cRef] = this;
@@ -82,12 +81,12 @@ var componentMixin = {
         jQe(selector) {
             var that = this;
             if (selector) {
-                return jQuery(that.$el).find(selector).addBack(selector);
+                return window.jQuery(that.$el).find(selector).addBack(selector);
             }
-            return jQuery(that.$el);
+            return window.jQuery(that.$el);
         },
         dynamicData(conf) {
-            console.log('default dynamicdata',conf);
+            //console.log('default dynamicdata',conf);
             return conf;
         },
         /**
@@ -131,7 +130,7 @@ var componentMixin = {
          */
         _getDefaultConf() {
             var that = this;
-            console.log('_getDefaultConf',that.cConfDefaultName,that.$options.name,that.$crud.conf)
+            //console.log('_getDefaultConf',that.cConfDefaultName,that.$options.name,that.$crud.conf)
             var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
             var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
             var mergedConf = that.merge(defaultConf,componentNameConf);
@@ -174,5 +173,4 @@ var componentMixin = {
     }
 }
 
-
-export default componentMixin;
+export default cComponentMixin;

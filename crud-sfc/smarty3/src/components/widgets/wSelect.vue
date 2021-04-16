@@ -21,12 +21,6 @@ export default {
   name: 'w-select',
   extends: wBase,
   mixins: [choiceMixin]
-  // mounted: function () {
-  //   var that = this;
-  //   if (that.domainValuesOrder.length == 0 && Object.keys(that.domainValues).length > 0) {
-  //     that.domainValuesOrder = Object.keys(that.domainValues);
-  //   }
-  // }
 }
 </script>
 

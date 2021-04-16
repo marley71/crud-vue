@@ -21,6 +21,7 @@
 <script>
 import vRecord from './vRecord'
 import crud from '../../../../core/crud'
+import vViewMixin from '../../../../core/mixins/components/views/vViewMixin'
 
 crud.conf['v-view'] = {
   confParent: 'v-record',
@@ -37,21 +38,10 @@ crud.conf['v-view'] = {
 export default {
   name: 'v-view',
   extends: vRecord,
+  mixins: [vViewMixin],
   props: {
     cType: {
       default: 'view'
-    }
-  },
-  methods: {
-    setRouteValues: function (route) {
-      var that = this
-      if (route) {
-        route.setValues({
-          modelName: that.modelName,
-          pk: that.pk
-        })
-      }
-      return route
     }
   }
 }

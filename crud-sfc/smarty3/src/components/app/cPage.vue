@@ -7,7 +7,7 @@
 <script>
 
 import cComponent from '../misc/cComponent'
-import cPageMixin from '../../../../core/mixins/app/cPageMixin'
+import cPageMixin from '../../../../core/mixins/components/app/cPageMixin'
 // import crud from '../../../../core/crud'
 
 export default {

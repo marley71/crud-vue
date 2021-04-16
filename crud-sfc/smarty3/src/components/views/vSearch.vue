@@ -28,7 +28,7 @@
 
 <script>
 import vRecord from './vRecord'
-import jQuery from 'jquery'
+import vSearchMixin from '../../../../core/mixins/components/views/vSearchMixin'
 import crud from '../../../../core/crud'
 
 crud.conf['v-search'] = {
@@ -41,41 +41,17 @@ crud.conf['v-search'] = {
   fieldsConfig: {},
   customActions: {},
   widgetTemplate: 'tpl-record',
-  buttonsClass: null
+  buttonsClass: null,
+  prefixField: 's_'
 }
 
 export default {
   name: 'v-search',
   extends: vRecord,
+  mixins: [vSearchMixin],
   props: {
     cType: {
       default: 'search'
-    }
-  },
-  methods: {
-    completed: function () {
-      var that = this
-      that.jQe('form').each(function () {
-        jQuery(this).find('input').keypress(function (e) {
-          // Enter pressed?
-          if (e.which === 10 || e.which === 13) {
-            var a = that.getAction('action-search')
-            a.execute()
-          }
-        })
-      })
-    },
-    getFieldName: function (key) {
-      return 's_' + key
-    },
-    setRouteValues: function (route) {
-      var that = this
-      if (route) {
-        route.setValues({
-          modelName: that.modelName
-        })
-      }
-      return route
     }
   }
 }

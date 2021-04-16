@@ -10,7 +10,7 @@
 <script>
 import wBase from './wBase'
 import crud from '../../../../core/crud'
-// import wAutocompleteMixin from '../../../../core/mixins/components/widgets/wAutocompleteMixin'
+import wBelongsToMixin from '../../../../core/mixins/components/widgets/wBelongsToMixin'
 
 crud.conf['w-belongsto'] = {
   labelFields: ['text']
@@ -18,7 +18,8 @@ crud.conf['w-belongsto'] = {
 
 export default {
   name: 'w-belongsto',
-  extends: wBase
+  extends: wBase,
+  mixins: [wBelongsToMixin]
 }
 </script>
 
