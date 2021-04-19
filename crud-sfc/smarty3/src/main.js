@@ -15,6 +15,8 @@ import jQuery from 'jquery'
 // import './assets/index.css'
 import './assets/css/core.css'
 import './assets/css/vendor_bundle.css'
+import './assets/css/select2-bootstrap4.css'
+import './assets/css/app.css'
 
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
