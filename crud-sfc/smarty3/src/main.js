@@ -9,9 +9,13 @@ import coreMixin from '../../core/mixins/coreMixin'
 import dialogsMixin from '../../core/mixins/dialogsMixin'
 import mainMixin from '../../core/mixins/mainMixin'
 import jQuery from 'jquery'
+// import './assets/js/core'
 
 // -- import css smarty3 --
-import './assets/index.css'
+// import './assets/index.css'
+import './assets/css/core.css'
+import './assets/css/vendor_bundle.css'
+
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 
@@ -42,4 +46,9 @@ Vue.filter('translate', function (value, context, plural, params) {
 })
 window.jQuery = jQuery
 window.app = app
-app.$mount('#app')
+app.loadResources([
+  // 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap'
+], function () {
+  console.log('caricato tutto')
+  app.$mount('#app')
+})

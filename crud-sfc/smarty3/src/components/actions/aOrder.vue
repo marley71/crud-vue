@@ -1,14 +1,9 @@
 <template>
-    <button v-if="controlType=='button'" type="button" v-show="_visible" :title="title | translate" :class="css"
-            v-on:click="_execute" v-bind:disabled="_disabled">
-        <i v-show="icon" :class="icon"></i>
-        <span>{{ text | translate }}</span>
-    </button>
-    <a v-else :target="target" :href="href" v-show="_visible" :title="title | translate" :class="css"
-       :disabled="_disabled">
-        <i v-show="icon" :class="icon"></i>
-        <span>{{ text | translate }}</span>
-    </a>
+  <button class="btn btn-default btn-xs mr-1 text-gray-500 font-weight-normal fs--14" type="button" v-show="_visible"
+          :title="title | translate" v-on:click="_execute" v-bind:disabled="_disabled">
+    <i v-show="icon" :class="icon"></i>
+    <span>{{ text | translate }}</span>
+  </button>
 </template>
 
 <script>

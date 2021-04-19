@@ -1,13 +1,22 @@
 <template>
-    <div>
-        <img v-if="getType()=='image'" :src="value.url">
-        <a v-else-if="getType()=='doc'" :href="value.url">
-            <i :class="iconClass"></i>
-        </a>
-        <small v-else class="text-danger">
-            <span v-if="value.url">{{ getType() }} mimetype non riconosciuto</span>
-        </small>
-    </div>
+<!--    <div>-->
+<!--        <img v-if="getType()=='image'" :src="value.url">-->
+<!--        <a v-else-if="getType()=='doc'" :href="value.url">-->
+<!--            <i :class="iconClass"></i>-->
+<!--        </a>-->
+<!--        <small v-else class="text-danger">-->
+<!--            <span v-if="value.url">{{ getType() }} mimetype non riconosciuto</span>-->
+<!--        </small>-->
+<!--    </div>-->
+  <div>
+    <img v-if="getType()=='image'" :src="value.url">
+    <a v-else-if="getType()=='doc'" :href="value.url">
+      <i :class="iconClass"></i>
+    </a>
+    <small v-else class="text-danger">
+      <span v-if="value.url">{{ getType() }} mimetype non riconosciuto</span>
+    </small>
+  </div>
 </template>
 
 <script>

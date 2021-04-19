@@ -1,9 +1,9 @@
 <template>
-    <div c-wait :class="{'crud-overlay-body': global, 'crud-overlay' : !global}">
-        <span class="crud-wait-msg">
-            {{ msg | translate }}
-        </span>
-    </div>
+  <div c-wait :class="{'crud-overlay-body': global, 'crud-overlay' : !global}">
+    <span class="crud-wait-msg">
+      {{ msg | translate }}
+    </span>
+  </div>
 </template>
 
 <script>

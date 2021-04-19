@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <img style="height:50px" src="./assets/logo.png">
-    <h1>Test</h1>
     <router-view :key="$route.fullPath"/>
   </div>
 </template>

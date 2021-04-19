@@ -1,21 +1,36 @@
 <template>
+<!--    <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>-->
+<!--    <div v-else class="bg-white p-4 rounded">-->
+<!--        <slot card-title><h4 v-show="viewTitle">{{ viewTitle }}</h4></slot>-->
+<!--        <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">-->
+<!--            <v-widget :c-widget="widget" :key="key"></v-widget>-->
+<!--        </template>-->
+<!--        <div class="row">-->
+<!--            <v-widget v-for="(widget, key) in widgets" :c-widget="widget" v-if="!isHiddenField(key)" :key="key"></v-widget>-->
+<!--        </div>-->
+<!--        <div v-html="beforeActions"></div>-->
+<!--        <div class="clear-both mt-5" v-show="actions.length">-->
+<!--            <template v-for="(action,name) in actionsConf">-->
+<!--                <v-action :c-action="action" :key="name"></v-action>&nbsp;-->
+<!--            </template>-->
+<!--        </div>-->
+<!--    </div>-->
+  <div class="container-fluid">
+    <slot card-title><h4 v-show="viewTitle">{{ viewTitle }}</h4></slot>
     <c-loading v-if="loading" :error-msg="errorMsg"></c-loading>
-    <div v-else class="bg-white p-4 rounded">
-        <slot card-title><h4 v-show="viewTitle">{{ viewTitle }}</h4></slot>
-        <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
-            <v-widget :c-widget="widget" :key="key"></v-widget>
-        </template>
-        <div class="row">
-            <v-widget v-for="(widget, key) in widgets" :c-widget="widget" v-if="!isHiddenField(key)" :key="key"></v-widget>
-        </div>
-        <div v-html="beforeActions"></div>
-        <div class="clear-both mt-5" v-show="actions.length">
-            <template v-for="(action,name) in actionsConf">
-                <v-action :c-action="action" :key="name"></v-action>&nbsp;
-            </template>
-        </div>
+    <div class="row" v-else>
+      <v-widget v-for="(widget, key) in widgets" :c-widget="widget" v-if="!isHiddenField(key)" :key="key"></v-widget>
     </div>
-
+    <!-- campi nascosti -->
+    <template v-for="(widget, key) in widgets" v-if="isHiddenField(key)">
+      <v-widget :c-widget="widget" :key="key"></v-widget>
+    </template>
+    <div v-if="actions.length">
+      <template v-for="(action,name) in actionsConf">
+        <v-action :c-action="action" :key="name"></v-action>
+      </template>
+    </div>
+  </div>
 </template>
 
 <script>

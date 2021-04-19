@@ -1,5 +1,6 @@
 <template>
-  <input class="form-control rounded w-full" :type="inputType" v-model="value" :name="getFieldName()" :change="change">
+  <input :placeholder="label" class="form-control" :type="inputType" v-model="value" :name="getFieldName()"
+         v-on:change="change">
 </template>
 
 <script>
@@ -8,7 +9,8 @@ import wBase from './wBase'
 import crud from '../../../../core/crud'
 
 crud.conf['w-input'] = {
-  inputType: 'text'
+  inputType: 'text',
+  placeholder: ''
 }
 
 export default {

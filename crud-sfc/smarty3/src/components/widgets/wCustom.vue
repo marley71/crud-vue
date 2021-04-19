@@ -1,7 +1,6 @@
 <template>
-    <div>
-        {{value}}
-    </div>
+  <div v-html="value">
+  </div>
 </template>
 
 <script>
