@@ -1367,7 +1367,12 @@ core_mixin = {
             if (c2.customActions) {
                 //c1.customActions = c1.customActions || {};
                 for (var k in c2.customActions) {
-                    c1.customActions[k] = c2.customActions[k];
+                    if (c1.customActions[k]) {
+                        for(var i in  c2.customActions[k]) {
+                            c1.customActions[k][i] = c2.customActions[k][i];
+                        }
+                    } else
+                        c1.customActions[k] = c2.customActions[k];
                 }
             }
             if (c2.methods) {
