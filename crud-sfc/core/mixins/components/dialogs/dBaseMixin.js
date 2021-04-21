@@ -23,7 +23,8 @@ export default {
             this.hide();
         },
         show : function () {
-
+            var that = this;
+            that.visible = true;
         },
         hide : function () {
             var that = this;

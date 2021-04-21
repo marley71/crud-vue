@@ -13,6 +13,8 @@ import vSearch from './vSearch'
 import vListEdit from './vListEdit'
 import vHasmany from './vHasmany'
 
+import '../../confs/views'
+
 Vue.component('v-widget', vWidget)
 Vue.component('v-action', vAction)
 Vue.component('v-base', vBase)

@@ -89,7 +89,7 @@ const actionConfs = {
         css: '',
         text : '',
         icon : 'fa fa-edit',
-        execute : function () {
+        execute () {
             let url = '#/edit/' + this.pascalCase('model_'+this.view.modelName) + '/' + this.modelData[this.view.primaryKey]
             //var url = "/edit/" + this.view.modelName + "/" + this.modelData[this.view.primaryKey];
             document.location.href=url
@@ -102,7 +102,7 @@ const actionConfs = {
         css: '',
         icon : 'fa fa-eye',
         text : '',
-        execute : function () {
+        execute () {
             let url = '#/view/' + this.pascalCase('model_'+this.view.modelName) + '/' + this.modelData[this.view.primaryKey]
             document.location.href=url;
         }
@@ -116,7 +116,6 @@ const actionConfs = {
         text : '',
         setRouteValues : function(route) {
             var that = this;
-
             route.setValues({
                 modelName: that.view.modelName
             });
@@ -124,12 +123,6 @@ const actionConfs = {
                 id : that.modelData[that.view.primaryKey]
             });
             return route;
-            //
-            // route.setValues({
-            //     modelName: that.view.modelName,
-            //     pk : that.modelData[that.view.primaryKey]
-            // });
-            // return route;
         },
         execute : function () {
             var that = this;

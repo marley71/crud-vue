@@ -4,7 +4,7 @@ const dialogsMixin = {
         __dialog(name,bodyProps,callbacks) {
             var that = this;
             var cConf = {};
-            console.log('bodyProps',bodyProps);
+            console.log('bodyProps',bodyProps,callbacks);
             if (typeof bodyProps === 'string' || bodyProps instanceof String || bodyProps instanceof Array) {
                 cConf.message = bodyProps;
             } else
@@ -20,6 +20,7 @@ const dialogsMixin = {
             var id= 'd' + (new Date().getTime());
             window.jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
+            d.show();
             return d;
         },
         messageDialog : function (bodyProps,callbacks) {

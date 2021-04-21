@@ -7,6 +7,7 @@ import tplRecordView from './tplRecordView'
 import tplView from './tplView'
 import tplRecordIn from './tplRecordIn'
 import tplFullNo from './tplFullNo'
+import tplSearch from './tplSearch'
 
 Vue.component('tpl-no', tplNo)
 Vue.component('tpl-list', tplList)
@@ -16,3 +17,4 @@ Vue.component('tpl-record-view', tplRecordView)
 Vue.component('tpl-view', tplView)
 Vue.component('tpl-record-in', tplRecordIn)
 Vue.component('tpl-full-no', tplFullNo)
+Vue.component('tpl-search', tplSearch)

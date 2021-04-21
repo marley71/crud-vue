@@ -150,7 +150,8 @@ const cManageMixin = {
             thisManage.editComp.$mount('#' + id);
             thisManage.showEdit = true;
             thisManage.showList = false;
-
+            thisManage.jQe('[c-collapse-edit]').collapse('show');
+            thisManage.jQe('[c-collapse-list]').collapse('hide');
         },
         _createView: function (action) {
             var thisManage = this;
@@ -201,8 +202,8 @@ const cManageMixin = {
             thisManage.insertComp.$mount('#' + id);
             thisManage.showEdit = true;
             thisManage.showList = false;
-            // thisManage.jQe('[c-collapse-edit]').collapse('show');
-            // thisManage.jQe('[c-collapse-list]').collapse('hide');
+            thisManage.jQe('[c-collapse-edit]').collapse('show');
+            thisManage.jQe('[c-collapse-list]').collapse('hide');
         },
         _actionSaveBack: function () {
             var thisManage = this;
@@ -212,8 +213,8 @@ const cManageMixin = {
                 afterExecute: function () {
                     thisManage.showEdit = false;
                     thisManage.showList = true;
-                    // thisManage.jQe('[c-collapse-edit]').collapse('hide');
-                    // thisManage.jQe('[c-collapse-list]').collapse('show');
+                    thisManage.jQe('[c-collapse-edit]').collapse('hide');
+                    thisManage.jQe('[c-collapse-list]').collapse('show');
                     this.view.$destroy();
                     thisManage.listComp.reload();
                     thisManage.jQe('[c-edit-container]').html(' ');
@@ -226,6 +227,8 @@ const cManageMixin = {
                 execute: function () {
                     thisManage.showEdit = false;
                     thisManage.showList = true;
+                    thisManage.jQe('[c-collapse-edit]').collapse('hide');
+                    thisManage.jQe('[c-collapse-list]').collapse('show');
                     this.view.$destroy();
                     thisManage.listComp.reload();
                     thisManage.jQe('[c-edit-container]').html(' ');

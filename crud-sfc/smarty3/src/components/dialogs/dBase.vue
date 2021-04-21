@@ -16,7 +16,13 @@ crud.conf['d-base'] = {
 export default {
   name: 'd-base',
   extends: cComponent,
-  mixins: [dBaseMixin]
+  mixins: [dBaseMixin],
+  methods: {
+    show () {
+      var that = this
+      window.jQuery(that.jQe()).modal('show')
+    }
+  }
 }
 </script>
 

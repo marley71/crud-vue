@@ -73,23 +73,6 @@ const wAutocompleteMixin = {
             })
             route.setUrl(url);
             return route;
-
-            // configurazione standard
-            var that = this;
-            route.setValues({modelName: that.modelName});
-            var url = that.url ? that.url : route.getUrl();
-            url += '?term=' + term + '&';
-            if (that.labelFields) {
-                for (var f in that.labelFields) {
-                    url += "field[]=" + that.labelFields[f] + "&";
-                }
-            }
-            url += that.separator ? '&separator=' + that.separator : '';
-            url += that.n_items ? '&n_items=' + that.n_items : '';
-            url += that.method ? '&method=' + that.method : '';
-            route.setUrl(url);
-            return route;
-            //return url;
         },
 
         clear: function () {

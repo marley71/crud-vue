@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+
 import Vue from 'vue'
 import App from './App'
 
@@ -9,7 +10,10 @@ import coreMixin from '../../core/mixins/coreMixin'
 import dialogsMixin from '../../core/mixins/dialogsMixin'
 import mainMixin from '../../core/mixins/mainMixin'
 import jQuery from 'jquery'
-// import './assets/js/core'
+
+// ---    configurazioni tempalte ----
+import './confs/actions'
+import './confs/routes'
 
 // -- import css smarty3 --
 // import './assets/index.css'
@@ -21,10 +25,6 @@ import './assets/css/app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 
-crud.EventBus = new Vue()
-Vue.config.productionTip = false
-Vue.prototype.$crud = crud
-
 require('./components/misc')
 require('./components/actions')
 require('./components/widgets')
@@ -32,6 +32,10 @@ require('./components/dialogs')
 require('./components/widgetTemplates')
 require('./components/views')
 require('./components/app')
+
+crud.EventBus = new Vue()
+Vue.config.productionTip = false
+Vue.prototype.$crud = crud
 
 /* eslint-disable no-new */
 var app = new Vue({

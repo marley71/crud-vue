@@ -1,43 +1,5 @@
 //-----------------   WIDGETS ---------------------
-crud.components.widgets.wAutocomplete = Vue.component('w-autocomplete', {
-    extends: crud.components.widgets.coreWAutocomplete,
-    template: "#w-autocomplete-template",
-    methods: {
-        setRouteValues: function (route, term) {
-            var that = this;
-            //var r = that.$crud.createRoute(that.conf.routeName);
-            route.setValues({foormName: that.foormName, viewType: that.viewType});
 
-            //var r = new Route(routeConf);
-
-            //var url = that.url?that.url:"/api/json/autocomplete/" + that.metadata.autocompleteModel + "?";
-            var url = that.url ? that.url : route.getUrl();
-            url += '?value=' + term + '&';
-            route.setParams({
-                field: that.name
-            })
-
-            // if (that.conf.fields) {
-            //     for(var f in that.conf.fields) {
-            //         url+="field[]="+that.conf.fields[f]+"&";
-            //     }
-            // }
-            /* @TODO se metto la description diventa difficile cambiare la
-             if (that.model_description) {
-             for(var f in that.model_description) {
-             url+="description[]="+that.model_description[f]+"&";
-             }
-             }
-             */
-            url += that.conf.separator ? '&separator=' + that.conf.separator : '';
-            url += that.conf.n_items ? '&n_items=' + that.conf.n_items : '';
-            url += that.conf.method ? '&method=' + that.conf.method : '';
-            route.setUrl(url);
-            return route;
-            //return url;
-        }
-    }
-});
 
 crud.conf['w-b2-select2'].fieldName = null;
 crud.conf['w-b2-select2'].referredDataField = null;
@@ -218,16 +180,6 @@ crud.components.widgets.wBelongstoView = Vue.component('w-belongsto-view', {
             return calculatedValue.substring(0, (calculatedValue.length - 3));
         }
     }
-});
-
-crud.components.widgets.wDatePicker = Vue.component('w-date-picker', {
-    extends: crud.components.widgets.coreWDatePicker,
-    template: '#w-date-picker-template',
-});
-
-crud.components.widgets.wDateSelect = Vue.component('w-date-select', {
-    extends: crud.components.widgets.coreWDateSelect,
-    template: '#w-date-select-template',
 });
 
 crud.components.widgets.wDownload = Vue.component('w-download', {
@@ -429,12 +381,6 @@ crud.conf['w-hasmany-view'].titleClass = 'text-amber-900';
 crud.components.widgets.wHasmanyView = Vue.component('w-hasmany-view', {
     extends: crud.components.widgets.coreWHasmanyView,
     template: '#w-hasmany-view-template',
-    // data : function () {
-    //     var _conf = this._getConf();
-    //     return {
-    //         titleClass : _conf.titleClass || ' text-amber-900',
-    //     }
-    // }
 });
 
 crud.conf['w-hasone'] = {
@@ -517,25 +463,7 @@ crud.components.widgets.wInputView = Vue.component('w-input-view', {
     template: '#w-input-view-template',
 });
 
-crud.components.widgets.wInputHelped = Vue.component('w-input-helped', {
-    extends: crud.components.widgets.coreWInputHelped,
-    template: '#w-input-helped-template',
-});
 
-crud.components.widgets.wPreview = Vue.component('w-preview', {
-    extends: crud.components.widgets.coreWPreview,
-    template: '#w-preview-template',
-});
-
-crud.components.widgets.wRadio = Vue.component('w-radio', {
-    extends: crud.components.widgets.coreWRadio,
-    template: '#w-radio-template',
-});
-
-crud.components.widgets.wSelect = Vue.component('w-select', {
-    extends: crud.components.widgets.coreWSelect,
-    template: '#w-select-template',
-});
 
 crud.conf['w-swap'].switchClass = 'form-switch-success';
 crud.conf['w-swap'].dataSwitched = false;
@@ -543,13 +471,6 @@ crud.conf['w-swap'].dataSwitched = false;
 crud.components.widgets.wSwap = Vue.component('w-swap', {
     extends: crud.components.widgets.coreWSwap,
     template: '#w-swap-template',
-    // data : function() {
-    //     var _c = this._getConf();
-    //     return {
-    //         switchClass : _c.switchClass || 'form-switch-success',
-    //         dataSwitched : _c.dataSwitched || false,
-    //     }
-    // },
     methods: {
         setRouteValues: function (route) {
             var that = this;
@@ -765,27 +686,7 @@ crud.components.views.vInsert = Vue.component('v-insert', {
     }
 });
 
-crud.conf['v-list'].helpText = '';
-crud.conf['v-list'].hasFooter = true;
-crud.components.views.vList = Vue.component('v-list', {
-    extends: crud.components.views.coreVList,
-    template: '#v-list-template',
-    methods: {
-        dynamicData: function (conf) {
-            if (!conf.langContext && conf.langContext !== null) {
-                conf.langContext = conf.modelName ? conf.modelName : this.cModel
-                conf.langContext += '.fields';
-            }
-            return conf;
-        },
-        hasHelp: function (key) {
-            var that = this;
-            if (this.fieldsConfig[key]) {
-                return this.fieldsConfig[key].helpText || false;
-            }
-        }
-    }
-})
+
 
 crud.components.views.vListEdit = Vue.component('v-list-edit', {
     extends: crud.components.views.coreVListEdit,
@@ -899,69 +800,4 @@ crud.components.actions.actionOrder = Vue.component('action-order', {
 });
 
 
-//-----------------   MISCELLANEOUS ---------------------
 
-crud.components.misc.cLoading = Vue.component('c-loading', {
-    extends: crud.components.misc.coreCLoading,
-    template: '#c-loading-template',
-});
-
-crud.components.misc.cPaginator = Vue.component('c-paginator', {
-    extends: crud.components.misc.coreCPaginator,
-    template: '#c-paginator-template',
-});
-
-crud.components.misc.cWait = Vue.component('c-wait', {
-    extends: crud.components.misc.coreCWait,
-    template: '#c-wait-template',
-});
-
-
-Vue.component('tpl-record', {
-    extends: crud.components.misc.tplBase,
-    template: '#tpl-record-template'
-});
-
-Vue.component('tpl-record2', {
-    extends: crud.components.misc.tplBase,
-    template: '#tpl-record2-template'
-});
-
-Vue.component('tpl-list', {
-    extends: crud.components.misc.tplBase,
-    template: '#tpl-list-template'
-});
-
-Vue.component('tpl-no', {
-    extends: crud.components.misc.tplBase,
-    template: '#tpl-no-template'
-});
-
-Vue.component('tpl-full-no', {
-    extends: crud.components.misc.tplBase,
-    template: '#tpl-full-no-template'
-});
-
-crud.components.misc.dConfirm = Vue.component('d-confirm', {
-    extends: crud.components.misc.coreDConfirm,
-    template: '#d-confirm-template'
-});
-
-crud.components.misc.dMessage = Vue.component('d-message', {
-    extends: crud.components.misc.coreDMessage,
-    template: '#d-message-template'
-});
-
-crud.components.misc.dError = Vue.component('d-error', {
-    extends: crud.components.misc.coreDError,
-    template: '#d-error-template'
-});
-crud.components.misc.dWarning = Vue.component('d-warning', {
-    extends: crud.components.misc.coreDWarning,
-    template: '#d-warning-template'
-});
-
-crud.components.misc.dCustom = Vue.component('d-custom', {
-    extends: crud.components.misc.coreDCustom,
-    template: '#d-custom-template'
-});

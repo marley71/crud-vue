@@ -57,8 +57,9 @@ const wSwapMixin = {
                     that.errorDialog(json.msg);
                     return;
                 }
-                that.value = key;
-                that.slot = dV[key];
+                console.log('key',key,'current',that._getCurrent())
+                that.value = that._getCurrent();
+                that.slot = dV[ that._getCurrent()];
                 that.change();
             })
         },
@@ -89,8 +90,9 @@ const wSwapMixin = {
             return index;
         },
         _getCurrent() {
+            var that = this;
             var keys = Object.keys(that.getDV());
-            return keys[this._getIndex()];
+            return keys[that._getIndex()];
         },
     }
 }
