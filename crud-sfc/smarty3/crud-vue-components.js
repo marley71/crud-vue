@@ -744,34 +744,11 @@ Vue.component('action-view', {
     extends: crud.components.actions.actionBase
 });
 
-crud.components.actions.actionSave = Vue.component('action-save', {
-    extends: crud.components.actions.actionBase,
-    template: '#action-square-template'
-});
-
-Vue.component('action-save-back', {
-    extends: crud.components.actions.actionSave,
-    template: '#action-square-template'
-});
 
 Vue.component('action-insert', {
     extends: crud.components.actions.actionBase
 });
 
-Vue.component('action-back', {
-    extends: crud.components.actions.actionBase,
-    template: '#action-square-template'
-});
-
-Vue.component('action-search', {
-    extends: crud.components.actions.actionBase,
-    template: '#action-square-template'
-});
-
-Vue.component('action-reset', {
-    extends: crud.components.actions.actionBase,
-    template: '#action-square-template'
-});
 
 Vue.component('action-delete', {
     extends: crud.components.actions.actionBase

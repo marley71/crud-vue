@@ -19,20 +19,26 @@ import aBase from './aBase'
 import aOrderMixin from '../../../../core/mixins/components/actions/aOrderMixin'
 import crud from '../../../../core/crud'
 
-crud.conf['a-order'] = {
-  confParent: 'a-base',
-  type: 'collection',
-  title: 'app.order',
-  css: 'btn btn-default btn-sm mr-1',
-  iconSortAsc: 'fa fa-sort-up',
-  iconSortDesc: 'fa fa-sort-down',
-  iconSort: 'fa fa-sort',
-  icon: null,
-  text: ''
+crud.conf['a-square'] = {
+  confParent: 'c-component',
+  type: null,
+  visible: true,
+  enabled: true,
+  title: '',
+  css: 'btn btn-sm mr-1 btn-success bg-success-soft',
+  icon: '',
+  text: '',
+  controlType: 'button',
+  href: '',
+  target: '_self',
+  needSelection: false,
+  view: null,
+  alertTime: null // eventuale timer per la visualizzazione di un messaggio in alert 0 chiusura manuale, null valore default , n numero millisecondi che il messaggio deve rimanere
+
 }
 
 export default {
-  name: 'a-order',
+  name: 'a-square',
   extends: aBase,
   mixins: [aOrderMixin]
 }

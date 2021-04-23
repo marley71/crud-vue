@@ -171,8 +171,7 @@
                   <th v-show="recordActionsName.length"></th>
                   <th v-for="key in keys" v-if="!isHiddenField(key)"
                       class="text-gray-500 font-weight-normal fs--14" :class="key" :key="key">
-                    <action-order v-if="orderFields[key]"
-                                  v-bind:c-conf="getOrderConf(key)"></action-order>
+                    <a-order v-if="orderFields[key]" :c-conf="getOrderConf(key)"></a-order>
                     <span style="cursor:default"
                           class="btn btn-default btn-xs mr-1 text-gray-500 font-weight-normal fs--14"
                           v-else>{{ key + '.label' | translate(langContext) }}</span>

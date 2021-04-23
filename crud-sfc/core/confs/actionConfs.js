@@ -59,6 +59,56 @@ const actionConfs = {
             route.setParams(that.view.getViewData());
             return route;
         },
+        execute (callback) {
+            this._save(callback)
+        },
+        _save (callback) {
+            var that = this;
+            console.log('action save',this);
+            var rName = 'create';
+            var pk = that.view.cPk || that.view.pk || 0;
+            if (pk)
+                rName = 'update';
+            var r = that._getRoute(rName);
+            that.setRouteValues(r);
+            that.waitStart();
+            Server.route(r, function (json) {
+                that.waitEnd();
+                if (json.error) {
+                    that.errorDialog(json.msg)
+                    return ;
+                }
+                that.json = json;
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.alertSuccess(msg,that.alertTime);
+                callback();
+            })
+        }
+    },
+    'action-save-back' : {
+        confParent : 'a-base',
+        type : 'collection',
+        title : 'app.salva.torna-indietro',
+        css: 'bg-green-500 text-white rounded',
+        icon : 'fa fa-save',
+        text : 'app.salva',
+        json : null,
+        setRouteValues : function(route) {
+            var that = this;
+            var pk = that.view.cPk || that.view.pk || 0;
+            if (pk) {
+                route.setValues({
+                    modelName: that.view.modelName,
+                    pk : pk
+                });
+            } else {
+                route.setValues({
+                    modelName: that.view.modelName,
+                });
+            }
+            route.setParams(that.view.getViewData());
+            return route;
+        },
         execute : function (callback) {
             var that = this;
             console.log('action save',this);
@@ -80,6 +130,9 @@ const actionConfs = {
                 that.alertSuccess(msg,that.alertTime);
                 callback();
             })
+        },
+        afterExecute () {
+            window.history.back();
         }
     },
     'action-edit' : {

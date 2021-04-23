@@ -96,9 +96,13 @@ const vBaseMixin = {
             var that = this;
             // se non esiste il componente di azione lo creo al volo
             if (!this.$options.components[name]) {
-                console.log('non esiste la creao',name,that.$options.components['a-base'])
+                var aClassName = 'a-base';
+                if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
+                    aClassName = that.$crud.conf[name].confParent
+                }
+                console.log(that.$crud.conf[name].confParent,aClassName,'non esiste la creao',name,that.$options.components[aClassName])
                 this.$options.components[name] = Vue.component(name, {
-                    extends: that.$options.components['a-base']
+                    extends: that.$options.components[aClassName]
                 });
                 this.$options.components[name].prototype.$crud = this.$crud;
             }
