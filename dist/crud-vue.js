@@ -163,6 +163,9 @@ let crudConfActions =  {
             return route;
         },
         execute : function (callback) {
+            this._save(callback);
+        },
+        _save : function (callback) {
             var that = this;
             console.log('action save',this);
             var rName = 'create';
