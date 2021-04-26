@@ -97,7 +97,7 @@
         <div class="portlet">
 
           <!-- portlet : header -->
-          <div class="portlet-header border-bottom mb-3" :class="layoutGradientColor">
+          <div class="portlet-header border-bottom mb-3" :class="$crud.env.layoutGradientColor">
             <span class="d-block text-white text-truncate font-weight-medium" v-show="updateTitle">
               {{updateTitle}}
             </span>
