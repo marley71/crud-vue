@@ -14,14 +14,15 @@ crud.components.cComponent = Vue.component('c-component',{
 
     // created () {
     //     var that = this;
-    //     console.log('CREATED',that.$options.name,that.cConf);
+    //     var m = that.cConf ? that.cConf.methods:null
+    //     console.log('CREATED',that.$options.name,m);
     //     // controllo che nella configurazione dinamica non ci siano definiti dei metodi. in caso ci siano
     //     // estendo il componente con questi metodi aggiuntivi
     //     var __call = function (lk) {
     //         that[lk] = function () {
     //             var localk = new String(lk);
-    //             //var arguments = this.arguments;
-    //             //console.log(localk,'arguments',arguments);
+    //             var arguments = this.arguments;
+    //             console.log(localk,'arguments',arguments);
     //             return that.methods[localk].apply(that, arguments);
     //         }
     //     }
@@ -86,7 +87,7 @@ crud.components.cComponent = Vue.component('c-component',{
             return jQuery(that.$el);
         },
         dynamicData(conf) {
-            //console.log('default dynamicdata',conf);
+            //console.log('default dynamicdata',this.$options.name,conf);
             return conf;
         },
         /**
