@@ -7,7 +7,7 @@
   <div class="input-group">
     <input type="hidden" v-model="value" v-bind:name="getFieldName()"
            v-on:change="change">
-    <input c-picker>
+    <input class="form-control" c-picker>
   </div>
 </template>
 

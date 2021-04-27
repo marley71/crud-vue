@@ -1,6 +1,11 @@
 import Route from '../../../Routes'
+import crud from "../../../crud";
 
-var cComponentMixin = {
+crud.conf['c-component'] = {
+    resourcesLoaded: false
+}
+
+const cComponentMixin = {
     props : {
         'cConf' : {
             default : null

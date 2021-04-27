@@ -39,12 +39,9 @@ import dBase from './dBase'
 export default {
   name: 'd-confirm',
   extends: dBase,
-  methods: {
-    dynamicData (conf) {
-      if (!conf.title) {
-        conf.title = 'app.richiesta-conferma'
-      }
-      return conf
+  mounted () {
+    if (!this.title) {
+      this.title = 'app.richiesta-conferma'
     }
   }
 }

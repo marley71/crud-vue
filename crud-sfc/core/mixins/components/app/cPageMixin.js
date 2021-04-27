@@ -1,5 +1,8 @@
 import Server from '../../../Server'
 import Vue from 'vue'
+import crud from "../../../crud";
+
+crud.conf['c-page'] = {}
 
 const cPageMixin = {
     beforeDestroy() {

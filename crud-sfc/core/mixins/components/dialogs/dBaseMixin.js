@@ -1,5 +1,16 @@
+import crud from "../../../crud";
 
-export default {
+crud.conf['d-base'] = {
+    confParent: 'c-component',
+    content: null,
+    visible: true,
+    message: '',
+    title: '',
+    typeSize: 'w-1/2',
+    callbacks: {}
+}
+
+const dBaseMixin = {
     props :  {
         cConfDefaultName: {
             default: 'd-base',
@@ -42,3 +53,4 @@ export default {
         }
     }
 }
+export default dBaseMixin

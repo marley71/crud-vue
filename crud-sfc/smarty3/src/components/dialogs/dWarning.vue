@@ -36,12 +36,9 @@ import dBase from './dBase'
 export default {
   name: 'd-warning',
   extends: dBase,
-  methods: {
-    dynamicData (conf) {
-      if (!conf.title) {
-        conf.title = 'app.attenzione'
-      }
-      return conf
+  mounted () {
+    if (!this.title) {
+      this.title = 'app.attenzione'
     }
   }
 }

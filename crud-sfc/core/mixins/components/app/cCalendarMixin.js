@@ -1,3 +1,30 @@
+import crud from "../../../crud";
+
+crud.conf['c-calendar'] = {
+    confParent: 'v-list',
+    routeName: 'calendar',
+    dateField: 'data',
+    dateEndField: 'data_fine',
+    resources: [
+        'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css',
+        'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/it.min.js'
+    ],
+    calendarOptions: {
+        'header': {
+            left: 'title', // will normally be on the left. if RTL, will be on the right
+            center: '',
+            right: 'today prev,next' // will normally be on the right. if RTL, will be on the left
+        },
+        lang: 'it'
+    },
+    calendarContainer: null,
+    autoload: false,
+    startDate: null,
+    endDate: null
+}
+
 const cCalendarMixin = {
     methods : {
         setRouteValues(route) {

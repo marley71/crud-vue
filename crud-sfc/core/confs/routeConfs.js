@@ -104,6 +104,54 @@ const routeConfs = {
     },
     pages: {
         url: '/crud/page/{path}',
+    },
+    calendar: {
+        method: 'get',
+        url: '/foorm/{modelName}',
+        resultType: 'list',
+        protocol: 'list',
+        commonParams: {}, // parametri statici da aggiungere sempre alla chiamata
+        values: {}, // vettore associativo dei parametri per la costruzione dell'url
+        params: {}
+    },
+    // routes queue to import
+    load_datafile: {
+        method: 'post',
+        url: '/queue/add/datafile/load',
+        resultType: 'record',
+        protocol: 'record',
+        extra_params: {}
+    },
+    status_queue: {
+        method: 'get',
+        url: '/queue/status/{id}',
+        resultType: 'record',
+        protocol: 'record',
+        extra_params: {}
+    },
+    save_datafile: {
+        method: 'post',
+        url: '/queue/add/datafile/save',
+        resultType: 'record',
+        protocol: 'record'
+    },
+    datafile_data: {
+        method: 'get',
+        url: '/foormc/{modelName}/datafile_id/{jobId}',
+        resultType: 'list',
+        protocol: 'list'
+    },
+    datafile_insert: {
+        method: 'get',
+        url: '/foorm/{modelName}/new',
+        resultType: 'record',
+        protocol: 'record'
+    },
+    datafile_import: {
+        method: 'get',
+        url: '/foorm/{modelName}/import/{jobId}',
+        resultType: 'record',
+        protocol: 'record'
     }
 }
 

@@ -3,6 +3,7 @@ const wPreviewMixin = {
         getType: function () {
             var that = this
             if (!that.value.mimetype) {
+                console.warn('mimetype not found ' + that.value.mimetype)
                 return null
             }
             if (that.mimetypes.docType.indexOf(that.value.mimetype) >= 0) {
@@ -18,7 +19,7 @@ const wPreviewMixin = {
             if (that.mimetypes.imageType.indexOf(that.value.mimetype) >= 0) {
                 return 'image'
             }
-            // console.warn('mimetype invalid ' + that.value.mimetype)
+            console.warn('mimetype invalid ' + that.value.mimetype)
             return null
         }
     }

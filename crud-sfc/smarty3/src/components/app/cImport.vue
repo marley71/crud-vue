@@ -33,138 +33,55 @@
 
 <script>
 import cComponent from '../misc/cComponent'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import cImportMixin from '../../../../core/mixins/components/app/cImportMixin'
 
-// routes
-crud.routes.load_datafile = {
-  method: 'post',
-  url: '/queue/add/datafile/load',
-  resultType: 'record',
-  protocol: 'record',
-  extra_params: {}
-}
-
-crud.routes.status_queue = {
-  method: 'get',
-  url: '/queue/status/{id}',
-  resultType: 'record',
-  protocol: 'record',
-  extra_params: {}
-}
-
-crud.routes.save_datafile = {
-  method: 'post',
-  url: '/queue/add/datafile/save',
-  resultType: 'record',
-  protocol: 'record'
-}
-
-crud.routes.datafile_data = {
-  method: 'get',
-  url: '/foormc/{modelName}/datafile_id/{jobId}',
-  resultType: 'list',
-  protocol: 'list'
-}
-
-// route per eventuali configurazioni dati in ingresso prima dell'upload
-crud.routes.datafile_insert = {
-  method: 'get',
-  url: '/foorm/{modelName}/new',
-  resultType: 'record',
-  protocol: 'record'
-}
-
-// route per eventuali configurazioni dati in ingresso prima del save
-crud.routes.datafile_import = {
-  method: 'get',
-  url: '/foorm/{modelName}/import/{jobId}',
-  resultType: 'record',
-  protocol: 'record'
-}
-
-crud.conf['c-import'] = {
-  jobId: null,
-  providerName: null,
-  progressValue: 20,
-  saveEnabled: false,
-  uploadEnabled: true,
-  progressEnabled: false,
-  status: 'upload',
-  timerStatus: null,
-  confUpload: {
-    name: 'resource',
-    template: 'tpl-no',
-    type: 'w-upload-ajax',
-    maxFileSize: '2M',
-    modelName: null, // 'cup_geo_nazioni_istat',
-    extensions: [
-      'csv'
-    ],
-    ajaxFields: {
-      field: 'resource',
-      resource_type: 'attachment'
-    },
-    methods: {
-      onError () {
-
-      },
-      onSuccess () {
-        var that = this
-        var viewUpload = that.getComponent('viewUpload')
-        viewUpload.getAction('action-save').setEnabled(true)
-      }
-    }
-  },
-  viewUpload: {
-    cRef: 'viewUpload',
-    routeName: 'datafile_insert',
-    fields: [],
-    actions: ['action-save', 'action-cancel'],
-    customActions: {
-      'action-save': {
-        text: 'app.importa-csv'
-      }
-    }
-  },
-  viewSave: {
-    methods: {
-      setRouteValues: function (route) {
-        if (route) {
-          route.setValues({
-            jobId: this.$parent.jobId,
-            modelName: this.$parent.providerName
-          })
-        }
-        return route
-      }
-    },
-    cRef: 'viewSave',
-    routeName: 'datafile_import',
-    fields: [],
-    actions: ['action-save-import'],
-    customActions: {
-      'action-save-import': {
-        text: 'Salva Csv Caricato',
-        css: 'btn bnt-outline-secondary btn-info',
-        type: 'record'
-      }
-    }
-  },
-  viewList: {
-    routeName: 'datafile_data',
-    actions: [],
-    methods: {
-      setRouteValues: function (route) {
-        route.setValues({
-          jobId: this.$parent.jobId,
-          modelName: this.$parent.providerName
-        })
-        return route
-      }
-    }
-  }
-}
+// // routes
+// crud.routes.load_datafile = {
+//   method: 'post',
+//   url: '/queue/add/datafile/load',
+//   resultType: 'record',
+//   protocol: 'record',
+//   extra_params: {}
+// }
+//
+// crud.routes.status_queue = {
+//   method: 'get',
+//   url: '/queue/status/{id}',
+//   resultType: 'record',
+//   protocol: 'record',
+//   extra_params: {}
+// }
+//
+// crud.routes.save_datafile = {
+//   method: 'post',
+//   url: '/queue/add/datafile/save',
+//   resultType: 'record',
+//   protocol: 'record'
+// }
+//
+// crud.routes.datafile_data = {
+//   method: 'get',
+//   url: '/foormc/{modelName}/datafile_id/{jobId}',
+//   resultType: 'list',
+//   protocol: 'list'
+// }
+//
+// // route per eventuali configurazioni dati in ingresso prima dell'upload
+// crud.routes.datafile_insert = {
+//   method: 'get',
+//   url: '/foorm/{modelName}/new',
+//   resultType: 'record',
+//   protocol: 'record'
+// }
+//
+// // route per eventuali configurazioni dati in ingresso prima del save
+// crud.routes.datafile_import = {
+//   method: 'get',
+//   url: '/foorm/{modelName}/import/{jobId}',
+//   resultType: 'record',
+//   protocol: 'record'
+// }
 
 export default {
   name: 'c-import',

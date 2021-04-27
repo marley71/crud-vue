@@ -1,4 +1,42 @@
 import jQuery from 'jquery'
+import crud from "../../../crud";
+
+crud.conf['c-manage'] = {
+    listComponentName: 'v-list',
+    searchComponentName: 'v-search',
+    listEditComponentName: 'v-list-edit',
+    editComponentName: 'v-edit',
+    insertComponentName: 'v-insert',
+    viewComponentName: 'v-view',
+
+    inlineEdit: false,
+
+    listComp: null,
+    searchComp: null,
+    listEditComp: null,
+    editComp: null,
+    insertComp: null,
+    viewComp: null,
+
+    layoutGradientColor: null,
+    manageHeaderClass: null,
+    manageHeaderTextClass: 'text-dark',
+    updateTitle: '',
+    viewTitle: '',
+
+    showEdit: false,
+    showList: true,
+    resources: [
+        'https://unpkg.com/velocity-animate@2.0.6/velocity.min.js'
+    ],
+    // configurazioni delle varie view
+    list: {},
+    edit: {},
+    search: {},
+    view: {},
+    listEdit: {},
+    insert: null
+}
 
 const cManageMixin = {
     mounted: function () {

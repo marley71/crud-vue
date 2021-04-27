@@ -40,7 +40,8 @@ crud.conf['w-preview'] = {
       'image/jpeg': 'fa fa-image-o',
       'application/pdf': 'fa fa-file-pdf-o',
       'txt': 'fa fa-file-text-o',
-      'text/plain': 'fa fa-file-text-o'
+      'text/plain': 'fa fa-file-text-o',
+      'text/csv': 'fa fa-file-text-o'
     },
     // associazione mimetype del file con il tipo upload documento
     docType: [
@@ -51,7 +52,7 @@ crud.conf['w-preview'] = {
       'mp3',
       'application/pdf',
       'txt',
-      'csv',
+      'text/csv',
       'text/plain'
     ],
     // associazione mimetype del file con il tipo upload image

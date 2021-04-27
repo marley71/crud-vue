@@ -36,12 +36,9 @@ import dBase from './dBase'
 export default {
   name: 'd-message',
   extends: dBase,
-  methods: {
-    dynamicData (conf) {
-      if (!conf.title) {
-        conf.title = 'app.informazione'
-      }
-      return conf
+  mounted () {
+    if (!this.title) {
+      this.title = 'app.informazione'
     }
   }
 }

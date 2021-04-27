@@ -36,12 +36,9 @@ import dBase from './dBase'
 export default {
   name: 'd-error',
   extends: dBase,
-  methods: {
-    dynamicData (conf) {
-      if (!conf.title) {
-        conf.title = 'app.errore'
-      }
-      return conf
+  mounted () {
+    if (!this.title) {
+      this.title = 'app.errore'
     }
   }
 }

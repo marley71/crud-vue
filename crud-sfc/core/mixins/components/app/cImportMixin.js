@@ -1,4 +1,88 @@
 import Server from '../../../Server'
+import crud from "../../../crud";
+
+crud.conf['c-import'] = {
+    jobId: null,
+    providerName: null,
+    progressValue: 20,
+    saveEnabled: false,
+    uploadEnabled: true,
+    progressEnabled: false,
+    status: 'upload',
+    timerStatus: null,
+    confUpload: {
+        name: 'resource',
+        template: 'tpl-no',
+        type: 'w-upload-ajax',
+        maxFileSize: '2M',
+        modelName: null,
+        extensions: [
+            'csv'
+        ],
+        ajaxFields: {
+            field: 'resource',
+            resource_type: 'attachment'
+        },
+        methods: {
+            onError () {
+
+            },
+            onSuccess () {
+                var that = this
+                var viewUpload = that.getComponent('viewUpload')
+                viewUpload.getAction('action-save').setEnabled(true)
+            }
+        }
+    },
+    viewUpload: {
+        cRef: 'viewUpload',
+        routeName: 'datafile_insert',
+        fields: [],
+        actions: ['action-save', 'action-cancel'],
+        customActions: {
+            'action-save': {
+                text: 'app.importa-csv'
+            }
+        }
+    },
+    viewSave: {
+        methods: {
+            setRouteValues: function (route) {
+                if (route) {
+                    route.setValues({
+                        jobId: this.$parent.jobId,
+                        modelName: this.$parent.providerName
+                    })
+                }
+                return route
+            }
+        },
+        cRef: 'viewSave',
+        routeName: 'datafile_import',
+        fields: [],
+        actions: ['action-save-import'],
+        customActions: {
+            'action-save-import': {
+                text: 'Salva Csv Caricato',
+                css: 'btn bnt-outline-secondary btn-info',
+                type: 'record'
+            }
+        }
+    },
+    viewList: {
+        routeName: 'datafile_data',
+        actions: [],
+        methods: {
+            setRouteValues: function (route) {
+                route.setValues({
+                    jobId: this.$parent.jobId,
+                    modelName: this.$parent.providerName
+                })
+                return route
+            }
+        }
+    }
+}
 
 const cImportMixin = {
 
@@ -53,11 +137,14 @@ const cImportMixin = {
             if (checkError.error ) {
                 that.progressEnabled = false;
                 that.errorDialog(checkError.msg);
+                if (that.timerStatus)
+                    clearInterval(that.timerStatus);
                 return ;
             }
             if (json.job.end) {
                 console.log('job end',that.status)
                 that.progressEnabled = false;
+                clearInterval(that.timerStatus);
                 if (that.status == 'loading') {
                     that.status = 'tosave';
                     that.saveEnabled = true;
@@ -175,20 +262,9 @@ const cImportMixin = {
                         progressEnabled : true,
                     }
                     thatAction.$crud.EventBus.$emit('start-import',params);
-                    // return ;
-                    // that.jobId = json.jobId;
-                    // that.progressEnabled = true;
-                    // that.checkStatus();
                 })
-
-                // that.confirmDialog('Procedo con l\'importazione del csv?',{
-                //     ok : function () {
-                //
-                //     }
-                // })
             }
             userConf.customActions['action-save'] = aS;
-
             return  userConf;
         }
     }

@@ -1,3 +1,17 @@
+import crud from '../../../crud'
+
+crud.conf['a-order'] = {
+    confParent: 'a-base',
+    type: 'collection',
+    title: 'app.order',
+    css: 'btn btn-default btn-sm mr-1',
+    iconSortAsc: 'fa fa-sort-up',
+    iconSortDesc: 'fa fa-sort-down',
+    iconSort: 'fa fa-sort',
+    icon: null,
+    text: ''
+}
+
 const aOrderMixin = {
     mounted: function () {
         var direction = this.cConf.orderDirection ? this.cConf.orderDirection.toLowerCase() : null;

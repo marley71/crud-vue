@@ -144,51 +144,13 @@
 
 import cComponent from '../misc/cComponent'
 import cManageMixin from '../../../../core/mixins/components/app/cManageMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['c-manage'] = {
-  listComponentName: 'v-list',
-  searchComponentName: 'v-search',
-  listEditComponentName: 'v-list-edit',
-  editComponentName: 'v-edit',
-  insertComponentName: 'v-insert',
-  viewComponentName: 'v-view',
-
-  inlineEdit: false,
-
-  listComp: null,
-  searchComp: null,
-  listEditComp: null,
-  editComp: null,
-  insertComp: null,
-  viewComp: null,
-
-  layoutGradientColor: null,
-  manageHeaderClass: null,
-  manageHeaderTextClass: 'text-dark',
-  updateTitle: '',
-  viewTitle: '',
-
-  showEdit: false,
-  showList: true,
-  resources: [
-    'https://unpkg.com/velocity-animate@2.0.6/velocity.min.js'
-  ],
-  // configurazioni delle varie view
-  list: {},
-  edit: {},
-  search: {},
-  view: {},
-  listEdit: {},
-  insert: null
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'c-manage',
   extends: cComponent,
   // props: ['cModel', 'cInlineEdit', 'cCollapsible'],
   mixins: [cManageMixin]
-
 }
 </script>
 

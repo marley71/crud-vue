@@ -21,42 +21,17 @@
 
 import vList from '../views/vList'
 import cCalendarMixin from '../../../../core/mixins/components/app/cCalendarMixin'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 
-crud.conf['c-calendar'] = {
-  confParent: 'v-list',
-  routeName: 'calendar',
-  dateField: 'data',
-  dateEndField: 'data_fine',
-  resources: [
-    'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/it.min.js'
-  ],
-  calendarOptions: {
-    'header': {
-      left: 'title', // will normally be on the left. if RTL, will be on the right
-      center: '',
-      right: 'today prev,next' // will normally be on the right. if RTL, will be on the left
-    },
-    lang: 'it'
-  },
-  calendarContainer: null,
-  autoload: false,
-  startDate: null,
-  endDate: null
-}
-
-crud.routes['calendar'] = {
-  method: 'get',
-  url: '/foorm/{modelName}',
-  resultType: 'list',
-  protocol: 'list',
-  commonParams: {}, // parametri statici da aggiungere sempre alla chiamata
-  values: {}, // vettore associativo dei parametri per la costruzione dell'url
-  params: {}
-}
+// crud.routes['calendar'] = {
+//   method: 'get',
+//   url: '/foorm/{modelName}',
+//   resultType: 'list',
+//   protocol: 'list',
+//   commonParams: {}, // parametri statici da aggiungere sempre alla chiamata
+//   values: {}, // vettore associativo dei parametri per la costruzione dell'url
+//   params: {}
+// }
 
 // TODO inserire la gestione di avanti e indietro del calendario con il caricamento dei dati
 
