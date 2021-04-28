@@ -1,3 +1,12 @@
+import crud from "../../../crud";
+
+crud.conf['w-hasmany'] = {
+    confViews: {},
+    limit: 100,
+    value: [],
+    bgClass: 'bg-warning-soft'
+}
+
 const wHasmanyMixin = {
     mounted: function () {
         var that = this;

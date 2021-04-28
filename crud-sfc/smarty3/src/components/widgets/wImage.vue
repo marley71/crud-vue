@@ -4,14 +4,13 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
-
-crud.conf['w-image'] = {
-}
+import wImageMixin from '../../../../core/mixins/components/widgets/wImageMixin'
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'w-image',
-  extends: wBase
+  extends: wBase,
+  mixins: [wImageMixin]
 }
 </script>
 

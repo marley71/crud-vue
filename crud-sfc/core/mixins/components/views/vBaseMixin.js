@@ -1,5 +1,16 @@
 import Vue from 'vue'
 import Server from "../../../Server";
+import crud from "../../../crud";
+
+crud.conf['v-base'] = {
+    confParent: 'c-component',
+    viewTitle: '',
+    langContext: '',
+    loading: true,
+    errorMsg: '',
+    routeConf: null,
+    autoload: true // carica la sorgente dati automaticamente
+}
 
 const vBaseMixin = {
     props: {

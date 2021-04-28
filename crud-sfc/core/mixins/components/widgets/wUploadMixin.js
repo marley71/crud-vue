@@ -1,3 +1,12 @@
+import crud from "../../../crud";
+
+crud.conf['w-upload'] = {
+    maxFileSize: '',
+    error: false,
+    errorMessage: '',
+    extensions: []
+}
+
 const wUploadMixin = {
     methods: {
         getValue: function () {

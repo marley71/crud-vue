@@ -26,12 +26,7 @@
 
 import wB2Select2 from './wB2Select2'
 import wB2mSelect2Mixin from '../../../../core/mixins/components/widgets/wB2mSelect2Mixin'
-import crud from '../../../../core/crud'
-
-crud.conf['w-b2m-select2'] = {
-  confParent: 'w-b2-select2',
-  value: []
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'w-b2m-select2',

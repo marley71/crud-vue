@@ -80,15 +80,8 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import wHasmanyMixin from '../../../../core/mixins/components/widgets/wHasmanyMixin'
-
-crud.conf['w-hasmany'] = {
-  confViews: {},
-  limit: 100,
-  value: [],
-  bgClass: 'bg-warning-soft'
-}
 
 export default {
   name: 'w-hasmany',

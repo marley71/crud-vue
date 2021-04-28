@@ -43,22 +43,7 @@
 <script>
 import vRecord from './vRecord'
 import vEditMixin from '../../../../core/mixins/components/views/vEditMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['v-edit'] = {
-  confParent: 'v-record',
-  beforeForm: null,
-  beforeActions: null,
-  primaryKey: 'id',
-  routeName: 'edit',
-  widgetTemplate: 'tpl-record',
-  actions: ['action-save', 'action-back'],
-  customActions: {},
-  fieldsConfig: {
-    id: 'w-hidden'
-  },
-  fields: []
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'v-edit',

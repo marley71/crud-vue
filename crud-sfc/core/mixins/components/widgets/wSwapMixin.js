@@ -1,4 +1,21 @@
 import Server from '../../../Server'
+import crud from "../../../crud";
+
+crud.conf['w-swap'] = {
+    activeIcon: 'fa-check',
+    routeName: 'set',
+    title: 'swap',
+    bgInactive: '#FF0000',
+    bgActive: 'bg-red-400',
+    domainValues: {
+        0: 'app.no',
+        1: 'app.si'
+    },
+    slot: '',
+    toggleActive: false,
+    switchClass: 'form-switch-success',
+    dataSwitched: false
+}
 
 const wSwapMixin = {
     mounted: function () {
@@ -87,11 +104,13 @@ const wSwapMixin = {
             var value = that.value ? that.value : keys[0];
             var vs = keys.map(String);
             var index = vs.indexOf("" + value);
+            console.log('_getIndex','vs',vs,'value',""+value,'index',index);
             return index;
         },
         _getCurrent() {
             var that = this;
             var keys = Object.keys(that.getDV());
+            console.log('_getCurrent',keys,that._getIndex())
             return keys[that._getIndex()];
         },
     }

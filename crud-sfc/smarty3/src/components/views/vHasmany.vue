@@ -9,13 +9,8 @@
 
 <script>
 import vRecord from './vRecord'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import vHasmanyMixin from '../../../../core/mixins/components/views/vHasmanyMixin'
-
-crud.conf['v-hasmany'] = {
-  confParent: 'v-record',
-  defaultWidgetType: 'w-input'
-}
 
 export default {
   name: 'v-hasmany',

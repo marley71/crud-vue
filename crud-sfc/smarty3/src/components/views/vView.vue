@@ -35,20 +35,8 @@
 
 <script>
 import vRecord from './vRecord'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import vViewMixin from '../../../../core/mixins/components/views/vViewMixin'
-
-crud.conf['v-view'] = {
-  confParent: 'v-record',
-  defaultWidgetType: 'w-text',
-  beforeActions: null,
-  primaryKey: 'id',
-  routeName: 'view',
-  fieldsConfig: {},
-  actions: [],
-  customActions: {},
-  widgetTemplate: 'tpl-record-view'
-}
 
 export default {
   name: 'v-view',

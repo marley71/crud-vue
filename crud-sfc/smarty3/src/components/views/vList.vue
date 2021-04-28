@@ -269,27 +269,7 @@
 <script>
 import vCollection from './vCollection'
 import vListMixin from '../../../../core/mixins/components/views/vListMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['v-list'] = {
-  confParent: 'v-collection',
-  headerClass: null,
-  widgets: {},
-  keys: [],
-  route: null,
-  pagination: {},
-  defaultWidgetType: 'w-text',
-  json: {},
-  primaryKey: 'id',
-  routeName: 'list',
-  customActions: {},
-  fieldsConfig: {},
-  orderFields: {},
-  widgetTemplate: 'tpl-list',
-  actions: ['action-insert', 'action-delete-selected', 'action-view', 'action-edit', 'action-delete'],
-  helpText: '',
-  hasFooter: true
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'v-list',

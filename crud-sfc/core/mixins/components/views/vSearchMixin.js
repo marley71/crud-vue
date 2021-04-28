@@ -1,4 +1,20 @@
 import jQuery from "jquery";
+import crud from "../../../crud";
+
+
+crud.conf['v-search'] = {
+    confParent: 'v-record',
+    beforeForm: null,
+    beforeActions: null,
+    primaryKey: 'id',
+    routeName: 'search',
+    actions: ['action-search', 'action-reset'],
+    fieldsConfig: {},
+    customActions: {},
+    widgetTemplate: 'tpl-record',
+    buttonsClass: null,
+    prefixField: 's_'
+}
 
 const vSearchMixin = {
     methods: {

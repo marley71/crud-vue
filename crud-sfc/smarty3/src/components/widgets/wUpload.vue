@@ -28,15 +28,8 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import wUploadMixin from '../../../../core/mixins/components/widgets/wUploadMixin'
-
-crud.conf['w-upload'] = {
-  maxFileSize: '',
-  error: false,
-  errorMessage: '',
-  extensions: []
-}
 
 export default {
   name: 'w-upload',

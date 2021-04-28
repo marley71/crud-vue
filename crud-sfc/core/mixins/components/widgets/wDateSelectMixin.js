@@ -1,3 +1,13 @@
+import crud from "../../../crud";
+
+crud.conf['w-date-select'] = {
+    resources: [
+        'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
+    ],
+    minYear: null,
+    maxYear: null
+}
+
 const wDateSelectMixin = {
     computed: {
         cDay: function () {

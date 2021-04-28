@@ -42,26 +42,13 @@
 
 <script>
 import vRecord from './vRecord'
-import crud from '../../../../core/crud'
-
-crud.conf['v-insert'] = {
-  confParent: 'v-record',
-  beforeForm: null,
-  beforeActions: null,
-  primaryKey: 'id',
-  routeName: 'insert',
-  widgetTemplate: 'tpl-record',
-  actions: ['action-save', 'action-back'],
-  customActions: {},
-  fieldsConfig: {
-    id: 'w-hidden'
-  },
-  fields: []
-}
+import vInsertMixin from '../../../../core/mixins/components/views/vInsertMixin'
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'v-insert',
   extends: vRecord,
+  mixins: [vInsertMixin],
   props: {
     cType: {
       default: 'insert'

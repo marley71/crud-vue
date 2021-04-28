@@ -1,4 +1,21 @@
-import ProtocolRecord from '../../../ProtocolRecord'
+// import ProtocolRecord from '../../../ProtocolRecord'
+import crud from "../../../crud";
+
+crud.conf['v-record'] = {
+    modelName: null,
+    widgetTemplate: 'tpl-record',
+    pk: 0,
+    value: {},
+    metadata: {},
+    route: null,
+    widgets: {},
+    actionsConf: [],
+    actionsName: {},
+    defaultWidgetType: 'w-input',
+    fields: [],
+    fieldsConfig: {}
+}
+
 
 const vRecordMixin = {
     props: {

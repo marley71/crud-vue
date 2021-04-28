@@ -14,8 +14,12 @@ const coreMixin = {
 
             let comp = new that.$options.components['c-wait']({
                 propsData: {
-                    cMsg : msg,
-                    cGlobal : (_c==='body')?true:false,
+                    cConf: {
+                        msg:msg,
+                        global :(_c==='body')?true:false,
+                    }
+                    // cMsg : msg,
+                    // cGlobal : (_c==='body')?true:false,
                 }
             })
             comp.$mount('#'+id);

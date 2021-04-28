@@ -1,3 +1,15 @@
+import crud from "../../../crud";
+
+crud.conf['w-date-picker'] = {
+    resources: [
+        'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css'
+    ],
+    displayFormat: 'dd/mm/yyyy',
+    dateFormat: 'yyyy-mm-dd'
+}
+
 const wDatePickerMixin = {
     methods: {
         afterLoadResources: function () {

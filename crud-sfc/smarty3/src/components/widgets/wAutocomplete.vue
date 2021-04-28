@@ -29,20 +29,7 @@
 <script>
 import wBase from './wBase'
 import wAutocompleteMixin from '../../../../core/mixins/components/widgets/wAutocompleteMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['w-autocomplete'] = {
-  resources: [
-    'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js'
-  ],
-  routeName: 'autocomplete',
-  primaryKey: 'id', // campo da utilizzare per assegnare il valore selezionato
-  suggestValues: {},
-  labelFields: [], // campi da visualizzare nell'autocomplete
-  minLength: 3, // caratteri minimi prima che parta la ricerca
-  clearButton: false
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'w-autocomplete',

@@ -15,18 +15,14 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import choiceMixin from '../../../../core/mixins/choiceMixin'
-
-crud.conf['w-select'] = {
-  domainValues: {},
-  domainValuesOrder: []
-}
+import wSelectMixin from '../../../../core/mixins/components/widgets/wSelectMixin'
 
 export default {
   name: 'w-select',
   extends: wBase,
-  mixins: [choiceMixin]
+  mixins: [choiceMixin, wSelectMixin]
 }
 </script>
 

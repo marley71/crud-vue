@@ -22,14 +22,7 @@
 import wBase from './wBase'
 import choiceMixin from '../../../../core/mixins/choiceMixin'
 import wCheckboxMixin from '../../../../core/mixins/components/widgets/wCheckboxMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['w-checkbox'] = {
-  inline: true,
-  domainValues: {},
-  domainValuesOrder: [],
-  value: []
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'w-checkbox',

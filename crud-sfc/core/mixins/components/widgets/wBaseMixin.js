@@ -1,3 +1,14 @@
+import crud from "../../../crud";
+
+crud.conf['w-base'] = {
+    confParent: 'c-component',
+    name: null,
+    value: null,
+    defaultValue: null,
+    label: null,
+    view: null // riferimento alla view
+}
+
 const wBaseMixin = {
     props : {
         cConfDefaultName : {

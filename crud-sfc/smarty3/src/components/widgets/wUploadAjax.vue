@@ -49,18 +49,8 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import wUploadAjaxMixin from '../../../../core/mixins/components/widgets/wUploadAjaxMixin'
-
-crud.conf['w-upload-ajax'] = {
-  extensions: [],
-  maxFileSize: '',
-  routeName: 'uploadfile',
-  value: {},
-  error: false,
-  errorMessage: '',
-  previewConf: {}
-}
 
 export default {
   name: 'w-upload-ajax',

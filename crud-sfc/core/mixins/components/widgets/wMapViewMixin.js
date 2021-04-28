@@ -1,3 +1,9 @@
+import crud from "../../../crud";
+
+crud.conf['w-map-view'] = {
+    confParent: 'w-map'
+}
+
 const wMapViewMixin = {
     methods: {
         createMarker: function () {

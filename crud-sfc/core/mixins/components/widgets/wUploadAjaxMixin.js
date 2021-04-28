@@ -1,4 +1,15 @@
 import Server from "../../../Server";
+import crud from "../../../crud";
+
+crud.conf['w-upload-ajax'] = {
+    extensions: [],
+    maxFileSize: '',
+    routeName: 'uploadfile',
+    value: {},
+    error: false,
+    errorMessage: '',
+    previewConf: {}
+}
 
 const wUploadAjaxMixin = {
     methods: {

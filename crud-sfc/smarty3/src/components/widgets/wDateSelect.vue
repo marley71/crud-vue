@@ -10,16 +10,8 @@
 <script>
 
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import wDateSelectMixin from '../../../../core/mixins/components/widgets/wDateSelectMixin'
-
-crud.conf['w-date-select'] = {
-  resources: [
-    'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'
-  ],
-  minYear: null,
-  maxYear: null
-}
 
 export default {
   name: 'w-date-select',

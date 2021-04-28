@@ -4,14 +4,13 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
-
-crud.conf['w-hidden'] = {
-}
+import wHiddenMixin from '../../../../core/mixins/components/widgets/wHiddenMixin'
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'w-hidden',
-  extends: wBase
+  extends: wBase,
+  mixins: [wHiddenMixin]
 }
 </script>
 

@@ -15,20 +15,7 @@
 
 import wBase from './wBase'
 import wB2Select2Mixin from '../../../../core/mixins/components/widgets/wB2Select2Mixin'
-import crud from '../../../../core/crud'
-
-crud.conf['w-b2-select2'] = {
-  labelFields: [],
-  resources: [
-    'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js'
-  ],
-  routeName: 'autocomplete',
-  route: null,
-  primaryKey: 'id',
-  allowClear: true,
-  data: null // eventuali dati statici
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'w-b2-select2',

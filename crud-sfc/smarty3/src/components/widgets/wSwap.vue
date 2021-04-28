@@ -20,24 +20,8 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import wSwapMixin from '../../../../core/mixins/components/widgets/wSwapMixin'
-
-crud.conf['w-swap'] = {
-  activeIcon: 'fa-check',
-  routeName: 'set',
-  title: 'swap',
-  bgInactive: '#FF0000',
-  bgActive: 'bg-red-400',
-  domainValues: {
-    0: 'app.no',
-    1: 'app.si'
-  },
-  slot: '',
-  toggleActive: false,
-  switchClass: 'form-switch-success',
-  dataSwitched: false
-}
 
 export default {
   name: 'w-swap',

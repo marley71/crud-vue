@@ -214,28 +214,7 @@
 <script>
 import vList from './vList'
 import vListEditMixin from '../../../../core/mixins/components/views/vListEditMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['v-list-edit'] = {
-  confParent: 'v-list',
-  widgetsEdit: {},
-  editMode: [],
-  routeName: 'list',
-  primaryKey: 'id',
-  customActions: {},
-  fieldsConfig: {},
-  orderFields: {},
-  widgetTemplate: 'tpl-list',
-  actions: [
-    'action-insert',
-    'action-delete-selected',
-    'action-view',
-    'action-edit-mode',
-    'action-delete',
-    'action-save-row',
-    'action-view-mode'
-  ]
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'v-list-edit',

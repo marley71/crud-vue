@@ -6,12 +6,7 @@
 <script>
 
 import wBase from './wBase'
-import crud from '../../../../core/crud'
-
-crud.conf['w-input'] = {
-  inputType: 'text',
-  placeholder: ''
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'w-input',

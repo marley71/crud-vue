@@ -58,21 +58,7 @@
 <script>
 import vRecord from './vRecord'
 import vSearchMixin from '../../../../core/mixins/components/views/vSearchMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['v-search'] = {
-  confParent: 'v-record',
-  beforeForm: null,
-  beforeActions: null,
-  primaryKey: 'id',
-  routeName: 'search',
-  actions: ['action-search', 'action-reset'],
-  fieldsConfig: {},
-  customActions: {},
-  widgetTemplate: 'tpl-record',
-  buttonsClass: null,
-  prefixField: 's_'
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'v-search',

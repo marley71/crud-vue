@@ -30,15 +30,9 @@
 <script>
 
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import choiceMixin from '../../../../core/mixins/choiceMixin'
 import wInputHelpedMixin from '../../../../core/mixins/components/widgets/wInputHelpedMixin'
-
-crud.conf['w-input-helped'] = {
-  domainValues: {},
-  domainValuesOrder: [],
-  customValue: false
-}
 
 export default {
   name: 'w-input-helped',

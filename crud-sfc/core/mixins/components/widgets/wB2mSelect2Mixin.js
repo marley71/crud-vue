@@ -1,3 +1,10 @@
+import crud from "../../../crud";
+
+crud.conf['w-b2m-select2'] = {
+    confParent: 'w-b2-select2',
+    value: []
+}
+
 const wB2mSelect2Mixin = {
     methods: {
 

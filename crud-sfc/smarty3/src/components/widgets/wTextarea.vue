@@ -14,17 +14,13 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
-// import wAutocompleteMixin from '../../../../core/mixins/components/widgets/wAutocompleteMixin'
-
-crud.conf['w-textarea'] = {
-  maxlength: 1000,
-  charleft: false
-}
+// import crud from '../../../../core/crud'
+import wTextareaMixin from '../../../../core/mixins/components/widgets/wTextareaMixin'
 
 export default {
   name: 'w-textarea',
-  extends: wBase
+  extends: wBase,
+  mixins: [wTextareaMixin]
 }
 </script>
 

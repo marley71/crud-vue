@@ -1,7 +1,20 @@
 
-import ProtocolList from '../../../ProtocolList'
+// import ProtocolList from '../../../ProtocolList'
 import jQuery from "jquery"
+import crud from "../../../crud";
 
+
+crud.conf['v-collection'] = {
+    modelName: null,
+    value: [],
+    metadata: {},
+    needSelection: false,
+    collectionActionsName: [],
+    recordActionsName: [],
+    collectionActions: {},
+    recordActions: [],
+    paginator: true
+}
 
 const vCollectionMixin = {
 

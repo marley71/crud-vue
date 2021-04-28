@@ -13,18 +13,14 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import choiceMixin from '../../../../core/mixins/choiceMixin'
-
-crud.conf['w-radio'] = {
-  domainValues: {},
-  domainValuesOrder: []
-}
+import wRadioMixin from '../../../../core/mixins/components/widgets/wRadioMixin'
 
 export default {
   name: 'w-radio',
   extends: wBase,
-  mixins: [choiceMixin]
+  mixins: [choiceMixin, wRadioMixin]
 }
 </script>
 

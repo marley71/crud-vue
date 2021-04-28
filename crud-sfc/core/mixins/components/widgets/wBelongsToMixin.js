@@ -1,3 +1,9 @@
+import crud from "../../../crud";
+
+crud.conf['w-belongsto'] = {
+    labelFields: ['text']
+}
+
 const wBelongsToMixin = {
     methods: {
         getFieldName: function () {

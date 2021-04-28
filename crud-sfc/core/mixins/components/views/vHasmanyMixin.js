@@ -1,3 +1,10 @@
+import crud from "../../../crud";
+
+crud.conf['v-hasmany'] = {
+    confParent: 'v-record',
+    defaultWidgetType: 'w-input'
+}
+
 const vHasmanyMixin = {
     methods: {
         getFieldName: function (key) {
@@ -14,3 +21,5 @@ const vHasmanyMixin = {
         }
     }
 }
+
+export default vHasmanyMixin

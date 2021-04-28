@@ -4,10 +4,12 @@
 
 <script>
 import wBase from './wBase'
+import wTextMixin from '../../../../core/mixins/components/widgets/wTextMixin'
 
 export default {
   name: 'w-text',
-  extends: wBase
+  extends: wBase,
+  mixins: [wTextMixin]
 }
 </script>
 

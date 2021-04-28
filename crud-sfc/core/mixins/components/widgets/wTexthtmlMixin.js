@@ -1,3 +1,12 @@
+import crud from "../../../crud";
+
+crud.conf['w-texthtml'] = {
+    editor: null, // puntatore all'editor html
+    resources: [
+        'https://cdn.ckeditor.com/ckeditor5/24.0.0/classic/ckeditor.js'
+    ]
+}
+
 const wTexthtmlMixin = {
     methods: {
         afterLoadResources () {
