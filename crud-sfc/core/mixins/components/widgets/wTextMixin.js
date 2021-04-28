@@ -1,3 +1,4 @@
+import crud from "../../../crud";
 
 crud.conf['w-text'] = {}
 

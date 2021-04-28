@@ -1,4 +1,4 @@
-// import ProtocolRecord from '../../../ProtocolRecord'
+import ProtocolRecord from '../../../ProtocolRecord'
 import crud from "../../../crud";
 
 crud.conf['v-record'] = {
