@@ -2,29 +2,42 @@ import Server from '../../core/Server'
 import jQuery from 'jquery'
 
 const mainMixin = {
-    created () {
-        var that = this;
-        that.loadLanguageFile();
-        that.loadRoutesFile();
-        that.loadActionsFile();
-        that.loadEnvFile();
-    },
+    // created () {
+    //     var that = this;
+    //     that.loadLanguageFile();
+    //     that.loadRoutesFile();
+    //     that.loadActionsFile();
+    //     that.loadEnvFile();
+    // },
 
     methods: {
+        loadConfigurations (callback) {
+            var that = this;
+            that.loadLanguageFile(function () {
+                that.loadRoutesFile(function () {
+                    that.loadActionsFile( function () {
+                        that.loadEnvMeta();
+                        return callback();
+                    })
+                })
+            })
+        },
         getMetaValue (key) {
             return jQuery('meta[name="'+ key + '"]').attr('content');
         },
-        loadLanguageFile () {
+        loadLanguageFile (callback) {
             var that = this;
             var languageFile = that.getMetaValue('crud.translations');
             if (languageFile) {
                 Server.get(languageFile,{},function (json) {
                     console.log('caricato file',languageFile);
                     that.$crud.lang = json;
+                    return callback();
                 })
-            }
+            } else
+                return callback();
         },
-        loadRoutesFile () {
+        loadRoutesFile (callback) {
             var that = this;
             var routesFile = that.getMetaValue('crud.routes');
             if (routesFile) {
@@ -32,12 +45,14 @@ const mainMixin = {
                     console.log('caricato file',routesFile);
                     for (var k in json) {
                         that.$crud.routes[k] = json[k];
+                        return callback();
                     }
 
                 })
-            }
+            } else
+                return callback();
         },
-        loadActionsFile () {
+        loadActionsFile (callback) {
             var that = this;
             var actionsFile = that.getMetaValue('crud.actions');
             if (actionsFile) {
@@ -46,11 +61,12 @@ const mainMixin = {
                     for (var k in json) {
                         that.$crud.actions[k] = json[k];
                     }
-
+                    return callback();
                 })
-            }
+            }else
+                return callback();
         },
-        loadEnvFile () {
+        loadEnvMeta () {
             var that = this;
             var nokey = "crud.env.";
             jQuery('meta[name*="crud.env."]').each(function () {

@@ -62,27 +62,29 @@ const actionConfs = {
         execute (callback) {
             this._save(callback)
         },
-        _save (callback) {
-            var that = this;
-            console.log('action save',this);
-            var rName = 'create';
-            var pk = that.view.cPk || that.view.pk || 0;
-            if (pk)
-                rName = 'update';
-            var r = that._getRoute(rName);
-            that.setRouteValues(r);
-            that.waitStart();
-            Server.route(r, function (json) {
-                that.waitEnd();
-                if (json.error) {
-                    that.errorDialog(json.msg)
-                    return ;
-                }
-                that.json = json;
-                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.alertSuccess(msg,that.alertTime);
-                callback();
-            })
+        methods: {
+            _save (callback) {
+                var that = this;
+                console.log('action save',this);
+                var rName = 'create';
+                var pk = that.view.cPk || that.view.pk || 0;
+                if (pk)
+                    rName = 'update';
+                var r = that._getRoute(rName);
+                that.setRouteValues(r);
+                that.waitStart();
+                Server.route(r, function (json) {
+                    that.waitEnd();
+                    if (json.error) {
+                        that.errorDialog(json.msg)
+                        return ;
+                    }
+                    that.json = json;
+                    var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                    that.alertSuccess(msg,that.alertTime);
+                    callback();
+                })
+            }
         }
     },
     'action-save-back' : {

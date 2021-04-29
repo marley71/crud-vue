@@ -1,19 +1,25 @@
 import crud from '../../../core/crud'
 import Server from '../../../core/Server'
 
-// ridefinizione del confParent
+// ------ ridefinizione del confParent
 crud.conf['action-save'].confParent = 'a-square'
 crud.conf['action-save-back'].confParent = 'a-square'
 crud.conf['action-back'].confParent = 'a-square'
 crud.conf['action-search'].confParent = 'a-square'
 crud.conf['action-reset'].confParent = 'a-square'
 
+// ------ ridefinizione css
 crud.conf['action-save'].css = 'btn-sm mr-1 btn-success bg-success-soft'
 crud.conf['action-search'].css = 'btn-sm mr-1 btn-success bg-success-soft'
 crud.conf['action-reset'].css = 'btn-sm mr-1 btn-warning bg-warning-soft'
-
 crud.conf['action-back'].css = 'btn-sm mr-1 btn-danger bg-danger-soft'
+crud.conf['action-insert'].css = 'btn-outline-primary btn-group mr-1'
+crud.conf['action-delete-selected'].css = 'btn-outline-danger mr-1'
+crud.conf['action-edit'].css = 'btn-outline-secondary'
+crud.conf['action-delete'].css = 'btn-outline-danger'
+crud.conf['action-view'].css = 'btn-outline-secondary'
 
+// ------ nuove azioni ---
 crud.conf['action-export-csv-codici'] = {}
 
 Object.assign(

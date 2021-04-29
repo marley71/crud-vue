@@ -40,8 +40,8 @@
 
   <div class="portlet">
     <div class="portlet-header border-bottom mb-1 " :class="bgClass">
-      <span class="pull-left text-dark text-truncate font-weight-medium">{{ label | translate }}</span>&nbsp;
-      <div class="pull-right">
+      <span class="float-left text-dark text-truncate font-weight-medium">{{ label | translate }}</span>&nbsp;
+      <div class="float-right">
                 <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimit()">
                     <!-- Limite massimo raggiunto -->
                     {{ 'app.limite-raggiunto' | translate }}
@@ -64,7 +64,7 @@
             <!--{{cConf.metadata.modelName}}-->
             <!--</div>-->
             <div class="card-header bg-white">
-              <button v-on:click="deleteItem(item.cRef)" class="btn-danger btn-pill btn-xs pull-right"
+              <button v-on:click="deleteItem(item.cRef)" class="btn-danger btn-pill btn-xs float-right"
                       type="button" title="Cancella elemento"><i class="fa fa-trash"></i>
               </button>
             </div>

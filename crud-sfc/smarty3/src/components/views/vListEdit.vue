@@ -146,8 +146,7 @@
         </div>
         <div v-if="paginator" class="float-right">
           <!-- v-bind:c-route-conf="routeConf" -->
-          <c-paginator v-if="widgets.length > 0" v-show="pagination" v-bind:c-pagination="pagination"
-                       v-bind:c-route="route"></c-paginator>
+          <c-paginator v-if="widgets.length > 0" v-show="pagination" :c-conf="pagination"></c-paginator>
         </div>
       </div>
       <div class="table-responsive">

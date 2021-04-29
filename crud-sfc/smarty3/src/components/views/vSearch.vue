@@ -58,7 +58,9 @@
 <script>
 import vRecord from './vRecord'
 import vSearchMixin from '../../../../core/mixins/components/views/vSearchMixin'
-// import crud from '../../../../core/crud'
+import crud from '../../../../core/crud'
+
+crud.conf['v-search'].buttonsClass = 'text-left'
 
 export default {
   name: 'v-search',

@@ -6,6 +6,10 @@ crud.conf['w-select'] = {
 }
 
 const wSelectMixin = {
-
+    methods: {
+        getFieldName: function () {
+            return this.name;
+        }
+    }
 }
 export default wSelectMixin

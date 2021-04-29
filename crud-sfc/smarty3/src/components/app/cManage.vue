@@ -62,7 +62,7 @@
 <!--  </div>-->
   <div class="portlet">
 
-    <div class="portlet-header border-bottom mb-1" :class="manageHeaderClass">
+    <div class="portlet-header border-bottom mb-1 text-left" :class="manageHeaderClass">
       <span class="d-block text-truncate font-weight-medium" :class="manageHeaderTextClass">
         Gestione {{ translate(modelName + '.label', 1) }}
 
@@ -145,6 +145,9 @@
 import cComponent from '../misc/cComponent'
 import cManageMixin from '../../../../core/mixins/components/app/cManageMixin'
 // import crud from '../../../../core/crud'
+
+// crud.conf['c-manage'].manageHeaderClass=null
+// crud.conf['c-manage'].manageHeaderTextClass='text-dark'
 
 export default {
   name: 'c-manage',

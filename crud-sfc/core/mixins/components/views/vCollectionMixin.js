@@ -1,5 +1,5 @@
 
-// import ProtocolList from '../../../ProtocolList'
+import ProtocolList from '../../../ProtocolList'
 import jQuery from "jquery"
 import crud from "../../../crud";
 
@@ -110,12 +110,20 @@ const vCollectionMixin = {
                     //if (value[i][key])
                     dconf.value = value[i][key];
                     dconf.name = that.getFieldName(key);
-                    if (!('label' in dconf)) {
+
+                    if (! ('label' in dconf ))  {
                         dconf.label = key;
-                        dconf.label = that.translate(dconf.label + '.label', that.langContext);
+                        dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
                     } else {
-                        dconf.label = that.translate(dconf.label);
+                        dconf.label = that.$options.filters.translate(dconf.label);
                     }
+
+                    // if (!('label' in dconf)) {
+                    //     dconf.label = key;
+                    //     dconf.label = that.translate(dconf.label + '.label', that.langContext);
+                    // } else {
+                    //     dconf.label = that.translate(dconf.label);
+                    // }
                     dconf.view = that;
                     //console.log(i,widgets,widgets[i],key,dconf),
                     widgets[i][key] = dconf;

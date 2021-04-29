@@ -3,21 +3,21 @@
     class="btn"
     v-if="controlType=='button'" type="button" v-show="_visible"
     :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">
-    <i class="m-1" v-show="icon" :class="icon"></i>
+    <i class="" v-show="icon" :class="icon"></i>
     <span>{{ text | translate }}</span>
   </button>
   <a v-else
      class="btn" :target="target" :href="href" v-show="_visible"
      :title="title | translate" :class="css" :disabled="_disabled">
-    <i class="m-1" v-show="icon" :class="icon"></i>
+    <i class="" v-show="icon" :class="icon"></i>
     <span>{{ text | translate }}</span>
   </a>
 </template>
 
 <script>
 import aBase from './aBase'
-import aOrderMixin from '../../../../core/mixins/components/actions/aOrderMixin'
 import crud from '../../../../core/crud'
+import aBaseMixin from '../../../../core/mixins/components/actions/aBaseMixin'
 
 crud.conf['a-square'] = {
   confParent: 'c-component',
@@ -25,7 +25,7 @@ crud.conf['a-square'] = {
   visible: true,
   enabled: true,
   title: '',
-  css: 'btn btn-sm mr-1 btn-success bg-success-soft',
+  css: 'btn-sm mr-1 btn-success bg-success-soft',
   icon: '',
   text: '',
   controlType: 'button',
@@ -40,7 +40,7 @@ crud.conf['a-square'] = {
 export default {
   name: 'a-square',
   extends: aBase,
-  mixins: [aOrderMixin]
+  mixins: [aBaseMixin]
 }
 
 </script>
