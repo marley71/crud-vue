@@ -1,5 +1,6 @@
 import Route from '../../../Routes'
 import crud from "../../../crud";
+import Server from "../../../Server";
 
 crud.conf['c-component'] = {
     resourcesLoaded: false
@@ -33,6 +34,8 @@ const cComponentMixin = {
         for (var k in that.methods) {
             __call(k);
         }
+        that.Server = Server;
+        that.Route = Route;
     },
 
     mounted() {

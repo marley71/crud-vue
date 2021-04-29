@@ -1,5 +1,6 @@
-import jQuery from 'jquery'
+
 import crud from "../../../crud";
+import Server from "../../../Server";
 
 crud.conf['c-manage'] = {
     listComponentName: 'v-list',
@@ -40,6 +41,8 @@ crud.conf['c-manage'] = {
 
 const cManageMixin = {
     mounted: function () {
+        this.insertConf = this._getInsertConfiguration();
+        this.editConf = this._getEditConfiguration();
         this.createList();
         this.createSearch();
     },
@@ -178,10 +181,10 @@ const cManageMixin = {
 
             var id = 'd' + (new Date().getTime());
             thisManage.jQe('[c-edit-container]').html('<div id="' + id + '"></div>');
+            conf.pk = action.modelData[thisManage.listComp.primaryKey];
             thisManage.editComp = new thisManage.$options.components[thisManage.editComponentName]({
-
                 propsData: {
-                    cPk: action.modelData[thisManage.listComp.primaryKey],
+                    //cPk: action.modelData[thisManage.listComp.primaryKey],
                     cConf: conf
                 }
             });
@@ -210,13 +213,13 @@ const cManageMixin = {
             var pk = action.modelData[primaryKey];
             var dlgView = thisManage.customDialog('<div id="' + id + '"></div>');
             var conf = thisManage._getViewConfiguration();
-
+            conf.pk = action.modelData[thisManage.listComp.primaryKey];
             thisManage.viewComp = new thisManage.$options.components[thisManage.viewComponentName]({
                 propsData: {
-                    cModel: thisManage.modelName,
-                    cPk: pk,
-                    cConf: thisManage.viewConf,
-                    cBig: true,
+                    //cModel: thisManage.modelName,
+                    //cPk: pk,
+                    cConf: conf,
+                    //cBig: true,
                 }
             });
             thisManage.viewComp.$mount('#' + id);
@@ -230,13 +233,13 @@ const cManageMixin = {
             thisManage.jQe('[c-edit-container]').html('<div id="' + id + '"></div>');
             if (thisManage.insertComp)
                 thisManage.insertComp.$destroy();
+            console.log('_createInsert',thisManage.insertConf);
             thisManage.insertComp = new thisManage.$options.components[thisManage.insertComponentName]({
                 propsData: {
-                    cModel: thisManage.modelName,
                     cConf: thisManage.insertConf
                 }
             });
-            //}
+
             thisManage.insertComp.$mount('#' + id);
             thisManage.showEdit = true;
             thisManage.showList = false;
@@ -394,20 +397,24 @@ const cManageMixin = {
             // conf.editConf = editConf;
             // return conf;
         },
-        _getInsertConfiguration: function (conf) {
+        _getInsertConfiguration: function () {
             var thisManage = this;
-            var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
-            var originalConf = window[modelConf] ? window[modelConf] : {};
-            var editConf = thisManage.mergeConfView(thisManage.$crud.conf.edit, (originalConf.edit || {}));
-            var insertConf = conf.insertConf || originalConf.insert || editConf;
-            insertConf = thisManage.mergeConfView(thisManage.$crud.conf.insert, insertConf);
+            // var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
+            // var originalConf = window[modelConf] ? window[modelConf] : {};
+            // var editConf = thisManage.mergeConfView(thisManage.$crud.conf.edit, (originalConf.edit || {}));
+            // var insertConf = conf.insertConf || originalConf.insert || editConf;
+            // insertConf = thisManage.mergeConfView(thisManage.$crud.conf.insert, insertConf);
             //insertConf.routeName = 'insert';
+            var insertConf = thisManage.insert || thisManage.edit || {};
+            insertConf = thisManage.mergeConfView(thisManage.$crud.conf.insert, insertConf);
+
             // prendo eventuali configurazioni locali al modello.
             var _asb = insertConf.customActions['action-save-back'] || {};
+            var _ab = insertConf.customActions['action-back'] || {};
             insertConf = thisManage.mergeConfView(insertConf, {
                 customActions: {
                     'action-save-back': thisManage.merge(thisManage._actionSaveBack(),_asb),
-                    'action-back': thisManage._actionBack()
+                    'action-back': thisManage.merge(thisManage._actionBack(),_ab)
                 }
             });
             if (insertConf.actions.indexOf('action-save-back') < 0)
@@ -416,17 +423,22 @@ const cManageMixin = {
             if (actionSaveIndex >= 0) {
                 delete insertConf.actions[actionSaveIndex];
             }
-            conf.insertConf = insertConf;
-            return conf;
+            return insertConf;
+            // conf.insertConf = insertConf;
+            // return conf;
         },
-        _getViewConfiguration: function (conf) {
+        _getViewConfiguration: function () {
             var thisManage = this;
-            var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
-            var originalConf = window[modelConf] ? window[modelConf] : {};
-            var viewConf = conf.viewConf || originalConf.view || {};
+            var viewConf = thisManage.view || {};
             viewConf = thisManage.mergeConfView(thisManage.$crud.conf.view, viewConf);
-            conf.viewConf = viewConf;
-            return conf;
+            return viewConf;
+
+            // var modelConf = "Model" + thisManage.pascalCase(conf.modelName);
+            // var originalConf = window[modelConf] ? window[modelConf] : {};
+            // var viewConf = conf.viewConf || originalConf.view || {};
+            // viewConf = thisManage.mergeConfView(thisManage.$crud.conf.view, viewConf);
+            // conf.viewConf = viewConf;
+            // return conf;
         }
     }
 }

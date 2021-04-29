@@ -12,6 +12,7 @@ import vView from './vView'
 import vSearch from './vSearch'
 import vListEdit from './vListEdit'
 import vHasmany from './vHasmany'
+import vListConstraint from './vListConstraint'
 
 import '../../confs/views'
 
@@ -27,3 +28,4 @@ Vue.component('v-view', vView)
 Vue.component('v-search', vSearch)
 Vue.component('v-list-edit', vListEdit)
 Vue.component('v-hasmany', vHasmany)
+Vue.component('v-list-constraint', vListConstraint)
