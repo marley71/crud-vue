@@ -1,16 +1,5 @@
 <template>
-<!--    <div>-->
-<!--        <div class="min-w-full relative block mr-2 align-middle select-none transition duration-200 ease-in">-->
-<!--            <input v-on:change="swap" v-model="checkedValue" type="checkbox"  class="mr-2 toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>-->
-<!--            <label for="toggle" class="mr-2 toggle-label absolute block overflow-hidden h-6 rounded-full  cursor-pointer">{{slot | translate}}</label>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--  <button type="button" class="btn btn-sm btn-pill px-2 py-1 fs&#45;&#45;15 btn btn-outline-secondary btn-sm rounded-circle"-->
-<!--          v-bind:title="title" v-on:click="swap">-->
-<!--    <span v-show="swapType=='text'">{{ slot }}</span>-->
-<!--    <i class="" v-show="swapType=='icon'" v-bind:class="slot"></i>-->
-<!--  </button>-->
-  <label class="form-switch form-switch-pill  d-block" :class="switchClass" v-on:click="swap" :title="title">
+  <label class="form-switch form-switch-pill d-block" :class="switchClass" v-on:click="swap" :title="title">
     <input type="checkbox" v-model="value">
     <i v-if="dataSwitched" data-on="&#10005;" data-off="&#10004;"
        style="font-family:Zapf Dingbats,font-regular,sans-serif !important"></i>

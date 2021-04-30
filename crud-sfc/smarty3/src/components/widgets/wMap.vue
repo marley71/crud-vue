@@ -1,26 +1,28 @@
 <template>
-<!--    <div>-->
-<!--        &lt;!&ndash; input hidden for form compatibiliy -&ndash;&gt;-->
-<!--        <input type="hidden" :name="lngName">-->
-<!--        <input type="hidden" :name="latName">-->
-<!--        <div class="mb-2 form-label-group">-->
-<!--            <input :placeholder="translate('app.inserisci-indirizzo-da-cercare')" class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" v-on:change="searchAddress">-->
-<!--            <label>-->
-<!--                {{ label }}-->
-<!--            </label>-->
-<!--        </div>-->
-<!--        <div c-map></div>-->
-<!--    </div>-->
   <div>
     <!-- input hidden for form compatibiliy --->
     <input type="hidden" :name="lngName">
     <input type="hidden" :name="latName">
-    <div class="mb-2 form-label-group">
-      <input :placeholder="label" class="form-control" v-on:change="searchAddress">
-      <label>
-        {{ label }}
-      </label>
+    <div class="row">
+      <div v-if="activateSearch" class="mb-2 form-label-group col-6">
+        <input :placeholder="label" class="form-control" v-on:change="searchAddress">
+        <label>
+          {{ label }}
+        </label>
+      </div>
+      <div v-if="activateFind" class="mb-2 form-label-group col-6">
+        <button type="button" class="btn btn-sm btn-primary" v-on:click="find()">
+          {{'app.trova-indirizzo' | translate}}
+        </button>
+      </div>
     </div>
+
+<!--    <div class="mb-2 form-label-group">-->
+<!--      <input :placeholder="label" class="form-control" v-on:change="searchAddress">-->
+<!--      <label>-->
+<!--        {{ label }}-->
+<!--      </label>-->
+<!--    </div>-->
 
     <!--        <div class="input-group mb-3">-->
     <!--            <div class="input-group-prepend">-->

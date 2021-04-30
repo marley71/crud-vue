@@ -113,20 +113,59 @@ const vListEditMixin = {
             var a = that.getRecordAction(index, name);
             a.setVisible(false);
         },
-        showRA: function (index, name) {
+        showRA (index, name) {
             var that = this;
             var a = that.getRecordAction(index, name);
             a.setVisible(true);
         },
-        getWidgetEdit: function (row, key) {
+        getWidgetEdit (row, key) {
             var wConf = this.widgetsEdit[row][key];
             return this.$crud.cRefs[wConf.cRef];
         },
-        setRowData(index,values) {
-            for (var k in values) {
-                this.getWidgetEdit(index,k).setValue(values[k]);
-                this.getWidget(index,k).setValue(values[k]);
+        setRowData (index,values) {
+            var that = this;
+            console.log('fields',that.fields);
+            for (var i in that.fields) {
+                var key = that.fields[i];
+                console.log('index',index,key);
+                this.getWidgetEdit(index,key).setValue(values[key]);
+                this.getWidget(index,key).setValue(values[key]);
             }
+            // for (var k in values) {
+            //     var sref = that.widgetsEdit[index][k].cRef; //  're-' + that.index + '-' +  k;
+            //     if (that.$crud.cRefs[sref])
+            //         this.getWidgetEdit(index,k).setValue(values[k]);
+            //     var sref = that.widgets[index][k].cRef; //  're-' + that.index + '-' +  k;
+            //     if (that.$crud.cRefs[sref])
+            //         this.getWidget(index,k).setValue(values[k]);
+            // }
+        },
+        getRowEditData (index) {
+            var that = this;
+            var values = {};
+            for (var k in that.widgetsEdit[index]) {
+                //values[k] = that.getWidgetEdit(index,k);
+                //console.log('edit r',that.view.widgetsEdit[that.index][k])
+                var sref = that.widgetsEdit[index][k].cRef; //  're-' + that.index + '-' +  k;
+                if (that.$crud.cRefs[sref])
+                    values[k] = that.getWidgetEdit(index,k).getValue();
+                    //values[k] = that.$crud.cRefs[sref].getValue();
+            }
+            console.log('rowEditData values',values);
+            return values;
+        },
+        getRowData (index) {
+            var that = this;
+            var values = {};
+            for (var k in that.widgets[index]) {
+                //values[k] = that.getWidget(index,k);
+                //console.log('edit r',that.view.widgetsEdit[that.index][k])
+                var sref = that.widgets[index][k].cRef; //  're-' + that.index + '-' +  k;
+                if (that.$crud.cRefs[sref])
+                    values[k] = that.getWidget(index,k).getValue();
+            }
+            console.log('rowData values',values);
+            return values;
         }
     }
 }

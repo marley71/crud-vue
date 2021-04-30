@@ -10,6 +10,7 @@ crud.conf['w-preview'] = {
             'default': 'fa fa-file-o',
             'application/xls': 'fa fa-file-excel-o',
             'xlsx': 'fa fa-file-excel-o',
+            'application/vnd.ms-excel': 'fa fa-file-excel-o',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'fa fa-file-excel-o',
             'zip': 'fa fa-file-archive-o',
             'mp3': 'fa fa-audio-o',
@@ -21,6 +22,7 @@ crud.conf['w-preview'] = {
         },
         // associazione mimetype del file con il tipo upload documento
         docType: [
+            'application/vnd.ms-excel',
             'application/xls',
             'xlsx',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

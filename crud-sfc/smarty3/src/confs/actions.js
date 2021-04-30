@@ -18,6 +18,9 @@ crud.conf['action-delete-selected'].css = 'btn-outline-danger mr-1'
 crud.conf['action-edit'].css = 'btn-outline-secondary'
 crud.conf['action-delete'].css = 'btn-outline-danger'
 crud.conf['action-view'].css = 'btn-outline-secondary'
+crud.conf['action-edit-mode'].css = 'btn-outline-secondary'
+crud.conf['action-save-row'].css = 'btn-outline-secondary'
+crud.conf['action-view-mode'].css = 'btn-outline-secondary'
 
 // ------ nuove azioni ---
 crud.conf['action-export-csv-codici'] = {}

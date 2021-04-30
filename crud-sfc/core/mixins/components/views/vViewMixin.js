@@ -18,6 +18,8 @@ const vViewMixin = {
         setRouteValues: function (route) {
             var that = this
             if (route) {
+                console.assert(that.modelName,{modelName:that.modelName,errorMsg:'invalid modelName'});
+                console.assert(that.pk,{pk:that.pk,errorMsg:'invalid pk'});
                 route.setValues({
                     modelName: that.modelName,
                     pk: that.pk

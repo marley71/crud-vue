@@ -12,6 +12,8 @@ crud.conf['w-map'] = {
     latName: 'lat',
     darkMode: false,
     mapStyles: [],
+    activateSearch: false,
+    activateFind: false,
     darkStyle: [
         {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
         {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
@@ -157,6 +159,10 @@ const wMapMixin = {
             var that = this
             console.log('searchAddress', window.jQuery(event.target).val())
             var address = window.jQuery(event.target).val()
+            that._gSearch(address);
+        },
+        _gSearch (address) {
+            var that = this
             var geocoder = new google.maps.Geocoder()
             geocoder.geocode({'address': address}, function (results, status) {
                 if (results) {

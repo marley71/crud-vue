@@ -93,7 +93,7 @@ const vRecordMixin = {
                 widgets[key].modelData = that.value;
                 if (that.value && (key in that.value))
                     widgets[key].value = that.value[key];
-
+                widgets[key].view = that;
                 widgets[key].name = that.getFieldName(key);
                 if (!('label' in widgets[key])) {
                     //console.log('translate key e langContext',key,that.langContext);

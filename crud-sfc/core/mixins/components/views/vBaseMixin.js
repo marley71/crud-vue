@@ -111,7 +111,7 @@ const vBaseMixin = {
                 if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
                     aClassName = that.$crud.conf[name].confParent
                 }
-                console.log(aClassName,'non esiste la creao',name,that.$options.components[aClassName])
+                //console.log(aClassName,'non esiste la creao',name,that.$options.components[aClassName])
                 this.$options.components[name] = Vue.component(name, {
                     extends: that.$options.components[aClassName]
                 });

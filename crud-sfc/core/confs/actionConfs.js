@@ -207,25 +207,20 @@ const actionConfs = {
         text: '',
         icon: 'fa fa-save',
         visible: false,
-        setRouteValues : function(route) {
-            var that = this;
-            route.setValues({
-                modelName: that.view.modelName,
-                pk : that.modelData[that.view.primaryKey]
-            });
-            return route;
+        methods: {
+            setRouteValues : function(route) {
+                var that = this;
+                route.setValues({
+                    modelName: that.view.modelName,
+                    pk : that.modelData[that.view.primaryKey]
+                });
+                return route;
+            }
         },
         execute: function () {
             var that = this;
-            // var values = {};
-            // for (var k in that.view.widgetsEdit[that.index]) {
-            //     //console.log('edit r',that.view.widgetsEdit[that.index][k])
-            //     var sref = that.view.widgetsEdit[that.index][k].cRef; //  're-' + that.index + '-' +  k;
-            //     if (that.$crud.cRefs[sref])
-            //         values[k] = that.$crud.cRefs[sref].getValue();
-            // }
-            var values = that.getRowData();
-            var id = that.view.value[that.index][that.view.primaryKey];
+            var values = that.view.getRowEditData(that.index);
+            //var id = that.view.value[that.index][that.view.primaryKey];
             var r = that.createRoute('update');
             that.setRouteValues(r);
             r.setParams(values);
@@ -236,22 +231,25 @@ const actionConfs = {
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
                 that.alertSuccess(msg,that.alertTime);
-                that.view.reload();
+                var values = json.result;
+                that.view.setRowData(that.index,values);
+                that.view.setViewMode(that.index);
+                //that.view.reload();
             })
             console.log('values', values);
         },
-        getRowData() {
-            var that = this;
-            var values = {};
-            for (var k in that.view.widgetsEdit[that.index]) {
-                //console.log('edit r',that.view.widgetsEdit[that.index][k])
-                var sref = that.view.widgetsEdit[that.index][k].cRef; //  're-' + that.index + '-' +  k;
-                if (that.$crud.cRefs[sref])
-                    values[k] = that.$crud.cRefs[sref].getValue();
-            }
-            console.log('rowData values',values);
-            return values;
-        }
+        // getRowData() {
+        //     var that = this;
+        //     var values = {};
+        //     for (var k in that.view.widgetsEdit[that.index]) {
+        //         //console.log('edit r',that.view.widgetsEdit[that.index][k])
+        //         var sref = that.view.widgetsEdit[that.index][k].cRef; //  're-' + that.index + '-' +  k;
+        //         if (that.$crud.cRefs[sref])
+        //             values[k] = that.$crud.cRefs[sref].getValue();
+        //     }
+        //     console.log('rowData values',values);
+        //     return values;
+        // }
     },
     'action-edit-mode':  {
         confParent : 'a-base',
