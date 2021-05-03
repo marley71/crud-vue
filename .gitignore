@@ -1,3 +1,5 @@
 .idea
 node_modules
 .DS_Store
+
+crud-sfc/smarty3/src/assets/fontawesome

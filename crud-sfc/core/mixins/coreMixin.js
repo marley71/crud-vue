@@ -44,6 +44,28 @@ const coreMixin = {
             }
         },
 
+        createFullscreenModal (compName,conf,title,callback) {
+            var that = this;
+            var divId = 'd' + (new Date().getTime());
+            var dialogConf = {
+                message : '<div id="' + divId + '"></div>',
+                callbacks : callbacks,
+                title : title,
+                mounted() {
+                    var thisDialog = this;
+                    console.log('dialog mounted',thisDialog.jQe().html())
+                    var dialogComp = new that.$options.components[viewName]({
+                        propsData: {
+                            cConf : conf
+                        }
+                    });
+                    dialogComp.$mount(thisDialog.jQe('#'+divId)[0]);
+                }
+            }
+            var d =  that.customDialog(dialogConf);
+            return d;
+        },
+
         createModalView : function(viewName,conf,title,callbacks) {
             var that = this;
             var divId = 'd' + (new Date().getTime());
@@ -64,35 +86,6 @@ const coreMixin = {
             }
             var d =  that.customDialog(dialogConf);
             return d;
-
-
-
-
-            var divId = 'd' + (new Date().getTime());
-            //var dialogComp = new that.$crud.components.views[viewName]({
-            var dialogComp = new that.$options.components[viewName]({
-                propsData: conf
-            });
-            var _cbs = callbacks?callbacks:{};
-            /*
-            {
-                    chiudi: function () {
-                        dialogComp.$destroy();
-                        this.hide();
-                    }
-                }
-             */
-            // creo la dialog custom
-            var dialog = that.customDialog({
-                cContent: '<div id="' + divId + '"></div>',
-                cTitle: title,
-                //cBig : true,
-                cCallbacks: _cbs,
-            });
-            // visualizzo la view
-            dialogComp.$mount('#' + divId);
-            dialog.componentInstance = dialogComp
-            return dialog;
         },
         createBigModalView : function(viewName,conf,title,callbacks) {
             var that = this;

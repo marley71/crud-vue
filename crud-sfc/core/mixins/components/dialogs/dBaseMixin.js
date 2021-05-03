@@ -7,7 +7,8 @@ crud.conf['d-base'] = {
     message: '',
     title: '',
     typeSize: 'w-1/2',
-    callbacks: {}
+    callbacks: {},
+    customClass:'',
 }
 
 const dBaseMixin = {
