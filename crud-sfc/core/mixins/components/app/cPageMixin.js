@@ -11,7 +11,13 @@ const cPageMixin = {
     },
     mounted() {
         var that = this;
-
+        if (!that.cPath) {
+            if (!that.$crud.env.mainPage) {
+                that.jQe('#page_container').html(that.translate('app.pagina_non_trovata'));
+                return;
+            }
+            that.cPath = that.$crud.env.mainPage;
+        }
         var route = that.createRoute('pages');
         var path = that.cPath.replaceAll('/', '.');
         route.setValues({

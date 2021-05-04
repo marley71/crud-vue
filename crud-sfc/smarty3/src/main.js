@@ -50,16 +50,10 @@ Vue.filter('translate', function (value, context, plural, params) {
   var langKey = context ? context + '.' + value : value
   return app.translate(langKey, plural, params)
 })
+
 window.jQuery = jQuery
 window.app = app
 app.loadConfigurations(function () {
   console.log('caricato tutto')
   app.$mount('#app')
 })
-
-// app.loadResources([
-//   // 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap'
-// ], function () {
-//
-//
-// })

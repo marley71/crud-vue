@@ -1,6 +1,6 @@
 .DS_Store
 node_modules/
-/dist/
+#/dist/
 npm-debug.log*
 
 yarn-debug.log*
@@ -9,6 +9,7 @@ yarn-error.log*
 /test/e2e/reports/
 selenium-debug.log
 
+src/assets/fontawesome
 
 # Editor directories and files
 .idea

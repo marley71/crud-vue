@@ -10,15 +10,29 @@ import cPage from '../components/app/cPage'
 import cManage from '../components/app/cManage'
 import cImport from '../components/app/cImport'
 import cCalendar from '../components/app/cCalendar'
+import crud from '../../../core/crud'
 
 Vue.use(Router)
 
+// function dynamicPropsFn (route) {
+//   console.log('dynamicPropsFn', crud.env)
+//   return {
+//     cPath : crud.env.mainPage
+//   }
+// }
+
 export default new Router({
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'HelloWorld',
+    //   component: HelloWorld
+    // },
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'default',
+      component: cPage,
+      props: {cPath: ''}
     },
     {
       path: '/list/:cConf',

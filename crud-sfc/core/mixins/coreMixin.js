@@ -44,7 +44,7 @@ const coreMixin = {
             }
         },
 
-        createFullscreenModal (compName,conf,title,callback) {
+        createFullscreenModal (compName,conf,title,callbacks) {
             var that = this;
             var divId = 'd' + (new Date().getTime());
             var dialogConf = {
@@ -54,7 +54,7 @@ const coreMixin = {
                 mounted() {
                     var thisDialog = this;
                     console.log('dialog mounted',thisDialog.jQe().html())
-                    var dialogComp = new that.$options.components[viewName]({
+                    var dialogComp = new that.$options.components[compName]({
                         propsData: {
                             cConf : conf
                         }
