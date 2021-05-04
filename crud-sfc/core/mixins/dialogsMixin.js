@@ -47,34 +47,49 @@ const dialogsMixin = {
         },
 
         alertSuccess : function (message,time) {
-            return this._alert(message,'alert alert-success',time);
+            return this._alert(message,'d-alert-success',time);
         },
         alertError : function (message,time) {
-            return this._alert(message,'alert alert-danger',time);
+            //return this._alert(message,'alert alert-danger',time);
+            return this._alert(message,'d-alert-error',time);
         },
         alertInfo : function (message,time) {
-            return this._alert(message,'alert alert-info',time);
+            return this._alert(message,'d-alert-info',time);
         },
         alertWarning : function (message,time) {
-            return this._alert(message,'alert alert-warning',time);
+            return this._alert(message,'d-alert-warning',time);
         },
 
-        _alert : function (message,classes,time) {
+        _alert : function (message,alertComp,time) {
             var that = this;
-            var props = {
-                cMessage : message,
-                cClasses : classes,
-            }
-            if (time)
-                props.cTime = time;
-            var d = new that.$options.components['d-alert']({
-                propsData : props,
-                //methods : callbacks,
+            var that = this;
+            console.log('_alert',message,alertComp,time);
+            var d = new that.$options.components[alertComp]({
+                propsData: {
+                    cMessage : message,
+                    cTime : time
+                }
             });
-            var id= 'd' + (new Date().getTime());
+            var id= 'pop' + (new Date().getTime());
             window.jQuery('body').append('<div id="'+id+'"></div>');
             d.$mount('#'+id);
+            d.show();
+            //window.jQuery('#'+id).popover('show');
             return d;
+            // var props = {
+            //     cMessage : message,
+            //     cClasses : classes,
+            // }
+            // if (time)
+            //     props.cTime = time;
+            // var d = new that.$options.components['d-alert']({
+            //     propsData : props,
+            //     //methods : callbacks,
+            // });
+            // var id= 'd' + (new Date().getTime());
+            // window.jQuery('body').append('<div id="'+id+'"></div>');
+            // d.$mount('#'+id);
+            // return d;
         },
         popover : function (element,content,title) {
             window.jQuery(element).popover({

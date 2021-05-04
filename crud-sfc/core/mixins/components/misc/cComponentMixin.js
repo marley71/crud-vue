@@ -172,10 +172,10 @@ const cComponentMixin = {
         },
 
         beforeLoadResources : function () {
-            console.log('cComponent.beforeLoadResources')
+            //console.log('cComponent.beforeLoadResources')
         },
         afterLoadResources : function () {
-            console.log('cComponent.afterLoadResources');
+            //console.log('cComponent.afterLoadResources');
         },
 
     }
