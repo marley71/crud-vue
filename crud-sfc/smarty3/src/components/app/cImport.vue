@@ -9,7 +9,10 @@
         <div v-if="uploadEnabled" class="panel panel-default" >
             <div>Seleziona file csv da importare</div>
             <!--            <w-upload-ajax :c-conf="confUpload" v-on:success="uploadsuccess"></w-upload-ajax>-->
-            <v-edit :c-conf="_uploadConf()"></v-edit>
+            <div class="col-12">
+              <v-edit :c-conf="_uploadConf()"></v-edit>
+            </div>
+
         </div>
         <div v-if="progressEnabled">
             <div v-if="status=='loading'">Loading</div>

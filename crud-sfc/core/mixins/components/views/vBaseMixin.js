@@ -35,6 +35,7 @@ const vBaseMixin = {
         load() {
             let that = this;
             that.setRouteValues(that.route);
+            that.beforeLoadData();
             that.fetchData(that.route, function (json) {
                 that.json = json;
                 that.fillData(that.route, json);
@@ -83,8 +84,10 @@ const vBaseMixin = {
                 callback(json);
             })
         },
+        beforeLoadData () {
 
-        afterLoadData: function () {
+        },
+        afterLoadData () {
 
         },
         _loadConf: function () {
