@@ -105,9 +105,9 @@ const vBaseMixin = {
          */
         getActionConfig: function (name, type) {
             var that = this;
+            var aClassName = 'a-base';
             // se non esiste il componente di azione lo creo al volo
             if (!this.$options.components[name]) {
-                var aClassName = 'a-base';
                 if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
                     aClassName = that.$crud.conf[name].confParent
                 }
@@ -118,7 +118,11 @@ const vBaseMixin = {
                 this.$options.components[name].prototype.$crud = this.$crud;
             }
             // ritorno la configurazione dell'azione con la configurazione di default mergiata con un eventuale configurazione custom
-            return that.merge(that.$crud.conf[name], (that.customActions[name] || {}));
+            var actionConf =  that.merge(that.$crud.conf[name], (that.customActions[name] || {}));
+            // in caso non sia stato definito il confParent lo forzo.
+            if (!actionConf.confParent)
+                actionConf.confParent = aClassName;
+            return actionConf;
         },
 
         _getConf: function () {

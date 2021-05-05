@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-center relative alert alert-warning py-3 px-3 rounded-lg crud-alert">
+  <div class="flex justify-between items-center alert alert-warning py-3 px-3 rounded-lg crud-alert">
     <div class="float-left">
       <span class="font-semibold">{{ cMessage }}</span>
     </div>

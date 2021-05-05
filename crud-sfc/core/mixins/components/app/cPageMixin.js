@@ -13,7 +13,7 @@ const cPageMixin = {
         var that = this;
         if (!that.cPath) {
             if (!that.$crud.env.mainPage) {
-                that.jQe('#page_container').html(that.translate('app.pagina_non_trovata'));
+                that.jQe('#page_container').html(that.translate('app.pagina-non-trovata'));
                 return;
             }
             that.cPath = that.$crud.env.mainPage;
@@ -34,7 +34,7 @@ const cPageMixin = {
             // contiene il tag html => pagina principale
             if (htmlNode.find('html').length >= 1) {
                 // console.log(htmlNode.html())
-                throw new Error({ code : 500, message: 'Invalid html'})
+                throw new Error({ code : 500, message: 'app.invalid-html'})
             }
             window.jQuery.each(htmlNode.find('script'), function () {
                 // console.log('script',window.jQuery(this).text());
