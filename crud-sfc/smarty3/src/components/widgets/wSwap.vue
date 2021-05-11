@@ -1,8 +1,7 @@
 <template>
   <label class="form-switch form-switch-pill d-block" :class="switchClass" v-on:click="swap" :title="title">
-    <input type="checkbox" v-model="value">
-    <i v-if="dataSwitched" data-on="&#10005;" data-off="&#10004;"
-       style="font-family:Zapf Dingbats,font-regular,sans-serif !important"></i>
+    <input type="hidden" :value="value">
+    <i v-if="dataSwitched" data-on="&#10005;" data-off="&#10004;"></i>
     <i v-else data-on="&#10004;" data-off="&#10005;"></i>
   </label>
 </template>

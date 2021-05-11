@@ -1,4 +1,5 @@
 var ModelUser = {
+  modelName: 'user',
   list : {
     modelName : 'user',
     routeName : null,

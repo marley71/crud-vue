@@ -14,9 +14,10 @@ crud.conf['w-upload-ajax'] = {
 const wUploadAjaxMixin = {
     methods: {
 
-        dynamicData(conf) {
-            if (conf.value instanceof String)
-                conf.value = JSON.stringify(this.value).replace(/\\"/g, '"');
+        _dynamicData(conf) {
+            console.log('wUploadAjaxMixin',conf.value);
+            if (conf.value instanceof Object)
+                conf.value = JSON.stringify(conf.value).replace(/\\"/g, '"');
             else if (!this.value)
                 conf.value = {};
 

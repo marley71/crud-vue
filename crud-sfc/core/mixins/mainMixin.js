@@ -16,8 +16,10 @@ const mainMixin = {
             that.loadLanguageFile(function () {
                 that.loadRoutesFile(function () {
                     that.loadActionsFile( function () {
-                        that.loadEnvMeta();
-                        return callback();
+                        that.loadEnvFile(function () {
+                            that.loadEnvMeta();
+                            return callback();
+                        })
                     })
                 })
             })
@@ -75,6 +77,18 @@ const mainMixin = {
                 console.log('filedKey', key);
                 that.$crud.env[key] = jQuery(this).attr('content');
             })
+        },
+        loadEnvFile (callback) {
+            var that = this;
+            var envFile = that.getMetaValue('crud.env-file');
+            if (envFile) {
+                Server.get(envFile,{},function (json) {
+                    console.log('caricato env file',envFile);
+                    that.$crud.env = json;
+                    return callback();
+                })
+            } else
+                return callback();
         }
     }
 }

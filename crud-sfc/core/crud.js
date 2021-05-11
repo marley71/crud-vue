@@ -1,5 +1,4 @@
-// import confs_actions from "../../../crud-vue-sfc/src/crud/confs_actions";
-// import confs_misc from "../../../crud-vue-sfc/src/crud/confs_misc";
+
 import routeConfs from "./confs/routeConfs";
 import actionConfs from "./confs/actionConfs";
 

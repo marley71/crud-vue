@@ -144,16 +144,23 @@
 
 import cComponent from '../misc/cComponent'
 import cManageMixin from '../../../../core/mixins/components/app/cManageMixin'
-// import crud from '../../../../core/crud'
+import crud from '../../../../core/crud'
 
-// crud.conf['c-manage'].manageHeaderClass=null
-// crud.conf['c-manage'].manageHeaderTextClass='text-dark'
+crud.conf['c-manage'].collapsible = false
+crud.conf['c-manage'].collapsed = false
+crud.conf['c-manage'].collapseId = null
 
 export default {
   name: 'c-manage',
   extends: cComponent,
   // props: ['cModel', 'cInlineEdit', 'cCollapsible'],
-  mixins: [cManageMixin]
+  mixins: [cManageMixin],
+  methods: {
+    _dynamicData (conf) {
+      conf.collapseId = 'manageCollapse' + conf.modelName
+      return conf
+    }
+  }
 }
 </script>
 

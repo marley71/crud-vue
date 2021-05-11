@@ -24,24 +24,24 @@ const wSwapMixin = {
         that.toggleActive = index?true:false;
         that.slot = that.domainValues[index];
     },
-    computed : {
-
-        cssVars() {
-            return {
-                '--bg-inactive': this.bgInactive,
-                '--bg-active': this.bgActive,
-            }
-        },
-        checkedValue: {
-            get() {
-                console.log('toggleActive',this.toggleActive)
-                return this.toggleActive
-            },
-            set(newValue) {
-                this.toggleActive = newValue;
-            }
-        }
-    },
+    // computed : {
+    //
+    //     cssVars() {
+    //         return {
+    //             '--bg-inactive': this.bgInactive,
+    //             '--bg-active': this.bgActive,
+    //         }
+    //     },
+    //     checkedValue: {
+    //         get() {
+    //             console.log('toggleActive',this.toggleActive)
+    //             return this.toggleActive
+    //         },
+    //         set(newValue) {
+    //             this.toggleActive = newValue;
+    //         }
+    //     }
+    // },
     methods: {
         getDV: function () {
             return (this.domainValues || {})
@@ -92,9 +92,10 @@ const wSwapMixin = {
         _getNext() {
             var that = this;
             var keys = Object.keys(that.getDV());
-            var index = this._getIndex();
-            index = (index + 1) % keys.length;
-            return keys[index];
+            var beforeIndex = this._getIndex();
+            var newIndex = (beforeIndex + 1) % keys.length;
+            console.log('_getNext',beforeIndex,newIndex,'key',keys[beforeIndex],keys[newIndex])
+            return keys[newIndex];
         },
 
         _getIndex() {
@@ -104,13 +105,13 @@ const wSwapMixin = {
             var value = that.value ? that.value : keys[0];
             var vs = keys.map(String);
             var index = vs.indexOf("" + value);
-            console.log('_getIndex','vs',vs,'value',""+value,'index',index);
+            //console.log('_getIndex','vs',vs,'value',""+value,'index',index);
             return index;
         },
         _getCurrent() {
             var that = this;
             var keys = Object.keys(that.getDV());
-            console.log('_getCurrent',keys,that._getIndex())
+            console.log('_getCurrent',keys,that._getIndex(),keys[that._getIndex()])
             return keys[that._getIndex()];
         },
     }

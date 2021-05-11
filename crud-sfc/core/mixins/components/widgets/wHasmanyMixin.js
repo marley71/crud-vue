@@ -76,16 +76,17 @@ const wHasmanyMixin = {
             for (var vId in that.confViews) {
                 newConfViews[vId] = that.confViews[vId];
             }
-            if (this.$crud.cRefs[refId].value.status == 'new') {
+            // if (this.$crud.cRefs[refId].value.status == 'new') {
                 delete newConfViews[refId];
                 this.$crud.cRefs[refId].$destroy();
 
-            } else {
-                newConfViews[refId].value.status = 'deleted';
-                if (that.getComponent(refId)) {
-                    that.getComponent(refId).getWidget('status').setValue('deleted');
-                }
-            }
+            // } else {
+            //     newConfViews[refId].value.status = 'deleted';
+            //     if (that.getComponent(refId)) {
+            //         that.getComponent(refId).getWidget('status').setValue('deleted');
+            //     }
+            // }
+            console.log('newConfView',newConfViews);
             that.$set(that, 'confViews', newConfViews);
             this.$forceUpdate();
         },

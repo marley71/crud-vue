@@ -36,7 +36,8 @@ const vRecordMixin = {
     },
 
     methods: {
-        dynamicData: function (conf) {
+        _dynamicData: function (conf) {
+            console.debug('vRecordMixin._dynamicData',conf)
             if (this.cModel)
                 conf.modelName = this.cModel;
             if (this.cPk)

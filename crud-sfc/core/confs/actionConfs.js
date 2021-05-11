@@ -145,7 +145,7 @@ const actionConfs = {
         text : '',
         icon : 'fa fa-edit',
         execute () {
-            let url = '#/edit/' + this.pascalCase('model_'+this.view.modelName) + '/' + this.modelData[this.view.primaryKey]
+            let url = '#/edit/' + this.pascalCase('model_'+this.view.modelName) + '.edit/' + this.modelData[this.view.primaryKey]
             //var url = "/edit/" + this.view.modelName + "/" + this.modelData[this.view.primaryKey];
             document.location.href=url
         }

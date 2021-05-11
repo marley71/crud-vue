@@ -154,7 +154,7 @@ export default {
   extends: vCollection,
   mixins: [vListMixin],
   methods: {
-    dynamicData (conf) {
+    _dynamicData (conf) {
       if (!conf.langContext && conf.langContext !== null) {
         conf.langContext = conf.modelName ? conf.modelName : this.cModel
         conf.langContext += '.fields'

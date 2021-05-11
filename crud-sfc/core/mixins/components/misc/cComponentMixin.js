@@ -83,9 +83,20 @@ const cComponentMixin = {
             delete this.$crud.cRefs[cr];
     },
     data : function() {
-        return this.dynamicData(this._loadConf());
+        var _conf = this._loadConf();
+        _conf = this._dynamicData(_conf);
+        if (_conf.methods && _conf.methods.dynamicData) {
+            _conf = _conf.methods.dynamicData.apply(this,[_conf]);
+        }
+        return _conf;
+        //return this.dynamicData(_conf);
     },
     methods : {
+        /**
+         * wrapper jQuery che lavoro nel template del componenente
+         * @param selector
+         * @return {*}
+         */
         jQe(selector) {
             var that = this;
             if (selector) {
@@ -93,8 +104,21 @@ const cComponentMixin = {
             }
             return window.jQuery(that.$el);
         },
+        /**
+         * per configurazioni dinamiche da fare a runtime per oggetti core in modo che non venga sovrascritta
+         * da oggetti istanziati
+         * @param conf
+         * @return {*}
+         */
+        _dynamicData(conf) {
+            return conf;
+        },
+        /**
+         * per configurazioni dinamiche da fare a runtime per oggetti istanziati nell'applicazione
+         * @param conf
+         * @return {*}
+         */
         dynamicData(conf) {
-            //console.log('default dynamicdata',conf);
             return conf;
         },
         /**
