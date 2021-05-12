@@ -4,6 +4,25 @@ import Route from '../Routes'
 const coreMixin = {
 
     methods : {
+        getHashParams () {
+            var params = {};
+            var hash = window.location.hash || "";
+            var tmp = hash.split('?');
+            if (tmp.length != 2)
+                return params;
+            var paramsArray = tmp[1].split('&');
+            for ( var i in paramsArray) {
+                tmp = paramsArray[i].split("=");
+                if (tmp.length == 2) {
+                    params[tmp[0]] = tmp[1];
+                }
+            }
+            return params;
+        },
+        getHashParam (name) {
+            var params = this.getHashParams();
+            return params[name];
+        },
         getComponent : function (refId) {
             return this.$crud.cRefs[refId];
         },

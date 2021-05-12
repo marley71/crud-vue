@@ -1,8 +1,10 @@
 <template>
   <label class="form-switch form-switch-pill d-block" :class="switchClass" v-on:click="swap" :title="title">
-    <input type="hidden" :value="value">
-    <i v-if="dataSwitched" data-on="&#10005;" data-off="&#10004;"></i>
-    <i v-else data-on="&#10004;" data-off="&#10005;"></i>
+    <input type="checkbox" :value="value">
+<!--    <i v-if="dataSwitched" data-on="&#10005;" data-off="&#10004;"></i>-->
+<!--    <i v-else data-on="&#10004;" data-off="&#10005;"></i>-->
+    <i v-if="dataSwitched" data-on="v" data-off="x"></i>
+    <i v-else data-on="x" data-off="v"></i>
   </label>
 </template>
 
@@ -14,7 +16,15 @@ import wSwapMixin from '../../../../core/mixins/components/widgets/wSwapMixin'
 export default {
   name: 'w-swap',
   extends: wBase,
-  mixins: [wSwapMixin]
+  mixins: [wSwapMixin],
+  mounted () {
+    var that = this
+    if (that.toggleActive) {
+      that.jQe('[type="checkbox"]').prop('checked', true)
+    } else {
+      that.jQe('[type="checkbox"]').prop('checked', false)
+    }
+  }
 }
 </script>
 
