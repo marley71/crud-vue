@@ -101,6 +101,13 @@ const wMapMixin = {
         this.initMap()
     },
     methods: {
+        setValue (lat,lng) {
+            var that = this;
+            var position = new google.maps.LatLng(lat, lng)
+            that.marker.setPosition(position)
+            that.map.setCenter(that.marker.position)
+            that._setHiddenValues()
+        },
         initMap: function () {
             var that = this
             if (!that.$crud.env.apiKey) {

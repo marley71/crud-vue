@@ -75,7 +75,7 @@ const vCollectionMixin = {
             //console.log('draw',that.loading);
             setTimeout(function () {
                 that.completed();
-            }, 10);
+            }, 100);
         },
 
         setWidgetValue: function (row, key, value) {

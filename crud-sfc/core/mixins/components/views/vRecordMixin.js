@@ -72,7 +72,7 @@ const vRecordMixin = {
             that.loading = false;
             setTimeout(function () {
                 that.completed();
-            }, 10)
+            }, 100)
         },
         setWidgetValue: function (key, value) {
             var that = this;
