@@ -108,6 +108,9 @@ const wMapMixin = {
             that.map.setCenter(that.marker.position)
             that._setHiddenValues()
         },
+        getValue () {
+            return this.marker.position;
+        },
         initMap: function () {
             var that = this
             if (!that.$crud.env.apiKey) {
