@@ -4,7 +4,14 @@
             <h4 class="alert-heading">Importazione csv</h4>
             <p>Importazione modello <strong>{{providerName}}</strong> da file csv.</p>
             <hr>
-            <p class="mb-0">L'importazione avverrà in due fasi, la lettura del file csv e check degli errori e salvataggio del csv importato</p>
+            <div class="mb-0">
+              <p>L'importazione avverrà in due fasi:</p>
+              <ul>
+                <li>la lettura del file csv e check degli errori</li>
+                <li>salvataggio del csv importato</li>
+              </ul>
+
+            </div>
         </div>
         <div v-if="uploadEnabled" class="panel panel-default" >
             <div>Seleziona file csv da importare</div>

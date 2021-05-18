@@ -1,9 +1,14 @@
 import jQuery from 'jquery';
 import Route from '../Routes'
+import Server from "../Server";
+import Vue from "vue";
 
 const coreMixin = {
-
     methods : {
+        createComponent(name,fileName,callback) {
+            var cb = callback?callback:function (){};
+            this._newComponent(name,fileName,callback);
+        },
         getHashParams () {
             var params = {};
             var hash = window.location.hash || "";
@@ -621,6 +626,47 @@ const coreMixin = {
             } else {
                 return callback();
             }
+        },
+        _newComponent (name,fileName,callback) {
+            var that = this;
+            console.log('chi sono',that);
+            if (this.$crud._dinamicComponents.indexOf(name) >= 0)
+                return callback();
+
+            var route = that.createRoute('pages');
+            var path = fileName.replaceAll('/', '.');
+            route.setValues({
+                path: path
+            })
+            var params = {};
+            route.setParams(params);
+            Server.route(route, function (html) {
+                if (html.error) {
+                    that.errorDialog(html.msg);
+                    return callback();
+                }
+                var htmlNode = window.jQuery('<div>' + html + '</div>');
+                // contiene il tag html => pagina principale
+                if (htmlNode.find('html').length >= 1) {
+                    // console.log(htmlNode.html())
+                    throw new Error({code: 500, message: 'app.invalid-html'})
+                }
+                window.jQuery.each(htmlNode.find('script'), function () {
+                    // console.log('script',window.jQuery(this).text());
+                    window.jQuery('body').append(window.jQuery(this));
+                    window.jQuery(this).remove();
+                })
+
+                // console.log('html', htmlNode.html());
+                Vue.prototype.$crud = that.$crud;
+                that.$crud.conf[name] = window[that.camelCase(name)];
+                that.$options.components[name] = Vue.component(name, {
+                    extends: that.$options.components['c-component'],
+                    template: htmlNode.html()
+                });
+                that.$crud._dinamicComponents.push(name);
+                return callback();
+            });
         }
     }
 }

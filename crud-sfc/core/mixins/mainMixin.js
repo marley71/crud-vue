@@ -18,7 +18,15 @@ const mainMixin = {
                     that.loadActionsFile( function () {
                         that.loadEnvFile(function () {
                             that.loadEnvMeta();
-                            return callback();
+                            var initFuncion = that.getMetaValue('crud.init');
+                            console.log('initFunction',initFuncion);
+                            if (typeof window[initFuncion] === 'function') {
+                            //if (initFuncion) {
+                                window[initFuncion].apply(that,[callback]);
+                                //window[initFuncion](callback);
+                            }
+                            else
+                                return callback();
                         })
                     })
                 })
