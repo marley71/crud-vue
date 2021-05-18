@@ -6,6 +6,10 @@ crud.conf['w-radio'] = {
 }
 
 const wRadioMixin = {
-
+    methods: {
+        getFieldName: function () {
+            return this.name;
+        }
+    }
 }
 export default wRadioMixin

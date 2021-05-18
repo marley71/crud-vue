@@ -15,8 +15,10 @@ import crud from '../../../../core/crud'
 import wTexthtmlMixin from '../../../../core/mixins/components/widgets/wTexthtmlMixin'
 
 crud.conf['w-texthtml'].resources = [
-  'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
-  'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
+  'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css',
+  'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js'
+  // 'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.css',
+  // 'https://cdn.jsdelivr.net/npm/summernote-bootstrap4@0.0.5/dist/summernote.min.js'
 ]
 
 export default {
