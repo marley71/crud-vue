@@ -356,11 +356,18 @@ const cManageMixin = {
             acSearch.execute = function () {
                 var that = this;
                 var formData = that.view.getViewData();
-                var viewParams = thisManage.listComp.route.getParams();
-                formData = that.merge(viewParams, formData);
-                thisManage.listComp.route.setParams(formData);
+                thisManage.listComp.route.mergeParams(formData);
                 thisManage.listComp.reload();
                 return;
+
+                // for (var k in formData.keys()) {
+                //     thisManage.listComp.route.setParam(k,formData.get(k));
+                // }
+                // var viewParams = thisManage.listComp.route.getParams();
+                // formData = that.merge(viewParams, formData);
+                // thisManage.listComp.route.setParams(formData);
+                // thisManage.listComp.reload();
+                // return;
             };
             searchConf.customActions['action-search'] = acSearch;
             return searchConf;

@@ -16,6 +16,9 @@ const choiceMixin = {
         },
         getFieldName: function () {
             return this.name + '[]';
+        },
+        getText () {
+            return this.domainValues[this.getValue()];
         }
     },
 

@@ -11,6 +11,7 @@ import cManage from '../components/app/cManage'
 import cImport from '../components/app/cImport'
 import cCalendar from '../components/app/cCalendar'
 import crud from '../../../core/crud'
+import cDynamic from '../components/app/cDynamic'
 
 Vue.use(Router)
 

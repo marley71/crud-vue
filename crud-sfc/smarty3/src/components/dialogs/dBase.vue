@@ -12,6 +12,10 @@ export default {
     show () {
       var that = this
       window.jQuery(that.jQe()).modal('show')
+    },
+    hide () {
+      var that = this
+      window.jQuery(that.jQe()).modal('hide')
     }
   }
 }

@@ -26,11 +26,20 @@ Server.getHearders = function() {
 
 Server.post = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
+    var contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+    var processData = true;
+    if (params instanceof FormData) {
+        contentType = false;
+        processData = false;
+    }
+    console.log('serverPost',(params instanceof FormData),contentType,processData,params);
     jQuery.ajax({
         url: realUrl,
         headers: Server.getHearders(),
         type: 'POST',
         data: params,
+        contentType: contentType,
+        processData: processData,
     }).done(function(json) {
         callback(json);
     }).fail(function (data, error, msg) {
@@ -40,11 +49,20 @@ Server.post = function (url, params, callback) {
 
 Server.get = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
+    var contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+    var processData = true;
+    if (params instanceof FormData) {
+        contentType = false;
+        processData = false;
+    }
+    console.log('serverGet',(params instanceof FormData),contentType,processData,params);
     jQuery.ajax({
         url: realUrl,
         headers: Server.getHearders(),
         type: 'GET',
         data: params,
+        contentType: contentType,
+        processData: processData,
     }).done(function(json) {
         callback(json);
     }).fail(function (data, error, msg) {

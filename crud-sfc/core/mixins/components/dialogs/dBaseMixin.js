@@ -9,6 +9,7 @@ crud.conf['d-base'] = {
     typeSize: 'w-1/2',
     callbacks: {},
     customClass:'',
+    component : null, // eventuale componente istanziato per le dialog con componente
 }
 
 const dBaseMixin = {

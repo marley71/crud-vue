@@ -46,6 +46,11 @@ export default {
     getValue () {
       var that = this
       return that.jQe('[c-summernote]').val()
+    },
+    setValue (html) {
+      var that = this
+      that.jQe('.summernote').summernote('code', html)
+      that.jQe('[c-summernote]').val(html)
     }
   }
 }

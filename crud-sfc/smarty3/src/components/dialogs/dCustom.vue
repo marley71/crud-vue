@@ -18,7 +18,7 @@
 <!--        </div>-->
         <div v-if="Object.keys(callbacks).length > 0" class="modal-footer">
           <template v-for="(cb,key) in callbacks">
-            <button type="button" class="btn btn-primary" v-on:click="callCb(key)" :key="key">{{ key | translate }}
+            <button :callback-name="key" type="button" class="btn btn-primary" v-on:click="callCb(key)" :key="key">{{ key | translate }}
             </button>
           </template>
         </div>

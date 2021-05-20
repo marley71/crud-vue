@@ -22,14 +22,15 @@ const actionConfs = {
         css: 'bg-blue-300 rounded',
         icon : 'fa fa-search',
         text : 'app.cerca',
-        execute : function () {
+        execute () {
             console.log('action-search',this,'view',this.view.targetRef);
             if (this.view && this.view.targetRef) {
                 console.log('target ref',this.view.targetRef);
                 var targetView = this.$crud.cRefs[this.view.targetRef];
                 var formData = this.view.getViewData();
-                formData['page'] = 1;
+                //formData['page'] = 1;
                 targetView.route.setParams(formData);
+                targetView.route.setParam('page',1);
                 targetView.reload();
                 return ;
             }
@@ -238,18 +239,6 @@ const actionConfs = {
             })
             console.log('values', values);
         },
-        // getRowData() {
-        //     var that = this;
-        //     var values = {};
-        //     for (var k in that.view.widgetsEdit[that.index]) {
-        //         //console.log('edit r',that.view.widgetsEdit[that.index][k])
-        //         var sref = that.view.widgetsEdit[that.index][k].cRef; //  're-' + that.index + '-' +  k;
-        //         if (that.$crud.cRefs[sref])
-        //             values[k] = that.$crud.cRefs[sref].getValue();
-        //     }
-        //     console.log('rowData values',values);
-        //     return values;
-        // }
     },
     'action-edit-mode':  {
         confParent : 'a-base',

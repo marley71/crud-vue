@@ -71,19 +71,25 @@ const coreMixin = {
         createFullscreenModal (compName,conf,title,callbacks) {
             var that = this;
             var divId = 'd' + (new Date().getTime());
+            var cDef = that.$options.components[compName] || that.$crud._dynamicComponents[compName];
+            if (!cDef) {
+                throw new Error({message: compName + ' componente non trovato'})
+            }
             var dialogConf = {
                 message : '<div id="' + divId + '"></div>',
                 callbacks : callbacks,
                 title : title,
+                cBig : true,
                 mounted() {
                     var thisDialog = this;
                     console.log('dialog mounted',thisDialog.jQe().html())
-                    var dialogComp = new that.$options.components[compName]({
+                    var dialogComp = new cDef({
                         propsData: {
                             cConf : conf
                         }
                     });
                     dialogComp.$mount(thisDialog.jQe('#'+divId)[0]);
+                    thisDialog.component = dialogComp;
                 }
             }
             var d =  that.customDialog(dialogConf);
@@ -105,6 +111,7 @@ const coreMixin = {
                             cConf : conf
                         }
                     });
+                    thisDialog.component = dialogComp;
                     dialogComp.$mount(thisDialog.jQe('#'+divId)[0]);
                 }
             }
@@ -246,13 +253,13 @@ const coreMixin = {
             if (typeof window.tinyMCE !== 'undefined') {
                 window.tinyMCE.triggerSave();
             }
-            var formData =  _serializeAssoc(form);//form.serializeAssoc();
+            var serializedData =  _serializeAssoc(form);//form.serializeAssoc();
             var postData = {}
             // trasformo tutti gli [d] in [] questa modifica e' fatta per gestire i radio button negli hasmany
             // altrimenti venivano raggruppati come un unica entita'
-            for( var k in formData) {
-                if (formData[k].constructor !== Array) {
-                    postData[k] = formData[k];
+            for( var k in serializedData) {
+                if (serializedData[k].constructor !== Array) {
+                    postData[k] = serializedData[k];
                     continue;
                 }
                 var pattern = /(.+)(\[\d+\])(.*)$/g;
@@ -261,13 +268,25 @@ const coreMixin = {
                     var newkey = match[1] + '[]' + match[3];
                     if (!postData[newkey])
                         postData[newkey] = [];
-                    postData[newkey].push(formData[k]);
-                    delete formData[k];
+                    postData[newkey].push(serializedData[k]);
+                    delete serializedData[k];
                 } else {
-                    postData[k] = formData[k];
+                    postData[k] = serializedData[k];
                 }
             }
-            return postData;
+            var formData = new FormData();
+            for(var f in postData) {
+                formData.append(f,postData[f]);
+            }
+            // check upload object
+            jQuery.each(form.find('input[type="file"]'),function () {
+                var files = jQuery(this)[0].files
+                for (var f=0;f<files.length;f++) {
+                    formData.append(jQuery(this).attr('name'),files[f]);
+                }
+            })
+            console.log('getFormData',formData instanceof FormData)
+            return formData;
         },
         // funzioni trasformazioni standard case
         sentenceCase : function (str) {
@@ -629,10 +648,9 @@ const coreMixin = {
         },
         _newComponent (name,fileName,callback) {
             var that = this;
-            console.log('chi sono',that);
-            if (this.$crud._dinamicComponents.indexOf(name) >= 0)
+            if (this.$crud._dynamicComponents[name])
                 return callback();
-
+            console.log('carico componente',name,fileName);
             var route = that.createRoute('pages');
             var path = fileName.replaceAll('/', '.');
             route.setValues({
@@ -658,13 +676,17 @@ const coreMixin = {
                 })
 
                 // console.log('html', htmlNode.html());
-                Vue.prototype.$crud = that.$crud;
+                //Vue.prototype.$crud = that.$crud;
                 that.$crud.conf[name] = window[that.camelCase(name)];
-                that.$options.components[name] = Vue.component(name, {
+                var cDef = Vue.component(name, {
                     extends: that.$options.components['c-component'],
                     template: htmlNode.html()
                 });
-                that.$crud._dinamicComponents.push(name);
+                cDef.prototype.$crud = that.$crud;
+                that.$options.components[name] = cDef;
+                //that.$options.components[name]
+                //Vue.prototype.$options.components['get-chart'] = that.$options.components['get-chart']
+                that.$crud._dynamicComponents[name] = cDef;
                 return callback();
             });
         }

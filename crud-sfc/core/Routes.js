@@ -24,6 +24,9 @@ function Route(conf) {
         routeConf[k] = _c[k];
     }
 
+    var _isForm = function () {
+        return (routeConf.params instanceof FormData);
+    }
     /**
      * ritorna il metodo utilizzato per la richiesta al server, get o post
      * @return string
@@ -80,10 +83,41 @@ function Route(conf) {
      */
     this.getParams = function() {
         var that = this;
+        if (_isForm()) {
+            for (var k in routeConf.commonParams) {
+                routeConf.params.set(k,routeConf.commonParams[k]);
+            }
+            return routeConf.params;
+        }
         return jQuery.extend(routeConf.params,routeConf.commonParams);
     };
 
+    this.getParamsKeys = function () {
+        if (_isForm()) {
+            return routeConf.params.keys();
+            // var _keys = [];
+            // for (var pair in routeConf.params.entries()) {
+            //     _keys.push(pair[0])
+            // }
+            // return _keys;
+        }
+        return Object.keys(routeConf.params);
+    };
+
+    this.mergeParams = function (params) {
+        if (params instanceof FormData) {
+            for (var pair of params.entries()) {
+                this.setParam(pair[0],pair[1])
+            }
+        } else {
+            for (var k in params) {
+                this.setParam(k,params[k]);
+            }
+        }
+    }
     this.getParam = function (key) {
+        if (_isForm())
+            return routeConf.params.get(key);
         return routeConf.params[key];
     }
 
@@ -93,18 +127,28 @@ function Route(conf) {
 
     /**
      * setta  parametri passati in get o post in base al tipo di metodo della route
-     * @params : vettore associativo di parametri da passare
-     * @returns {*}
+     * @params : vettore associativo di parametri da passare o un FormData
+     * @returns void
      */
     this.setParams = function(params) {
-        routeConf.params = {};
-        for (var k in params) {
-            routeConf.params[k] = params[k];
+        if (params instanceof FormData) {
+            routeConf.params = params;
+        } else {
+            routeConf.params = {};
+            for (var k in params) {
+                routeConf.params[k] = params[k];
+            }
         }
     };
 
     this.setParam = function (key,value) {
-        routeConf.params[key] = value;
+        console.log('Route.setParam',_isForm(),key,value);
+        if (_isForm()) {
+            routeConf.params.set(key,value);
+        } else {
+            routeConf.params[key] = value;
+        }
+
     }
 
     this.setCommonParam = function (key,value) {
@@ -144,6 +188,7 @@ function Route(conf) {
     this.getConf = function () {
         return routeConf;
     }
+
 }
 
 export default Route;
