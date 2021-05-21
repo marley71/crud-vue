@@ -3,22 +3,23 @@ import crud from "../../../crud";
 crud.conf['w-preview'] = {
     icon: false,
     iconClass: '',
+    iconSize:'',
     value: {},
     mimetypes: {
         // associazione mimetype del file con icona da visualizzare
         icons: {
-            'default': 'fa fa-file-o',
-            'application/xls': 'fa fa-file-excel-o',
-            'xlsx': 'fa fa-file-excel-o',
-            'application/vnd.ms-excel': 'fa fa-file-excel-o',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'fa fa-file-excel-o',
-            'zip': 'fa fa-file-archive-o',
-            'mp3': 'fa fa-audio-o',
-            'image/jpeg': 'fa fa-image-o',
-            'application/pdf': 'fa fa-file-pdf-o',
-            'txt': 'fa fa-file-text-o',
-            'text/plain': 'fa fa-file-text-o',
-            'text/csv': 'fa fa-file-text-o'
+            'default': 'fa fa-file',
+            'application/xls': 'fa fa-file-excel',
+            'xlsx': 'fa fa-file-excel',
+            'application/vnd.ms-excel': 'fa fa-file-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'fa fa-file-excel',
+            'zip': 'fa fa-file-archive',
+            'mp3': 'fa fa-file-audio',
+            'image/jpeg': 'fa fa-file-image',
+            'application/pdf': 'fa fa-file-pdf',
+            'txt': 'fa fa-file-alt',
+            'text/plain': 'fa fa-file-alt',
+            'text/csv': 'fa fa-file-csv'
         },
         // associazione mimetype del file con il tipo upload documento
         docType: [

@@ -8,7 +8,9 @@ crud.conf['w-upload-ajax'] = {
     value: {},
     error: false,
     errorMessage: '',
-    previewConf: {}
+    previewConf: {
+        value: {},
+    }
 }
 
 const wUploadAjaxMixin = {
@@ -16,14 +18,13 @@ const wUploadAjaxMixin = {
 
         _dynamicData(conf) {
             console.log('wUploadAjaxMixin',conf.value);
-            if (conf.value instanceof Object)
+            conf.previewConf.cRef = this._uid + 'preview';
+            if (conf.value instanceof Object) {
+                conf.previewConf.value = conf.value;
                 conf.value = JSON.stringify(conf.value).replace(/\\"/g, '"');
-            else if (!this.value)
+            }
+            else if (!this.value) {
                 conf.value = {};
-
-            conf.previewConf = {
-                value: conf.value,
-                cRef: this._uid + 'preview'
             }
             return conf;
         },

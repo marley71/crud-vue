@@ -348,7 +348,7 @@ const cManageMixin = {
         _getSearchConfiguration: function () {
             var thisManage = this;
             var searchConf = thisManage.search || {};
-
+            var listComp = thisManage.inlineEdit?thisManage.listEditComp:thisManage.listComp;
             if (!searchConf.customActions) searchConf.customActions = {};
 
             var acSearch = searchConf.customActions['action-search'] || {};
@@ -356,18 +356,9 @@ const cManageMixin = {
             acSearch.execute = function () {
                 var that = this;
                 var formData = that.view.getViewData();
-                thisManage.listComp.route.mergeParams(formData);
-                thisManage.listComp.reload();
+                listComp.route.mergeParams(formData);
+                listComp.reload();
                 return;
-
-                // for (var k in formData.keys()) {
-                //     thisManage.listComp.route.setParam(k,formData.get(k));
-                // }
-                // var viewParams = thisManage.listComp.route.getParams();
-                // formData = that.merge(viewParams, formData);
-                // thisManage.listComp.route.setParams(formData);
-                // thisManage.listComp.reload();
-                // return;
             };
             searchConf.customActions['action-search'] = acSearch;
             return searchConf;
