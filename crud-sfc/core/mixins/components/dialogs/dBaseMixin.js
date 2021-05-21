@@ -49,9 +49,12 @@ const dBaseMixin = {
         },
         destroy() {
             let that = this;
-            console.log('destroy',that);
+            console.log('destroy dialog component', that.component);
             that.$destroy();
+            that.jQe().html(' ');
             that.jQe().remove();
+            if (that.component)
+                that.component.$destroy();
         }
     }
 }

@@ -12,7 +12,8 @@ crud.conf['w-autocomplete'] = {
     suggestValues: {},
     labelFields: [], // campi da visualizzare nell'autocomplete
     minLength: 3, // caratteri minimi prima che parta la ricerca
-    clearButton: false
+    clearButton: false,
+    selectedLabel: false, //se visualizzare o no la scelta dell'autocomplete nella sezione label
 }
 
 const wAutocompleteMixin = {
