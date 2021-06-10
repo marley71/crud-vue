@@ -83,6 +83,7 @@ const coreMixin = {
                 mounted() {
                     var thisDialog = this;
                     console.log('dialog mounted',thisDialog.jQe().html())
+                    thisDialog.jQe('.modal-dialog').addClass('modal-full');
                     var dialogComp = new cDef({
                         propsData: {
                             cConf : conf
