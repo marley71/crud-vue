@@ -34,8 +34,8 @@ const vBaseMixin = {
     methods: {
         load() {
             let that = this;
-            that.setRouteValues(that.route);
             that.beforeLoadData();
+            that.setRouteValues(that.route);
             that.fetchData(that.route, function (json) {
                 that.json = json;
                 that.fillData(that.route, json);
@@ -95,7 +95,7 @@ const vBaseMixin = {
             var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
             var mergedConf = that.mergeConfView(defaultConf, currentConf);
-            console.log('v-base _loadConf', mergedConf);
+            //console.log('v-base _loadConf', mergedConf);
             return mergedConf;
         },
 
@@ -158,7 +158,7 @@ const vBaseMixin = {
                 }
 
             }
-            console.log('v-base _getConf', conf);
+            //console.log('v-base _getConf', conf);
             return conf;
         },
 

@@ -94,7 +94,7 @@ const vCollectionMixin = {
             //var recordActions = that.recordActions;
             //var recordActionsName = that.recordActionsName;
             var value = that.value;
-            console.log('collection value',value);
+            //console.log('collection value',value);
             //var keys = that.getKeys();
             //console.log('keys',keys,value);
             for (var i in value) {

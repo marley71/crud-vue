@@ -32,7 +32,7 @@ Server.post = function (url, params, callback) {
         contentType = false;
         processData = false;
     }
-    console.log('serverPost',(params instanceof FormData),contentType,processData,params);
+    //console.log('serverPost',(params instanceof FormData),contentType,processData,params);
     jQuery.ajax({
         url: realUrl,
         headers: Server.getHearders(),
@@ -55,7 +55,7 @@ Server.get = function (url, params, callback) {
         contentType = false;
         processData = false;
     }
-    console.log('serverGet',(params instanceof FormData),contentType,processData,params);
+    //console.log('serverGet',(params instanceof FormData),contentType,processData,params);
     jQuery.ajax({
         url: realUrl,
         headers: Server.getHearders(),
