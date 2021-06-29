@@ -142,7 +142,7 @@ function Route(conf) {
     };
 
     this.setParam = function (key,value) {
-        console.log('Route.setParam',_isForm(),key,value);
+        //console.log('Route.setParam',_isForm(),key,value);
         if (_isForm()) {
             routeConf.params.set(key,value);
         } else {

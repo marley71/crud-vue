@@ -201,11 +201,15 @@ const cImportMixin = {
                 var thatAction = this;
                 var r = thatAction.createRoute('save_datafile');
                 var viewParams = thatAction.view.getViewData();
-                var params = thatAction.merge(viewParams,{
-                    datafile_load_id : thatAction.csvDashboard.jobId,
-                    datafileProviderName : thatAction.csvDashboard.providerName,
-                })
-                r.setParams(params);
+                r.setParams(viewParams);
+                r.setParam('datafile_load_id',thatAction.csvDashboard.jobId);
+                r.setParam('datafileProviderName',thatAction.csvDashboard.providerName);
+
+                // var params = thatAction.merge(viewParams,{
+                //     datafile_load_id : thatAction.csvDashboard.jobId,
+                //     datafileProviderName : thatAction.csvDashboard.providerName,
+                // })
+                // r.setParams(params);
                 Server.route(r,function (json) {
                     if (json.error) {
                         thatAction.errorDialog(json.msg);
@@ -243,11 +247,14 @@ const cImportMixin = {
                 var value = JSON.parse(w.getValue());
                 var r = thatAction.createRoute('load_datafile');
                 var viewParams = thatAction.view.getViewData();
-                var params = thatAction.merge(viewParams,{
-                    'fileName': value.id,
-                    'datafileProviderName': thatAction.csvDashboard.providerName,
-                })
-                r.setParams(params);
+                r.setParams(viewParams);
+                r.setParam('fileName',value.id);
+                r.setParam('datafileProviderName',thatAction.csvDashboard.providerName);
+                // var params = thatAction.merge(viewParams,{
+                //     'fileName': value.id,
+                //     'datafileProviderName': thatAction.csvDashboard.providerName,
+                // })
+                // r.setParams(params);
                 console.log('ROUTE',r.getConf());
                 Server.route(r,function (json) {
                     console.log('json',json);
