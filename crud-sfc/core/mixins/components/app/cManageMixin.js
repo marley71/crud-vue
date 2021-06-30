@@ -130,7 +130,8 @@ const cManageMixin = {
             var listC = null;
             if (that.inlineEdit) {
                 var conf = that._getListEditConfiguration();
-                that.listEditComp = new that.$options.components[that.listEditComponentName]({
+                var cDef = that.dynamicComponent(that.listEditComponentName);
+                that.listEditComp = new cDef({
                     propsData: {
                         cConf: conf,
                         cRef: 'list-view'
@@ -140,7 +141,8 @@ const cManageMixin = {
             } else {
 
                 var conf = that._getListConfiguration();
-                that.listComp = new that.$options.components[that.listComponentName]({
+                var cDef = that.dynamicComponent(that.listComponentName);
+                that.listComp = new cDef({
                     propsData: {
                         cConf: conf,
                         cRef: 'list-view'
@@ -162,7 +164,8 @@ const cManageMixin = {
             var conf = that._getSearchConfiguration();
             var id = 'd' + (new Date().getTime());
             that.jQe('[c-search-container]').html('<div id="' + id + '"></div>');
-            that.searchComp = new that.$options.components[that.searchComponentName]({
+            var cDef = that.dynamicComponent(that.searchComponentName);
+            that.searchComp = new cDef({
                 propsData: {
                     cConf: conf,
                 }
@@ -189,7 +192,8 @@ const cManageMixin = {
             var id = 'd' + (new Date().getTime());
             thisManage.jQe('[c-edit-container]').html('<div id="' + id + '"></div>');
             conf.pk = action.modelData[thisManage.listComp.primaryKey];
-            thisManage.editComp = new thisManage.$options.components[thisManage.editComponentName]({
+            var cDef = thisManage.dynamicComponent(thisManage.editComponentName);
+            thisManage.editComp = new cDef({
                 propsData: {
                     //cPk: action.modelData[thisManage.listComp.primaryKey],
                     cConf: conf
@@ -222,7 +226,8 @@ const cManageMixin = {
             var conf = thisManage._getViewConfiguration();
             conf.pk = action.modelData[primaryKey];
             console.log('cManage viewConf',conf,'action caller',action);
-            thisManage.viewComp = new thisManage.$options.components[thisManage.viewComponentName]({
+            var cDef = thisManage.dynamicComponent(thisManage.viewComponentName);
+            thisManage.viewComp = new cDef({
                 propsData: {
                     cConf: conf,
                     //cBig: true,
@@ -240,7 +245,8 @@ const cManageMixin = {
             if (thisManage.insertComp)
                 thisManage.insertComp.$destroy();
             console.log('_createInsert',thisManage.insertConf);
-            thisManage.insertComp = new thisManage.$options.components[thisManage.insertComponentName]({
+            var cDef = thisManage.dynamicComponent(thisManage.insertComponentName);
+            thisManage.insertComp = new cDef({
                 propsData: {
                     cConf: thisManage.insertConf
                 }

@@ -5,6 +5,15 @@ import Vue from "vue";
 
 const coreMixin = {
     methods : {
+        dynamicComponent(name) {
+            var that = this;
+            var cDef = that.$options.components[name] || that.$crud._dynamicComponents[name];
+            if (!cDef) {
+                throw new Error({message: name + ' componente non trovato'})
+            }
+            return cDef;
+        },
+
         createComponent(name,fileName,callback) {
             var cb = callback?callback:function (){};
             this._newComponent(name,fileName,callback);
@@ -71,10 +80,11 @@ const coreMixin = {
         createFullscreenModal (compName,conf,title,callbacks) {
             var that = this;
             var divId = 'd' + (new Date().getTime());
-            var cDef = that.$options.components[compName] || that.$crud._dynamicComponents[compName];
-            if (!cDef) {
-                throw new Error({message: compName + ' componente non trovato'})
-            }
+            var cDef = that.dynamicComponent(compName);
+            // var cDef = that.$options.components[compName] || that.$crud._dynamicComponents[compName];
+            // if (!cDef) {
+            //     throw new Error({message: compName + ' componente non trovato'})
+            // }
             var dialogConf = {
                 message : '<div id="' + divId + '"></div>',
                 callbacks : callbacks,
