@@ -657,6 +657,7 @@ const coreMixin = {
                 return callback();
             }
         },
+
         _newComponent (name,fileName,callback) {
             var that = this;
             if (this.$crud._dynamicComponents[name])

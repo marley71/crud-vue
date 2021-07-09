@@ -14,11 +14,15 @@ const wDatePickerMixin = {
     methods: {
         afterLoadResources: function () {
             var that = this
-            window.jQuery(that.$el).find('[c-picker]').datepicker({
+            var cPicker = window.jQuery(that.$el).find('[c-picker]');
+            cPicker.datepicker({
                 format: that.displayFormat
-            }).on('changeDate', function (ev) {
-                that.value = moment(ev.date.toISOString()).format(that.dateFormat.toUpperCase()) // ev.date.toISOString();
-                that.change()
+            }).on('change', function (ev) {
+                var d = cPicker.datepicker('getDate');
+                //console.log('date change',d);
+                that.value = moment(d.toISOString()).format(that.dateFormat.toUpperCase()) // ev.date.toISOString();
+                that.jQe('input[name="'+that.getFieldName()+'"]').val(that.value);
+                that.change();
             })
 
             // console.log('dateformat', that.dateFormat.toUpperCase())
