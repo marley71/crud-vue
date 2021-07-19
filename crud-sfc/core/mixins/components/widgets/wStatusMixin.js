@@ -14,10 +14,11 @@ crud.conf['w-status'] = {
             1: 'app.si'
         }
     },
-    domaniValues: {
+    domainValues: {
         0: 'fa fa-circle text-red-500',
         1: 'fa fa-circle text-green-500'
-    }
+    },
+    domainValuesOrder : [],
 }
 
 const wStatusMixin = {

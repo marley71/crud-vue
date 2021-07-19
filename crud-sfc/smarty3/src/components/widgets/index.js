@@ -10,6 +10,7 @@ import wDatePicker from './wDatePicker'
 import wDateSelect from './wDateSelect'
 import wDateText from './wDateText'
 import wHasmany from './wHasmany'
+import wHasmanyListed from './wHasmanyListed'
 import wHidden from './wHidden'
 import wImage from './wImage'
 import wInput from './wInput'
@@ -37,6 +38,7 @@ Vue.component('w-date-picker', wDatePicker)
 Vue.component('w-date-select', wDateSelect)
 Vue.component('w-date-text', wDateText)
 Vue.component('w-hasmany', wHasmany)
+Vue.component('w-hasmany-listed', wHasmanyListed)
 Vue.component('w-hidden', wHidden)
 Vue.component('w-image', wImage)
 Vue.component('w-input', wInput)

@@ -38,39 +38,39 @@
             <div class="table-responsive" style="white-space:nowrap;" :class="modelName">
               <table class="table table-framed table-striped table-bordered">
                 <thead>
-                <tr v-if="widgets.length > 0">
-                  <th v-if="needSelection" class="text-gray-500 w--50">
-                    <label class="form-checkbox form-checkbox-primary float-start">
-                      <input c-row-check-all v-on:change="selectAllRows"
-                             class="checkall" type="checkbox">
-                      <i></i>
-                    </label>
-                  </th>
-                  <th v-show="recordActionsName.length"></th>
-                  <th v-for="key in keys" v-if="!isHiddenField(key)"
-                      class="text-gray-500 font-weight-normal fs--14" :class="key" :key="key">
-                    <a-order v-if="orderFields[key]" :c-conf="getOrderConf(key)"></a-order>
-                    <span style="cursor:default"
-                          class="btn btn-default btn-xs mr-1 text-gray-500 font-weight-normal fs--14"
-                          v-else>{{ key + '.label' | translate(langContext) }}</span>
-                    <button v-if="hasHelp(key)"
-                            type="button"
-                            class="btn-xs btn-squared btn-light"
-                            data-trigger="focus"
-                            data-container="body"
-                            data-toggle="popover"
-                            data-placement="top"
-                            :data-content="hasHelp(key)">
-                      <i class="fi fi-round-question-full text-red-700"></i>
-                    </button>
+                  <tr v-if="widgets.length > 0">
+                    <th v-if="needSelection" class="text-gray-500 w--50">
+                      <label class="form-checkbox form-checkbox-primary float-start">
+                        <input c-row-check-all v-on:change="selectAllRows"
+                               class="checkall" type="checkbox">
+                        <i></i>
+                      </label>
+                    </th>
+                    <th v-show="recordActionsName.length"></th>
+                    <th v-for="key in keys" v-if="!isHiddenField(key)"
+                        class="text-gray-500 font-weight-normal fs--14" :class="key" :key="key">
+                      <a-order v-if="orderFields[key]" :c-conf="getOrderConf(key)"></a-order>
+                      <span style="cursor:default"
+                            class="btn btn-default btn-xs mr-1 text-gray-500 font-weight-normal fs--14"
+                            v-else>{{ key + '.label' | translate(langContext) }}</span>
+                      <button v-if="hasHelp(key)"
+                              type="button"
+                              class="btn-xs btn-squared btn-light"
+                              data-trigger="focus"
+                              data-container="body"
+                              data-toggle="popover"
+                              data-placement="top"
+                              :data-content="hasHelp(key)">
+                        <i class="fi fi-round-question-full text-red-700"></i>
+                      </button>
 
-                  </th>
-                </tr>
-                <tr v-if="widgets.length == 0">
-                  <th v-show="recordActionsName.length" class="text-gray-500 w--50">
-                    {{ "app.nessun-elemento" | translate }}
-                  </th>
-                </tr>
+                    </th>
+                  </tr>
+                  <tr v-if="widgets.length == 0">
+                    <th  class="text-gray-500 w--50"> <!-- v-show="recordActionsName.length" -->
+                      {{ "app.nessun-elemento" | translate }}
+                    </th>
+                  </tr>
                 </thead>
                 <tbody>
                 <!-- product -->
