@@ -12,16 +12,16 @@ crud.conf['w-hasmany-listed'] = {
 }
 
 const wHasmanyListedMixin = {
-    mounted: function () {
-        var that = this;
-        that.keyCounter = 0; // intero per generare chiave uniche
-        //console.log('hasmany',that.value);
-        if (that.value && that.value.length > 0) {
-            for (var i in that.value) {
-                that.value[i].status = 'updated';
-            }
-        }
-    },
+    // mounted: function () {
+    //     var that = this;
+    //     that.keyCounter = 0; // intero per generare chiave uniche
+    //     //console.log('hasmany',that.value);
+    //     if (that.value && that.value.length > 0) {
+    //         for (var i in that.value) {
+    //             that.value[i].status = 'updated';
+    //         }
+    //     }
+    // },
 
     methods: {
         /**
@@ -43,10 +43,23 @@ const wHasmanyListedMixin = {
             hmConf.metadata = relationConf;
             hmConf.defaultWidgetType = hmConf.defaultWidgetType || 'w-input';
             hmConf.customActions = hmConf.customActions || {};
+            hmConf.fields = hmConf.fields || [];
+            hmConf.fieldsConfig = hmConf.fieldsConfig || {};
+            // aggiungo lo status in automatico
+            if (that.value && that.value.length > 0) {
+                for (var i in that.value) {
+                    that.value[i].status = 'updated';
+                }
+            }
+
             // controllo le azioni se non ci sono inserisco le default
             if (!hmConf.actions) {
                 hmConf.actions = ['action-insert','action-delete'];
             }
+            if (hmConf.fields.indexOf('status') < 0) {
+                hmConf.fields.push('status');
+            }
+            hmConf.fieldsConfig.status = 'w-hidden';
             // hmConf = this.mergeConfView({
             //     defaultWidgetType  : 'w-input',
             //     //fields: [],
