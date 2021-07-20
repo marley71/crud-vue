@@ -51,7 +51,12 @@ const vCollectionMixin = {
             return conf;
         },
 
-
+        /**
+         * riempe la view con i dati che arrivano dalla chiamata ajax della route
+         * attraverso il protocollo definito nella route
+         * @param route
+         * @param json
+         */
         fillData: function (route, json) {
             var that = this;
             if (route) {
@@ -281,6 +286,19 @@ const vCollectionMixin = {
                 collectionActions[aName] = aConf;
             }
             that.collectionActions = collectionActions;
+        },
+        getViewData: function () {
+            var that = this;
+            var values = [];
+            for (var i=0;i<that.value.length;i++) {
+                var v = {};
+                for (var j in that.keys) {
+                    var k = that.keys[j];
+                    v[k] = that.getWidget(i,k).getValue();
+                }
+                values.push(v);
+            }
+            return values;
         },
         /**
          * funzione chiamata per gli ordinamenti delle liste con dati non dinamici, ma statici
