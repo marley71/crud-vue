@@ -162,6 +162,24 @@ const coreMixin = {
             jQuery(container).append('<div id="'+id+'" ></div>');
             return id;
         },
+        /**
+         * instanzia un componente e lo mostra nel container passato
+         *
+         * @param container
+         * @param compName
+         * @param conf
+         */
+        showComponent : function(container,compName,conf) {
+            var cDef = this.dynamicComponent(compName);
+            var comp = new cDef({
+                propsData: {
+                    cConf : conf
+                }
+            });
+            var idC = this.createContainer(container);
+            comp.$mount(window.jQuery('#'+idC)[0]);
+            return comp;
+        },
 
         /**
          * ritorna la traduzione della chiave passata presente nel vettore $lang altrimenti ritorna al chiave stessa

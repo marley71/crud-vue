@@ -73,33 +73,38 @@
                   </tr>
                 </thead>
                 <tbody>
-                <!-- product -->
-                <tr v-for="(row,index) in widgets" :key="index">
-                  <th v-if="needSelection">
+                <!-- widgets  -->
+                <template v-for="(row,index) in widgets">
+                    <tr  :key="index">
+                      <th v-if="needSelection">
 
-                    <label
-                      class="form-checkbox form-checkbox-primary float-start">
-                      <input c-row-check type="checkbox">
-                      <i></i>
-                    </label>
+                        <label
+                          class="form-checkbox form-checkbox-primary float-start">
+                          <input c-row-check type="checkbox">
+                          <i></i>
+                        </label>
 
-                  </th>
-                  <th v-show="recordActionsName.length">
-                    <div class="btn-group" role="group">
-                      <template v-for="(action,name) in recordActions[index]">
-                        <v-action :c-action="action" :key="name"></v-action>
+                      </th>
+                      <th v-show="recordActionsName.length">
+                        <div class="btn-group" role="group">
+                          <template v-for="(action,name) in recordActions[index]">
+                            <v-action :c-action="action" :key="name"></v-action>
+                          </template>
+                        </div>
+
+                      </th>
+
+                      <td v-for="(widget, key) in row" v-if="!isHiddenField(key)" :class="key" :key="key">
+                        <v-widget :c-widget="widget" :key="key"></v-widget>
+                      </td>
+                      <template v-for="(widget, key) in row" v-if="isHiddenField(key)" >
+                        <v-widget :c-widget="widget" :key="key"></v-widget>
                       </template>
-                    </div>
-
-                  </th>
-
-                  <td v-for="(widget, key) in row" v-if="!isHiddenField(key)" :class="key" :key="key">
-                    <v-widget :c-widget="widget" :key="key"></v-widget>
-                  </td>
-                  <template v-for="(widget, key) in row" v-if="isHiddenField(key)" >
-                    <v-widget :c-widget="widget" :key="key"></v-widget>
-                  </template>
-                </tr>
+                    </tr>
+                    <tr :id="'gost_container' +  index" class="d-none" :key="'gost_'+index">
+                      <td :colspan="keys.length+3"></td>
+                    </tr>
+                </template>
                 </tbody>
 
                 <tfoot v-if="hasFooter">
@@ -166,6 +171,15 @@ export default {
       if (this.fieldsConfig[key]) {
         return this.fieldsConfig[key].helpText || false
       }
+    },
+    getGostContainer (index) {
+      return this.jQe('#gost_container' + index + ' td')
+    },
+    showGostContainer (index) {
+      this.jQe('#gost_container' + index).removeClass('d-none')
+    },
+    hideGostContainer (index) {
+      this.jQe('#gost_container' + index).addClass('d-none')
     }
   }
 }

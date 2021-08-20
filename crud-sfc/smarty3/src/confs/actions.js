@@ -92,8 +92,8 @@ crud.conf['action-export-csv'] = {
     console.log('r', r)
   },
   type: 'collection',
-  icon: 'fa fa-file-text-o',
-  text: 'Descrizioni',
+  icon: 'fa fa-file-csv',
+  text: 'Esporta',
   css: 'btn-sm btn btn-outline-secondary',
   csvType: 'default',
   routeName: 'csv-exporta',
