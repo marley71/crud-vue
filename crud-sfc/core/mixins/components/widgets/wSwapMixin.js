@@ -14,7 +14,8 @@ crud.conf['w-swap'] = {
     slot: '',
     toggleActive: false,
     switchClass: 'form-switch-success',
-    dataSwitched: false
+    dataSwitched: false,
+    json : null, // ultimo json caricato dalla chiamata ajax
 }
 
 const wSwapMixin = {
@@ -69,6 +70,7 @@ const wSwapMixin = {
             that.waitStart()
             Server.route(r, function (json) {
                 that.waitEnd();
+                that.json = json;
                 if (json.error) {
                     //vueModal().title("Prova").text("Prova body").error().size('normal').show();
                     that.errorDialog(json.msg);

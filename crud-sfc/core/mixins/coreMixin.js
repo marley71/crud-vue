@@ -276,7 +276,7 @@ const coreMixin = {
 
             //var form = that.jQe('form[name="data_form"]');
             if (form && form.length === 0) {
-                that.app.log.error('form not found!');
+                console.error('form not found!');
                 return {};
             }
             if (typeof window.tinyMCE !== 'undefined') {
@@ -284,6 +284,7 @@ const coreMixin = {
             }
             var serializedData =  _serializeAssoc(form);//form.serializeAssoc();
             var postData = {}
+            console.log('serializedData',serializedData)
             // trasformo tutti gli [d] in [] questa modifica e' fatta per gestire i radio button negli hasmany
             // altrimenti venivano raggruppati come un unica entita'
             for( var k in serializedData) {
@@ -303,9 +304,15 @@ const coreMixin = {
                     postData[k] = serializedData[k];
                 }
             }
+            console.log('postData',postData);
             var formData = new FormData();
             for(var f in postData) {
-                formData.append(f,postData[f]);
+                if (postData[f] instanceof Array) {
+                    for (var cc in postData[f]) {
+                        formData.append(f,postData[f][cc])
+                    }
+                } else
+                    formData.append(f,postData[f]);
             }
             // check upload object
             jQuery.each(form.find('input[type="file"]'),function () {
