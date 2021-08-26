@@ -1,6 +1,7 @@
 import crud from '../../../crud'
 
 crud.conf['a-order'] = {
+    componentName : 'a-order',
     confParent: 'a-base',
     type: 'collection',
     title: 'app.order',

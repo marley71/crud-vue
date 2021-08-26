@@ -1,5 +1,5 @@
 <template>
-    <component :is="conf.confParent" :c-conf="conf"></component>
+    <component :is="conf.componentName" :c-conf="conf"></component>
 </template>
 
 <script>

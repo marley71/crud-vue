@@ -108,24 +108,47 @@ const vBaseMixin = {
          */
         getActionConfig: function (name, type) {
             var that = this;
-            var aClassName = 'a-base';
-            // se non esiste il componente di azione lo creo al volo
-            if (!this.$options.components[name]) {
-                if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
-                    aClassName = that.$crud.conf[name].confParent
-                }
-                //console.log(aClassName,'non esiste la creao',name,that.$options.components[aClassName])
-                this.$options.components[name] = Vue.component(name, {
-                    extends: that.$options.components[aClassName]
-                });
-                this.$options.components[name].prototype.$crud = this.$crud;
+            var conf = that.$crud.conf[name] || {};
+            var componentName = conf.componentName ? conf.componentName : 'a-base';
+            conf = that.merge(that.$crud.conf[componentName],conf);
+            if (that.customActions[name])
+                conf = that.merge(conf, that.customActions[name]);
+            else {
+                conf = that.merge(that.$crud.conf['a-base'], conf);
             }
-            // ritorno la configurazione dell'azione con la configurazione di default mergiata con un eventuale configurazione custom
-            var actionConf =  that.merge(that.$crud.conf[name], (that.customActions[name] || {}));
-            // in caso non sia stato definito il confParent lo forzo.
-            if (!actionConf.confParent)
-                actionConf.confParent = aClassName;
-            return actionConf;
+            // se non esiste il componente di azione lo creo al volo
+            if (!that.$options.components[name]) {
+                // if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
+                //     aClassName = that.$crud.conf[name].confParent
+                // }
+                //console.log(aClassName,'non esiste la creao',name,that.$options.components[aClassName])
+                that.$options.components[name] = Vue.component(name, {
+                    extends: that.$options.components[componentName]
+                });
+                that.$options.components[name].prototype.$crud = that.$crud;
+            }
+            return conf;
+
+
+            // --- vecchio codice
+            var aClassName = 'a-base';
+            // // se non esiste il componente di azione lo creo al volo
+            // if (!this.$options.components[name]) {
+            //     if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
+            //         aClassName = that.$crud.conf[name].confParent
+            //     }
+            //     //console.log(aClassName,'non esiste la creao',name,that.$options.components[aClassName])
+            //     this.$options.components[name] = Vue.component(name, {
+            //         extends: that.$options.components[aClassName]
+            //     });
+            //     this.$options.components[name].prototype.$crud = this.$crud;
+            // }
+            // // ritorno la configurazione dell'azione con la configurazione di default mergiata con un eventuale configurazione custom
+            // var actionConf =  that.merge(that.$crud.conf[name], (that.customActions[name] || {}));
+            // // in caso non sia stato definito il confParent lo forzo.
+            // if (!actionConf.confParent)
+            //     actionConf.confParent = aClassName;
+            // return actionConf;
         },
 
         _getConf: function () {

@@ -2,6 +2,7 @@ import jQuery from "jquery";
 import crud from "../../../crud";
 
 crud.conf['a-base'] = {
+    componentName : 'a-base',
     confParent: 'c-component',
     type: null,
     visible: true,

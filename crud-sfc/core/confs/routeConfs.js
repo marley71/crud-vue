@@ -129,6 +129,20 @@ const routeConfs = {
         protocol: 'record',
         extra_params: {}
     },
+    'status-queue': {
+        method: 'get',
+        url: '/queue/status/{id}',
+        resultType: 'record',
+        protocol: 'record',
+        extra_params: {}
+    },
+    'add-queue' : {
+        method: 'get',
+        url: '/queue/add/{queueName}',
+        resultType: 'record',
+        protocol: 'record',
+        extra_params: {}
+    },
     save_datafile: {
         method: 'post',
         url: '/queue/add/datafile/save',

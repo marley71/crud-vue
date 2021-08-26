@@ -20,6 +20,7 @@ import crud from '../../../../core/crud'
 import aBaseMixin from '../../../../core/mixins/components/actions/aBaseMixin'
 
 crud.conf['a-square'] = {
+  componentName: 'a-square',
   confParent: 'c-component',
   type: null,
   visible: true,

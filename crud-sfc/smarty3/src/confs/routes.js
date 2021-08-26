@@ -47,3 +47,10 @@ crud.routes['insert-constraint'] = {
   protocol: 'record',
   method: 'get'
 }
+
+crud.routes['wizard'] = {
+  url: '/test-passo/{passo}',
+  method: 'get',
+  type: 'record',
+  protocol: 'record'
+}

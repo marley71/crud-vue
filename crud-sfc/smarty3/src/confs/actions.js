@@ -2,11 +2,17 @@ import crud from '../../../core/crud'
 import Server from '../../../core/Server'
 
 // ------ ridefinizione del confParent
-crud.conf['action-save'].confParent = 'a-square'
-crud.conf['action-save-back'].confParent = 'a-square'
-crud.conf['action-back'].confParent = 'a-square'
-crud.conf['action-search'].confParent = 'a-square'
-crud.conf['action-reset'].confParent = 'a-square'
+crud.conf['action-save'].componentName = 'a-square'
+crud.conf['action-save-back'].componentName = 'a-square'
+crud.conf['action-back'].componentName = 'a-square'
+crud.conf['action-search'].componentName = 'a-square'
+crud.conf['action-reset'].componentName = 'a-square'
+
+// crud.conf['action-save'].confParent = 'a-square'
+// crud.conf['action-save-back'].confParent = 'a-square'
+// crud.conf['action-back'].confParent = 'a-square'
+// crud.conf['action-search'].confParent = 'a-square'
+// crud.conf['action-reset'].confParent = 'a-square'
 
 // ------ ridefinizione css
 crud.conf['action-save'].css = 'btn-sm mr-1 btn-success bg-success-soft'
@@ -189,9 +195,49 @@ crud.conf['action-next'] = {
   }
 }
 
-crud.routes['wizard'] = {
-  url: '/test-passo/{passo}',
-  method: 'get',
-  type: 'record',
-  protocol: 'record'
+crud.conf['action-queue'] = {
+  routeNameAddQueue: 'add-queue',
+  routeNameStatusQueue: 'status-queue',
+  type: 'collection',
+  title: 'Export',
+  queueName: 'queueName',
+  setAddRouteValues (route) {
+    var that = this
+    route.setValues({
+      'queueName': that.queueName
+    })
+    return route
+  },
+  setStatusRouteValues (route) {
+    var that = this
+    route.setValues({
+      'id': that.queueId
+    })
+    return route
+  },
+  execute () {
+    var that = this
+    var __waitEnd = function () {
+
+    }
+    var routeAdd = that.createRoute(that.routeNameAddQueue)
+    that.setAddRouteValues(routeAdd)
+    // TODO eventuali parametri extra
+    that.waitStart(that.startMessage)
+    that.Server.route(routeAdd, function (json) {
+      that.waitEnd()
+      if (json.error) {
+        that.errorDialog(json.msg)
+        return
+      }
+      // prendo l'id della coda e attendo
+      console.log('wait ', json)
+    })
+  },
+  icon: 'fa fa-file-csv',
+  text: 'Exportasss',
+  css: 'btn-sm btn btn-outline-secondary',
+  csvType: 'default',
+  routeName: 'csv-exporta',
+  startMessage: 'Generazione csv in corso...'
 }

@@ -211,9 +211,17 @@ const vCollectionMixin = {
                 if (that.$crud.conf[aName]) {
                     aConf = that.$crud.conf[aName];
                 } else if (that.customActions[aName]) {
-                    //console.log('custom action',aName,JSON.parse(JSON.stringify(that.customActions[aName])))
-                    var confBase = that.customActions[aName].confParent ? that.customActions[aName].confParent : 'a-base';
-                    aConf = that.merge(that.$crud.conf[confBase], that.customActions[aName]);
+                    aConf = that.mergeConf(that.customActions[aName]);
+
+                    // var confBase = that.customActions[aName].componentName || 'a-base';
+                    // var aConf = that.merge(that.$crud.conf[confBase],that.customActions[aName]);
+                    // aConf = that.mergeConf(aConf);
+                    // console.log('confCustom',aConf);
+                    // //console.log('custom action',aName,JSON.parse(JSON.stringify(that.customActions[aName])))
+                    // var confBase = that.customActions[aName].componentName ? that.customActions[aName].componentName : 'a-base';
+                    // console.log('confBase',confBase,that.$crud.conf[confBase]);
+                    // aConf = that.merge(that.$crud.conf[confBase], that.customActions[aName]);
+                    // aConf = that.mergeConf(aConf);
                     //aConf.confParent = 'crud.conf.a-base';
                 } else {
                     valid = false;
