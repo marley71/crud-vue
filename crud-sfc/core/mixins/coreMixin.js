@@ -497,10 +497,10 @@ const coreMixin = {
             var finalConf = {};
             //console.log('conf gerarchia parents',_parents);
             for (var i=_parents.length-1;i>=0;i--) {
-                console.log('i',i);
+                //console.log('i',i);
                 finalConf = this.merge(finalConf,_parents[i]);
             }
-            console.log('Merge FINAL CONF',finalConf,_parents)
+            //console.log('Merge FINAL CONF',finalConf,_parents)
             return finalConf;
         },
 
