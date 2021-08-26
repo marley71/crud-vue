@@ -201,28 +201,17 @@ crud.conf['action-queue'] = {
   type: 'collection',
   title: 'Export',
   queueName: 'queueName',
-  setAddRouteValues (route) {
-    var that = this
-    route.setValues({
-      'queueName': that.queueName
-    })
-    return route
-  },
-  setStatusRouteValues (route) {
-    var that = this
-    route.setValues({
-      'id': that.queueId
-    })
-    return route
-  },
+  jobId: null,
+  extra_params: {},
+  icon: 'fa fa-file-csv',
+  text: 'Exporta',
+  css: 'btn-sm btn btn-outline-secondary',
+  startMessage: 'Generazione csv in corso...',
+  statusMessage: 'Attendere terminazione lavoro...',
   execute () {
     var that = this
-    var __waitEnd = function () {
-
-    }
     var routeAdd = that.createRoute(that.routeNameAddQueue)
     that.setAddRouteValues(routeAdd)
-    // TODO eventuali parametri extra
     that.waitStart(that.startMessage)
     that.Server.route(routeAdd, function (json) {
       that.waitEnd()
@@ -231,13 +220,61 @@ crud.conf['action-queue'] = {
         return
       }
       // prendo l'id della coda e attendo
-      console.log('wait ', json)
+      console.log('wait ', json, that)
+      that.jobId = json.jobId
+      that._waitEndJob()
     })
   },
-  icon: 'fa fa-file-csv',
-  text: 'Exportasss',
-  css: 'btn-sm btn btn-outline-secondary',
-  csvType: 'default',
-  routeName: 'csv-exporta',
-  startMessage: 'Generazione csv in corso...'
+  methods: {
+    setAddRouteValues (route) {
+      var that = this
+      route.setValues({
+        'queueName': that.queueName
+      })
+      route.setParams(that.extra_params)
+      return route
+    },
+    setStatusRouteValues (route) {
+      var that = this
+      // console.log('jobId',that.jobId)
+      route.setValues({
+        'id': that.jobId
+      })
+      return route
+    },
+    _waitEndJob () {
+      var that = this
+      // TODO eventuali parametri extra
+      var routeStatus = that.createRoute(that.routeNameStatusQueue)
+      that.setStatusRouteValues(routeStatus)
+      var __wait = function () {
+        that.Server.route(routeStatus, function (json) {
+          if (json.error) {
+            that.waitEnd()
+            that.errorDialog(json.msg)
+            return
+          }
+          // prendo l'id della coda e attendo
+          console.log('status ', json)
+          if (json.job && json.job.error) {
+            that.waitEnd()
+            that.errorDialog(json.job.msg)
+            return
+          }
+          if (!json.job.end) {
+            setTimeout(__wait, 300)
+            return
+          }
+          that.endJob(json)
+        })
+      }
+      that.waitStart(that.statusMessage)
+      __wait()
+    },
+    endJob (json) {
+      var that = this
+      that.waitEnd()
+      console.log('endJob, job finito inserire qui la logica da fare')
+    }
+  }
 }

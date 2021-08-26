@@ -467,7 +467,7 @@ const coreMixin = {
          */
         mergeConf : function(conf,rootData) {
             var that = this;
-            console.log('Merge Conf',conf);
+            //console.log('Merge Conf',conf);
 
             var __getConfObj = function (c,rD) {
                 let _conf = c;
@@ -478,13 +478,13 @@ const coreMixin = {
             }
 
             var _rD = rootData || that.$crud.conf;
-            console.log('_rD',_rD,'conf',conf);
+            //console.log('_rD',_rD,'conf',conf);
             var _c = __getConfObj(conf,_rD);
             var _parents = [];
             _parents.push(_c)
 
             while(_c){
-                console.log('parent',_c.confParent);
+                //console.log('parent',_c.confParent);
                 if (_c.confParent) {
                     _c = __getConfObj(_c.confParent,that.$crud.conf);
                     _parents.push(_c);
@@ -495,12 +495,12 @@ const coreMixin = {
             }
 
             var finalConf = {};
-            console.log('conf gerarchia parents',_parents);
+            //console.log('conf gerarchia parents',_parents);
             for (var i=_parents.length-1;i>=0;i--) {
                 console.log('i',i);
                 finalConf = this.merge(finalConf,_parents[i]);
             }
-            console.log('FINAL CONF',finalConf)
+            console.log('Merge FINAL CONF',finalConf,_parents)
             return finalConf;
         },
 
