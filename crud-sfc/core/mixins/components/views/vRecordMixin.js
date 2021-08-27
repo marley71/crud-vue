@@ -136,6 +136,7 @@ const vRecordMixin = {
             for (var i in that.actions) {
                 var aName = that.actions[i];
                 var aConf = that.getActionConfig(aName);
+                that._createActionComponent(aName,aConf);
                 aConf.modelData = this.cloneObj(that.value);
                 aConf.modelName = that.cModel;
                 aConf.rootElement = that.$el;

@@ -129,7 +129,6 @@ const cComponentMixin = {
          */
         _loadConf() {
             var that = this;
-            //console.log('this name',_compName,defaultConf);
             var defaultConf = that._getDefaultConf();
             var currentConf = that._getConf();
             var mergedConf = that.merge(defaultConf,currentConf);
@@ -152,6 +151,7 @@ const cComponentMixin = {
             }
             else
                 conf = that.cConf;
+            //console.log(that.cConf,'_getConf',conf)
             return conf;
         },
         /**
@@ -162,10 +162,12 @@ const cComponentMixin = {
          */
         _getDefaultConf() {
             var that = this;
-            //console.log('_getDefaultConf',that.cConfDefaultName,that.$options.name,that.$crud.conf)
             var defaultConf =  that.mergeConf(that.$crud.conf[that.cConfDefaultName]);
             var componentNameConf = that.mergeConf(that.$crud.conf[that.$options.name]);
             var mergedConf = that.merge(defaultConf,componentNameConf);
+            //console.log('_getDefaultConf  defaultConf',that.cConfDefaultName,defaultConf);
+            //console.log('_getDefaultConf componentNameConf',that.$options.name,componentNameConf)
+            //console.log('_getDefaultConf mergedConf',mergedConf)
             return mergedConf;
         },
         /**

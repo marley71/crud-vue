@@ -263,6 +263,7 @@ const vCollectionMixin = {
             for (var k in recordActionsName) {
                 var aName = recordActionsName[k];
                 var aConf = that.getActionConfig(aName);
+                that._createActionComponent(aName,aConf);
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
                 aConf.modelData = this.cloneObj(that.value[row]);
@@ -283,6 +284,7 @@ const vCollectionMixin = {
             for (var i in collectionActionsName) {
                 var aName = collectionActionsName[i];
                 var aConf = that.getActionConfig(aName);
+                that._createActionComponent(aName,aConf);
                 //var a = jQuery.extend(true,{},aConf);
                 //a.id = data.value[i].id;
                 aConf.modelData = jQuery.extend(true, {}, that.value);
