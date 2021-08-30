@@ -82,7 +82,7 @@ const wB2Select2Mixin = {
                 data: data,
                 placeholder: that.translate(that.placeholder ? that.placeholder : 'app.seleziona'),
                 allowClear: that.allowClear,
-                //theme: that.theme,
+                theme: that.theme,
             });
         },
         /**
@@ -100,7 +100,7 @@ const wB2Select2Mixin = {
                 ajax: that._getAjaxConf(),
                 placeholder: that.translate(that.placeholder ? that.placeholder : 'app.seleziona'),
                 allowClear: that.allowClear,
-                //theme: that.theme,
+                theme: that.theme,
             });
         },
         /**
