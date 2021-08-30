@@ -20,7 +20,12 @@ import wB2Select2Mixin from '../../../../core/mixins/components/widgets/wB2Selec
 export default {
   name: 'w-b2-select2',
   extends: wBase,
-  mixins: [wB2Select2Mixin]
+  mixins: [wB2Select2Mixin],
+  methods: {
+    _ready () {
+      window.jQuery('.select2-container').addClass('form-control p-1 pl-2')
+    }
+  }
 }
 </script>
 

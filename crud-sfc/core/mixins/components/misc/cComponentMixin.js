@@ -70,11 +70,15 @@ const cComponentMixin = {
                 that.resourcesLoaded = true;
                 //setTimeout(function () {
                 that.afterLoadResources();
+                that._ready();
+                that.ready();
                 //},1000)
 
             })
         } else {
             that.resourcesLoaded = true;
+            that._ready();
+            that.ready();
         }
     },
     beforeDestroy () {
@@ -204,6 +208,13 @@ const cComponentMixin = {
             //console.log('cComponent.afterLoadResources');
         },
 
+        _ready() {
+            // methodo per il ready del core dell'oggetto
+        },
+
+        ready() {
+            // methodo per il ready del dell'oggetto per codice di customizzazione
+        }
     }
 }
 
