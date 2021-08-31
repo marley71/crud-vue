@@ -7,6 +7,7 @@ import wBelongsto from './wBelongsto'
 import wCheckbox from './wCheckbox'
 import wCustom from './wCustom'
 import wDatePicker from './wDatePicker'
+import wDateRangePicker from './wDateRangePicker'
 import wDateSelect from './wDateSelect'
 import wDateText from './wDateText'
 import wHasmany from './wHasmany'
@@ -35,6 +36,7 @@ Vue.component('w-belongsto', wBelongsto)
 Vue.component('w-checkbox', wCheckbox)
 Vue.component('w-custom', wCustom)
 Vue.component('w-date-picker', wDatePicker)
+Vue.component('w-date-range-picker', wDateRangePicker)
 Vue.component('w-date-select', wDateSelect)
 Vue.component('w-date-text', wDateText)
 Vue.component('w-hasmany', wHasmany)

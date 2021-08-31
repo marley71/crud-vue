@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import tplDivider from './tplDivider'
 import tplNo from './tplNo'
 import tplList from './tplList'
 import tplRecord from './tplRecord'
@@ -10,6 +11,7 @@ import tplFullNo from './tplFullNo'
 import tplSearch from './tplSearch'
 
 Vue.component('tpl-no', tplNo)
+Vue.component('tpl-divider', tplDivider)
 Vue.component('tpl-list', tplList)
 Vue.component('tpl-record', tplRecord)
 Vue.component('tpl-record2', tplRecord2)

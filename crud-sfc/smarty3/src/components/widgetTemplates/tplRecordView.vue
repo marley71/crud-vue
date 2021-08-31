@@ -1,6 +1,6 @@
 <template>
     <component v-if="cWidget.type=='w-hidden'" :is="cWidget.type" :c-conf="cWidget"></component>
-    <div class="inline-grid grid-cols-2 gap-x-3 w-full border-1 border-gray-500" v-else>
+    <div class="col-lg-6 col-md-12 mb-2" v-else>
         <span>
             {{cWidget.label}}
         </span>

@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style scoped>
-  mydivider {
+  .mydivider {
     border-bottom: 2px solid green !important;
   }
 </style>
