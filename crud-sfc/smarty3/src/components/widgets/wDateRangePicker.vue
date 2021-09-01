@@ -4,10 +4,10 @@
 <!--               v-on:change="change">-->
 <!--        <input class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full" c-picker>-->
 <!--    </div>-->
-  <div class="input-group">
+  <div class="input-group form-control">
     <input type="hidden" :name="startFieldName" v-on:change="change">
     <input type="hidden" :name="endFieldName" v-on:change="change">
-    <input class="form-control" c-picker>
+    <input class="w-100 border-0" c-picker>
   </div>
 </template>
 
@@ -41,17 +41,20 @@ export default {
       if (!that.startFieldName) {
         throw new Error('wRangeDatePicker startFieldName non definito')
       }
+
       that.jQe('input[name="' + that.startFieldName + '"]').val(that.modelData[that.startFieldName])
       that.jQe('input[name="' + that.endFieldName + '"]').val(that.modelData[that.endFieldName])
       var _opt = {
         opens: 'left',
-        startDate: moment(that.modelData[that.startFieldName]),
-        endDate: moment(that.modelData[that.endFieldName]),
-        locale: {
-          format: that.displayFormat
-        }
+        showDropdowns: true,
+        startDate: that.modelData[that.startFieldName] ? moment(that.modelData[that.startFieldName]) : moment(),
+        endDate: that.modelData[that.endFieldName] ? moment(that.modelData[that.endFieldName]) : moment()
       }
       var options = that.merge(_opt, that.pluginOptions)
+      if (!options.locale) {
+        options.locale = {}
+      }
+      options.locale.format = that.displayFormat
       this.jQe('[c-picker]').daterangepicker(options, function (start, end, label) {
         console.log('A new date selection was made: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'))
         that.jQe('input[name="' + that.startFieldName + '"]').val(start.format(that.dateFormat))
