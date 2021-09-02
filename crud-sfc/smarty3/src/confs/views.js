@@ -1,7 +1,7 @@
 import crud from '../../../core/crud'
 
 crud.conf['v-search'].widgetTemplate = 'tpl-search'
-crud.conf['v-view'].widgetTemplate = 'tpl-view'
+crud.conf['v-view'].widgetTemplate = 'tpl-record-view'
 
 crud.conf['v-edit'].beforeActions = null
 crud.conf['v-edit'].beforeForm = null

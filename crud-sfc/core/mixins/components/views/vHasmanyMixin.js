@@ -3,7 +3,10 @@ import crud from "../../../crud";
 crud.conf['v-hasmany'] = {
     confParent: 'v-record',
     defaultWidgetType: 'w-input',
-    widgetTemplate: 'tpl-full-no',
+    widgetTemplate: {
+        name: 'tpl-base',
+        layoutType: 'full'
+    },
 }
 
 const vHasmanyMixin = {

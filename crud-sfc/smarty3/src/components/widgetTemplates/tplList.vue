@@ -1,12 +1,14 @@
 <template>
-    <component :is="cWidget.type" :c-conf="cWidget"></component>
+    <component :is="cWidget.type" :c-conf="cWidget" :mio="cTemplate.columnClass"></component>
 </template>
 
 <script>
 
+import tplBase from './tplBase'
+
 export default {
   name: 'tpl-list',
-  props: ['cWidget']
+  extends: tplBase
 }
 </script>
 

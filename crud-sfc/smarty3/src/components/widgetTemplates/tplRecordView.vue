@@ -1,19 +1,27 @@
 <template>
     <component v-if="cWidget.type=='w-hidden'" :is="cWidget.type" :c-conf="cWidget"></component>
-    <div class="col-lg-6 col-md-12 mb-2" v-else>
-        <span>
+    <div :class="getLayoutClass()" v-else>
+        <div v-if="cTemplate.labelType === 'top'">
             {{cWidget.label}}
-        </span>
-        <span>
+        </div>
+        <div>
+            <span v-if="cTemplate.labelType === 'inline'">
+              {{cWidget.label}}
+            </span>
             <component :is="cWidget.type" :c-conf="cWidget"></component>
-        </span>
+        </div>
+        <div v-if="cTemplate.labelType === 'bottom'">
+          {{cWidget.label}}
+        </div>
     </div>
 </template>
 
 <script>
+import tplBase from './tplBase'
+
 export default {
   name: 'tpl-record-view',
-  props: ['cWidget']
+  extends: tplBase
 }
 </script>
 

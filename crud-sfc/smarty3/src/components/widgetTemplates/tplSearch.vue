@@ -14,9 +14,11 @@
 </template>
 
 <script>
+import tplBase from './tplBase'
+
 export default {
   name: 'tpl-search',
-  props: ['cWidget']
+  extends: tplBase
 }
 </script>
 
