@@ -26,6 +26,11 @@ export default {
   extends: wBase,
   mixins: [wTexthtmlMixin],
   methods: {
+    _ready () {
+      if (this.label) {
+        this.jQe('.note-editor').prepend('<div class="font-weight-medium text-dark card-header">' + this.label + '</div>')
+      }
+    },
     afterLoadResources () {
       var that = this
       var options = that.pluginOptions || {

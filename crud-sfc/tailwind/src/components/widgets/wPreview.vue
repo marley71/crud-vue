@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img v-if="getType()=='image'" :src="value.url">
+        <img class="img-fluid" v-if="getType()=='image'" :src="value.url">
         <a v-else-if="getType()=='doc'" :href="value.url">
             <i :class="iconClass"></i>
         </a>
