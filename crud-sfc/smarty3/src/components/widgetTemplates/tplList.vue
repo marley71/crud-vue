@@ -1,5 +1,5 @@
 <template>
-    <component :is="cWidget.type" :c-conf="cWidget" :mio="cTemplate.columnClass"></component>
+    <component :is="cWidget.type" :c-conf="cWidget" ></component>
 </template>
 
 <script>
