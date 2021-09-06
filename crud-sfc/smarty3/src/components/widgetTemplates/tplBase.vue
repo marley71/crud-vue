@@ -6,7 +6,16 @@
 <script>
 export default {
   name: 'tpl-base',
-  props: ['cWidget', 'cTemplate'],
+  props: {
+    cWidget: Object,
+    cTemplate: {
+      type: Object,
+      default: function () {
+        return {}
+      },
+      required: true
+    }
+  },
   data () {
     if (!this.cTemplate.layoutType) {
       this.cTemplate.layoutType = 'half'

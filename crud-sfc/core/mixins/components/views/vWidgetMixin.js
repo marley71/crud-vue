@@ -1,6 +1,6 @@
 const vWidgetMixin = {
     data: function () {
-        var cTemplate = {
+        var templateConf = {
             name: 'tpl-no'
         }
         if (this.cWidget) {
@@ -19,13 +19,14 @@ const vWidgetMixin = {
             // check se template e' una stringa o una configurazione
             if (typeof conf.template === 'string' || conf.template instanceof String) {
                 //console.log('istanza di una stringa ',conf.template)
-                cTemplate.name = conf.template
+                templateConf.name = conf.template
             } else {
                 //console.log('NON istanza di una stringa ',conf.template)
-                cTemplate = conf.template;
+                templateConf = conf.template;
             }
+            console.log('templateConf',templateConf);
             return {
-                cTemplate: cTemplate,
+                templateConf: templateConf,
                 conf: conf,
                 id: id
             }
@@ -33,7 +34,7 @@ const vWidgetMixin = {
 
         console.warn('configurazione non valida', this.cWidget)
         return {
-            cTemplate: cTemplate,
+            templateConf: templateConf,
             conf: {
                 type: 'w-text'
             }
@@ -42,7 +43,7 @@ const vWidgetMixin = {
     methods: {
       getTemplateName () {
           //console.log('cTemplate',this.cTemplate,this)
-          return this.cTemplate.name;
+          return this.templateConf.name;
       }
     }
 }

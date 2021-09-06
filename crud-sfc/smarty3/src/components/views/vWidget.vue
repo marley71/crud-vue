@@ -1,5 +1,5 @@
 <template>
-    <component :is="getTemplateName()" :c-widget="conf" :cTemplate="cTemplate"></component>
+    <component :is="getTemplateName()" :c-widget="conf" :c-template="templateConf"></component>
 </template>
 
 <script>
