@@ -83,7 +83,7 @@ const cComponentMixin = {
     },
     beforeDestroy () {
         var cr = this.cRef || this.compRef;
-        if (cr)
+        if (cr && this.$crud.cRefs[cr])
             delete this.$crud.cRefs[cr];
     },
     data : function() {
