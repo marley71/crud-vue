@@ -24,7 +24,7 @@ const vWidgetMixin = {
                 //console.log('NON istanza di una stringa ',conf.template)
                 templateConf = conf.template;
             }
-            console.log('templateConf',templateConf);
+            //console.log('templateConf',templateConf);
             return {
                 templateConf: templateConf,
                 conf: conf,
