@@ -20,7 +20,7 @@ const vWidgetMixin = {
             if (typeof conf.template === 'string' || conf.template instanceof String) {
                 //console.log('istanza di una stringa ',conf.template)
                 templateConf.name = conf.template
-            } else {
+            } else if (conf.template instanceof Object) {
                 //console.log('NON istanza di una stringa ',conf.template)
                 templateConf = conf.template;
             }

@@ -23,6 +23,7 @@ export default {
     if (!this.cTemplate.labelType) {
       this.cTemplate.labelType = 'bottom'
     }
+    return {}
   },
   methods: {
     getLayoutClass () {
