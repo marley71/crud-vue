@@ -21,6 +21,7 @@ const wUploadAjaxMixin = {
             conf.previewConf.cRef = this._uid + 'preview';
             if (conf.value instanceof Object) {
                 conf.previewConf.value = conf.value;
+                conf.previewConf.iconSize = 'fa fa-2x';
                 conf.value = JSON.stringify(conf.value).replace(/\\"/g, '"');
             }
             else if (!this.value) {

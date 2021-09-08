@@ -1,0 +1,32 @@
+.crud-overlay-body {
+    background-color: rgba(1, 1, 1, 0.3);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index:100000;
+    cursor : wait;
+}
+.crud-overlay {
+    background-color: rgba(1, 1, 1, 0.3);
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index:100000;
+    cursor : wait;
+}
+
+.crud-wait-msg {
+    position:absolute;
+    width:100%;
+    top:50%;
+    text-align:center;
+    color:white
+}
+
+body .modal-dialog-big { /* Width */
+    max-width: 90%;
+}

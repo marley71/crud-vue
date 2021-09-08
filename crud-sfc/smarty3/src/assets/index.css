@@ -3,3 +3,4 @@
 @tailwind utilities;
 
 @import './fontawesome/css/all.css';
+@import './css/crud-vue.css';

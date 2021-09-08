@@ -12,7 +12,7 @@ crud.conf['c-import'] = {
     timerStatus: null,
     confUpload: {
         name: 'resource',
-        template: 'tpl-no',
+        template: 'tpl-base',
         type: 'w-upload-ajax',
         maxFileSize: '2M',
         modelName: null,
@@ -63,7 +63,7 @@ crud.conf['c-import'] = {
         actions: ['action-save-import'],
         customActions: {
             'action-save-import': {
-                text: 'Salva Csv Caricato',
+                text: 'Salva File Caricato',
                 css: 'btn bnt-outline-secondary btn-info',
                 type: 'record'
             }
@@ -256,6 +256,7 @@ const cImportMixin = {
                 // })
                 // r.setParams(params);
                 console.log('ROUTE',r.getConf());
+                //that.waitStart('caricamento file da importare...');
                 Server.route(r,function (json) {
                     console.log('json',json);
                     var checkError = thatAction.csvDashboard.checkJobError(json);
