@@ -137,14 +137,18 @@ const cImportMixin = {
             if (checkError.error ) {
                 that.progressEnabled = false;
                 that.errorDialog(checkError.msg);
-                if (that.timerStatus)
+                if (that.timerStatus) {
                     clearInterval(that.timerStatus);
+                    that.timerStatus = null;
+                }
+
                 return ;
             }
             if (json.job.end) {
                 console.log('job end',that.status)
                 that.progressEnabled = false;
                 clearInterval(that.timerStatus);
+                that.timerStatus = null;
                 if (that.status == 'loading') {
                     that.status = 'tosave';
                     that.saveEnabled = true;
