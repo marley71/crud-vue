@@ -19,7 +19,8 @@ crud.conf['v-list'] = {
     widgetTemplate: 'tpl-list',
     actions: ['action-insert', 'action-delete-selected', 'action-view', 'action-edit', 'action-delete'],
     helpText: '',
-    hasFooter: true
+    hasFooter: true,
+    template:'default',  // default,inner
 }
 const vListMixin = {
     methods: {
