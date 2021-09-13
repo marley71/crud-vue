@@ -150,7 +150,7 @@
     </div>
   </div>
   <div v-else-if="template === 'inner'">
-    <div class="row">
+    <div class="container row border-bottom default-divider">
       <!-- start:col: -->
       <div class="col-12 mb-1 p-0">
 
