@@ -37,7 +37,7 @@
             <div class="container-fluid py-1">
 
               <div class="table-responsive" style="white-space:nowrap;" :class="modelName">
-                <table class="table table-framed table-striped table-bordered">
+                <table class="table table-framed table-stripedinner table-bordered">
                   <thead>
                   <tr v-if="widgets.length > 0">
                     <th v-if="needSelection" class="text-gray-500 w--50">
@@ -179,7 +179,7 @@
             <div class="container-fluid py-1 px-0">
 
               <div class="table-responsive" style="white-space:nowrap;" :class="modelName">
-                <table class="table table-framed table-stripedinner table-bordered">
+                <table class="table table-framed table-striped table-bordered">
                   <thead>
                   <tr v-if="widgets.length > 0">
                     <th v-if="needSelection" class="text-gray-500 w--50">
