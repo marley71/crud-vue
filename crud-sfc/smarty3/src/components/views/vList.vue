@@ -102,7 +102,7 @@
                         <v-widget :c-widget="widget" :key="key"></v-widget>
                       </template>
                     </tr>
-                    <tr :id="'gost_container' +  index" class="d-none" :key="'gost_'+index">
+                    <tr :id="'ghost_container' +  index" class="d-none" :key="'ghost_'+index">
                       <td :colspan="keys.length+3"></td>
                     </tr>
                   </template>
@@ -285,14 +285,14 @@ export default {
         return this.fieldsConfig[key].helpText || false
       }
     },
-    getGostContainer (index) {
-      return this.jQe('#gost_container' + index + ' td')
+    getGhostContainer (index) {
+      return this.jQe('#ghost_container' + index + ' td')
     },
-    showGostContainer (index) {
-      this.jQe('#gost_container' + index).removeClass('d-none')
+    showGhostContainer (index) {
+      this.jQe('#ghost_container' + index).removeClass('d-none')
     },
-    hideGostContainer (index) {
-      this.jQe('#gost_container' + index).addClass('d-none')
+    hideGhostContainer (index) {
+      this.jQe('#ghost_container' + index).addClass('d-none')
     }
   }
 }

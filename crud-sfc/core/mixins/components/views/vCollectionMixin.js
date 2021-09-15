@@ -169,7 +169,7 @@ const vCollectionMixin = {
             return visible;
         },
         getWidget: function (row, key) {
-            var wConf = this.widgets[row][key];
+            var wConf = (this.widgets[row] && this.widgets[row][key]) ? this.widgets[row][key]:null;
             if (!wConf) {
                 //console.warn('attenzione widget non trovato per riga ' + row +  " key " + key);
                 return null;
@@ -350,6 +350,33 @@ const vCollectionMixin = {
                 that.reload();
             }, 100);
         },
+        /**
+         * aspetta che i widgets o il widgets esista e poi chiama la callback
+         * @param widgets array  o array di array [row,key] che rappresentano le coordinate  dei widgets che vogliamo aspettare
+         * @param callback funzione da chiamare quando i widgets esistono
+         */
+        waitWidget(widgets,callback) {
+            var that = this;
+            var __waitW = function () {
+                var ok = true;
+                if (Array.isArray(widgets) && Array.isArray(widgets[0])) {
+                    for (var i in widgets) {
+                        if (!that.getWidget(widgets[i][0],widgets[i][1])) {
+                            ok = false;
+                        }
+                    }
+                } else {
+                    if (!that.getWidget(widgets[0],widgets[1])) {
+                        ok = false;
+                    }
+                }
+                if (ok) {
+                    return callback();
+                }
+                setTimeout(__waitW,200);
+            }
+            __waitW();
+        }
     },
 }
 

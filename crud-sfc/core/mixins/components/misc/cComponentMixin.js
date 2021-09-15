@@ -82,7 +82,7 @@ const cComponentMixin = {
         }
     },
     beforeDestroy () {
-        var cr = this.cRef || this.compRef;
+        var cr = this.cRef || this.cCompRef;
         if (cr && this.$crud.cRefs[cr])
             delete this.$crud.cRefs[cr];
     },

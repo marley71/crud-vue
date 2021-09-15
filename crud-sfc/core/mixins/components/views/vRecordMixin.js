@@ -192,6 +192,36 @@ const vRecordMixin = {
             }
             //console.log('getAction',name,rConf);
             return this.$crud.cRefs[rConf.cRef];
+        },
+        /**
+         * aspetta che i widgets o il widgets esista e poi chiama la callback
+         * @param widgets stringa o array di stringhe che rappresentano le keys dei widgets che vogliamo aspettare
+         * @param callback funzione da chiamare quando i widgets esistono
+         */
+        waitWidget(widgets,callback) {
+            var that = this;
+            var __waitW = function () {
+                var ok = true;
+                //console.log('waitW Record',widgets);
+                if (Array.isArray(widgets) ) {
+                    console.log('array');
+                    for (var i in widgets) {
+                        if (!that.getWidget(widgets[i])) {
+                            ok = false;
+                        }
+                    }
+                } else {
+                    //console.log('get normal',that.getWidget(widgets),that.widgets);
+                    if (!that.getWidget(widgets)) {
+                        ok = false;
+                    }
+                }
+                if (ok) {
+                    return callback();
+                }
+                setTimeout(__waitW,200);
+            }
+            __waitW();
         }
     }
 }
