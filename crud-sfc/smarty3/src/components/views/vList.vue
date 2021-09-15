@@ -53,7 +53,7 @@
                       <a-order v-if="orderFields[key]" :c-conf="getOrderConf(key)"></a-order>
                       <span style="cursor:default"
                             class="btn btn-default btn-xs mr-1 text-gray-500 font-weight-normal fs--14"
-                            v-else>{{ key + '.label' | translate(langContext) }}</span>
+                            v-else>{{ widgets[0][key].label }}</span>
                       <button v-if="hasHelp(key)"
                               type="button"
                               class="btn-xs btn-squared btn-light"
