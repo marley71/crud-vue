@@ -293,6 +293,9 @@ export default {
     },
     hideGhostContainer (index) {
       this.jQe('#ghost_container' + index).addClass('d-none')
+    },
+    isVisibleGhostContainer (index) {
+      return !this.jQe('#ghost_container' + index).hasClass('d-none')
     }
   }
 }
