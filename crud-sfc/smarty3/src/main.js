@@ -22,8 +22,11 @@ import './assets/css/vendor_bundle.css'
 import './assets/css/select2-bootstrap4.css'
 import './assets/css/app.css'
 
-import '@fortawesome/fontawesome-free/css/all.css'
-import '@fortawesome/fontawesome-free/js/all.js'
+import './assets/fontawesome/css/all.css'
+import './assets/fontawesome/js/all.js'
+
+// import '@fortawesome/fontawesome-free/css/all.css'
+// import '@fortawesome/fontawesome-free/js/all.js'
 
 require('./components/misc')
 require('./components/actions')
