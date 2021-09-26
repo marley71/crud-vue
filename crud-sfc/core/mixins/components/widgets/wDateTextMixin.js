@@ -6,14 +6,21 @@ crud.conf['w-date-text'] = {
     ],
     displayFormat: 'dd/mm/yyyy',
     dateFormat: 'yyyy-mm-dd',
-    formattedValue: null
+    formattedValue: null,
+    invalidDateString:'app.data-non-valida',
 }
 
 const wDateTextMixin = {
     methods: {
         afterLoadResources () {
             var that = this
-            that.formattedValue = moment(that.value).format(that.displayFormat.toUpperCase())
+            var md = moment(that.value);
+            if (md.isValid()) {
+                that.formattedValue = md.format(that.displayFormat.toUpperCase())
+            } else {
+                that.formattedValue = that.invalidDateString;
+            }
+
         }
     }
 }
