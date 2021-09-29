@@ -18,7 +18,7 @@ const wDateTextMixin = {
             if (md.isValid()) {
                 that.formattedValue = md.format(that.displayFormat.toUpperCase())
             } else {
-                that.formattedValue = that.invalidDateString;
+                that.formattedValue = that.translate(that.invalidDateString) ;
             }
 
         }

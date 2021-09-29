@@ -44,7 +44,8 @@ const wHasmanyMixin = {
                 fieldsConfig: {},
                 routeName: null,
                 value: value,
-                metadata: relationConf
+                metadata: relationConf,
+                widgetTemplate: 'tpl-record',
             }, hmConf);
             hmConf.cRef = that.getRefId(that._uid, 'hm', that.keyCounter++);
             //alert(hmConf.cRef)
