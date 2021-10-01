@@ -39,14 +39,14 @@ export default {
       }
       options = this.cloneObj(options)
       that.jQe('.summernote').summernote(options)
-      window.jQuery('.summernote').on('summernote.change', function () {
-        // console.log('Enter/Return key pressed',jQuery('.summernote').summernote('code'))
-        that.jQe('[c-summernote]').val(window.jQuery('.summernote').summernote('code'))
+      that.jQe('.summernote').on('summernote.change', function () {
+        //console.log('Enter/Return key pressed',jQuery('.summernote').summernote('code'))
+        that.jQe('[c-summernote]').val(that.jQe('.summernote').summernote('code'))
         // that.jQe('[c-sum]').trigger('change')
         that.change()
         // that.jQe('[c-sum]').val('hh')
       })
-      window.jQuery('.summernote').summernote('focus')
+      that.jQe('.summernote').summernote('focus')
     },
     getValue () {
       var that = this
