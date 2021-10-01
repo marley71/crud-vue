@@ -21,6 +21,7 @@ import './assets/css/core.css'
 import './assets/css/vendor_bundle.css'
 import './assets/css/select2-bootstrap4.css'
 import './assets/css/app.css'
+import './assets/css/crud-vue.css'
 
 import './assets/fontawesome/css/all.css'
 import './assets/fontawesome/js/all.js'
