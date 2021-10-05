@@ -229,6 +229,11 @@ const coreMixin = {
                 throw "Impossibile trovare la route " + routeName;
             return new Route(routeConf);
         },
+
+        createRouteFromConf : function(routeConf) {
+            return new Route(routeConf);
+        },
+
         /**
          * cerca e crea la classe protocol utilizzando come naming
          * Protocol+pascalCase(name)
