@@ -361,9 +361,15 @@ const cManageMixin = {
 
             acSearch.execute = function () {
                 var that = this;
+
+                //listComp.route.mergeParams(formData);
+                //listComp.reload();
                 var formData = that.view.getViewData();
-                listComp.route.mergeParams(formData);
+                console.log('action-search manage',formData)
+                listComp.route.setParams(formData);
+                listComp.route.setParam('page',1);
                 listComp.reload();
+
                 return;
             };
             searchConf.customActions['action-search'] = acSearch;
