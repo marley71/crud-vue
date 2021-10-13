@@ -55,7 +55,7 @@ Server.get = function (url, params, callback) {
     if (params instanceof FormData) {
         contentType = false;
         processData = false;
-        for (var key in params.keys()) {
+        for (var key of params.keys()) {
             var values = params.getAll(key);
             if (values.length == 1) {
                 _data[key] = values[0];
