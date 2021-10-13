@@ -15,9 +15,11 @@
 
 <script>
 import wBase from './wBase'
-// import crud from '../../../../core/crud'
+import crud from '../../../../core/crud'
 import choiceMixin from '../../../../core/mixins/choiceMixin'
 import wSelectMixin from '../../../../core/mixins/components/widgets/wSelectMixin'
+
+crud.conf['w-select'].defaultValue = -1
 
 export default {
   name: 'w-select',
