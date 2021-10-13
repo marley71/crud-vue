@@ -69,6 +69,7 @@ Server.get = function (url, params, callback) {
     } else {
         _data = params;
     }
+    console.log('Server.get _data',_data);
     //console.log('serverGet',(params instanceof FormData),contentType,processData,params);
     jQuery.ajax({
         url: realUrl,
