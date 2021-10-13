@@ -26,7 +26,7 @@ const actionConfs = {
             console.log('action-search',this,'view',this.view.targetRef);
             if (this.view && this.view.targetRef) {
                 console.log('target ref',this.view.targetRef);
-                var targetView = this.$crud.cRefs[this.view.targetRef];
+                var targetView =  this.getComponent(this.view.targetRef); // this.$crud.cRefs[this.view.targetRef];
                 var formData = this.view.getViewData();
                 //formData['page'] = 1;
                 targetView.route.setParams(formData);

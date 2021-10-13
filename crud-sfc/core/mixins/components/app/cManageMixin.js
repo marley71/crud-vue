@@ -358,18 +358,13 @@ const cManageMixin = {
             if (!searchConf.customActions) searchConf.customActions = {};
 
             var acSearch = searchConf.customActions['action-search'] || {};
-
+            // forzo la execute della search, siamo in un manage...
             acSearch.execute = function () {
                 var that = this;
-
-                //listComp.route.mergeParams(formData);
-                //listComp.reload();
                 var formData = that.view.getViewData();
-                console.log('action-search manage',formData)
                 listComp.route.setParams(formData);
                 listComp.route.setParam('page',1);
                 listComp.reload();
-
                 return;
             };
             searchConf.customActions['action-search'] = acSearch;
