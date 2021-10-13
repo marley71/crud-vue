@@ -51,16 +51,30 @@ Server.get = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
     var contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
     var processData = true;
+    var _data = {};
     if (params instanceof FormData) {
         contentType = false;
         processData = false;
+        for (var key in params.keys()) {
+            var values = params.getAll(key);
+            if (values.length == 1) {
+                _data[key] = values[0];
+            } else {
+                var keyName = key+'[]';
+                for (var vi in values) {
+                    _data[keyName] = values[vi];
+                }
+            }
+        }
+    } else {
+        _data = params;
     }
     //console.log('serverGet',(params instanceof FormData),contentType,processData,params);
     jQuery.ajax({
         url: realUrl,
         headers: Server.getHearders(),
         type: 'GET',
-        data: params,
+        data: _data,
         contentType: contentType,
         processData: processData,
     }).done(function(json) {
