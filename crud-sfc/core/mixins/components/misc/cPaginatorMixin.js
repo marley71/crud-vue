@@ -34,10 +34,10 @@ const cPaginatorMixin = {
         setPage: function (page) {
             var that = this;
             var route = that.$parent.route;
-
-            var params = route.getParams();
-            params['page'] = parseInt(page);
-            route.setParams(params);
+            route.setParam('page',page);
+            // var params = route.getParams();
+            // params['page'] = parseInt(page);
+            // route.setParams(params);
             that.$parent.reload();
         },
         lastPage: function () {
