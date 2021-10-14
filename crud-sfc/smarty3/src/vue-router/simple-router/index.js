@@ -1,17 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '../components/HelloWorld'
-import vList from '../components/views/vList'
-import vListEdit from '../components/views/vListEdit'
-import vEdit from '../components/views/vEdit'
-import vInsert from '../components/views/vInsert'
-import vView from '../components/views/vView'
-import cPage from '../components/app/cPage'
-import cManage from '../components/app/cManage'
-import cImport from '../components/app/cImport'
-import cCalendar from '../components/app/cCalendar'
-import crud from '../../../core/crud'
-import cDynamic from '../components/app/cDynamic'
+
+import vList from '../../components/views/vList'
+import vListEdit from '../../components/views/vListEdit'
+import vEdit from '../../components/views/vEdit'
+import vInsert from '../../components/views/vInsert'
+import vView from '../../components/views/vView'
+import cPage from '../../components/app/cPage'
+import cManage from '../../components/app/cManage'
+import cImport from '../../components/app/cImport'
+import cCalendar from '../../components/app/cCalendar'
 
 Vue.use(Router)
 
