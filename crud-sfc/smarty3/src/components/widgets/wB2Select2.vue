@@ -23,7 +23,7 @@ export default {
   mixins: [wB2Select2Mixin],
   methods: {
     _ready () {
-      window.jQuery('.select2-container').addClass('form-control p-1 pl-2')
+      window.jQuery('.select2-container').addClass('form-control p-1 pl-2 w-100')
     }
   }
 }
