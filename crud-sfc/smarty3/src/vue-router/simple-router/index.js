@@ -22,11 +22,6 @@ Vue.use(Router)
 
 const router = new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'HelloWorld',
-    //   component: HelloWorld
-    // },
     {
       path: '/',
       name: 'default',
@@ -90,10 +85,10 @@ const router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  // ...
-  console.log('to', to, 'from', from, 'next', next);
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   // ...
+//   console.log('to', to, 'from', from, 'next', next);
+//   next()
+// })
 
 export default router;
