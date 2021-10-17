@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <router-view :key="$route.fullPath"/>
+<!--    <router-view :key="$route.fullPath"/>-->
+    <keep-alive v-if="$crud.env.persistent">
+      <router-view :key="$route.fullPath"/>
+    </keep-alive>
+    <div v-else>
+      <router-view :key="$route.fullPath"/>
+    </div>
   </div>
 </template>
 
