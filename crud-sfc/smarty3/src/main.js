@@ -10,6 +10,7 @@ import coreMixin from '../../core/mixins/coreMixin'
 import dialogsMixin from '../../core/mixins/dialogsMixin'
 import mainMixin from '../../core/mixins/mainMixin'
 import jQuery from 'jquery'
+import cPage from './components/app/cPage'
 
 // ---    configurazioni tempalte ----
 import './confs/actions'
@@ -25,6 +26,7 @@ import './assets/css/crud-vue.css'
 
 import './assets/fontawesome/css/all.css'
 import './assets/fontawesome/js/all.js'
+import cCalendar from "./components/app/cCalendar";
 
 // import '@fortawesome/fontawesome-free/css/all.css'
 // import '@fortawesome/fontawesome-free/js/all.js'
@@ -59,5 +61,15 @@ window.jQuery = jQuery
 window.app = app
 app.loadConfigurations(function () {
   console.log('caricato tutto')
+  var _dr = app.$crud.env.dynamicPageRoutes || {}
+  console.log('dynamicPageRoutes', _dr)
+  for (var k in _dr) {
+    router.addRoute({
+      path: k,
+      name: k,
+      component: cPage,
+      props: {cPath: _dr[k].pagePath}
+    })
+  }
   app.$mount('#app')
 })
