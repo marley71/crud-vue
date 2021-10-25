@@ -113,6 +113,7 @@ const wUploadAjaxMixin = {
                     that.errorMessage = msg;
                     //self._showError(dialog,msg);
                     jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
+                    that.value =  JSON.stringify({});
                     return;
                 }
                 that.$emit('success', that);
@@ -132,6 +133,7 @@ const wUploadAjaxMixin = {
                 that.lastUpload = false;
                 that.error = true;
                 that.errorMessage = "Upload error " + data + " " + error + " " + msg;
+                that.value = JSON.stringify({});
                 that.onError();
             });
         },
