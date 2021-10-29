@@ -8,7 +8,8 @@ crud.conf['w-date-picker'] = {
     ],
     displayFormat: 'dd/mm/yyyy',
     dateFormat: 'yyyy-mm-dd',
-    cPicker: null
+    cPicker: null,
+    buttonClear: true,
 }
 
 const wDatePickerMixin = {

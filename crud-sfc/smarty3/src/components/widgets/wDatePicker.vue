@@ -24,8 +24,8 @@
 
   <div class="input-group mb-3">
     <input class="form-control datepicker" c-picker :aria-label="label"  aria-describedby="basic-addon1">
-    <div class="input-group-append">
-      <span v-on:click="reset()" class="input-group-text" id="basic-addon1">
+    <div v-if="buttonClear" class="input-group-append">
+      <span v-on:click="reset()" class="input-group-text -mouse-pointer" id="basic-addon1">
         <i class="fa fa-times"></i>
         <input type="hidden" v-model="value" v-bind:name="getFieldName()" v-on:change="change">
       </span>
