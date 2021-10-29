@@ -7,7 +7,8 @@ crud.conf['w-date-picker'] = {
         'https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css'
     ],
     displayFormat: 'dd/mm/yyyy',
-    dateFormat: 'yyyy-mm-dd'
+    dateFormat: 'yyyy-mm-dd',
+    cPicker: null
 }
 
 const wDatePickerMixin = {
@@ -15,8 +16,9 @@ const wDatePickerMixin = {
         afterLoadResources: function () {
             var that = this
             var cPicker = window.jQuery(that.$el).find('[c-picker]');
+            that.cPicker = cPicker;
             cPicker.datepicker({
-                format: that.displayFormat
+                format: that.displayFormat,
             }).on('change', function (ev) {
                 var d = cPicker.datepicker('getDate');
                 //console.log('date change',d);
@@ -31,6 +33,11 @@ const wDatePickerMixin = {
                 var d = moment(that.value).toDate()
                 window.jQuery(that.$el).find('[c-picker]').datepicker('setDate', d)
             }
+        },
+        reset () {
+            var that = this
+            that.cPicker.datepicker('reset');
+            that.value = '';
         }
     }
 }
