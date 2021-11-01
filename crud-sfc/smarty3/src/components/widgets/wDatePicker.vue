@@ -23,7 +23,9 @@
 <!--  </div>-->
 
   <div class="input-group mb-3">
-    <input class="form-control datepicker" c-picker :aria-label="label"  aria-describedby="basic-addon1">
+    <div class="form-control">
+      <input class="w-100 border-0 datepicker" c-picker :aria-label="label"  aria-describedby="basic-addon1">
+    </div>
     <div v-if="buttonClear" class="input-group-append">
       <span v-on:click="reset()" class="input-group-text -mouse-pointer" id="basic-addon1">
         <i class="fa fa-times"></i>

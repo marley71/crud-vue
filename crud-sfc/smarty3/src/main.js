@@ -38,6 +38,7 @@ require('./components/dialogs')
 require('./components/widgetTemplates')
 require('./components/views')
 require('./components/app')
+const fsss = require('fs')
 
 crud.EventBus = new Vue()
 Vue.config.productionTip = false
@@ -63,7 +64,7 @@ app.loadConfigurations(function () {
   console.log('caricato tutto')
   var _dr = app.$crud.env.dynamicPageRoutes || {}
   console.log('dynamicPageRoutes', _dr)
-  for (var k in _dr) {
+  for (let k in _dr) {
     router.addRoute({
       path: k,
       name: k,
@@ -71,5 +72,40 @@ app.loadConfigurations(function () {
       props: {cPath: _dr[k].pagePath}
     })
   }
+  var _rq = app.$crud.env.dynamicRequires || {};
+  console.log('_rq', _rq);
+  for (let k in _rq) {
+    console.log(__dirname)
+    fsss.readdir('.', null, function (e, path) {
+      console.log('readrid', path);
+    })
+    var files = fsss.readdirSync('.')
+    console.log('files', files)
+    Vue.component(
+      k,
+      // A dynamic import returns a Promise.
+      () => import(_rq[k]).catch(
+        err => {
+          console.log('errore', err)
+          // main.textContent = err.message;
+        }
+      )
+    )
+  }
+
+
+  // Vue.component('async-webpack-example', function (resolve) {
+  //   // This special require syntax will instruct Webpack to
+  //   // automatically split your built code into bundles which
+  //   // are loaded over Ajax requests.
+  //   // require(['./my-async-component'], resolve)
+  //   require(_rq, resolve)
+  //
+  //   Vue.component(
+  //     'async-webpack-example',
+  //     // A dynamic import returns a Promise.
+  //     () => import('./my-async-component')
+  //   )
+  // })
   app.$mount('#app')
 })
