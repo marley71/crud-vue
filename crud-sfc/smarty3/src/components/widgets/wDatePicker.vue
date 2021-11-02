@@ -87,5 +87,7 @@ export default {
   font-size: 12px;
   box-shadow: 0 0 2px #000000;
   cursor: pointer;
+  padding-bottom: 3px;
+  padding-left: 1px;
 }
 </style>
