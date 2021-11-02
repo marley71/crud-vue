@@ -23,9 +23,7 @@
 <!--  </div>-->
 
   <div class="input-group mb-3">
-    <div class="form-control">
-      <input class="w-100 border-0 datepicker" c-picker :aria-label="label"  aria-describedby="basic-addon1">
-    </div>
+    <input class="form-control datepicker" c-picker :aria-label="label"  aria-describedby="basic-addon1">
     <div v-if="buttonClear" class="input-group-append">
       <span v-on:click="reset()" class="input-group-text -mouse-pointer" id="basic-addon1">
         <i class="fa fa-times"></i>
@@ -52,5 +50,36 @@ export default {
 </script>
 
 <style scoped>
+.close-icon {
+  border:1px solid transparent;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+  outline: 0;
+  cursor: pointer;
+}
 
+.close-icon:after {
+  content: "X";
+  display: block;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  background-color: #AAAAAA;
+  z-index:1;
+  right: 35px;
+  top: 0;
+  bottom: 1px;
+  margin: auto;
+  padding: 2px;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-weight: normal;
+  font-size: 12px;
+  box-shadow: 0 0 2px #000000;
+  cursor: pointer;
+  padding-bottom: 3px;
+  padding-left: 1px;
+}
 </style>
