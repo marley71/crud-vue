@@ -11,6 +11,8 @@ import dialogsMixin from '../../core/mixins/dialogsMixin'
 import mainMixin from '../../core/mixins/mainMixin'
 import jQuery from 'jquery'
 import cPage from './components/app/cPage'
+import Server from '../../core/Server'
+import httpVueLoader from 'http-vue-loader'
 
 // ---    configurazioni tempalte ----
 import './confs/actions'
@@ -44,6 +46,9 @@ crud.EventBus = new Vue()
 Vue.config.productionTip = false
 Vue.prototype.$crud = crud
 
+
+Vue.use(httpVueLoader);
+
 /* eslint-disable no-new */
 var app = new Vue({
   // el: '#app',
@@ -61,6 +66,7 @@ Vue.filter('translate', function (value, context, plural, params) {
 window.jQuery = jQuery
 window.app = app
 app.loadConfigurations(function () {
+  var that = this;
   console.log('caricato tutto')
   var _dr = app.$crud.env.dynamicPageRoutes || {}
   console.log('dynamicPageRoutes', _dr)
@@ -75,22 +81,50 @@ app.loadConfigurations(function () {
   var _rq = app.$crud.env.dynamicRequires || {};
   console.log('_rq', _rq);
   for (let k in _rq) {
-    console.log(__dirname)
-    fsss.readdir('.', null, function (e, path) {
-      console.log('readrid', path);
+    Server.get(_rq[k], {}, function (html) {
+      Vue.component(k, httpVueLoader(_rq['k']))
+      // Vue.component(k, function (resolve, reject) {
+      //   var moduleData = html
+      //   var b64moduleData = "data:text/javascript;base64," + btoa(moduleData)
+      //   var module = import(b64moduleData)
+      //   resolve(module)
+      //
+      //   // setTimeout(function () {
+      //   //   // Pass the component definition to the resolve callback
+      //   //   resolve({
+      //   //     template: '<div>I am async!</div>'
+      //   //   })
+      //   // }, 1000)
+      // })
     })
-    var files = fsss.readdirSync('.')
-    console.log('files', files)
-    Vue.component(
-      k,
-      // A dynamic import returns a Promise.
-      () => import(_rq[k]).catch(
-        err => {
-          console.log('errore', err)
-          // main.textContent = err.message;
-        }
-      )
-    )
+
+
+
+
+
+
+
+
+
+
+
+
+    // console.log(__dirname)
+    // fsss.readdir('.', null, function (e, path) {
+    //   console.log('readrid', path);
+    // })
+    // var files = fsss.readdirSync('.')
+    // console.log('files', files)
+    // Vue.component(
+    //   k,
+    //   // A dynamic import returns a Promise.
+    //   () => import(_rq[k]).catch(
+    //     err => {
+    //       console.log('errore', err)
+    //       // main.textContent = err.message;
+    //     }
+    //   )
+    // )
   }
 
 
