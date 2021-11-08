@@ -118,7 +118,7 @@ const vCollectionMixin = {
 
                     if (! ('label' in dconf ))  {
                         dconf.label = key;
-                        if (that.modelName) {
+                        if (that.langContext) {
                             dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
                         }
                     } else {
