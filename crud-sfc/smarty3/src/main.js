@@ -11,7 +11,7 @@ import dialogsMixin from '../../core/mixins/dialogsMixin'
 import mainMixin from '../../core/mixins/mainMixin'
 import jQuery from 'jquery'
 import cPage from './components/app/cPage'
-import Server from '../../core/Server'
+// import Server from '../../core/Server'
 import httpVueLoader from 'http-vue-loader'
 
 // ---    configurazioni tempalte ----
@@ -81,22 +81,27 @@ app.loadConfigurations(function () {
   var _rq = app.$crud.env.dynamicRequires || {};
   console.log('_rq', _rq);
   for (let k in _rq) {
-    Server.get(_rq[k], {}, function (html) {
-      Vue.component(k, httpVueLoader(_rq['k']))
-      // Vue.component(k, function (resolve, reject) {
-      //   var moduleData = html
-      //   var b64moduleData = "data:text/javascript;base64," + btoa(moduleData)
-      //   var module = import(b64moduleData)
-      //   resolve(module)
-      //
-      //   // setTimeout(function () {
-      //   //   // Pass the component definition to the resolve callback
-      //   //   resolve({
-      //   //     template: '<div>I am async!</div>'
-      //   //   })
-      //   // }, 1000)
-      // })
-    })
+    var comp = httpVueLoader(_rq[k], k)
+    console.log('ahttloader ', comp.name, comp)
+    app.$options.components[k] = Vue.component(k, comp)
+    //httpVueLoaderRegister(Vue, _rq[k]);
+
+    // Server.get(_rq[k], {}, function (html) {
+    //   Vue.component(k, httpVueLoader(_rq['k']))
+    //   // Vue.component(k, function (resolve, reject) {
+    //   //   var moduleData = html
+    //   //   var b64moduleData = "data:text/javascript;base64," + btoa(moduleData)
+    //   //   var module = import(b64moduleData)
+    //   //   resolve(module)
+    //   //
+    //   //   // setTimeout(function () {
+    //   //   //   // Pass the component definition to the resolve callback
+    //   //   //   resolve({
+    //   //   //     template: '<div>I am async!</div>'
+    //   //   //   })
+    //   //   // }, 1000)
+    //   // })
+    // })
 
 
 
