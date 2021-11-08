@@ -98,7 +98,11 @@ const vRecordMixin = {
                 widgets[key].name = that.getFieldName(key);
                 if (!('label' in widgets[key])) {
                     //console.log('translate key e langContext',key,that.langContext);
-                    widgets[key].label = that.$options.filters.translate(key + '.label', that.langContext);
+                    widgets[key].label = key;
+                    // se c'e' un modelName .. applico la regola
+                    if (that.modelName) {
+                        widgets[key].label = that.$options.filters.translate(key + '.label', that.langContext);
+                    }
                 } else {
                     widgets[key].label = that.$options.filters.translate(widgets[key].label);
                 }
