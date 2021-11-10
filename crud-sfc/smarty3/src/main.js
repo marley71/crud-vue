@@ -65,7 +65,7 @@ Vue.filter('translate', function (value, context, plural, params) {
 window.jQuery = jQuery
 window.app = app
 app.loadConfigurations(function () {
-  var that = this;
+
   console.log('caricato tutto')
   var _dr = app.$crud.env.dynamicPageRoutes || {}
   console.log('dynamicPageRoutes', _dr)
@@ -77,16 +77,33 @@ app.loadConfigurations(function () {
       props: {cPath: _dr[k].pagePath}
     })
   }
-  app.$mount('#app')
+  // caricamento asincrono sfc file
+  var _rq = app.$crud.env.dynamicRequires || {};
+  var _rqKeys = Object.keys(_rq);
+  var i = 0;
 
+  var __loadSfc = function () {
+    if (i === _rqKeys.length) {
+      console.log('finito di caricare sfc dinamici')
+      setTimeout(function () {
+        app.$mount('#app')
+      }, 200)
 
-  // console.log('_rq', _rq);
-  // for (let k in _rq) {
-  //   var comp = httpVueLoader(_rq[k], k)
-  //   console.log('ahttloader ', comp.name, comp)
-  //   app.$options.components[k] = Vue.component(k, comp)
-  //
-  // }
+      return
+    }
+    var k = _rqKeys[i]
+    console.log('carico', k, _rq[k]);
+    var promise = httpVueLoader(_rq[k], k)
+    console.log('promise', promise)
+    promise().then(function (comp) {
+      console.log('promise then', k, comp)
+      Vue.component(k, comp)
+      i++;
+      __loadSfc();
+    })
+  }
+
+  __loadSfc();
 
 
 })
