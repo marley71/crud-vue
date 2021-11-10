@@ -1,14 +1,9 @@
 import Server from '../../core/Server'
 import jQuery from 'jquery'
+import Vue from 'vue'
+import httpVueLoader from 'http-vue-loader'
 
 const mainMixin = {
-    // created () {
-    //     var that = this;
-    //     that.loadLanguageFile();
-    //     that.loadRoutesFile();
-    //     that.loadActionsFile();
-    //     that.loadEnvFile();
-    // },
 
     methods: {
         loadConfigurations (callback) {
@@ -18,15 +13,17 @@ const mainMixin = {
                     that.loadActionsFile( function () {
                         that.loadEnvFile(function () {
                             that.loadEnvMeta();
-                            var initFuncion = that.getMetaValue('crud.init');
-                            console.log('initFunction',initFuncion);
-                            if (typeof window[initFuncion] === 'function') {
-                            //if (initFuncion) {
-                                window[initFuncion].apply(that,[callback]);
-                                //window[initFuncion](callback);
-                            }
-                            else
-                                return callback();
+                            that.loadDynamicSfc(function () {
+                                var initFuncion = that.getMetaValue('crud.init');
+                                console.log('initFunction',initFuncion);
+                                if (typeof window[initFuncion] === 'function') {
+                                    //if (initFuncion) {
+                                    window[initFuncion].apply(that,[callback]);
+                                    //window[initFuncion](callback);
+                                }
+                                else
+                                    return callback();
+                            })
                         })
                     })
                 })
@@ -97,6 +94,33 @@ const mainMixin = {
                 })
             } else
                 return callback();
+        },
+        loadDynamicSfc(callback) {
+            var that = this;
+            // caricamento asincrono sfc file
+            var _rq = that.$crud.env.dynamicRequires || {};
+            var _rqKeys = Object.keys(_rq);
+            var i = 0;
+
+            var __loadSfc = function () {
+                if (i === _rqKeys.length) {
+                    // finito
+                    return callback();
+                    app.$mount('#app')
+                    return
+                }
+                var k = _rqKeys[i]
+                var promise = httpVueLoader(_rq[k], k)
+                console.log('promise', promise)
+                promise().then(function (comp) {
+                    console.log('promise then', k, comp)
+                    Vue.component(k, comp)
+                })
+                i++;
+                __loadSfc();
+            }
+
+            __loadSfc();
         }
     }
 }

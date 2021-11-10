@@ -26,8 +26,8 @@ import './assets/css/select2-bootstrap4.css'
 import './assets/css/app.css'
 import './assets/css/crud-vue.css'
 
-import './assets/fontawesome/css/all.css'
-import './assets/fontawesome/js/all.js'
+import '@/assets/fontawesome/css/all.css'
+import '@/assets/fontawesome/js/all.js'
 import cCalendar from "./components/app/cCalendar";
 
 // import '@fortawesome/fontawesome-free/css/all.css'
@@ -40,7 +40,6 @@ require('./components/dialogs')
 require('./components/widgetTemplates')
 require('./components/views')
 require('./components/app')
-const fsss = require('fs')
 
 crud.EventBus = new Vue()
 Vue.config.productionTip = false
@@ -78,73 +77,16 @@ app.loadConfigurations(function () {
       props: {cPath: _dr[k].pagePath}
     })
   }
-  var _rq = app.$crud.env.dynamicRequires || {};
-  console.log('_rq', _rq);
-  for (let k in _rq) {
-    var comp = httpVueLoader(_rq[k], k)
-    console.log('ahttloader ', comp.name, comp)
-    app.$options.components[k] = Vue.component(k, comp)
-    //httpVueLoaderRegister(Vue, _rq[k]);
-
-    // Server.get(_rq[k], {}, function (html) {
-    //   Vue.component(k, httpVueLoader(_rq['k']))
-    //   // Vue.component(k, function (resolve, reject) {
-    //   //   var moduleData = html
-    //   //   var b64moduleData = "data:text/javascript;base64," + btoa(moduleData)
-    //   //   var module = import(b64moduleData)
-    //   //   resolve(module)
-    //   //
-    //   //   // setTimeout(function () {
-    //   //   //   // Pass the component definition to the resolve callback
-    //   //   //   resolve({
-    //   //   //     template: '<div>I am async!</div>'
-    //   //   //   })
-    //   //   // }, 1000)
-    //   // })
-    // })
-
-
-
-
-
-
-
-
-
-
-
-
-    // console.log(__dirname)
-    // fsss.readdir('.', null, function (e, path) {
-    //   console.log('readrid', path);
-    // })
-    // var files = fsss.readdirSync('.')
-    // console.log('files', files)
-    // Vue.component(
-    //   k,
-    //   // A dynamic import returns a Promise.
-    //   () => import(_rq[k]).catch(
-    //     err => {
-    //       console.log('errore', err)
-    //       // main.textContent = err.message;
-    //     }
-    //   )
-    // )
-  }
-
-
-  // Vue.component('async-webpack-example', function (resolve) {
-  //   // This special require syntax will instruct Webpack to
-  //   // automatically split your built code into bundles which
-  //   // are loaded over Ajax requests.
-  //   // require(['./my-async-component'], resolve)
-  //   require(_rq, resolve)
-  //
-  //   Vue.component(
-  //     'async-webpack-example',
-  //     // A dynamic import returns a Promise.
-  //     () => import('./my-async-component')
-  //   )
-  // })
   app.$mount('#app')
+
+
+  // console.log('_rq', _rq);
+  // for (let k in _rq) {
+  //   var comp = httpVueLoader(_rq[k], k)
+  //   console.log('ahttloader ', comp.name, comp)
+  //   app.$options.components[k] = Vue.component(k, comp)
+  //
+  // }
+
+
 })
