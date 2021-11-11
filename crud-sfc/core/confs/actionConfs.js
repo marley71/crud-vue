@@ -1,6 +1,18 @@
 import Server from '../Server';
 
 const actionConfs = {
+    'action-record-grouped' : {
+        confParent : 'a-grouped',
+        componentName:'a-grouped',
+        type :'record',
+        title: 'grouped'
+    },
+    'action-collection-grouped' : {
+        confParent : 'a-grouped',
+        componentName:'a-grouped',
+        type :'collection',
+        title: 'grouped'
+    },
     'action-reset' : {
         confParent : 'a-base',
         type : 'collection',

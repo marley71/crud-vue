@@ -118,30 +118,30 @@ const vBaseMixin = {
             if (that.customActions[name])
                 conf = that.merge(conf, that.customActions[name]);
             else {
-                conf = that.merge(that.$crud.conf['a-base'], conf);
+                conf = that.merge(that.$crud.conf[conf.componentName], conf);
             }
-            //console.log('actionconfig mia',name,conf)
+            console.log('actionconfig',name,conf)
             conf = that.mergeConf(conf);
 
             return conf;
 
 
-            var that = this;
-            var conf = that.$crud.conf[name] || {};
-            if (!conf.componentName)
-                conf.componentName = 'a-base';
-            //var componentName = conf.componentName ? conf.componentName : 'a-base';
-            conf = that.merge(that.$crud.conf[conf.componentName],conf);
-            if (that.customActions[name])
-                conf = that.merge(conf, that.customActions[name]);
-            else {
-                conf = that.merge(that.$crud.conf['a-base'], conf);
-            }
-            return conf;
+            // var that = this;
+            // var conf = that.$crud.conf[name] || {};
+            // if (!conf.componentName)
+            //     conf.componentName = 'a-base';
+            // //var componentName = conf.componentName ? conf.componentName : 'a-base';
+            // conf = that.merge(that.$crud.conf[conf.componentName],conf);
+            // if (that.customActions[name])
+            //     conf = that.merge(conf, that.customActions[name]);
+            // else {
+            //     conf = that.merge(that.$crud.conf['a-base'], conf);
+            // }
+            // return conf;
 
 
             // --- vecchio codice
-            var aClassName = 'a-base';
+            // var aClassName = 'a-base';
             // // se non esiste il componente di azione lo creo al volo
             // if (!this.$options.components[name]) {
             //     if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
