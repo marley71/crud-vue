@@ -8,7 +8,7 @@ crud.conf['a-grouped'] = {
     visible: true,
     enabled: true,
     title: '',
-    css: 'btn btn-sm btn-outline-default rounded-circle',
+    css: '',
     icon: '',
     text: '',
     //controlType: 'button',

@@ -1,6 +1,10 @@
 import crud from '../../../core/crud'
 import Server from '../../../core/Server'
 
+crud.conf['action-record-grouped'].css = 'btn btn-sm btn-outline-primary rounded-circle'
+
+
+
 // ------ ridefinizione del confParent
 crud.conf['action-save'].componentName = 'a-square'
 crud.conf['action-save-back'].componentName = 'a-square'
