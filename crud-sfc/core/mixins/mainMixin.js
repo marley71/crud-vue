@@ -1,7 +1,7 @@
 import Server from '../../core/Server'
 import jQuery from 'jquery'
-// import Vue from 'vue'
-// import httpVueLoader from 'http-vue-loader'
+import Vue from 'vue'
+import httpVueLoader from 'http-vue-loader'
 
 const mainMixin = {
 
@@ -93,7 +93,8 @@ const mainMixin = {
                 })
             } else
                 return callback();
-        }
+        },
+        load
     }
 }
 export default mainMixin
