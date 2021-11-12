@@ -5,6 +5,7 @@ import Vue from "vue";
 
 const coreMixin = {
     methods : {
+
         dynamicComponent(name) {
             var that = this;
             var cDef = that.$options.components[name] || that.$crud._dynamicComponents[name];
@@ -732,7 +733,29 @@ const coreMixin = {
                 that.$crud._dynamicComponents[name] = cDef;
                 return callback();
             });
-        }
+        },
+        /**
+         * crea un componente vue per l'azione di nome name se non esiste
+         * @param name nome del componente della nuova azione
+         * @param actionBase azione da estendere
+         * @private
+         */
+        _createActionComponent (name,conf) {
+            var that = this;
+            if (!conf.componentName)
+                throw name + " questa azione non contiene l'azione da estendere"
+            // se non esiste il componente di azione lo creo al volo
+            if (!that.$options.components[name]) {
+                // if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
+                //     aClassName = that.$crud.conf[name].confParent
+                // }
+                //console.log(aClassName,'non esiste la creao',name,that.$options.components[aClassName])
+                that.$options.components[name] = Vue.component(name, {
+                    extends: that.$options.components[conf.componentName]
+                });
+                that.$options.components[name].prototype.$crud = that.$crud;
+            }
+        },
     }
 }
 
