@@ -3,8 +3,8 @@
     <a href="#" :class="css"
        data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
       <span class="group-icon">
-          <i class="fas fas-list"></i>
-          <i class="fal fa-times-circle"></i>
+          <i class="fi fi-dots-vertical-full"></i>
+          <i class="fi fi-close"></i>
       </span>
     </a>
     <div

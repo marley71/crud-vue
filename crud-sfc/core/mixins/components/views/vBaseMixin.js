@@ -120,7 +120,7 @@ const vBaseMixin = {
             else {
                 conf = that.merge(that.$crud.conf[conf.componentName], conf);
             }
-            console.log('actionconfig',name,conf)
+            // console.log('actionconfig',name,conf)
             conf = that.mergeConf(conf);
 
             return conf;

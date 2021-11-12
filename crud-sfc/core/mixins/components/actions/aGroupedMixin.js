@@ -32,7 +32,7 @@ const aGroupedMixin = {
     },
     mounted: function () {
         var that = this;
-        console.log('actions',this.actions);
+        //console.log('actions',this.actions);
         var actionsConf = {};
         for (var k in that.actions) {
             var row = that.index
@@ -49,9 +49,12 @@ const aGroupedMixin = {
             conf.name = aName;
             conf.view = that.view;
             actionsConf[aName] = conf;
+            if (!conf.componentName) {
+                conf.componentName = 'a-base';
+            }
             that._createActionComponent(aName,conf);
         }
-        console.log('actionsConfig',actionsConf);
+        //console.log('actionsConfig',actionsConf);
         that.actionsConfig = actionsConf;
     },
     computed: {
