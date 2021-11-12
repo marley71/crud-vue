@@ -6,6 +6,30 @@ import Vue from "vue";
 const coreMixin = {
     methods : {
 
+        lining : function (text,maxLength,char) {
+            if (!text) {
+                return "";
+            }
+            char = char || " ";
+            maxLength= maxLength || 40;
+
+            var indTokens = text.split(char);
+            var textSpaced = '';
+            var currLength = 0;
+            for (var i in indTokens) {
+                var token = indTokens[i];
+                textSpaced += token;
+                currLength += token.length;
+                if (currLength >= maxLength) {
+                    textSpaced += "<br/>";
+                    currLength = 0;
+                } else {
+                    textSpaced += "&nbsp;";
+                }
+            }
+            return textSpaced;
+        },
+
         dynamicComponent(name) {
             var that = this;
             var cDef = that.$options.components[name] || that.$crud._dynamicComponents[name];
