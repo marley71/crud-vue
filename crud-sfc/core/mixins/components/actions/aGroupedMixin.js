@@ -48,10 +48,10 @@ const aGroupedMixin = {
             conf.cRef = that.getRefId(that._uid, 'ra', row, aName);
             conf.name = aName;
             conf.view = that.view;
-            actionsConf[aName] = conf;
             if (!conf.componentName) {
                 conf.componentName = 'a-base';
             }
+            actionsConf[aName] = conf;
             that._createActionComponent(aName,conf);
         }
         //console.log('actionsConfig',actionsConf);

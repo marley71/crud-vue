@@ -8,7 +8,7 @@ crud.conf['a-base'] = {
     visible: true,
     enabled: true,
     title: '',
-    css: 'btn btn-outline-secondary text-gray-500',
+    css: 'btn btn-outline-secondary',
     icon: '',
     text: '',
     controlType: 'button',
