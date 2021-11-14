@@ -122,43 +122,7 @@ const vBaseMixin = {
             }
             // console.log('actionconfig',name,conf)
             conf = that.mergeConf(conf);
-
             return conf;
-
-
-            // var that = this;
-            // var conf = that.$crud.conf[name] || {};
-            // if (!conf.componentName)
-            //     conf.componentName = 'a-base';
-            // //var componentName = conf.componentName ? conf.componentName : 'a-base';
-            // conf = that.merge(that.$crud.conf[conf.componentName],conf);
-            // if (that.customActions[name])
-            //     conf = that.merge(conf, that.customActions[name]);
-            // else {
-            //     conf = that.merge(that.$crud.conf['a-base'], conf);
-            // }
-            // return conf;
-
-
-            // --- vecchio codice
-            // var aClassName = 'a-base';
-            // // se non esiste il componente di azione lo creo al volo
-            // if (!this.$options.components[name]) {
-            //     if (that.$crud.conf[name] && that.$crud.conf[name].confParent) {
-            //         aClassName = that.$crud.conf[name].confParent
-            //     }
-            //     //console.log(aClassName,'non esiste la creao',name,that.$options.components[aClassName])
-            //     this.$options.components[name] = Vue.component(name, {
-            //         extends: that.$options.components[aClassName]
-            //     });
-            //     this.$options.components[name].prototype.$crud = this.$crud;
-            // }
-            // // ritorno la configurazione dell'azione con la configurazione di default mergiata con un eventuale configurazione custom
-            // var actionConf =  that.merge(that.$crud.conf[name], (that.customActions[name] || {}));
-            // // in caso non sia stato definito il confParent lo forzo.
-            // if (!actionConf.confParent)
-            //     actionConf.confParent = aClassName;
-            // return actionConf;
         },
 
 
@@ -269,6 +233,34 @@ const vBaseMixin = {
                     return true;
             }
             return false;
+        },
+
+        /**
+         * crea la configurazione iniziale per un widget mergiando le configurazioni della vista
+         * con quelle che arrivano dal json o da valori impostati
+         * @param key
+         * @param modelData
+         * @return {{type: Object}}
+         * @private
+         */
+        _createWidgetConfig (key,modelData) {
+            var that = this;
+            var w = that._defaultWidgetConfig(key);
+            w.modelData = modelData;
+            if (modelData && (key in modelData))
+                w.value = modelData[key];
+            w.view = that;
+            w.name = that.getFieldName(key);
+            if (!('label' in w)) {
+                w.label = key;
+                // se c'e' un langContext, applico la regola
+                if (that.langContext) {
+                    w.label = that.$options.filters.translate(key + '.label', that.langContext);
+                }
+            } else {
+                w.label = that.$options.filters.translate(w.label);
+            }
+            return w;
         }
     }
 }

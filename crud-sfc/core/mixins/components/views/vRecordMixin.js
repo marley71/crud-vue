@@ -81,36 +81,43 @@ const vRecordMixin = {
             }
             crud.cRefs[that.widgets[key].cRef].setValue(value);
         },
-
+        /**
+         * crea le configurazioni per i widgets della view
+         */
         createWidgets: function () {
             var that = this;
             var keys = (that.fields && that.fields.length > 0) ? that.fields : Object.keys(that.value);
             var widgets = {};
             for (var k in keys) {
                 var key = keys[k];
-                widgets[key] = that._defaultWidgetConfig(key);
+                widgets[key] = that._createWidgetConfig(key,that.value);
                 widgets[key].cRef = that.getRefId(that._uid, 'w', key);
-                //widgets[key].value = null;
-                widgets[key].modelData = that.value;
-                if (that.value && (key in that.value))
-                    widgets[key].value = that.value[key];
-                widgets[key].view = that;
-                widgets[key].name = that.getFieldName(key);
-                if (!('label' in widgets[key])) {
-                    //console.log('translate key e langContext',key,that.langContext);
-                    widgets[key].label = key;
-                    // se c'e' un modelName .. applico la regola
-                    if (that.langContext) {
-                        widgets[key].label = that.$options.filters.translate(key + '.label', that.langContext);
-                    }
-                } else {
-                    widgets[key].label = that.$options.filters.translate(widgets[key].label);
-                }
+
+                // var key = keys[k];
+                // widgets[key] = that._defaultWidgetConfig(key);
+                // widgets[key].cRef = that.getRefId(that._uid, 'w', key);
+                // //widgets[key].value = null;
+                // widgets[key].modelData = that.value;
+                // if (that.value && (key in that.value))
+                //     widgets[key].value = that.value[key];
+                // widgets[key].view = that;
+                // widgets[key].name = that.getFieldName(key);
+                // if (!('label' in widgets[key])) {
+                //     //console.log('translate key e langContext',key,that.langContext);
+                //     widgets[key].label = key;
+                //     // se c'e' un modelName .. applico la regola
+                //     if (that.langContext) {
+                //         widgets[key].label = that.$options.filters.translate(key + '.label', that.langContext);
+                //     }
+                // } else {
+                //     widgets[key].label = that.$options.filters.translate(widgets[key].label);
+                // }
             }
 
-            console.log('v-record.widgets', widgets);
+            //console.log('v-record.widgets', widgets);
             that.widgets = widgets;
         },
+
         /**
          * controlla la validità delle azioni inserite nel vettore actions
          * se una azione non e' valida viene rimossa dal vettore

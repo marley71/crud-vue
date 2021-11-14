@@ -107,33 +107,26 @@ const vCollectionMixin = {
                 //recordActions.push({});
                 for (var k in that.keys) {
                     var key = that.keys[k];
-                    var dconf = that._defaultWidgetConfig(key);
-                    dconf.cRef = that.getRefId(that._uid, 'w', i, key);
-                    dconf.modelData = value[i];
-                    // if (! ('value' in dconf))
-                    //     dconf.value = null;
-                    //if (value[i][key])
-                    dconf.value = value[i][key];
-                    dconf.name = that.getFieldName(key);
+                    widgets[i][key] = that._createWidgetConfig(key,value[i]);
+                    widgets[i][key].cRef = that.getRefId(that._uid, 'w', i, key);
 
-                    if (! ('label' in dconf ))  {
-                        dconf.label = key;
-                        if (that.langContext) {
-                            dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
-                        }
-                    } else {
-                        dconf.label = that.$options.filters.translate(dconf.label);
-                    }
 
-                    // if (!('label' in dconf)) {
+                    // var dconf = that._defaultWidgetConfig(key);
+                    // dconf.cRef = that.getRefId(that._uid, 'w', i, key);
+                    // dconf.modelData = value[i];
+                    // dconf.value = value[i][key];
+                    // dconf.name = that.getFieldName(key);
+                    //
+                    // if (! ('label' in dconf ))  {
                     //     dconf.label = key;
-                    //     dconf.label = that.translate(dconf.label + '.label', that.langContext);
+                    //     if (that.langContext) {
+                    //         dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
+                    //     }
                     // } else {
-                    //     dconf.label = that.translate(dconf.label);
+                    //     dconf.label = that.$options.filters.translate(dconf.label);
                     // }
-                    dconf.view = that;
-                    //console.log(i,widgets,widgets[i],key,dconf),
-                    widgets[i][key] = dconf;
+                    // dconf.view = that;
+                    // widgets[i][key] = dconf;
 
                 }
                 //that.createRecordActions(i);
