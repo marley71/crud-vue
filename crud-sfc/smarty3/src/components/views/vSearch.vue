@@ -7,7 +7,7 @@
       <div class="row">
         <div class="col-12">
           <div class="row">
-            <div v-for="(widget, key) in widgets" :key="key" class="col col-6" :class="key.replace('|','-')" >
+            <div v-for="(widget, key) in widgets" :key="key" class="col col-md-6 col-12" :class="key.replace('|','-')" >
               <v-widget :c-widget="widget" v-if="!isHiddenField(key)" :key="key"></v-widget>
             </div>
           </div>
@@ -22,7 +22,7 @@
             </a>
           </div>
           <div v-show="advancedVisible" class="row pt--4">
-            <div v-for="(widget, key) in advancedWidgets" :key="key" class="col col-6" :class="key.replace('|','-')" >
+            <div v-for="(widget, key) in advancedWidgets" :key="key" class="col col col-md-6 col-12" :class="key.replace('|','-')" >
               <v-widget :c-widget="widget" :key="key"></v-widget>
             </div>
           </div>
