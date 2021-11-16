@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between items-center alert alert-danger py-3 px-3 rounded-lg crud-alert">
         <div class="float-left">
-          <span class="font-semibold">{{ cMessage }}</span>
+          <span class="font-semibold" v-html="cMessage"></span>
         </div>
         <div v-if="cTime===0" class="float-right">
             <a class="btn btn-sm text-danger" v-on:click="hide">

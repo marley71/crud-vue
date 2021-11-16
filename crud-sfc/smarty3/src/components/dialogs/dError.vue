@@ -15,7 +15,7 @@
             <template v-if="Array.isArray(message)">
               <div  v-for="(msg,index) in message" v-html="msg" :key="index"></div>
             </template>
-            <div v-else >{{message}}</div>
+            <div v-else v-html="message"></div>
           </div>
         </div>
         <div class="modal-footer">
