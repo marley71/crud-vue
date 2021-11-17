@@ -6,7 +6,7 @@
       <div class="form-label-group">
         <component :is="cWidget.type" :c-conf="cWidget"></component>
         <label :for="cWidget.name">
-          {{ cWidget.label }}
+          {{ cWidget.label }} {{cWidget.required?'*':''}}
         </label>
       </div>
     </div>

@@ -2,11 +2,11 @@
   <component v-if="cWidget.type==='w-hidden'" :is="cWidget.type" :c-conf="cWidget"></component>
   <div :class="getLayoutClass()"  v-else>
     <label v-if="cTemplate.labelType === 'top'" :for="cWidget.name">
-      {{ cWidget.label }}
+      {{ cWidget.label }} {{cWidget.required?'*':''}}
     </label>
     <component :is="cWidget.type" :c-conf="cWidget"></component>
     <label v-if="cTemplate.labelType === 'bottom'" :for="cWidget.name">
-      {{ cWidget.label }}
+      {{ cWidget.label }} {{cWidget.required?'*':''}}
     </label>
   </div>
 </template>

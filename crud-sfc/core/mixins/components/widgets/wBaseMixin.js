@@ -6,7 +6,8 @@ crud.conf['w-base'] = {
     value: null,
     defaultValue: null,
     label: null,
-    view: null // riferimento alla view
+    view: null,         // riferimento alla view,
+    required: false
 }
 
 const wBaseMixin = {
