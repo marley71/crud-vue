@@ -71,7 +71,10 @@ const cComponentMixin = {
                 //setTimeout(function () {
                 that.afterLoadResources();
                 that._ready();
-                that.ready();
+                // serve per rilasciare il controllo in modo che vue scriva l'html nel container.
+                setTimeout(function () {
+                    that.ready();
+                },5);
                 //},1000)
 
             })
