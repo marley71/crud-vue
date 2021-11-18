@@ -70,9 +70,9 @@ const cComponentMixin = {
                 that.resourcesLoaded = true;
                 //setTimeout(function () {
                 that.afterLoadResources();
-                that._ready();
                 // serve per rilasciare il controllo in modo che vue scriva l'html nel container.
                 setTimeout(function () {
+                    that._ready();
                     that.ready();
                 },5);
                 //},1000)
@@ -80,8 +80,10 @@ const cComponentMixin = {
             })
         } else {
             that.resourcesLoaded = true;
-            that._ready();
-            that.ready();
+            setTimeout(function () {
+                that._ready();
+                that.ready();
+            },5);
         }
     },
     beforeDestroy () {
