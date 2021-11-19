@@ -11,7 +11,8 @@ crud.conf['w-b2-select2'] = {
     route: null,
     primaryKey: 'id',
     allowClear: true,
-    data: null // eventuali dati statici
+    data: null, // eventuali dati statici
+    json:null
 }
 
 const wB2Select2Mixin = {
@@ -127,6 +128,7 @@ const wB2Select2Mixin = {
                 },
                 processResults: function (json) {
                     // Tranforms the top-level key of the response object from 'items' to 'results'
+                    that.json = json;
                     var items = [];
                     for (var i in json.result) {
                         items.push({

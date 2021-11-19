@@ -14,6 +14,7 @@ crud.conf['w-autocomplete'] = {
     minLength: 3, // caratteri minimi prima che parta la ricerca
     clearButton: false,
     selectedLabel: false, //se visualizzare o no la scelta dell'autocomplete nella sezione label
+    json: null,
 }
 
 const wAutocompleteMixin = {
@@ -35,6 +36,7 @@ const wAutocompleteMixin = {
                     var r = that._getRoute(that.routeName);
                     that.setRouteValues(r, term);
                     Server.route(r, function (json) {
+                        that.json = json;
                         var suggestions = [];
                         if (json.error) {
                             that.errorDialog(json.msg);

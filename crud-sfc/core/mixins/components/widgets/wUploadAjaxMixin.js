@@ -10,7 +10,8 @@ crud.conf['w-upload-ajax'] = {
     errorMessage: '',
     previewConf: {
         value: {},
-    }
+    },
+    json:null,
 }
 
 const wUploadAjaxMixin = {
@@ -98,6 +99,7 @@ const wUploadAjaxMixin = {
             }).done(function (data) {
                 that.error = data.error;
                 that.lastUpload = null;
+                that.json = data;
                 console.log("Success: Files sent!", data);
                 if (data.error) {
                     var msg = null;
