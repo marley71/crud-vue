@@ -1,8 +1,12 @@
 <template>
   <div id="app">
-    <img style="height:50px" src="./assets/logo.png">
-    <h1>Test</h1>
-    <router-view :key="$route.fullPath"/>
+<!--    <router-view :key="$route.fullPath"/>-->
+    <keep-alive v-if="$crud.env.persistent">
+      <router-view :key="$route.fullPath"/>
+    </keep-alive>
+    <div v-else>
+      <router-view :key="$route.fullPath"/>
+    </div>
   </div>
 </template>
 
@@ -14,11 +18,13 @@ export default {
 
 <style>
 #app {
+  /*
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+   */
 }
 </style>
