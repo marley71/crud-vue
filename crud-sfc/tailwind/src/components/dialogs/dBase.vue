@@ -2,21 +2,24 @@
 <script>
 import cComponent from '../misc/cComponent'
 import dBaseMixin from '../../../../core/mixins/components/dialogs/dBaseMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['d-base'] = {
-  confParent: 'c-component',
-  content: null,
-  visible: true,
-  message: '',
-  typeSize: 'w-1/2',
-  callbacks: {}
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'd-base',
   extends: cComponent,
-  mixins: [dBaseMixin]
+  mixins: [dBaseMixin],
+  methods: {
+    show () {
+      var that = this
+      that.visible = true;
+      //window.jQuery(that.jQe()).modal('show')
+    },
+    hide () {
+      var that = this
+      that.visible = false;
+      //window.jQuery(that.jQe()).modal('hide')
+    }
+  }
 }
 </script>
 

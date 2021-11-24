@@ -9,23 +9,26 @@
 <script>
 import cComponent from './cComponent'
 import jQuery from 'jquery'
+import cWaitMixin from '../../../../core/mixins/components/misc/cWaitMixin'
 
 export default {
   name: 'c-wait',
   extends: cComponent,
-  props: ['cMsg', 'cGlobal'],
+  //  props: ['cMsg', 'cGlobal'],
+  mixins: [cWaitMixin],
   mounted: function () {
     var that = this
     if (that.global) {
       that.jQe('[c-wait]').css('height', jQuery(document).height())
     }
-  },
-  data: function () {
-    return {
-      msg: this.cMsg ? this.cMsg : '...',
-      global: ('cGlobal' in this) ? this.cGlobal : true
-    }
   }
+  // ,
+  // data: function () {
+  //   return {
+  //     msg: this.cMsg ? this.cMsg : '...',
+  //     global: ('cGlobal' in this) ? this.cGlobal : true
+  //   }
+  // }
 }
 </script>
 

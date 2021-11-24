@@ -9,12 +9,8 @@
 
 <script>
 import wBase from './wBase'
-import crud from '../../../../core/crud'
+// import crud from '../../../../core/crud'
 import wBelongsToMixin from '../../../../core/mixins/components/widgets/wBelongsToMixin'
-
-crud.conf['w-belongsto'] = {
-  labelFields: ['text']
-}
 
 export default {
   name: 'w-belongsto',

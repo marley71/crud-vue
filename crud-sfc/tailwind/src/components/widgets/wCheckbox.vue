@@ -1,26 +1,21 @@
 <template>
-    <div class="flex flex-row" :class="inline?'flex-row':'flex-col'">
-        <div class="mb-3 p-1" v-for="key in domainValuesOrder" :key="key">
-            <input class="" v-bind:name="getFieldName()" type="checkbox" :value="key"
-                   v-model="value"
-                   v-on:change="change">
-            <label class=""><span v-html="domainValues[key]"></span></label>
-        </div>
-    </div>
+
+  <div
+    class="col-12 mb-2 form-label-group form-control bw--1 border-solid border-gray-400 p--6 rounded h-100">
+      <label v-for="key in domainValuesOrder" :key="key" class="form-selector mt-3">
+        <input class="" v-bind:name="getFieldName()" type="checkbox" :value="key"
+               v-model="value"
+               v-on:change="change">
+        <span v-html="domainValues[key]"></span>
+      </label>
+  </div>
 </template>
 
 <script>
 import wBase from './wBase'
 import choiceMixin from '../../../../core/mixins/choiceMixin'
 import wCheckboxMixin from '../../../../core/mixins/components/widgets/wCheckboxMixin'
-import crud from '../../../../core/crud'
-
-crud.conf['w-checkbox'] = {
-  inline: true,
-  domainValues: {},
-  domainValuesOrder: [],
-  value: []
-}
+// import crud from '../../../../core/crud'
 
 export default {
   name: 'w-checkbox',
