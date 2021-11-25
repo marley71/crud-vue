@@ -292,7 +292,7 @@ const coreMixin = {
             }
             var serializedData = decodeURI(window.jQuery(form).serialize());
             serializedData = serializedData.split('&');
-            
+
             var formData = new FormData();
             for (var i in serializedData) {
                 var tmp = serializedData[i].split('=');
