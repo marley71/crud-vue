@@ -283,28 +283,6 @@ const coreMixin = {
 
         getFormData : function (form) {
             var that = this;
-
-            var _serializeAssoc = function (form) {
-                var ss = form.serializeArray();
-                var data = {};
-                for (var i in ss) {
-                    var key = ss[i].name;
-                    var value = ss[i].value;
-                    if (key.indexOf('[') >= 0) {
-                        if (!data[key])
-                            data[key] = [];
-                        data[key].push(value);
-                    } else {
-                        data[key] = value;
-                    }
-                }
-                return data;
-            }
-
-
-
-
-            //var form = that.jQe('form[name="data_form"]');
             if (form && form.length === 0) {
                 console.error('form not found!');
                 return {};
@@ -312,37 +290,11 @@ const coreMixin = {
             if (typeof window.tinyMCE !== 'undefined') {
                 window.tinyMCE.triggerSave();
             }
-            var serializedData =  _serializeAssoc(form);//form.serializeAssoc();
-            var postData = {}
-            console.log('serializedData',serializedData)
-            // trasformo tutti gli [d] in [] questa modifica e' fatta per gestire i radio button negli hasmany
-            // altrimenti venivano raggruppati come un unica entita'
-            for( var k in serializedData) {
-                if (serializedData[k].constructor !== Array) {
-                    postData[k] = serializedData[k];
-                    continue;
-                }
-                var pattern = /(.+)(\[\d+\])(.*)$/g;
-                var match = pattern.exec(k);
-                if (match && match.length == 4) {
-                    var newkey = match[1] + '[]' + match[3];
-                    if (!postData[newkey])
-                        postData[newkey] = [];
-                    postData[newkey].push(serializedData[k]);
-                    delete serializedData[k];
-                } else {
-                    postData[k] = serializedData[k];
-                }
-            }
-            console.log('postData',postData);
+            var serializedData = window.jQuery(form).serialize().split('&');
             var formData = new FormData();
-            for(var f in postData) {
-                if (postData[f] instanceof Array) {
-                    for (var cc in postData[f]) {
-                        formData.append(f,postData[f][cc])
-                    }
-                } else
-                    formData.append(f,postData[f]);
+            for (var i in serializedData) {
+                var tmp = serializedData[i].split('=');
+                formData.append(tmp[0],tmp[1]);
             }
             // check upload object
             jQuery.each(form.find('input[type="file"]'),function () {
@@ -354,6 +306,81 @@ const coreMixin = {
             console.log('getFormData',formData instanceof FormData)
             return formData;
         },
+
+
+        // getFormData : function (form) {
+        //     var that = this;
+        //
+        //     var _serializeAssoc = function (form) {
+        //         var ss = form.serializeArray();
+        //         var data = {};
+        //         for (var i in ss) {
+        //             var key = ss[i].name;
+        //             var value = ss[i].value;
+        //             if (key.indexOf('[') >= 0) {
+        //                 if (!data[key])
+        //                     data[key] = [];
+        //                 data[key].push(value);
+        //             } else {
+        //                 data[key] = value;
+        //             }
+        //         }
+        //         return data;
+        //     }
+        //
+        //
+        //
+        //
+        //     //var form = that.jQe('form[name="data_form"]');
+        //     if (form && form.length === 0) {
+        //         console.error('form not found!');
+        //         return {};
+        //     }
+        //     if (typeof window.tinyMCE !== 'undefined') {
+        //         window.tinyMCE.triggerSave();
+        //     }
+        //     var serializedData =  _serializeAssoc(form);//form.serializeAssoc();
+        //     var postData = {}
+        //     console.log('serializedData',serializedData)
+        //     // trasformo tutti gli [d] in [] questa modifica e' fatta per gestire i radio button negli hasmany
+        //     // altrimenti venivano raggruppati come un unica entita'
+        //     for( var k in serializedData) {
+        //         if (serializedData[k].constructor !== Array) {
+        //             postData[k] = serializedData[k];
+        //             continue;
+        //         }
+        //         var pattern = /(.+)(\[\d+\])(.*)$/g;
+        //         var match = pattern.exec(k);
+        //         if (match && match.length == 4) {
+        //             var newkey = match[1] + '[]' + match[3];
+        //             if (!postData[newkey])
+        //                 postData[newkey] = [];
+        //             postData[newkey].push(serializedData[k]);
+        //             delete serializedData[k];
+        //         } else {
+        //             postData[k] = serializedData[k];
+        //         }
+        //     }
+        //     console.log('postData',postData);
+        //     var formData = new FormData();
+        //     for(var f in postData) {
+        //         if (postData[f] instanceof Array) {
+        //             for (var cc in postData[f]) {
+        //                 formData.append(f,postData[f][cc])
+        //             }
+        //         } else
+        //             formData.append(f,postData[f]);
+        //     }
+        //     // check upload object
+        //     jQuery.each(form.find('input[type="file"]'),function () {
+        //         var files = jQuery(this)[0].files
+        //         for (var f=0;f<files.length;f++) {
+        //             formData.append(jQuery(this).attr('name'),files[f]);
+        //         }
+        //     })
+        //     console.log('getFormData',formData instanceof FormData)
+        //     return formData;
+        // },
         // funzioni trasformazioni standard case
         sentenceCase : function (str) {
             if (str == null) {

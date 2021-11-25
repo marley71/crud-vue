@@ -57,15 +57,31 @@ Server.get = function (url, params, callback) {
         processData = true;
         for (var key of params.keys()) {
             var values = params.getAll(key);
-            if (values.length == 1) {
-                _data[key] = values[0];
-            } else {
-                var keyName = key+'[]';
-                for (var vi in values) {
-                    _data[keyName] = values[vi];
+            //console.log('key',key,'values',values);
+            if (! (key in _data) ) {
+                if (values.length == 1) {
+                    _data[key] = values[0];
+                } else {
+                    _data[key] = [];
+                    for (var vi in values) {
+                        _data[key].push(values[vi]);
+                    }
                 }
             }
+
         }
+
+        // for (var key of params.keys()) {
+        //     var values = params.getAll(key);
+        //     if (values.length == 1) {
+        //         _data[key] = values[0];
+        //     } else {
+        //         var keyName = key+'[]';
+        //         for (var vi in values) {
+        //             _data[keyName] = values[vi];
+        //         }
+        //     }
+        // }
     } else {
         _data = params;
     }
