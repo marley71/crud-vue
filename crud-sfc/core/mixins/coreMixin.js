@@ -290,7 +290,9 @@ const coreMixin = {
             if (typeof window.tinyMCE !== 'undefined') {
                 window.tinyMCE.triggerSave();
             }
-            var serializedData = window.jQuery(form).serialize().split('&');
+            var serializedData = decodeURI(window.jQuery(form).serialize());
+            serializedData = serializedData.split('&');
+            
             var formData = new FormData();
             for (var i in serializedData) {
                 var tmp = serializedData[i].split('=');
