@@ -18,18 +18,14 @@ import './confs/routes'
 
 // -- import css smarty3 --
 // import './assets/index.css'
-import './assets/css/core.css'
-import './assets/css/vendor_bundle.css'
-import './assets/css/select2-bootstrap4.css'
+// import './assets/css/core.css'
+// import './assets/css/vendor_bundle.css'
+// import './assets/css/select2-bootstrap4.css'
 import './assets/css/app.css'
 import './assets/css/crud-vue.css'
 
-import './assets/fontawesome/css/all.css'
-import './assets/fontawesome/js/all.js'
-import cCalendar from "./components/app/cCalendar";
-
-// import '@fortawesome/fontawesome-free/css/all.css'
-// import '@fortawesome/fontawesome-free/js/all.js'
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 
 require('./components/misc')
 require('./components/actions')

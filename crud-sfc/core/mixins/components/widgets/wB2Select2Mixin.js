@@ -32,7 +32,7 @@ const wB2Select2Mixin = {
         _connectEvents: function () {
             var that = this;
             that.jQe('[c-select2]').on('select2:select', function (e) {
-                that.change();
+                that.change(e);
             });
         },
 
@@ -51,8 +51,9 @@ const wB2Select2Mixin = {
         },
         getValue: function () {
             var that = this;
+            console.log('b2 getValue')
             var selValue = that.jQe('[c-select2]').select2('data');
-            console.log('selvalue', selValue);
+            //console.log('selvalue', selValue);
             return selValue.length > 0 ? selValue[0].id : null;
 
         },

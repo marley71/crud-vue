@@ -17,6 +17,7 @@ const wB2mSelect2Mixin = {
             that.jQe('[c-select2]').on('select2:select', function (e) {
                 //that._renderHidden();
                 that.change(e);
+                
             });
             that.jQe('[c-select2]').on('select2:unselect', function (e) {
                 //that._renderHidden();
@@ -26,6 +27,7 @@ const wB2mSelect2Mixin = {
 
         getValue: function () {
             var that = this;
+            console.log('b2m getValue')
             var selValues = that.jQe('[c-select2]').select2('data');
             //console.log('selValues',selValues);
             var values = [];
