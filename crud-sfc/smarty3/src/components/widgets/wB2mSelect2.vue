@@ -11,7 +11,7 @@
 <!--        </div>-->
 <!--    </div>-->
   <div>
-    <select c-select2 class="form-control m-select2" name="" multiple="true"
+    <select c-select2 class="form-control m-select2" :name="getFieldName()" multiple="true"
             :placeholder="translate('app.digita-per-cercare')"
             v-model="value" v-on:change="change">
 

@@ -17,7 +17,7 @@ const wB2mSelect2Mixin = {
             that.jQe('[c-select2]').on('select2:select', function (e) {
                 //that._renderHidden();
                 that.change(e);
-                
+
             });
             that.jQe('[c-select2]').on('select2:unselect', function (e) {
                 //that._renderHidden();

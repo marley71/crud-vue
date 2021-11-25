@@ -7,7 +7,7 @@
 <!--        />-->
 <!--    </div>-->
   <select c-select2 class="form-control m-select2" :placeholder="translate('app.digita-per-cercare')"
-          v-bind:name="getFieldName()" v-model="value" v-on:change="change">
+          :name="getFieldName()" v-model="value" v-on:change="change">
   </select>
 </template>
 
