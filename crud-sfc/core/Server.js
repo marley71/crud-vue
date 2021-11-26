@@ -55,9 +55,10 @@ Server.get = function (url, params, callback) {
     if (params instanceof FormData) {
         contentType = false;
         processData = true;
+        console.log('is FormData')
         for (var key of params.keys()) {
             var values = params.getAll(key);
-            //console.log('key',key,'values',values);
+            console.log('key',key,'values',values);
             if (! (key in _data) ) {
                 if (values.length == 1) {
                     _data[key] = values[0];

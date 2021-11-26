@@ -8,6 +8,13 @@ crud.conf['w-b2m-select2'] = {
 const wB2mSelect2Mixin = {
     methods: {
 
+        reset: function () {
+            if (this.defaultValue)
+                this.value = this.defaultValue;
+            else
+                this.value = [];
+        },
+
         getFieldName: function () {
             return this.name + '[]';
         },

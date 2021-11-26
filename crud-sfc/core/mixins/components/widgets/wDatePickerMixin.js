@@ -16,12 +16,11 @@ const wDatePickerMixin = {
     methods: {
         afterLoadResources: function () {
             var that = this
-            var cPicker = window.jQuery(that.$el).find('[c-picker]');
-            that.cPicker = cPicker;
-            cPicker.datepicker({
+            that.cPicker = window.jQuery(that.$el).find('[c-picker]');
+            that.cPicker.datepicker({
                 format: that.displayFormat,
             }).on('change', function (ev) {
-                var d = cPicker.datepicker('getDate');
+                var d = that.cPicker.datepicker('getDate');
                 //console.log('date change',d);
                 that.value = moment(d.toISOString()).format(that.dateFormat.toUpperCase()) // ev.date.toISOString();
                 that.jQe('input[name="'+that.getFieldName()+'"]').val(that.value);
@@ -29,10 +28,13 @@ const wDatePickerMixin = {
             })
 
             // console.log('dateformat', that.dateFormat.toUpperCase())
-            window.jQuery(that.$el).find('[c-picker]').datepicker('update', moment(that.value).format(that.displayFormat.toUpperCase()))
+            //window.jQuery(that.$el).find('[c-picker]').datepicker('update', moment(that.value).format(that.displayFormat.toUpperCase()))
+            that.cPicker.datepicker('update', moment(that.value).format(that.displayFormat.toUpperCase()))
+
             if (that.value) {
                 var d = moment(that.value).toDate()
-                window.jQuery(that.$el).find('[c-picker]').datepicker('setDate', d)
+                //window.jQuery(that.$el).find('[c-picker]').datepicker('setDate', d)
+                that.cPicker.datepicker('setDate', d)
             }
         },
         reset () {

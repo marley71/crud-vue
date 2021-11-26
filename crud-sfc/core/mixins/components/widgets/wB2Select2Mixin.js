@@ -69,7 +69,7 @@ const wB2Select2Mixin = {
             if (this.defaultValue)
                 this.value = this.defaultValue;
             else
-                this.value = [];
+                this.value = null;
         },
 
         /**
