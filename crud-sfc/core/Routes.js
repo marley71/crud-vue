@@ -24,7 +24,7 @@ function Route(conf) {
         routeConf[k] = _c[k];
     }
 
-    var _isForm = function () {
+    var _isFormData = function () {
         return (routeConf.params instanceof FormData);
     }
     /**
@@ -83,7 +83,7 @@ function Route(conf) {
      */
     this.getParams = function() {
         var that = this;
-        if (_isForm()) {
+        if (_isFormData()) {
             for (var k in routeConf.commonParams) {
                 routeConf.params.set(k,routeConf.commonParams[k]);
             }
@@ -93,7 +93,7 @@ function Route(conf) {
     };
 
     this.getParamsKeys = function () {
-        if (_isForm()) {
+        if (_isFormData()) {
             return routeConf.params.keys();
             // var _keys = [];
             // for (var pair in routeConf.params.entries()) {
@@ -116,7 +116,7 @@ function Route(conf) {
         }
     }
     this.getParam = function (key) {
-        if (_isForm())
+        if (_isFormData())
             return routeConf.params.get(key);
         return routeConf.params[key];
     }
@@ -142,8 +142,8 @@ function Route(conf) {
     };
 
     this.setParam = function (key,value) {
-        //console.log('Route.setParam',_isForm(),key,value);
-        if (_isForm()) {
+        //console.log('Route.setParam',_isFormData(),key,value);
+        if (_isFormData()) {
             routeConf.params.set(key,value);
         } else {
             routeConf.params[key] = value;

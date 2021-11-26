@@ -362,7 +362,7 @@ const cManageMixin = {
             acSearch.execute = function () {
                 var that = this;
                 var formData = that.view.getViewData();
-                listComp.route.mergeParams(formData);
+                listComp.route.setParams(formData);
                 listComp.route.setParam('page',1);
                 listComp.reload();
                 return;
