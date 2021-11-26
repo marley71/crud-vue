@@ -383,7 +383,7 @@ const coreMixin = {
             console.log('getFormData',formData instanceof FormData)
             return formData;
         },
-        
+
         // funzioni trasformazioni standard case
         sentenceCase : function (str) {
             if (str == null) {

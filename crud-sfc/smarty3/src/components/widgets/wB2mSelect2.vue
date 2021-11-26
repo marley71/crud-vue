@@ -10,15 +10,15 @@
 <!--            &lt;!&ndash; hidden input for selected items &ndash;&gt;-->
 <!--        </div>-->
 <!--    </div>-->
-  <div>
+  <div class="form-label-group form-control">
     <select c-select2 class="form-control m-select2" :name="getFieldName()" multiple="true"
             :placeholder="translate('app.digita-per-cercare')"
             v-model="value" v-on:change="change">
 
     </select>
-    <div c-selected-items>
-      <!-- hidden input for selected items -->
-    </div>
+<!--    <div c-selected-items>-->
+<!--      &lt;!&ndash; hidden input for selected items &ndash;&gt;-->
+<!--    </div>-->
   </div>
 </template>
 
