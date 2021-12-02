@@ -29,6 +29,7 @@ import wTextarea from './wTextarea'
 import wTexthtml from './wTexthtml'
 import wUpload from './wUpload'
 import wUploadAjax from './wUploadAjax'
+import wMultiSelect from './wMultiSelect'
 
 Vue.component('w-autocomplete', wAutocomplete)
 Vue.component('w-b2-select2', wB2Select2)
@@ -59,3 +60,4 @@ Vue.component('w-textarea', wTextarea)
 Vue.component('w-texthtml', wTexthtml)
 Vue.component('w-upload', wUpload)
 Vue.component('w-upload-ajax', wUploadAjax)
+Vue.component('w-multi-select', wMultiSelect)
