@@ -1,25 +1,8 @@
 <template>
-<!--    <div>-->
-<!--        <div class="relative flex w-full flex-wrap items-stretch mb-3">-->
-<!--            <select type="text" c-select2 :placeholder="translate('app.digita-per-cercare')"-->
-<!--                    class="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full pr-10"-->
-<!--                    v-on:change="change"  v-model="value" multiple="true"-->
-<!--            />-->
-<!--        </div>-->
-<!--        <div c-selected-items>-->
-<!--            &lt;!&ndash; hidden input for selected items &ndash;&gt;-->
-<!--        </div>-->
-<!--    </div>-->
-  <div class="form-label-group form-control">
     <select c-select2 class="form-control m-select2" :name="getFieldName()" multiple="true"
             :placeholder="translate('app.digita-per-cercare')"
             v-model="value" v-on:change="change">
-
     </select>
-<!--    <div c-selected-items>-->
-<!--      &lt;!&ndash; hidden input for selected items &ndash;&gt;-->
-<!--    </div>-->
-  </div>
 </template>
 
 <script>
@@ -34,7 +17,11 @@ export default {
   mixins: [wB2mSelect2Mixin],
   methods: {
     _ready () {
-      window.jQuery('.select2-container').addClass('form-control p-1 pl-2 w-100')
+      // trucchetto per aggiungere la label nel posto giusto e overflow in caso di template record
+      var container = this.jQe().parent();
+      window.jQuery(container).find('.select2-container').addClass('form-control p-1 pl-2 w-100');
+      window.jQuery(container).find('.select2-container').css('overflow', 'auto');
+      //window.jQuery('.select2-container').addClass('form-control p-1 pl-2 w-100')
     }
   }
 }
