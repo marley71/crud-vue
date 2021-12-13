@@ -54,7 +54,7 @@ Server.get = function (url, params, callback) {
     var _data = {};
     if (params instanceof FormData) {
         contentType = false;
-        processData = true;
+        processData = false;
         console.log('is FormData')
         for (var key of params.keys()) {
             var values = params.getAll(key);
@@ -86,7 +86,7 @@ Server.get = function (url, params, callback) {
     } else {
         _data = params;
     }
-    console.log('Server.get _data',_data);
+    console.log('Server.get _data',_data,contentType,processData);
     //console.log('serverGet',(params instanceof FormData),contentType,processData,params);
     jQuery.ajax({
         url: realUrl,
