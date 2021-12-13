@@ -27,7 +27,7 @@ Server.getHearders = function() {
 Server.post = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
     var contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
-    var processData = true;
+    var processData = false;
     if (params instanceof FormData) {
         contentType = false;
         processData = false;
