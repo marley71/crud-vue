@@ -124,21 +124,14 @@ const vListEditMixin = {
         },
         setRowData (index,values) {
             var that = this;
-            console.log('fields',that.fields);
+            console.log('fields',that.fields,'values',values);
             for (var i in that.fields) {
                 var key = that.fields[i];
-                console.log('index',index,key);
-                this.getWidgetEdit(index,key).setValue(values[key]);
-                this.getWidget(index,key).setValue(values[key]);
+                var we = that.getWidgetEdit(index,key);
+                var w = that.getWidget(index,key);
+                if (we) we.setValue(values[key]);
+                if (w) w.setValue(values[key]);
             }
-            // for (var k in values) {
-            //     var sref = that.widgetsEdit[index][k].cRef; //  're-' + that.index + '-' +  k;
-            //     if (that.$crud.cRefs[sref])
-            //         this.getWidgetEdit(index,k).setValue(values[k]);
-            //     var sref = that.widgets[index][k].cRef; //  're-' + that.index + '-' +  k;
-            //     if (that.$crud.cRefs[sref])
-            //         this.getWidget(index,k).setValue(values[k]);
-            // }
         },
         getRowEditData (index) {
             var that = this;
