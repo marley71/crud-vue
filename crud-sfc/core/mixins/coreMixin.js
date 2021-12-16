@@ -182,9 +182,12 @@ const coreMixin = {
             dialog.componentInstance = dialogComp
             return dialog;
         },
-        createContainer : function (container) {
+        createContainer : function (container,overwrite) {
             var id= 'd' + (new Date().getTime());
-            jQuery(container).append('<div id="'+id+'" ></div>');
+            if (overwrite)
+                jQuery(container).html('<div id="'+id+'" ></div>');
+            else
+                jQuery(container).append('<div id="'+id+'" ></div>');
             return id;
         },
         /**
