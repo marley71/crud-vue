@@ -7,8 +7,7 @@
 <script>
 
 import wBase from './wBase'
-import wB2Select2Mixin from '../../../../core/mixins/components/widgets/wB2Select2Mixin'
-// import crud from '../../../../core/crud'
+import wB2Select2Mixin from 'crud-vue-package'
 
 export default {
   name: 'w-b2-select2',

@@ -1,9 +1,6 @@
 <script>
 
-import cComponentMixin from '../../../../core/mixins/components/misc/cComponentMixin'
-import coreMixin from '../../../../core/mixins/coreMixin'
-import dialogsMixin from '../../../../core/mixins/dialogsMixin'
-// import crud from '../../../../core/crud'
+import { cComponentMixin, coreMixin, dialogsMixin } from 'crud-vue-package'
 
 export default {
   name: 'c-component',

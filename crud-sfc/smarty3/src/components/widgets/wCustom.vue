@@ -5,8 +5,7 @@
 
 <script>
 import wBase from './wBase'
-// import crud from '../../../../core/crud'
-import wCustomMixin from '../../../../core/mixins/components/widgets/wCustomMixin'
+import wCustomMixin from 'crud-vue-package'
 
 export default {
   name: 'w-custom',

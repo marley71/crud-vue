@@ -1,8 +1,8 @@
 
 <script>
 import vBase from './vBase'
-import vCollectionMixin from '../../../../core/mixins/components/views/vCollectionMixin'
-// import crud from '../../../../core/crud'
+import vCollectionMixin from 'crud-vue-package'
+
 
 export default {
   name: 'v-collection',

@@ -8,8 +8,8 @@
 <script>
 
 import wB2Select2 from './wB2Select2'
-import wB2mSelect2Mixin from '../../../../core/mixins/components/widgets/wB2mSelect2Mixin'
-// import crud from '../../../../core/crud'
+import wB2mSelect2Mixin from 'crud-vue-package'
+
 
 export default {
   name: 'w-b2m-select2',
@@ -21,7 +21,6 @@ export default {
       var container = this.jQe().parent();
       window.jQuery(container).find('.select2-container').addClass('form-control p-1 pl-2 w-100');
       window.jQuery(container).find('.select2-container').css('overflow', 'auto');
-      //window.jQuery('.select2-container').addClass('form-control p-1 pl-2 w-100')
     }
   }
 }

@@ -26,8 +26,7 @@
 
 <script>
 import wBase from './wBase'
-// import crud from '../../../../core/crud'
-import wUploadAjaxMixin from '../../../../core/mixins/components/widgets/wUploadAjaxMixin'
+import wUploadAjaxMixin from 'crud-vue-package'
 
 export default {
   name: 'w-upload-ajax',

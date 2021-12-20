@@ -1,4 +1,4 @@
-import crud from '../../../core/crud'
+import crud from 'crud-vue-package'
 
 crud.routes['menu'] = {
   url: 'crud/menu',

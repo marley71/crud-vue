@@ -264,8 +264,7 @@
 
 <script>
 import vCollection from './vCollection'
-import vListMixin from '../../../../core/mixins/components/views/vListMixin'
-// import crud from '../../../../core/crud'
+import vListMixin from 'crud-vue-package'
 
 export default {
   name: 'v-list',

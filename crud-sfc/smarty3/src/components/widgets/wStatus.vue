@@ -14,10 +14,8 @@
 
 <script>
 import wBase from './wBase'
-// import crud from '../../../../core/crud'
-import wStatusMixin from '../../../../core/mixins/components/widgets/wStatusMixin'
-import choiceMixin from '../../../../core/mixins/choiceMixin'
-// import wRadioMixin from "../../../../core/mixins/components/widgets/wRadioMixin";
+import { choiceMixin, wStatusMixin } from 'crud-vue-package'
+
 
 export default {
   name: 'w-status',

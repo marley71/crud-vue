@@ -12,9 +12,8 @@
 </template>
 
 <script>
+import aBaseMixin from 'crud-vue-package'
 import cComponent from '../misc/cComponent'
-import aBaseMixin from '../../../../core/mixins/components/actions/aBaseMixin'
-// import crud from '../../../../core/crud'
 
 export default {
   name: 'a-base',

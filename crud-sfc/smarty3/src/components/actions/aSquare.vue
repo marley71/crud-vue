@@ -16,8 +16,8 @@
 
 <script>
 import aBase from './aBase'
-import crud from '../../../../core/crud'
-import aBaseMixin from '../../../../core/mixins/components/actions/aBaseMixin'
+import { crud, aBaseMixin } from 'crud-vue-package'
+
 
 crud.conf['a-square'] = {
   componentName: 'a-square',

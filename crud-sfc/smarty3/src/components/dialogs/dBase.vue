@@ -1,8 +1,8 @@
 
 <script>
 import cComponent from '../misc/cComponent'
-import dBaseMixin from '../../../../core/mixins/components/dialogs/dBaseMixin'
-// import crud from '../../../../core/crud'
+import dBaseMixin from 'crud-vue-package'
+
 
 export default {
   name: 'd-base',

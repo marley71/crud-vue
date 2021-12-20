@@ -9,8 +9,7 @@
 
 <script>
 import vRecord from './vRecord'
-// import crud from '../../../../core/crud'
-import vHasmanyMixin from '../../../../core/mixins/components/views/vHasmanyMixin'
+import vHasmanyMixin from 'crud-vue-package'
 
 export default {
   name: 'v-hasmany',

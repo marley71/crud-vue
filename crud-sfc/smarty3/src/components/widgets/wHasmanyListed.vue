@@ -1,18 +1,5 @@
 <template>
   <div class="portlet">
-<!--    <div class="portlet-header border-bottom mb-1 " :class="bgClass">-->
-<!--      <span class="float-left text-dark text-truncate font-weight-medium">{{ label | translate }}</span>&nbsp;-->
-<!--      <div class="float-right">-->
-<!--                <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimit()">-->
-<!--                    &lt;!&ndash; Limite massimo raggiunto &ndash;&gt;-->
-<!--                    {{ 'app.limite-raggiunto' | translate }}-->
-<!--                </span>-->
-<!--        <button v-else v-on:click="addItem" type="button"-->
-<!--                class="btn-sm btn-pill px-2 py-1 fs&#45;&#45;15 btn-warning">-->
-<!--          <span>{{ 'app.aggiungi' | translate }}</span>&nbsp;-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
     <div class="portlet-body">
       <div class="row">
         <div class="col-12">
@@ -43,8 +30,7 @@
 
 <script>
 import wBase from './wBase'
-// import crud from '../../../../core/crud'
-import wHasmanyListedMixin from '../../../../core/mixins/components/widgets/wHasmanyListedMixin'
+import wHasmanyListedMixin from 'crud-vue-package'
 
 export default {
   name: 'w-hasmany-listed',

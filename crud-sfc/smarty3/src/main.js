@@ -1,14 +1,13 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
-import Vue from 'vue'
-import App from './App'
 
+
+import Vue from 'vue'
+import { crud, coreMixin, dialogsMixin, mainMixin } from 'crud-vue-package'
+
+import App from './App'
 import router from './router'
-import crud from '../../core/crud'
-import coreMixin from '../../core/mixins/coreMixin'
-import dialogsMixin from '../../core/mixins/dialogsMixin'
-import mainMixin from '../../core/mixins/mainMixin'
 import jQuery from 'jquery'
 import cPage from './components/app/cPage'
 

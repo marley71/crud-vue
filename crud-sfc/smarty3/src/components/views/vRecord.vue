@@ -1,7 +1,7 @@
 <script>
 import vBase from './vBase'
-import vRecordMixin from '../../../../core/mixins/components/views/vRecordMixin'
-// import crud from '../../../../core/crud'
+import vRecordMixin from 'crud-vue-package'
+
 
 export default {
   name: 'v-record',

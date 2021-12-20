@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import vActionMixin from '../../../../core/mixins/components/views/vActionMixin'
+import vActionMixin from 'crud-vue-package'
 
 export default {
   name: 'v-action',

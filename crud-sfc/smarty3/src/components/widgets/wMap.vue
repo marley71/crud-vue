@@ -16,20 +16,6 @@
         </button>
       </div>
     </div>
-
-<!--    <div class="mb-2 form-label-group">-->
-<!--      <input :placeholder="label" class="form-control" v-on:change="searchAddress">-->
-<!--      <label>-->
-<!--        {{ label }}-->
-<!--      </label>-->
-<!--    </div>-->
-
-    <!--        <div class="input-group mb-3">-->
-    <!--            <div class="input-group-prepend">-->
-    <!--                <span class="input-group-text" id="basic-addon1">{{'app.trova-indirizzo' | translate}}</span>-->
-    <!--            </div>-->
-    <!--            <input class="form-control" type="text" v-on:change="searchAddress"/>-->
-    <!--        </div>-->
     <div c-map></div>
   </div>
 </template>
@@ -39,8 +25,7 @@
 /* eslint no-undef: "off" */
 
 import wBase from './wBase'
-// import crud from '../../../../core/crud'
-import wMapMixin from '../../../../core/mixins/components/widgets/wMapMixin'
+import wMapMixin from 'crud-vue-package'
 
 export default {
   name: 'w-map',

@@ -13,9 +13,7 @@
 
 <script>
 import wBase from './wBase'
-// import crud from '../../../../core/crud'
-import choiceMixin from '../../../../core/mixins/choiceMixin'
-import wRadioMixin from '../../../../core/mixins/components/widgets/wRadioMixin'
+import { choiceMixin, wRadioMixin } from 'crud-vue-package'
 
 export default {
   name: 'w-radio',

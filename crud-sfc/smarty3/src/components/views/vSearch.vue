@@ -44,8 +44,7 @@
 
 <script>
 import vRecord from './vRecord'
-import vSearchMixin from '../../../../core/mixins/components/views/vSearchMixin'
-import crud from '../../../../core/crud'
+import {crud, vSearchMixin} from 'crud-vue-package'
 
 crud.conf['v-search'].buttonsClass = 'text-left'
 crud.conf['v-search'].advancedVisible = false

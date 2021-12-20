@@ -4,8 +4,7 @@
 
 <script>
 import wBase from './wBase'
-import wHiddenMixin from '../../../../core/mixins/components/widgets/wHiddenMixin'
-// import crud from '../../../../core/crud'
+import wHiddenMixin from 'crud-vue-package'
 
 export default {
   name: 'w-hidden',

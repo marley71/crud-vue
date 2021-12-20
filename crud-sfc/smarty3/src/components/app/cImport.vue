@@ -56,8 +56,7 @@
 
 <script>
 import cComponent from '../misc/cComponent'
-// import crud from '../../../../core/crud'
-import cImportMixin from '../../../../core/mixins/components/app/cImportMixin'
+import cImportMixin from 'crud-vue-package'
 
 export default {
   name: 'c-import',

@@ -9,7 +9,6 @@ import cPage from '../components/app/cPage'
 import cManage from '../components/app/cManage'
 import cImport from '../components/app/cImport'
 import cCalendar from '../components/app/cCalendar'
-import crud from '../../../core/crud'
 
 Vue.use(Router)
 

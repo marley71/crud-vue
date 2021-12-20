@@ -7,8 +7,7 @@
 /* eslint no-undef: "off" */
 
 import wMap from './wMap'
-// import crud from '../../../../core/crud'
-import wMapViewMixin from '../../../../core/mixins/components/widgets/wMapViewMixin'
+import wMapViewMixin from 'crud-vue-package'
 
 export default {
   name: 'w-map-view',

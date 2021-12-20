@@ -5,8 +5,7 @@
 <script>
 
 import wBase from './wBase'
-import crud from '../../../../core/crud'
-import wDateTextMixin from '../../../../core/mixins/components/widgets/wDateTextMixin'
+import wDateTextMixin from 'crud-vue-package'
 /* eslint no-undef: "off" */
 
 export default {

@@ -23,24 +23,12 @@
       </div>
     </div>
   </div>
-
-
-<!--  <button class="btn btn-sm btn-pill px-2 py-1 fs&#45;&#45;15" v-if="controlType=='button'" type="button" v-show="_visible"-->
-<!--          :title="title | translate" :class="css" v-on:click="_execute" v-bind:disabled="_disabled">-->
-<!--    <i class="m-1" v-show="icon" :class="icon"></i>-->
-<!--    <span>{{ text | translate }}</span>-->
-<!--  </button>-->
-<!--  <a v-else class="btn btn-sm btn-pill px-2 py-1 fs&#45;&#45;15" :target="target" :href="href" v-show="_visible"-->
-<!--     :title="title | translate" :class="css" :disabled="_disabled">-->
-<!--    <i class="m-1" v-show="icon" :class="icon"></i>-->
-<!--    <span>{{ text | translate }}</span>-->
-<!--  </a>-->
 </template>
 
 <script>
 import cComponent from '../misc/cComponent'
-import aGroupedMixin from '../../../../core/mixins/components/actions/aGroupedMixin'
-// import crud from '../../../../core/crud'
+import aGroupedMixin from 'crud-vue-package'
+
 
 export default {
   name: 'a-grouped',

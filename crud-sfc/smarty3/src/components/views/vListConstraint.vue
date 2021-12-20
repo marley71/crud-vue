@@ -1,6 +1,6 @@
 <script>
 import vList from './vList'
-import crud from '../../../../core/crud'
+import crud from 'crud-vue-package'
 
 crud.conf['v-list-constraint'] = {
   confParent: 'v-list',
