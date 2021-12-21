@@ -1,5 +1,5 @@
 import jQuery from "jquery";
-import crud from "../../../crud";
+const crud = require("../../../crud");
 
 crud.conf['a-grouped'] = {
     componentName : 'a-grouped',
