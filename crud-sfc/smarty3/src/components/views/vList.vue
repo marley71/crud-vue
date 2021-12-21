@@ -81,7 +81,7 @@
 
                         <label
                           class="form-checkbox form-checkbox-primary float-start">
-                          <input c-row-check type="checkbox">
+                          <input c-row-check type="checkbox" :value="value[index][primaryKey]">
                           <i></i>
                         </label>
 
