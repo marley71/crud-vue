@@ -2,8 +2,7 @@
  * Created by pier on 20/12/17.
  */
 
-import jQuery from "jquery";
-
+const jQuery = require('jquery');
 const Server = {};
 
 
@@ -113,4 +112,4 @@ Server.route = function(route,callback) {
 
 Server.subdomain = null;
 
-export default Server;
+export default Server

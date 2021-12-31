@@ -3,9 +3,9 @@
  * Classe per la gestione delle route verso il server.
  */
 
-import jQuery from "jquery";
+import jQuery from "jquery"
 
-function Route(conf) {
+export default function Route(conf) {
 
     const defaultConf =  {
         method : 'get',
@@ -190,5 +190,3 @@ function Route(conf) {
     }
 
 }
-
-export default Route;

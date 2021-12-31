@@ -1,5 +1,5 @@
 
-window.ProtocolList = function () {
+export default function ProtocolList () {
 
     this.value = [];
     this.metadata = {};
@@ -73,5 +73,3 @@ window.ProtocolList = function () {
         }
     }
 }
-
-export default window.ProtocolList;

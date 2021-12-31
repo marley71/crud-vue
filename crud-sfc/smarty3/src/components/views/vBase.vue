@@ -1,6 +1,6 @@
 <script>
 import cComponent from '../misc/cComponent'
-import vBaseMixin from 'crud-vue-package'
+import {vBaseMixin} from 'crud-vue-package'
 import vWidget from './vWidget'
 import vAction from './vAction'
 

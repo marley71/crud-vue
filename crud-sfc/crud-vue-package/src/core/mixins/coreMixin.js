@@ -1,7 +1,9 @@
-import jQuery from 'jquery';
+import jQuery from 'jquery'
 import Route from '../Routes'
-import Server from "../Server";
-import Vue from "vue";
+import Server from '../Server'
+import Vue from 'vue'
+import ProtocolList from "../ProtocolList";
+import ProtocolRecord from "../ProtocolRecord";
 
 const coreMixin = {
     methods : {
@@ -272,7 +274,9 @@ const coreMixin = {
             var className = "Protocol" + this.pascalCase(name);
             try {
                 //return new window[className]();
-                return eval('new ' + className + '()');
+                //return eval('new ' + className + '()');
+
+                return new this.$crud.protocols[name]();
             } catch (e) {
                 console.error('failed to create ' + className,e);
             }

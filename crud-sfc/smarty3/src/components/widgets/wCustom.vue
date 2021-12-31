@@ -5,7 +5,7 @@
 
 <script>
 import wBase from './wBase'
-import wCustomMixin from 'crud-vue-package'
+import {wCustomMixin} from 'crud-vue-package'
 
 export default {
   name: 'w-custom',

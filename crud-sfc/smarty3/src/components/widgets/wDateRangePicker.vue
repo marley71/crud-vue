@@ -8,7 +8,7 @@
 
 <script>
 
-import crud from 'crud-vue-package'
+import {crud} from 'crud-vue-package'
 import wBase from './wBase'
 
 

@@ -20,7 +20,7 @@
 /* eslint no-undef: "off" */
 
 import vList from '../views/vList'
-import cCalendarMixin from 'crud-vue-package'
+import {cCalendarMixin} from 'crud-vue-package'
 
 // TODO inserire la gestione di avanti e indietro del calendario con il caricamento dei dati
 

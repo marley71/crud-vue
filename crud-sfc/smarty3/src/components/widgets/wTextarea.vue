@@ -8,7 +8,7 @@
 
 <script>
 import wBase from './wBase'
-import wTextareaMixin from 'crud-vue-package'
+import {wTextareaMixin} from 'crud-vue-package'
 
 export default {
   name: 'w-textarea',

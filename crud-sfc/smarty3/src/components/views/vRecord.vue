@@ -1,6 +1,6 @@
 <script>
 import vBase from './vBase'
-import vRecordMixin from 'crud-vue-package'
+import {vRecordMixin} from 'crud-vue-package'
 
 
 export default {

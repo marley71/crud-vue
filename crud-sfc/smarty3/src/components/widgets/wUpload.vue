@@ -16,7 +16,7 @@
 
 <script>
 import wBase from './wBase'
-import wUploadMixin from 'crud-vue-package'
+import {wUploadMixin} from 'crud-vue-package'
 
 export default {
   name: 'w-upload',

@@ -8,7 +8,7 @@
 <script>
 
 import wB2Select2 from './wB2Select2'
-import wB2mSelect2Mixin from 'crud-vue-package'
+import {wB2mSelect2Mixin} from 'crud-vue-package'
 
 
 export default {

@@ -1,79 +1,79 @@
 
-const crud = require('./core/crud');
+import crud from './core/crud'
 
-const coreMixin = require('./core/mixins/coreMixin')
-const dialogsMixin = require ('./core/mixins/dialogsMixin');
-const mainMixin = require ('./core/mixins/mainMixin');
-const choiceMixin = require ('./core/mixins/choiceMixin');
+import coreMixin from './core/mixins/coreMixin'
+import dialogsMixin from './core/mixins/dialogsMixin'
+import mainMixin from './core/mixins/mainMixin'
+import choiceMixin from './core/mixins/choiceMixin'
 
-const aBaseMixin = require('./core/mixins/components/actions/aBaseMixin')
-const aGroupedMixin = require('./core/mixins/components/actions/aGroupedMixin')
-const aOrderMixin = require('./core/mixins/components/actions/aOrderMixin')
+import aBaseMixin from './core/mixins/components/actions/aBaseMixin'
+import aGroupedMixin from './core/mixins/components/actions/aGroupedMixin'
+import aOrderMixin from './core/mixins/components/actions/aOrderMixin'
 
-const cCalendarMixin = require('./core/mixins/components/app/cCalendarMixin')
-const cImportMixin = require('./core/mixins/components/app/cImportMixin')
-const cManageMixin = require('./core/mixins/components/app/cManageMixin')
-const cPageMixin = require('./core/mixins/components/app/cPageMixin')
+import cCalendarMixin from './core/mixins/components/app/cCalendarMixin'
+import cImportMixin from './core/mixins/components/app/cImportMixin'
+import cManageMixin from './core/mixins/components/app/cManageMixin'
+import cPageMixin from './core/mixins/components/app/cPageMixin'
 
-const dAlertMixin = require('./core/mixins/components/dialogs/dAlertMixin')
-const dBaseMixin = require('./core/mixins/components/dialogs/dBaseMixin')
+import dAlertMixin from './core/mixins/components/dialogs/dAlertMixin'
+import dBaseMixin from './core/mixins/components/dialogs/dBaseMixin'
 
-const cComponentMixin = require('./core/mixins/components/misc/cComponentMixin')
-const cPaginatorMixin = require('./core/mixins/components/misc/cPaginatorMixin')
-const cWaitMixin = require('./core/mixins/components/misc/cWaitMixin')
+import cComponentMixin from './core/mixins/components/misc/cComponentMixin'
+import cPaginatorMixin from './core/mixins/components/misc/cPaginatorMixin'
+import cWaitMixin from './core/mixins/components/misc/cWaitMixin'
 
 // --- views ---
-const vActionMixin = require('./core/mixins/components/views/vActionMixin')
-const vWidgetMixin = require('./core/mixins/components/views/vWidgetMixin')
-const vBaseMixin = require('./core/mixins/components/views/vBaseMixin')
-const vCollectionMixin = require('./core/mixins/components/views/vBaseMixin')
-const vRecordMixin = require('./core/mixins/components/views/vRecordMixin')
-const vListMixin = require('./core/mixins/components/views/vListMixin')
-const vListEditMixin = require('./core/mixins/components/views/vListEditMixin')
-const vEditMixin = require('./core/mixins/components/views/vEditMixin')
-const vInsertMixin = require('./core/mixins/components/views/vInsertMixin')
-const vViewMixin = require('./core/mixins/components/views/vViewMixin')
-const vSearchMixin = require('./core/mixins/components/views/vSearchMixin')
-const vHasmanyMixin = require('./core/mixins/components/views/vHasmanyMixin')
+import vActionMixin from './core/mixins/components/views/vActionMixin'
+import vWidgetMixin from './core/mixins/components/views/vWidgetMixin'
+import vBaseMixin from './core/mixins/components/views/vBaseMixin'
+import vCollectionMixin from './core/mixins/components/views/vBaseMixin'
+import vRecordMixin from './core/mixins/components/views/vRecordMixin'
+import vListMixin from './core/mixins/components/views/vListMixin'
+import vListEditMixin from './core/mixins/components/views/vListEditMixin'
+import vEditMixin from './core/mixins/components/views/vEditMixin'
+import vInsertMixin from './core/mixins/components/views/vInsertMixin'
+import vViewMixin from './core/mixins/components/views/vViewMixin'
+import vSearchMixin from './core/mixins/components/views/vSearchMixin'
+import vHasmanyMixin from './core/mixins/components/views/vHasmanyMixin'
 
 
 // --- widgets ---
-const wBaseMixin = require('./core/mixins/components/widgets/wBaseMixin')
-const wAutocompleteMixin = require('./core/mixins/components/widgets/wAutocompleteMixin')
-const wB2Select2Mixin = require('./core/mixins/components/widgets/wB2Select2Mixin')
-const wB2mSelect2Mixin = require('./core/mixins/components/widgets/wB2mSelect2Mixin')
-const wBelongsToMixin = require('./core/mixins/components/widgets/wBelongsToMixin')
-const wCheckboxMixin = require('./core/mixins/components/widgets/wCheckboxMixin')
-const wCustomMixin = require('./core/mixins/components/widgets/wCustomMixin')
-const wDatePickerMixin = require('./core/mixins/components/widgets/wDatePickerMixin')
-const wDateSelectMixin = require('./core/mixins/components/widgets/wDateSelectMixin')
-const wDateTextMixin = require('./core/mixins/components/widgets/wDateTextMixin')
-const wHasmanyMixin = require('./core/mixins/components/widgets/wHasmanyMixin')
-const wHasmanyListedMixin = require('./core/mixins/components/widgets/wHasmanyListedMixin')
-const wHiddenMixin = require('./core/mixins/components/widgets/wHiddenMixin')
-const wImageMixin = require('./core/mixins/components/widgets/wImageMixin')
-const wInputMixin = require('./core/mixins/components/widgets/wInputMixin')
-const wInputHelpedMixin = require('./core/mixins/components/widgets/wInputHelpedMixin')
-const wMapMixin = require('./core/mixins/components/widgets/wMapMixin')
-const wMapViewMixin = require('./core/mixins/components/widgets/wMapViewMixin')
-const wPreviewMixin = require('./core/mixins/components/widgets/wPreviewMixin')
-const wRadioMixin = require('./core/mixins/components/widgets/wRadioMixin')
-const wSelectMixin = require('./core/mixins/components/widgets/wSelectMixin')
-const wStatusMixin = require('./core/mixins/components/widgets/wStatusMixin')
-const wSwapMixin = require('./core/mixins/components/widgets/wSwapMixin')
-const wTextMixin = require('./core/mixins/components/widgets/wTextMixin')
-const wTextareaMixin = require('./core/mixins/components/widgets/wTextareaMixin')
-const wTexthtmlMixin = require('./core/mixins/components/widgets/wTexthtmlMixin')
-const wUploadMixin = require('./core/mixins/components/widgets/wUploadMixin')
-const wUploadAjaxMixin = require('./core/mixins/components/widgets/wUploadAjaxMixin')
+import wBaseMixin from './core/mixins/components/widgets/wBaseMixin'
+import wAutocompleteMixin from './core/mixins/components/widgets/wAutocompleteMixin'
+import wB2Select2Mixin from './core/mixins/components/widgets/wB2Select2Mixin'
+import wB2mSelect2Mixin from './core/mixins/components/widgets/wB2mSelect2Mixin'
+import wBelongsToMixin from './core/mixins/components/widgets/wBelongsToMixin'
+import wCheckboxMixin from './core/mixins/components/widgets/wCheckboxMixin'
+import wCustomMixin from './core/mixins/components/widgets/wCustomMixin'
+import wDatePickerMixin from './core/mixins/components/widgets/wDatePickerMixin'
+import wDateSelectMixin from './core/mixins/components/widgets/wDateSelectMixin'
+import wDateTextMixin from './core/mixins/components/widgets/wDateTextMixin'
+import wHasmanyMixin from './core/mixins/components/widgets/wHasmanyMixin'
+import wHasmanyListedMixin from './core/mixins/components/widgets/wHasmanyListedMixin'
+import wHiddenMixin from './core/mixins/components/widgets/wHiddenMixin'
+import wImageMixin from './core/mixins/components/widgets/wImageMixin'
+import wInputMixin from './core/mixins/components/widgets/wInputMixin'
+import wInputHelpedMixin from './core/mixins/components/widgets/wInputHelpedMixin'
+import wMapMixin from './core/mixins/components/widgets/wMapMixin'
+import wMapViewMixin from './core/mixins/components/widgets/wMapViewMixin'
+import wPreviewMixin from './core/mixins/components/widgets/wPreviewMixin'
+import wRadioMixin from './core/mixins/components/widgets/wRadioMixin'
+import wSelectMixin from './core/mixins/components/widgets/wSelectMixin'
+import wStatusMixin from './core/mixins/components/widgets/wStatusMixin'
+import wSwapMixin from './core/mixins/components/widgets/wSwapMixin'
+import wTextMixin from './core/mixins/components/widgets/wTextMixin'
+import wTextareaMixin from './core/mixins/components/widgets/wTextareaMixin'
+import wTexthtmlMixin from './core/mixins/components/widgets/wTexthtmlMixin'
+import wUploadMixin from './core/mixins/components/widgets/wUploadMixin'
+import wUploadAjaxMixin from './core/mixins/components/widgets/wUploadAjaxMixin'
 
-const Server = require('./core/Server')
-const Route = require('./core/Routes')
-const ProtocolList = require('./core/ProtocolList')
-const ProtocolRecord = require('./core/ProtocolRecord')
+import Server from './core/Server'
+import Route from './core/Routes'
+import ProtocolList from './core/ProtocolList'
+import ProtocolRecord from './core/ProtocolRecord'
 
 
-module.exports = {
+export {
     crud,
     coreMixin,
     dialogsMixin,

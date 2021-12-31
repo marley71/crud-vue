@@ -169,5 +169,4 @@ const routeConfs = {
     }
 }
 
-//export default routeConfs
-exports.routeConfs = routeConfs;
+export default routeConfs

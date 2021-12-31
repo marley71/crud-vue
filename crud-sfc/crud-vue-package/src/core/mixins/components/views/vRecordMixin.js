@@ -1,4 +1,3 @@
-import ProtocolRecord from '../../../ProtocolRecord'
 import crud from "../../../crud";
 
 crud.conf['v-record'] = {
@@ -92,26 +91,6 @@ const vRecordMixin = {
                 var key = keys[k];
                 widgets[key] = that._createWidgetConfig(key,that.value);
                 widgets[key].cRef = that.getRefId(that._uid, 'w', key);
-
-                // var key = keys[k];
-                // widgets[key] = that._defaultWidgetConfig(key);
-                // widgets[key].cRef = that.getRefId(that._uid, 'w', key);
-                // //widgets[key].value = null;
-                // widgets[key].modelData = that.value;
-                // if (that.value && (key in that.value))
-                //     widgets[key].value = that.value[key];
-                // widgets[key].view = that;
-                // widgets[key].name = that.getFieldName(key);
-                // if (!('label' in widgets[key])) {
-                //     //console.log('translate key e langContext',key,that.langContext);
-                //     widgets[key].label = key;
-                //     // se c'e' un modelName .. applico la regola
-                //     if (that.langContext) {
-                //         widgets[key].label = that.$options.filters.translate(key + '.label', that.langContext);
-                //     }
-                // } else {
-                //     widgets[key].label = that.$options.filters.translate(widgets[key].label);
-                // }
             }
 
             //console.log('v-record.widgets', widgets);
@@ -157,19 +136,6 @@ const vRecordMixin = {
                 actions[aName] = aConf;
             }
             that.actionsConf = actions;
-        },
-        fillData: function (route, json) {
-            var that = this;
-            if (route) {
-                // istanzio il protocollo associato e riempio i dati nella view
-                var protocol = that.createProtocol(route.getProtocol());
-                protocol.jsonToData(json);
-                var prop = Object.getOwnPropertyNames(protocol);
-                for (var i in prop) {
-                    that[prop[i]] = protocol[prop[i]];
-                }
-            }
-            that.json = json;
         },
         getViewData: function () {
             var that = this;

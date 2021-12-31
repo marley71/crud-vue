@@ -10,7 +10,7 @@
 
 <script>
 import wBase from './wBase'
-import wSwapMixin from 'crud-vue-package'
+import {wSwapMixin} from 'crud-vue-package'
 
 export default {
   name: 'w-swap',

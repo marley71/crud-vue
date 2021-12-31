@@ -9,7 +9,7 @@
 
 <script>
 import wBase from './wBase'
-import wBelongsToMixin from 'crud-vue-package'
+import {wBelongsToMixin} from 'crud-vue-package'
 
 export default {
   name: 'w-belongsto',

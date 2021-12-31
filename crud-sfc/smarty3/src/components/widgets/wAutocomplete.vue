@@ -15,7 +15,7 @@
 
 <script>
 import wBase from './wBase'
-import wAutocompleteMixin from 'crud-vue-package'
+import {wAutocompleteMixin} from 'crud-vue-package'
 
 export default {
   name: 'w-autocomplete',

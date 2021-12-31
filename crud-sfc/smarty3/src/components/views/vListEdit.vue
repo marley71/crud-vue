@@ -147,7 +147,7 @@
 
 <script>
 import vList from './vList'
-import vListEditMixin from 'crud-vue-package'
+import {vListEditMixin} from 'crud-vue-package'
 
 export default {
   name: 'v-list-edit',

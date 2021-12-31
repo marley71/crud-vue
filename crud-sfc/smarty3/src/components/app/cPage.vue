@@ -7,7 +7,7 @@
 <script>
 
 import cComponent from '../misc/cComponent'
-import cPageMixin from 'crud-vue-package'
+import {cPageMixin} from 'crud-vue-package'
 
 
 export default {

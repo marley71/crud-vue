@@ -1,5 +1,6 @@
-import jQuery from "jquery";
-const crud = require("../../../crud");
+const jQuery = require("jquery");
+//const crud = require("../../../crud");
+import crud from '../../../crud'
 
 crud.conf['a-base'] = {
     componentName : 'a-base',
@@ -125,5 +126,4 @@ const aBaseMixin = {
         }
     }
 }
-//export default aBaseMixin
-exports.aBaseMixin = aBaseMixin
+export default aBaseMixin

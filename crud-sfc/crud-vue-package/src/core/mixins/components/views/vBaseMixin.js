@@ -33,11 +33,12 @@ const vBaseMixin = {
     },
     methods: {
         load() {
-            let that = this;
+            var that = this;
             that.beforeLoadData();
             that.setRouteValues(that.route);
             that.fetchData(that.route, function (json) {
                 that.json = json;
+                console.log('vBase.load that',that);
                 that.fillData(that.route, json);
                 that.afterLoadData(json);
                 that.draw();
@@ -261,7 +262,27 @@ const vBaseMixin = {
                 w.label = that.$options.filters.translate(w.label);
             }
             return w;
-        }
+        },
+
+        /**
+         * riempe la view con i dati che arrivano dalla chiamata ajax della route
+         * attraverso il protocollo definito nella route
+         * @param route
+         * @param json
+         */
+        fillData: function (route, json) {
+            var that = this;
+            if (route) {
+                var protocol = that.createProtocol(route.getProtocol());
+                protocol.jsonToData(json);
+                var prop = Object.getOwnPropertyNames(protocol);
+                for (var i in prop) {
+                    that[prop[i]] = protocol[prop[i]];
+                }
+            }
+            that.json = json;
+        },
+
     }
 }
 export default vBaseMixin

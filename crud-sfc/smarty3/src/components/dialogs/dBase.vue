@@ -1,7 +1,7 @@
 
 <script>
 import cComponent from '../misc/cComponent'
-import dBaseMixin from 'crud-vue-package'
+import {dBaseMixin} from 'crud-vue-package'
 
 
 export default {

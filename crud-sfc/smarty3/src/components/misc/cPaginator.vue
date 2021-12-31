@@ -41,7 +41,7 @@
 
 <script>
 import cComponent from './cComponent'
-import cPaginatorMixin from 'crud-vue-package'
+import {cPaginatorMixin} from 'crud-vue-package'
 
 export default {
   name: 'c-paginator',

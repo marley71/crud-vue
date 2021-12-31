@@ -1,4 +1,4 @@
-import crud from 'crud-vue-package'
+import { crud } from 'crud-vue-package'
 
 crud.conf['v-search'].widgetTemplate = 'tpl-search'
 crud.conf['v-view'].widgetTemplate = 'tpl-record-view'

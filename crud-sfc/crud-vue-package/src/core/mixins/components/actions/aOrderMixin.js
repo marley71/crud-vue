@@ -1,4 +1,4 @@
-const crud = require("../../../crud");
+import crud from '../../../crud'
 
 crud.conf['a-order'] = {
     componentName : 'a-order',

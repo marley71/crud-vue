@@ -1,8 +1,5 @@
-
-import ProtocolList from '../../../ProtocolList'
 import jQuery from "jquery"
 import crud from "../../../crud";
-
 
 crud.conf['v-collection'] = {
     modelName: null,
@@ -41,7 +38,7 @@ const vCollectionMixin = {
     },
     methods: {
 
-        dynamicData: function (conf) {
+        _dynamicData: function (conf) {
             if (this.cModel)
                 conf.modelName = this.cModel;
             if (!conf.langContext && conf.langContext !== null) {
@@ -49,25 +46,6 @@ const vCollectionMixin = {
                 conf.langContext += '.fields';
             }
             return conf;
-        },
-
-        /**
-         * riempe la view con i dati che arrivano dalla chiamata ajax della route
-         * attraverso il protocollo definito nella route
-         * @param route
-         * @param json
-         */
-        fillData: function (route, json) {
-            var that = this;
-            if (route) {
-                var protocol = that.createProtocol(route.getProtocol());
-                protocol.jsonToData(json);
-                var prop = Object.getOwnPropertyNames(protocol);
-                for (var i in prop) {
-                    that[prop[i]] = protocol[prop[i]];
-                }
-            }
-            that.json = json;
         },
 
         draw: function () {
@@ -94,46 +72,17 @@ const vCollectionMixin = {
         createWidgets: function () {
             var that = this;
             that.setKeys();
-            //console.log('Vlist-create widgets',that.data);
             var widgets = [];
-            //var recordActions = that.recordActions;
-            //var recordActionsName = that.recordActionsName;
             var value = that.value;
-            //console.log('collection value',value);
-            //var keys = that.getKeys();
-            //console.log('keys',keys,value);
             for (var i in value) {
                 widgets.push({});
-                //recordActions.push({});
                 for (var k in that.keys) {
                     var key = that.keys[k];
                     widgets[i][key] = that._createWidgetConfig(key,value[i]);
                     widgets[i][key].cRef = that.getRefId(that._uid, 'w', i, key);
-
-
-                    // var dconf = that._defaultWidgetConfig(key);
-                    // dconf.cRef = that.getRefId(that._uid, 'w', i, key);
-                    // dconf.modelData = value[i];
-                    // dconf.value = value[i][key];
-                    // dconf.name = that.getFieldName(key);
-                    //
-                    // if (! ('label' in dconf ))  {
-                    //     dconf.label = key;
-                    //     if (that.langContext) {
-                    //         dconf.label = that.$options.filters.translate(dconf.label + '.label', that.langContext);
-                    //     }
-                    // } else {
-                    //     dconf.label = that.$options.filters.translate(dconf.label);
-                    // }
-                    // dconf.view = that;
-                    // widgets[i][key] = dconf;
-
                 }
-                //that.createRecordActions(i);
             }
-
             that.widgets = widgets;
-            //that.recordActionsName = recordActionsName;
         },
         /**
          * valorizza i campi correnti calcolandoli o dai dati o dalla configurazione nella proprietà fields.

@@ -1,5 +1,5 @@
 
-window.ProtocolRecord = function() {
+export default function ProtocolRecord() {
 
     this.value = {};
     this.metadata = {};
@@ -51,5 +51,3 @@ window.ProtocolRecord = function() {
         }
     }
 }
-
-export default window.ProtocolRecord;
