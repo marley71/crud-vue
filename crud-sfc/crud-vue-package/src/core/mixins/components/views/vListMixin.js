@@ -59,8 +59,7 @@ const vListMixin = {
             var sel = [];
             that.jQe('[c-row-check]').each(function () {
                 if (jQuery(this).prop('checked')) {
-                    var index = jQuery(this).closest('tr').index();
-                    sel.push(that.value[index].id);
+                    sel.push(jQuery(this).val())
                 }
             });
             //console.log('select3ed',sel);
