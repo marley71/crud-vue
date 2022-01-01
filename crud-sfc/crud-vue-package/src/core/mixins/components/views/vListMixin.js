@@ -87,15 +87,15 @@ const vListMixin = {
             return route;
         }
     },
-    watch: {
-        routeConf: {
-            deep: true,
-            handler() {
-                this.reload();
-
-            }
-        }
-    }
+    // watch: {
+    //     routeConf: {
+    //         deep: true,
+    //         handler() {
+    //             this.reload();
+    //
+    //         }
+    //     }
+    // }
 }
 
 export default vListMixin

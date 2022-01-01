@@ -26,7 +26,7 @@ import cWaitMixin from './core/mixins/components/misc/cWaitMixin'
 import vActionMixin from './core/mixins/components/views/vActionMixin'
 import vWidgetMixin from './core/mixins/components/views/vWidgetMixin'
 import vBaseMixin from './core/mixins/components/views/vBaseMixin'
-import vCollectionMixin from './core/mixins/components/views/vBaseMixin'
+import vCollectionMixin from './core/mixins/components/views/vCollectionMixin'
 import vRecordMixin from './core/mixins/components/views/vRecordMixin'
 import vListMixin from './core/mixins/components/views/vListMixin'
 import vListEditMixin from './core/mixins/components/views/vListEditMixin'
@@ -94,8 +94,8 @@ export {
     vActionMixin,
     vWidgetMixin,
     vBaseMixin,
-    vCollectionMixin,
     vRecordMixin,
+    vCollectionMixin,
     vListMixin,
     vListEditMixin,
     vEditMixin,

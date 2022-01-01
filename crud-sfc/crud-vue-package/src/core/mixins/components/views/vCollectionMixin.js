@@ -39,6 +39,7 @@ const vCollectionMixin = {
     methods: {
 
         _dynamicData: function (conf) {
+            console.log('dynamicData',conf);
             if (this.cModel)
                 conf.modelName = this.cModel;
             if (!conf.langContext && conf.langContext !== null) {
