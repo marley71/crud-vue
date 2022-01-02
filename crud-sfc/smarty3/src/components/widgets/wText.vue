@@ -4,7 +4,7 @@
 
 <script>
 import wBase from './wBase'
-import {wTextMixin} from 'crud-vue-package'
+import {wTextMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-text',

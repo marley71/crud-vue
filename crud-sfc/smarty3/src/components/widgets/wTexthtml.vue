@@ -11,7 +11,7 @@
 /* eslint no-undef: "off" */
 
 import wBase from './wBase'
-import { crud, wTexthtmlMixin } from 'crud-vue-package'
+import { crud, wTexthtmlMixin } from 'crud-vue-core'
 
 crud.conf['w-texthtml'].resources = [
   'https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css',

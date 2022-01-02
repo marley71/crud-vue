@@ -1,6 +1,6 @@
 <script>
 
-import { cComponentMixin, coreMixin, dialogsMixin } from 'crud-vue-package'
+import { cComponentMixin, coreMixin, dialogsMixin } from 'crud-vue-core'
 
 export default {
   name: 'c-component',

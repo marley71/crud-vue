@@ -30,7 +30,7 @@
 
 <script>
 import wBase from './wBase'
-import {wHasmanyListedMixin} from 'crud-vue-package'
+import {wHasmanyListedMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-hasmany-listed',

@@ -1,7 +1,7 @@
 
 <script>
 import cComponent from '../misc/cComponent'
-import {dAlertMixin} from 'crud-vue-package'
+import {dAlertMixin} from 'crud-vue-core'
 
 export default {
   name: 'd-alert',

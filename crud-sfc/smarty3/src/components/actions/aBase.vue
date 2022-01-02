@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import {aBaseMixin} from 'crud-vue-package'
+import {aBaseMixin} from 'crud-vue-core'
 import cComponent from '../misc/cComponent'
 
 export default {

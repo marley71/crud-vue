@@ -27,7 +27,7 @@
 
 <script>
 import cComponent from '../misc/cComponent'
-import {aGroupedMixin} from 'crud-vue-package'
+import {aGroupedMixin} from 'crud-vue-core'
 
 
 export default {

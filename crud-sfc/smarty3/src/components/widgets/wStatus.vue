@@ -14,7 +14,7 @@
 
 <script>
 import wBase from './wBase'
-import { choiceMixin, wStatusMixin } from 'crud-vue-package'
+import { choiceMixin, wStatusMixin } from 'crud-vue-core'
 
 
 export default {

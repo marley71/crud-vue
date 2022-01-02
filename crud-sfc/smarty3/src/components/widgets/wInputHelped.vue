@@ -16,7 +16,7 @@
 <script>
 
 import wBase from './wBase'
-import {choiceMixin, wInputHelpedMixin} from 'crud-vue-package'
+import {choiceMixin, wInputHelpedMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-input-helped',

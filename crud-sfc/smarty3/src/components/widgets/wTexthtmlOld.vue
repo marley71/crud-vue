@@ -12,7 +12,7 @@
 
 import wBase from './wBase'
 // import crud from '../../../../core/crud'
-import {wTexthtmlMixin} from 'crud-vue-package'
+import {wTexthtmlMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-texthtml',

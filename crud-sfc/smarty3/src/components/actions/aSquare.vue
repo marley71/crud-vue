@@ -16,7 +16,7 @@
 
 <script>
 import aBase from './aBase'
-import { crud, aBaseMixin } from 'crud-vue-package'
+import { crud, aBaseMixin } from 'crud-vue-core'
 
 
 crud.conf['a-square'] = {

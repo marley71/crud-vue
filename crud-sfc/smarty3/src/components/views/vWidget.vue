@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {vWidgetMixin} from 'crud-vue-package'
+import {vWidgetMixin} from 'crud-vue-core'
 
 export default {
   name: 'v-widget',

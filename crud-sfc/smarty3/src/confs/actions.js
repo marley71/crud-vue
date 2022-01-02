@@ -1,4 +1,4 @@
-import { crud, Server } from 'crud-vue-package'
+import { crud, Server } from 'crud-vue-core'
 
 crud.conf['action-record-grouped'].css = 'btn btn-sm btn-outline-primary rounded-circle'
 

@@ -1,12 +1,12 @@
 {
-    "name": "crud-vue-package",
+    "name": "crud-vue-core",
     "version": "1.0.0",
-    "description": "crud vue mixins for a crud app ",
+    "description": "crud vue mixins core for a crud app ",
     "main": "src/index.js",
     "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "",
+    "author": "Pier",
     "license": "ISC",
     "dependencies": {
         "jquery": "^3.6.0",

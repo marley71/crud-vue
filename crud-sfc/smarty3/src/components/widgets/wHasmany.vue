@@ -41,7 +41,7 @@
 
 <script>
 import wBase from './wBase'
-import {wHasmanyMixin} from 'crud-vue-package'
+import {wHasmanyMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-hasmany',

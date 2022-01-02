@@ -81,7 +81,7 @@
 <script>
 
 import cComponent from '../misc/cComponent'
-import { crud, cManageMixin } from 'crud-vue-package'
+import { crud, cManageMixin } from 'crud-vue-core'
 
 crud.conf['c-manage'].collapsible = false
 crud.conf['c-manage'].collapsed = false

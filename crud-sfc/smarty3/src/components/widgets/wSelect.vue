@@ -9,7 +9,7 @@
 
 <script>
 import wBase from './wBase'
-import { crud, choiceMixin, wSelectMixin } from 'crud-vue-package'
+import { crud, choiceMixin, wSelectMixin } from 'crud-vue-core'
 
 crud.conf['w-select'].defaultValue = -1
 

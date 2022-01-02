@@ -25,7 +25,7 @@
 /* eslint no-undef: "off" */
 
 import wBase from './wBase'
-import {wMapMixin} from 'crud-vue-package'
+import {wMapMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-map',

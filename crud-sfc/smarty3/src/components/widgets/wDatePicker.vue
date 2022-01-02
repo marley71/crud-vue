@@ -9,7 +9,7 @@
 <script>
 
 import wBase from './wBase'
-import {wDatePickerMixin} from 'crud-vue-package'
+import {wDatePickerMixin} from 'crud-vue-core'
 
 /* eslint no-undef: "off" */
 

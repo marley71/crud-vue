@@ -2,7 +2,7 @@
 <script>
 
 import cComponent from '../misc/cComponent'
-import {wBaseMixin} from 'crud-vue-package'
+import {wBaseMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-base',

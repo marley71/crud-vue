@@ -22,7 +22,7 @@
 
 <script>
 import vRecord from './vRecord'
-import {vInsertMixin} from 'crud-vue-package'
+import {vInsertMixin} from 'crud-vue-core'
 
 
 export default {

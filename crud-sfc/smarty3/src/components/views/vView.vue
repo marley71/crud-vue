@@ -19,7 +19,7 @@
 
 <script>
 import vRecord from './vRecord'
-import {vViewMixin} from 'crud-vue-package'
+import {vViewMixin} from 'crud-vue-core'
 
 export default {
   name: 'v-view',

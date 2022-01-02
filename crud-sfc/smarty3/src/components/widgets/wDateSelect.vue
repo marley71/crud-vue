@@ -10,7 +10,7 @@
 <script>
 
 import wBase from './wBase'
-import {wDateSelectMixin} from 'crud-vue-package'
+import {wDateSelectMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-date-select',

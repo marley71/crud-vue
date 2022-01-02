@@ -6,7 +6,7 @@
 <script>
 
 import wBase from './wBase'
-import {wInputMixin} from 'crud-vue-package'
+import {wInputMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-input',

@@ -1,6 +1,6 @@
 <script>
 
-import {crud} from 'crud-vue-package'
+import {crud} from 'crud-vue-core'
 import wDateRangePicker from './wDateRangePicker'
 
 /* global moment */

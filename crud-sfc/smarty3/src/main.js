@@ -4,7 +4,7 @@
 
 
 import Vue from 'vue'
-import { crud, coreMixin, dialogsMixin, mainMixin } from 'crud-vue-package'
+import { crud, coreMixin, dialogsMixin, mainMixin } from 'crud-vue-core'
 
 import App from './App'
 import router from './router'

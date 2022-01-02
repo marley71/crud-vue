@@ -13,7 +13,7 @@
 
 <script>
 import wBase from './wBase'
-import {choiceMixin, wCheckboxMixin} from 'crud-vue-package'
+import {choiceMixin, wCheckboxMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-checkbox',

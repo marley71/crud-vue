@@ -8,7 +8,7 @@
 
 <script>
 import aBase from './aBase'
-import {aOrderMixin} from 'crud-vue-package'
+import {aOrderMixin} from 'crud-vue-core'
 
 export default {
   name: 'a-order',

@@ -9,7 +9,7 @@
 <script>
 import cComponent from './cComponent'
 import jQuery from 'jquery'
-import {cWaitMixin} from 'crud-vue-package'
+import {cWaitMixin} from 'crud-vue-core'
 
 export default {
   name: 'c-wait',

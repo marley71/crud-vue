@@ -12,7 +12,7 @@
 
 <script>
 import wBase from './wBase'
-import {wPreviewMixin} from 'crud-vue-package'
+import {wPreviewMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-preview',

@@ -4,7 +4,7 @@
 
 <script>
 import wBase from './wBase'
-import {wImageMixin} from 'crud-vue-package'
+import {wImageMixin} from 'crud-vue-core'
 
 export default {
   name: 'w-image',

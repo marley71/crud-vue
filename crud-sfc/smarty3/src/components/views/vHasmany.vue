@@ -9,7 +9,7 @@
 
 <script>
 import vRecord from './vRecord'
-import {vHasmanyMixin} from 'crud-vue-package'
+import {vHasmanyMixin} from 'crud-vue-core'
 
 export default {
   name: 'v-hasmany',

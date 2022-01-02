@@ -1,6 +1,6 @@
 <script>
 import vBase from './vBase'
-import {vCollectionMixin} from 'crud-vue-package'
+import {vCollectionMixin} from 'crud-vue-core'
 
 
 export default {
