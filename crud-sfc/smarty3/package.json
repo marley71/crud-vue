@@ -16,7 +16,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "crud-vue-core": "file:../crud-vue-core",
+    "crud-vue-core": "file:../../../crud-vue-core",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@tailwindcss/typography": "^0.3.1",
     "html-loader": "^1.3.2",
