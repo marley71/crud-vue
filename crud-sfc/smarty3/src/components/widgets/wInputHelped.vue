@@ -1,7 +1,7 @@
 <template>
   <div>
     <input v-bind:readonly="!customValue"
-           class="form-control" type="text" name="getFieldName()" v-model="value"
+           class="form-control" type="text" :name="getFieldName()" v-model="value"
            v-on:change="change">
     <div>
       <div class="btn-group btn-group-sm" role="group" aria-label="...">
